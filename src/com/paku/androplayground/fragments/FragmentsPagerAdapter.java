@@ -1,8 +1,9 @@
-package com.paku.androplayground;
+package com.paku.androplayground.fragments;
 
 import java.util.Locale;
 
-import com.paku.androplayground.fragments.DummySectionFragment;
+import com.paku.androplayground.MainActivity;
+import com.paku.androplayground.R;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -48,9 +49,9 @@ public class FragmentsPagerAdapter extends FragmentPagerAdapter {
 		Locale l = Locale.getDefault();
 		switch (position) {
 		case 0:
-			return this.mainActivity.getString(R.string.title_realtime_mavlink).toUpperCase(l);
-		case 1:
 			return this.mainActivity.getString(R.string.title_connectivity).toUpperCase(l);
+		case 1:
+			return this.mainActivity.getString(R.string.title_realtime_mavlink).toUpperCase(l);
 		case 2:
 			return this.mainActivity.getString(R.string.title_calibration).toUpperCase(l);
 		}

@@ -1,6 +1,8 @@
 package com.paku.androplayground;
 
 
+import com.paku.androplayground.fragments.FragmentsPagerAdapter;
+
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
