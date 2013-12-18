@@ -13,14 +13,14 @@ import android.support.v4.app.FragmentPagerAdapter;
  * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
  * one of the sections/tabs/pages.
  */
-public class SectionsPagerAdapter extends FragmentPagerAdapter {
+public class FragmentsPagerAdapter extends FragmentPagerAdapter {
 
 	/**
 	 * 
 	 */
 	private final MainActivity mainActivity;
 
-	public SectionsPagerAdapter(MainActivity mainActivity, FragmentManager fm) {
+	public FragmentsPagerAdapter(MainActivity mainActivity, FragmentManager fm) {
 		super(fm);
 		this.mainActivity = mainActivity;
 	}
