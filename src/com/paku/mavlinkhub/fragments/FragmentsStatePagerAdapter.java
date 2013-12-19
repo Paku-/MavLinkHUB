@@ -9,19 +9,20 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 /**
  * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
  * one of the sections/tabs/pages.
  */
-public class FragmentsPagerAdapter extends FragmentPagerAdapter {
+public class FragmentsStatePagerAdapter extends FragmentStatePagerAdapter {
 
 	/**
 	 * 
 	 */
 	private final MainActivity mainActivity;
 
-	public FragmentsPagerAdapter(MainActivity mainActivity, FragmentManager fm) {
+	public FragmentsStatePagerAdapter(MainActivity mainActivity, FragmentManager fm) {
 		super(fm);
 		this.mainActivity = mainActivity;
 	}

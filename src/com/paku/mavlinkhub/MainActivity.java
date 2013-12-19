@@ -2,7 +2,7 @@ package com.paku.mavlinkhub;
 
 
 import com.paku.mavlinkhub.R;
-import com.paku.mavlinkhub.fragments.FragmentsPagerAdapter;
+import com.paku.mavlinkhub.fragments.FragmentsStatePagerAdapter;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -19,7 +19,7 @@ public class MainActivity extends FragmentActivity {
 	 * intensive, it may be best to switch to a
 	 * {@link android.support.v4.app.FragmentStatePagerAdapter}.
 	 */
-	FragmentsPagerAdapter mFragmentsPagerAdapter;
+	FragmentsStatePagerAdapter mFragmentsPagerAdapter;
 
 	/**
 	 * The {@link ViewPager} that will host the section contents.
@@ -33,7 +33,7 @@ public class MainActivity extends FragmentActivity {
 
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
-		mFragmentsPagerAdapter = new FragmentsPagerAdapter(
+		mFragmentsPagerAdapter = new FragmentsStatePagerAdapter(
 				this, getSupportFragmentManager());
 
 		// Set up the ViewPager with the sections adapter.
