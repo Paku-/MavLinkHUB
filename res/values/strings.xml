@@ -6,5 +6,9 @@
     <string name="title_realtime_mavlink">RealTime MavLink</string>
     <string name="title_connectivity">Connectivity</string>
     <string name="title_calibration">Calibration</string>
+    <string name="cb_accelerometers">Accelerometers</string>
+    <string name="cb_gyros">Gyros</string>
+    <string name="txt_select_sensors_for_calibration">Select sensors</string>
+    <string name="bt_calibrate">Calibrate</string>
 
 </resources>

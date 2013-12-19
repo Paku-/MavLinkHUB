@@ -32,8 +32,24 @@ public class FragmentsStatePagerAdapter extends FragmentStatePagerAdapter {
 		// getItem is called to instantiate the fragment for the given page.
 		// Return a DummySectionFragment (defined as a static inner class
 		// below) with the page number as its lone argument.
-		Fragment fragment = new DummySectionFragment();
-		Bundle args = new Bundle();
+		Fragment fragment;
+		Bundle args = new Bundle();		
+		
+		switch (position) {
+		case 0:
+				fragment = new DummySectionFragment();
+			break;
+		case 1:
+			fragment = new DummySectionFragment();
+			break;
+		case 2:
+			fragment = new CalibrationFragment();
+			break;
+			
+		default:
+				fragment = new DummySectionFragment();
+			break;
+		}		
 		args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
 		fragment.setArguments(args);
 		return fragment;
