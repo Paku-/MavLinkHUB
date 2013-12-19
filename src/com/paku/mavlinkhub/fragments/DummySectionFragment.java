@@ -1,6 +1,6 @@
-package com.paku.androplayground.fragments;
+package com.paku.mavlinkhub.fragments;
 
-import com.paku.androplayground.R;
+import com.paku.mavlinkhub.R;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

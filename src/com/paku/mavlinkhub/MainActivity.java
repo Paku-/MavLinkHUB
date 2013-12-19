@@ -1,7 +1,8 @@
-package com.paku.androplayground;
+package com.paku.mavlinkhub;
 
 
-import com.paku.androplayground.fragments.FragmentsPagerAdapter;
+import com.paku.mavlinkhub.R;
+import com.paku.mavlinkhub.fragments.FragmentsPagerAdapter;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;

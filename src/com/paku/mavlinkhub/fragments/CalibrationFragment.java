@@ -1,6 +1,6 @@
-package com.paku.androplayground.fragments;
+package com.paku.mavlinkhub.fragments;
 
-import com.paku.androplayground.R;
+import com.paku.mavlinkhub.R;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,14 +13,14 @@ import android.widget.TextView;
  * A dummy fragment representing a section of the app, but that simply
  * displays dummy text.
  */
-public class ConnectivityFragment extends Fragment {
+public class CalibrationFragment extends Fragment {
 	/**
 	 * The fragment argument representing the section number for this
 	 * fragment.
 	 */
 	public static final String ARG_SECTION_NUMBER = "section_number";
 
-	public ConnectivityFragment() {
+	public CalibrationFragment() {
 	}
 
 	@Override
