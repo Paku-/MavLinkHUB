@@ -45,6 +45,10 @@ public class FragmentsStatePagerAdapter extends FragmentStatePagerAdapter {
 		case 2:
 			fragment = new CalibrationFragment();
 			break;
+//		case 3:
+//			fragment = new SettingsFragment().getFragmentManager().;
+//			break;
+			
 		
 			
 		default:

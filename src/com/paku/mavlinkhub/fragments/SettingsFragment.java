@@ -1,7 +1,9 @@
 package com.paku.mavlinkhub.fragments;
 
 import com.paku.mavlinkhub.R;
+import com.paku.mavlinkhub.R.xml;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 
@@ -12,6 +14,11 @@ public class SettingsFragment extends PreferenceFragment {
 
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        getView().setBackgroundColor(Color.WHITE);
     }
    
 }

@@ -3,8 +3,8 @@ package com.paku.mavlinkhub;
 
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.fragments.FragmentsStatePagerAdapter;
-import com.paku.mavlinkhub.fragments.SettingsFragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
@@ -65,11 +65,19 @@ public class MainActivity extends FragmentActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    // Handle item selection
 	    switch (item.getItemId()) {
-	        case R.id.action_settings:
-	            // Display the fragment as the main content.
-	            getFragmentManager().beginTransaction()
-	                    .replace(android.R.id.content, new SettingsFragment())
-	                    .commit();
+	        case R.id.menu_settings:
+	            
+	        	// Display the fragment as the main content.
+	            //getFragmentManager().beginTransaction().replace(android.R.id.content, new SettingsFragment()).commit();
+	            
+	            //Intent i = new Intent(this, SettingsFragment.class);	            	            
+	            //startActivity(i);	            
+	            
+	            
+	            Intent intent = new Intent();
+	            intent.setClass(MainActivity.this, SettingsActivity.class);
+	            startActivityForResult(intent, 0);	            
+	            
 	    	
 	            return true;
 //	        case R.id.help:
