@@ -1,0 +1,101 @@
+PreferenceActivity 
+
+
+PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
+PreferenceManager.getDefaultSharedPreferences(this).edit().putString(OfflineMapFragment.PREF_MAP_TYPE, mapType).commit();
+
+
+SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(parentContext);
+logEnabled = prefs.getBoolean("pref_mavlink_log_enabled", false);
+
+final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(myDrone.context);
+return prefs.getString("pref_vehicle_type", null);
+
+fragment >> public class SettingsFragment extends PreferenceFragment implements OnSharedPreferenceChangeListener {
+
+
+SUPER MENU >>
+
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		switch (item.getItemId()) {
+		//case R.id.menu_configuration:
+		//	startActivity(new Intent(this, ConfigurationActivity.class));
+		//	return true;
+		case R.id.menu_settings:
+			Intent intent = new Intent(this, ConfigurationActivity.class);
+			intent.putExtra(ConfigurationActivity.SCREEN_INTENT,
+					ConfigurationActivity.SETTINGS);
+			startActivity(intent);
+			return true;
+
+
+
+
+pref_connection_type
+yawValueText
+
+BluetoothConnection
+
+hud.setAttitude(r, p, y);
+
+preferences
+
+heading
+
+AirSpeed
+Altitude"
+Cancel"
+olygon"
+raw a polygon
+lengthy
+FollowMe
+ation"
+
+2 more polygon points
+
+checkIfValid
+
+MavLinkHeartbeat
+Heartbeat
+GCS
+
+Mavlink Error
+
+calibration
+
+RfcommSocket
+
+listenUsingRfcommWithServiceRecord
+listenUsingInsecureRfcommWithServiceRecord
+Rfcomm
+connected"
+super
+catch(Exception
+          AlertDialog ad = adb.create();
+          ad.setMessage("Failed to Launch");
+          ad.show();
+          
+          software
+          
+          
+public class MAVLinkService extends Service implements MavLinkConnectionListner           
+public class BluetoothConnection extends MAVLinkConnection {
+
+
+public class MAVLinkClient 
+	private OnMavlinkClientListner listner;
+
+	
+	
+		private void disconnectMAVConnection() {
+		if (mavConnection != null) {
+			mavConnection.disconnect();
+			mavConnection = null;
+		}
+	}
+	
+	socket
+	
+	
+	
