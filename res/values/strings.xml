@@ -10,5 +10,8 @@
     <string name="cb_gyros">Gyros</string>
     <string name="txt_select_sensors_for_calibration">Select sensors</string>
     <string name="bt_calibrate">Calibrate</string>
+    <string name="pref_title_cat1">Cat1 title</string>    
+    <string name="pref_title_enable_it">Enable something</string>
+    <string name="pref_summary_enable_it">And this is a summary</string>
 
 </resources>

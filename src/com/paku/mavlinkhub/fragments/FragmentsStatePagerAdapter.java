@@ -37,7 +37,7 @@ public class FragmentsStatePagerAdapter extends FragmentStatePagerAdapter {
 		
 		switch (position) {
 		case 0:
-				fragment = new DummySectionFragment();
+			fragment = new DummySectionFragment();
 			break;
 		case 1:
 			fragment = new DummySectionFragment();
@@ -45,6 +45,7 @@ public class FragmentsStatePagerAdapter extends FragmentStatePagerAdapter {
 		case 2:
 			fragment = new CalibrationFragment();
 			break;
+		
 			
 		default:
 				fragment = new DummySectionFragment();
