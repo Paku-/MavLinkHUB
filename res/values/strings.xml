@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">MavLinkHub</string>
     <string name="menu_title_settings">Settings</string>
     <string name="title_realtime_mavlink">RealTime MavLink</string>
@@ -10,8 +9,12 @@
     <string name="cb_gyros">Gyros</string>
     <string name="txt_select_sensors_for_calibration">Select sensors</string>
     <string name="bt_calibrate">Calibrate</string>
-    <string name="pref_title_cat1">Cat1 title</string>    
+<!-- Pref Section I  -->
+    <string name="pref_title_section1">Section1 Title</string>    
     <string name="pref_title_enable_it">Enable something</string>
     <string name="pref_summary_enable_it">And this is a summary</string>
-
+<!-- Pref Section II  -->
+    <string name="pref_title_section2">Section2 Title</string>    
+    <string name="pref_title_do_it">Force me to do something</string>
+    <string name="pref_summary_do_it">And this is a summary (or should be)</string>
 </resources>

@@ -1,8 +1,6 @@
 package com.paku.mavlinkhub.fragments;
 
 import com.paku.mavlinkhub.R;
-import com.paku.mavlinkhub.R.xml;
-
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
