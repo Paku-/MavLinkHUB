@@ -2,7 +2,9 @@ package com.paku.mavlinkhub;
 
 
 import com.paku.mavlinkhub.R;
+import com.paku.mavlinkhub.communication.CommunicationHUB;
 import com.paku.mavlinkhub.fragments.FragmentsStatePagerAdapter;
+import com.paku.mavlinkhub.ui_helpers.ListView_BTDevices;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -79,9 +81,14 @@ public class MainActivity extends FragmentActivity {
 	            
 	    	
 	            return true;
-//	        case R.id.help:
-//	            showHelp();
-//	            return true;
+	        case R.id.menu_select_bt:
+	        	
+	            Intent intent2 = new Intent();
+	            intent2.setClass(MainActivity.this, CommunicationHUB.class);
+	            startActivityForResult(intent2, 0);	            
+	        	
+
+	            return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }

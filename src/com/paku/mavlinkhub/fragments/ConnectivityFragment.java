@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+
 /**
  * A dummy fragment representing a section of the app, but that simply
  * displays dummy text.
@@ -18,7 +19,6 @@ public class ConnectivityFragment extends Fragment {
 	 * The fragment argument representing the section number for this
 	 * fragment.
 	 */
-	public static final String ARG_SECTION_NUMBER = "section_number";
 
 	public ConnectivityFragment() {
 	}
@@ -26,12 +26,8 @@ public class ConnectivityFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_calibration,
+		View rootView = inflater.inflate(R.layout.fragment_connectivity,
 				container, false);
-		TextView dummyTextView = (TextView) rootView
-				.findViewById(R.id.section_label);
-		dummyTextView.setText(Integer.toString(getArguments().getInt(
-				ARG_SECTION_NUMBER)));
 		return rootView;
 	}
 }

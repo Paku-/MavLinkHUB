@@ -27,7 +27,19 @@
         <activity
             android:name="com.paku.mavlinkhub.SettingsActivity"
             android:label="@string/app_name" >
+        </activity>
+        
+        <activity
+            android:name="com.paku.mavlinkhub.ui_helpers.ListView_BTDevices"
+            android:label="@string/app_name" >
+        </activity>
+        
+        <activity
+            android:name="com.paku.mavlinkhub.communication.CommunicationHUB"
+            android:label="@string/app_name" >
         </activity>        
+        
+        
         
     </application>
 

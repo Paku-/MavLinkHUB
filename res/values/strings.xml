@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MavLinkHub</string>
+<!-- Menu Section -->    
     <string name="menu_title_settings">Settings</string>
+    <string name="menu_title_select_bt">Select BT</string>
     <string name="title_realtime_mavlink">RealTime MavLink</string>
     <string name="title_connectivity">Connectivity</string>
     <string name="title_calibration">Calibration</string>

@@ -5,5 +5,12 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/menu_title_settings"/>
+    
+    <item
+        android:id="@+id/menu_select_bt"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/menu_title_select_bt"/>
+    
 
 </menu>
