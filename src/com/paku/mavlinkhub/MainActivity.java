@@ -4,8 +4,6 @@ package com.paku.mavlinkhub;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.communication.CommunicationHUB;
 import com.paku.mavlinkhub.fragments.FragmentsStatePagerAdapter;
-import com.paku.mavlinkhub.ui_helpers.ListView_BTDevices;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -15,21 +13,9 @@ import android.view.MenuItem;
 
 public class MainActivity extends FragmentActivity {
 
-	/**
-	 * The {@link android.support.v4.view.PagerAdapter} that will provide
-	 * fragments for each of the sections. We use a
-	 * {@link android.support.v4.app.FragmentPagerAdapter} derivative, which
-	 * will keep every loaded fragment in memory. If this becomes too memory
-	 * intensive, it may be best to switch to a
-	 * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-	 */
 	FragmentsStatePagerAdapter mFragmentsPagerAdapter;
-
-	/**
-	 * The {@link ViewPager} that will host the section contents.
-	 */
 	ViewPager mViewPager;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,20 +30,20 @@ public class MainActivity extends FragmentActivity {
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mFragmentsPagerAdapter);
 		
+	
+		CommunicationHUB comHUB = (CommunicationHUB)this.getApplication();
+		comHUB.Init(this);
 		
-
   	}
 
 	@Override
 	protected void onResume() {
-		// TODO Auto-generated method stub
 		super.onResume();
 		//PreferenceManager.setDefaultValues(this, R.xml.preferences, false);		
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
@@ -83,11 +69,6 @@ public class MainActivity extends FragmentActivity {
 	            return true;
 	        case R.id.menu_select_bt:
 	        	
-	            Intent intent2 = new Intent();
-	            intent2.setClass(MainActivity.this, CommunicationHUB.class);
-	            startActivityForResult(intent2, 0);	            
-	        	
-
 	            return true;
 	        default:
 	            return super.onOptionsItemSelected(item);

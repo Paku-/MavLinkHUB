@@ -4,8 +4,6 @@ import java.util.Locale;
 
 import com.paku.mavlinkhub.MainActivity;
 import com.paku.mavlinkhub.R;
-
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -33,14 +31,13 @@ public class FragmentsStatePagerAdapter extends FragmentStatePagerAdapter {
 		// Return a DummySectionFragment (defined as a static inner class
 		// below) with the page number as its lone argument.
 		Fragment fragment;
-		Bundle args = new Bundle();		
 		
 		switch (position) {
 		case 0:
-			fragment = new DummySectionFragment();
+			fragment = new ConnectivityFragment();
 			break;
 		case 1:
-			fragment = new DummySectionFragment();
+			fragment = new RealTimeMavlinkFragment();
 			break;
 		case 2:
 			fragment = new CalibrationFragment();
@@ -55,8 +52,6 @@ public class FragmentsStatePagerAdapter extends FragmentStatePagerAdapter {
 				fragment = new DummySectionFragment();
 			break;
 		}		
-		args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
-		fragment.setArguments(args);
 		return fragment;
 	}
 

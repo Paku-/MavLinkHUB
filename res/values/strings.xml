@@ -10,7 +10,9 @@
     <string name="cb_accelerometers">Accelerometers</string>
     <string name="cb_gyros">Gyros</string>
     <string name="txt_select_sensors_for_calibration">Select sensors</string>
+<!-- Buttons Section -->        
     <string name="bt_calibrate">Calibrate</string>
+    <string name="bt_connect">Connect</string>    
 <!-- Pref Section I  -->
     <string name="pref_title_section1">Section1 Title</string>    
     <string name="pref_title_enable_it">Enable something</string>

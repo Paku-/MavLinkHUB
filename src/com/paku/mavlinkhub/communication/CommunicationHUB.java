@@ -6,17 +6,28 @@ import java.util.Set;
 import com.paku.mavlinkhub.ui_helpers.ListView_BTDevices;
 
 import android.app.Activity;
+import android.app.Application;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.content.Intent;
 
-public class CommunicationHUB extends Activity {
+public class CommunicationHUB extends Application{
 	
+
 	public static final int REQUEST_ENABLE_BT = 1;
+	
 	BluetoothAdapter mBluetoothAdapter;
+	Context appContext;
 
-	private void Init() {
-
+	
+	public void Init(Context mConext) {
+		appContext = mConext;		
+	}
+	
+	public void ConnectBT() {
+	
+		
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
         final ArrayList<String> pairedDevicesView = new ArrayList<String>();
@@ -26,9 +37,10 @@ public class CommunicationHUB extends Activity {
 		}
 		else
 		{
-			if (!mBluetoothAdapter.isEnabled()) {
+			if (mBluetoothAdapter.isEnabled()) {
 				Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-				startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+				((Activity) appContext).startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+
 			}
 
 		}
@@ -46,8 +58,9 @@ public class CommunicationHUB extends Activity {
 		    
 		    
             Intent intentBtSelect = new Intent();
-            intentBtSelect.setClass(this, ListView_BTDevices.class);
-            startActivityForResult(intentBtSelect, 0);	            
+            intentBtSelect.setClass(appContext, ListView_BTDevices.class);
+            intentBtSelect.putExtra("BTDevList",pairedDevicesView.toArray(new String[0]));
+            ((Activity) appContext).startActivityForResult(intentBtSelect, 0);	            
 
 		    
 		    
@@ -55,13 +68,6 @@ public class CommunicationHUB extends Activity {
 		
 		
 	}
-
-	@Override
-	protected void onStart() {
-		super.onStart();
-		Init();
-	}
-
 
 }
 

@@ -2,11 +2,7 @@ package com.paku.mavlinkhub.ui_helpers;
 
 import android.app.ListActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
-
 
 public class ListView_BTDevices extends ListActivity {
 
@@ -15,22 +11,18 @@ public class ListView_BTDevices extends ListActivity {
 
 		super.onCreate(savedInstanceState);
 		
-		//Bundle extras = getIntent().getExtras();
-		//if (extras != null) {
-		    //String value = extras.getString("new_variable_name");
-		//}		
-		
-       
-	    String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
-	            "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
-	            "Linux", "OS/2" };
 	    
-	    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-	            android.R.layout.simple_list_item_1, values);		
+	    Bundle extras = getIntent().getExtras();
+	    if (extras != null) {
+	        String[] values = extras.getStringArray("BTDevList");
+		    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+		            android.R.layout.simple_list_item_1, values);		
+		    setListAdapter(adapter);	        
+	    }
+	 
 
-	    setListAdapter(adapter);
 			
-	    getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+	    //getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 	  }
 
 /*	  @Override
