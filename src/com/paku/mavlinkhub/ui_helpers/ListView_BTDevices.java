@@ -1,5 +1,7 @@
 package com.paku.mavlinkhub.ui_helpers;
 
+import com.paku.mavlinkhub.R;
+
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
@@ -11,8 +13,9 @@ public class ListView_BTDevices extends ListActivity {
 
 		super.onCreate(savedInstanceState);
 		
+		setContentView(R.layout.listview_bt_select_device);	    
 	    
-	    Bundle extras = getIntent().getExtras();
+		Bundle extras = getIntent().getExtras();
 	    if (extras != null) {
 	        String[] values = extras.getStringArray("BTDevList");
 		    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -20,8 +23,7 @@ public class ListView_BTDevices extends ListActivity {
 		    setListAdapter(adapter);	        
 	    }
 	 
-
-			
+		//this.getListView().setOnClickListener(l)	
 	    //getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 	  }
 
@@ -44,7 +46,7 @@ public class ListView_BTDevices extends ListActivity {
 
 
 /*		
-setContentView(R.layout.listview_bt_select_device);
+
 
 //final ArrayList<HashMap<String,String>> listItems = new ArrayList<HashMap<String,String>>();
 

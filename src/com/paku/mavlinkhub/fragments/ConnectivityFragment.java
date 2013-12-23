@@ -19,10 +19,11 @@ public class ConnectivityFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		View rootView = inflater.inflate(R.layout.fragment_connectivity,
+		View connView = inflater.inflate(R.layout.fragment_connectivity,
 				container, false);
 
-		final Button button = (Button) rootView
+		
+		final Button button = (Button) connView
 				.findViewById(R.id.button_connect);
 		button.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -32,7 +33,7 @@ public class ConnectivityFragment extends Fragment {
 			}
 		});
 
-		return rootView;
+		return connView;
 	}
 
 }
