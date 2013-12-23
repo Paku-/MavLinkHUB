@@ -22,5 +22,6 @@
     <string name="pref_title_do_it">Force me to do something</string>
     <string name="pref_summary_do_it">And this is a summary (or should be)</string>
 <!-- Error Msgs-->    
-    <string name="error_no_bt_adapter_or_paired_devices">No BT adapter or Paired Devices.</string>
+    <string name="error_no_bt_adapter_or_paired_devices">No BT adapter or Paired Devices.</string>    
+    <string name="error_no_paired_bt_devices_found_pair_device_first">No paired BT devices found. Pair device first.</string>
 </resources>
