@@ -10,8 +10,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 /**
- * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
- * one of the sections/tabs/pages.
+ * A {@link FragmentPagerAdapter} that returns a fragment corresponding to one
+ * of the sections/tabs/pages.
  */
 public class FragmentsStatePagerAdapter extends FragmentStatePagerAdapter {
 
@@ -20,7 +20,8 @@ public class FragmentsStatePagerAdapter extends FragmentStatePagerAdapter {
 	 */
 	private final MainActivity mainActivity;
 
-	public FragmentsStatePagerAdapter(MainActivity mainActivity, FragmentManager fm) {
+	public FragmentsStatePagerAdapter(MainActivity mainActivity,
+			FragmentManager fm) {
 		super(fm);
 		this.mainActivity = mainActivity;
 	}
@@ -31,7 +32,7 @@ public class FragmentsStatePagerAdapter extends FragmentStatePagerAdapter {
 		// Return a DummySectionFragment (defined as a static inner class
 		// below) with the page number as its lone argument.
 		Fragment fragment;
-		
+
 		switch (position) {
 		case 0:
 			fragment = new ConnectivityFragment();
@@ -42,16 +43,14 @@ public class FragmentsStatePagerAdapter extends FragmentStatePagerAdapter {
 		case 2:
 			fragment = new CalibrationFragment();
 			break;
-//		case 3:
-//			fragment = new SettingsFragment().getFragmentManager().;
-//			break;
-			
-		
-			
+		// case 3:
+		// fragment = new SettingsFragment().getFragmentManager().;
+		// break;
+
 		default:
-				fragment = new DummySectionFragment();
+			fragment = new DummySectionFragment();
 			break;
-		}		
+		}
 		return fragment;
 	}
 
@@ -66,11 +65,14 @@ public class FragmentsStatePagerAdapter extends FragmentStatePagerAdapter {
 		Locale l = Locale.getDefault();
 		switch (position) {
 		case 0:
-			return this.mainActivity.getString(R.string.title_connectivity).toUpperCase(l);
+			return this.mainActivity.getString(R.string.title_connectivity)
+					.toUpperCase(l);
 		case 1:
-			return this.mainActivity.getString(R.string.title_realtime_mavlink).toUpperCase(l);
+			return this.mainActivity.getString(R.string.title_realtime_mavlink)
+					.toUpperCase(l);
 		case 2:
-			return this.mainActivity.getString(R.string.title_calibration).toUpperCase(l);
+			return this.mainActivity.getString(R.string.title_calibration)
+					.toUpperCase(l);
 		}
 		return null;
 	}

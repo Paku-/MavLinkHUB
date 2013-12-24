@@ -8,15 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
 /**
- * A dummy fragment representing a section of the app, but that simply
- * displays dummy text.
+ * A dummy fragment representing a section of the app, but that simply displays
+ * dummy text.
  */
 public class CalibrationFragment extends Fragment {
 	/**
-	 * The fragment argument representing the section number for this
-	 * fragment.
+	 * The fragment argument representing the section number for this fragment.
 	 */
 
 	public CalibrationFragment() {

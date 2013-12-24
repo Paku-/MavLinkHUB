@@ -26,10 +26,10 @@ public class ConnectivityFragment extends Fragment {
 
 	private BluetoothAdapter mBluetoothAdapter;
 	private BluetoothDevice mBluetoothDevice;
-	Set<BluetoothDevice> pairedDevices;	
-	
+	Set<BluetoothDevice> pairedDevices;
+
 	private static final int REQUEST_ENABLE_BT = 123;
-	
+
 	ListView btDevListView;
 	Button button;
 
@@ -55,6 +55,11 @@ public class ConnectivityFragment extends Fragment {
 
 		button.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+
+				CommunicationHUB comHUB = (CommunicationHUB) getActivity()
+						.getApplication();
+				comHUB.CloseConnection();
+
 			}
 		});
 
@@ -63,39 +68,32 @@ public class ConnectivityFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		
+
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		pairedDevices = mBluetoothAdapter.getBondedDevices();
 
-		button.setVisibility(View.INVISIBLE);		
+		button.setVisibility(View.INVISIBLE);
 
-		if (mBluetoothAdapter == null){
-			
-			Toast.makeText(
-					getActivity().getApplicationContext(),
-					"No Bluetooth Adapter found.",
-					Toast.LENGTH_LONG).show();
+		if (mBluetoothAdapter == null) {
+
+			Toast.makeText(getActivity().getApplicationContext(),
+					"No Bluetooth Adapter found.", Toast.LENGTH_LONG).show();
 			return;
-			
-		}
-		else				
-		if (!mBluetoothAdapter.isEnabled()) {
+
+		} else if (!mBluetoothAdapter.isEnabled()) {
 
 			Intent enableBtIntent = new Intent(
 					BluetoothAdapter.ACTION_REQUEST_ENABLE);
 			this.startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
 		}
-		
-	
-	
+
 		final ArrayList<String> bondedDevicesNameList = new ArrayList<String>();
-		
 
 		// If there are paired devices
 		if (pairedDevices.size() > 0) {
-			
+
 			button.setVisibility(View.VISIBLE);
-			
+
 			bondedDevicesNameList.clear();
 			for (BluetoothDevice device : pairedDevices) {
 				// Add the name and address to an array adapter to show in a
@@ -107,7 +105,7 @@ public class ConnectivityFragment extends Fragment {
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(
 					getActivity().getApplicationContext(),
 					android.R.layout.simple_list_item_1,
-					//android.R.layout.simple_dropdown_item_1line,
+					// android.R.layout.simple_dropdown_item_1line,
 					bondedDevicesNameList.toArray(new String[0])) {
 
 				@Override
@@ -143,22 +141,23 @@ public class ConnectivityFragment extends Fragment {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
-                        
-            // Get the device MAC address, which is the last 17 chars in the View
-            String info = ((TextView) view).getText().toString();
-            String address = info.substring(info.length() - 17);
-            
-            mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(address);
-						
-			CommunicationHUB comHUB = (CommunicationHUB) getActivity().getApplication();
-			comHUB.ConnectBT(mBluetoothAdapter,mBluetoothDevice);
-			
+
+			// Get the device MAC address, which is the last 17 chars in the
+			// View
+			String info = ((TextView) view).getText().toString();
+			String address = info.substring(info.length() - 17);
+
+			mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(address);
+
+			CommunicationHUB comHUB = (CommunicationHUB) getActivity()
+					.getApplication();
+			comHUB.ConnectBT(mBluetoothAdapter, mBluetoothDevice);
 
 		}
 	};
 
-
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-	}}
+	}
+}

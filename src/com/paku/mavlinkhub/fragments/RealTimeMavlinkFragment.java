@@ -9,13 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * A dummy fragment representing a section of the app, but that simply
- * displays dummy text.
+ * A dummy fragment representing a section of the app, but that simply displays
+ * dummy text.
  */
 public class RealTimeMavlinkFragment extends Fragment {
 	/**
-	 * The fragment argument representing the section number for this
-	 * fragment.
+	 * The fragment argument representing the section number for this fragment.
 	 */
 
 	public RealTimeMavlinkFragment() {

@@ -11,6 +11,7 @@ import android.util.Log;
 
 public class BTConnectThread extends Thread {
 	private static final String UUID_SPP = "00001101-0000-1000-8000-00805F9B34FB";
+	private static final String TAG = "BTConnectThread";
 	private final BluetoothAdapter mmBluetoothAdapter;
 	private final BluetoothSocket mmSocket;
 	private final BluetoothDevice mmDevice;
@@ -39,20 +40,22 @@ public class BTConnectThread extends Thread {
 		try {
 			// Connect the device through the socket. This will block
 			// until it succeeds or throws an exception
-			Log.d("BT", "Connecting..");
+			Log.d(TAG, "Connecting socket..");
 			mmSocket.connect();
 		} catch (IOException connectException) {
 			// Unable to connect; close the socket and get out
+			Log.d(TAG,
+					"Exception: [run.connect]" + connectException.getMessage());
 			try {
-				Log.d("BT", connectException.getMessage());
 				mmSocket.close();
 			} catch (IOException closeException) {
-				Log.d("BT", closeException.getMessage());
+				Log.d(TAG,
+						"Exception: [run.close]" + closeException.getMessage());
 			}
 			return;
 		}
 
-		Log.d("BT", "Connected..");
+		Log.d(TAG, "Connected..");
 
 		// Do work to manage the connection (in a separate thread)
 		CommunicationHUB comHUB = (CommunicationHUB) hubContext;
@@ -64,7 +67,7 @@ public class BTConnectThread extends Thread {
 		try {
 			mmSocket.close();
 		} catch (IOException e) {
-			Log.d("BTconnthread", e.getMessage());
+			Log.d(TAG, "Exception [disconnect]: " + e.getMessage());
 		}
 	}
 }
