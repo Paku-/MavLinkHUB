@@ -8,9 +8,9 @@ import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
 import android.util.Log;
 
-public class SocketThread extends Thread {
+public class BTSocketThread extends Thread {
 
-	private static final String TAG = "SocketThread";
+	private static final String TAG = "BTSocketThread";
 	private static final int MESSAGE_READ = 101;
 
 	private final BluetoothSocket mmSocket;
@@ -18,7 +18,7 @@ public class SocketThread extends Thread {
 	private final OutputStream mmOutStream;
 	private final Handler mmSocketHandler;
 
-	public SocketThread(BluetoothSocket socket, Handler socketHandler) {
+	public BTSocketThread(BluetoothSocket socket, Handler socketHandler) {
 
 		mmSocket = socket;
 		mmSocketHandler = socketHandler;

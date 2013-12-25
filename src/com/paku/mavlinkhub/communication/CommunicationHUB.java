@@ -23,18 +23,24 @@ public class CommunicationHUB extends Application {
 	Context appContext;
 
 	BTConnectThread connThread;
-	SocketThread socketThread;
+	BTSocketThread socketThread;
 	Handler socketHandler;
 
 	public void Init(Context mConext) {
 		appContext = mConext;
+		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();		
 	}
 
-	public void ConnectBT(BluetoothAdapter adapter, BluetoothDevice device) {
+	public boolean ConnectBT(String address) {
 
 		// start connection threat
-		connThread = new BTConnectThread(adapter, device, this);
+		if (mBluetoothAdapter == null){
+			return false;
+		}
+		mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(address);		
+		connThread = new BTConnectThread(mBluetoothAdapter, mBluetoothDevice, this);
 		connThread.start();
+		return true;
 	}
 
 	public void StartTransmission(BluetoothSocket socket) {
@@ -64,7 +70,7 @@ public class CommunicationHUB extends Application {
 			}
 		};
 
-		socketThread = new SocketThread(socket, socketHandler);
+		socketThread = new BTSocketThread(socket, socketHandler);
 		socketThread.start();
 
 	}
