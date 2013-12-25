@@ -43,7 +43,7 @@ public class ConnectivityFragment extends Fragment {
 				container, false);
 
 		btDevListView = (ListView) connView.findViewById(R.id.list_bt_bonded);
-		button = (Button) connView.findViewById(R.id.button_connect);
+		button = (Button) connView.findViewById(R.id.button_disconnect);
 
 		return connView;
 	}
