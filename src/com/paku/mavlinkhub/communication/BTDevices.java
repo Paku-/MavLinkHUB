@@ -1,21 +1,18 @@
 package com.paku.mavlinkhub.communication;
 
-
 import java.util.ArrayList;
 import java.util.Set;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 
-
 public class BTDevices {
-	
-	//private static final String TAG = "BTDevices";
-	
+
+	// private static final String TAG = "BTDevices";
+
 	private BluetoothAdapter mBluetoothAdapter;
 	Set<BluetoothDevice> pairedDevices;
 	ArrayList<String> bondedDevicesNameList = new ArrayList<String>();
-
 
 	private static final int LIST_OK = 1;
 	private static final int ERROR_NO_ADAPTER = 2;
@@ -28,13 +25,10 @@ public class BTDevices {
 	}
 
 	public int RefreshList() {
-		
-		
 
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		pairedDevices = mBluetoothAdapter.getBondedDevices();
 		// check for nulls ...
-						
 
 		if (mBluetoothAdapter == null) {
 			return ERROR_NO_ADAPTER;

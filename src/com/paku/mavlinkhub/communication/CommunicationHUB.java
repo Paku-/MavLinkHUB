@@ -28,19 +28,34 @@ public class CommunicationHUB extends Application {
 
 	public void Init(Context mConext) {
 		appContext = mConext;
-		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();		
+		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+	}
+
+	public boolean IsConnected() {
+		if (mBluetoothSocket == null)
+			return false;
+		else
+			return mBluetoothSocket.isConnected();
+
 	}
 
 	public boolean ConnectBT(String address) {
 
 		// start connection threat
-		if (mBluetoothAdapter == null){
+		if (mBluetoothAdapter == null) {
 			return false;
 		}
-		mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(address);		
-		connThread = new BTConnectThread(mBluetoothAdapter, mBluetoothDevice, this);
-		connThread.start();
-		return true;
+		try {
+			mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(address);
+			connThread = new BTConnectThread(mBluetoothAdapter,
+					mBluetoothDevice, this);
+			connThread.start();
+			return true;
+		} catch (Exception e) {
+			Log.d(TAG, "ConnectBT: ");
+			return false;
+		}
+
 	}
 
 	public void StartTransmission(BluetoothSocket socket) {

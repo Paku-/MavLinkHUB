@@ -5,6 +5,7 @@ import com.paku.mavlinkhub.communication.BTDevices;
 import com.paku.mavlinkhub.communication.CommunicationHUB;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -21,6 +22,9 @@ import android.widget.Toast;
 
 public class ConnectivityFragment extends Fragment {
 
+	@SuppressWarnings("unused")
+	private static final String TAG = "ConnectivityFragment";
+
 	private static final int REQUEST_ENABLE_BT = 123;
 
 	private static final int LIST_OK = 1;
@@ -31,8 +35,41 @@ public class ConnectivityFragment extends Fragment {
 	BTDevices btDevList = new BTDevices();
 	ListView btDevListView;
 	Button button;
+	CommunicationHUB comHUB;
 
 	public ConnectivityFragment() {
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+
+		comHUB = (CommunicationHUB) getActivity().getApplication();
+
+	}
+
+	@Override
+	public void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+
+	}
+
+	@Override
+	public void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+
+		RefreshBtDevList();
+		button.setVisibility(View.INVISIBLE);
+
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
 	}
 
 	@Override
@@ -55,8 +92,6 @@ public class ConnectivityFragment extends Fragment {
 		button.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 
-				CommunicationHUB comHUB = (CommunicationHUB) getActivity()
-						.getApplication();
 				comHUB.CloseConnection();
 
 			}
@@ -64,13 +99,76 @@ public class ConnectivityFragment extends Fragment {
 
 	}
 
+	private final AdapterView.OnItemClickListener btListClickListener = new AdapterView.OnItemClickListener() {
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+
+			// Get the device MAC address, which is the last 17 chars in the
+			// View
+			String info = ((TextView) view).getText().toString();
+			String address = info.substring(info.length() - 17);
+
+			comHUB.ConnectBT(address);
+
+		}
+	};
+
 	@Override
-	public void onResume() {
-		super.onResume();
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+	}
 
-		button.setVisibility(View.INVISIBLE);
+	public void refreshUI(String action, int state) {
 
-		// refresh();
+		if (action.equals(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED)) {
+
+			switch (state) {
+			case BluetoothAdapter.STATE_CONNECTING:
+				button.setVisibility(View.INVISIBLE);
+				break;
+			case BluetoothAdapter.STATE_CONNECTED:
+				button.setVisibility(View.VISIBLE);
+				break;
+			case BluetoothAdapter.STATE_DISCONNECTING:
+				button.setVisibility(View.VISIBLE);
+				break;
+			case BluetoothAdapter.STATE_DISCONNECTED:
+				button.setVisibility(View.INVISIBLE);
+				break;
+			}
+		}
+
+		if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
+
+			switch (state) {
+			case BluetoothAdapter.STATE_OFF:
+
+				break;
+			case BluetoothAdapter.STATE_TURNING_OFF:
+
+				break;
+			case BluetoothAdapter.STATE_ON:
+
+				break;
+			case BluetoothAdapter.STATE_TURNING_ON:
+
+				break;
+			}
+		}
+		
+		if (action.equals(BluetoothDevice.ACTION_ACL_CONNECTED)){
+			button.setVisibility(View.VISIBLE);
+		}
+		
+		if (action.equals(BluetoothDevice.ACTION_ACL_DISCONNECTED)){
+			button.setVisibility(View.INVISIBLE);
+		}
+		
+
+	}
+
+	private void RefreshBtDevList() {
 
 		switch (btDevList.RefreshList()) {
 		case ERROR_NO_ADAPTER:
@@ -118,28 +216,4 @@ public class ConnectivityFragment extends Fragment {
 
 	}
 
-	private final AdapterView.OnItemClickListener btListClickListener = new AdapterView.OnItemClickListener() {
-		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
-
-			// Get the device MAC address, which is the last 17 chars in the
-			// View
-			String info = ((TextView) view).getText().toString();
-			String address = info.substring(info.length() - 17);
-
-			CommunicationHUB comHUB = (CommunicationHUB) getActivity()
-					.getApplication();
-			
-			if (comHUB.ConnectBT(address)){
-				button.setVisibility(View.VISIBLE);				
-			}
-
-		}
-	};
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-	}
 }

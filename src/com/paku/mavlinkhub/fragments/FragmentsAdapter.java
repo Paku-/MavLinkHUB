@@ -13,14 +13,14 @@ import android.support.v4.app.FragmentStatePagerAdapter;
  * A {@link FragmentPagerAdapter} that returns a fragment corresponding to one
  * of the sections/tabs/pages.
  */
-public class FragmentsStatePagerAdapter extends FragmentStatePagerAdapter {
+public class FragmentsAdapter extends FragmentPagerAdapter {
 
 	/**
 	 * 
 	 */
 	private final MainActivity mainActivity;
 
-	public FragmentsStatePagerAdapter(MainActivity mainActivity,
+	public FragmentsAdapter(MainActivity mainActivity,
 			FragmentManager fm) {
 		super(fm);
 		this.mainActivity = mainActivity;
@@ -28,9 +28,7 @@ public class FragmentsStatePagerAdapter extends FragmentStatePagerAdapter {
 
 	@Override
 	public Fragment getItem(int position) {
-		// getItem is called to instantiate the fragment for the given page.
-		// Return a DummySectionFragment (defined as a static inner class
-		// below) with the page number as its lone argument.
+
 		Fragment fragment;
 
 		switch (position) {
