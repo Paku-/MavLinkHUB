@@ -6,10 +6,11 @@ import com.paku.mavlinkhub.MainActivity;
 import com.paku.mavlinkhub.R;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentPagerAdapter;
 
-/** DO NOT change to the FragmentStatePagerAdapter !!! **/
-public class FragmentsAdapter extends FragmentStatePagerAdapter {
+
+/** DO NOT change to the FragmentStatePagerAdapter or take care for GUI!!! **/
+public class FragmentsAdapter extends FragmentPagerAdapter {
 
 	/**
 	 * 

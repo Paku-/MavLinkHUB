@@ -1,8 +1,7 @@
 package com.paku.mavlinkhub.fragments;
 
-import com.paku.mavlinkhub.MainActivity;
 import com.paku.mavlinkhub.R;
-import com.paku.mavlinkhub.communication.BTDevices;
+import com.paku.mavlinkhub.communication.BTDevicesListHandler;
 import com.paku.mavlinkhub.communication.CommunicationHUB;
 
 import android.bluetooth.BluetoothAdapter;
@@ -25,19 +24,7 @@ public class ConnectivityFragment extends Fragment {
 	@SuppressWarnings("unused")
 	private static final String TAG = "ConnectivityFragment";
 
-	private static final int REQUEST_ENABLE_BT = 123;
-
-	private static final int LIST_OK = 1;
-	private static final int ERROR_NO_ADAPTER = 2;
-	private static final int ERROR_ADAPTER_OFF = 3;
-	private static final int ERROR_NO_BONDED_DEV = 4;
-	
-	private static final int UI_MODE_NEW = 200;
-	private static final int UI_MODE_DISCONNECTED = 201;
-	private static final int UI_MODE_CONNECTED = 202;
-
-
-	BTDevices btDevList = new BTDevices();
+	BTDevicesListHandler btDevList = new BTDevicesListHandler();
 	ListView btDevListView;
 	Button button;
 	CommunicationHUB comHUB;
@@ -107,7 +94,7 @@ public class ConnectivityFragment extends Fragment {
 		button.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 
-				comHUB.CloseConnection();
+				comHUB.mBtConnector.CloseConnection();
 
 			}
 		});
@@ -124,7 +111,7 @@ public class ConnectivityFragment extends Fragment {
 			String info = ((TextView) view).getText().toString();
 			String address = info.substring(info.length() - 17);
 
-			comHUB.ConnectBT(address);
+			comHUB.mBtConnector.ConnectBT(address);
 
 		}
 	};
@@ -136,16 +123,16 @@ public class ConnectivityFragment extends Fragment {
 
 	public void refreshUI() {
 		
-		switch (((MainActivity)getActivity()).getUiMode()) {
-		case UI_MODE_NEW:
+		switch (comHUB.getUiMode()) {
+		case CommunicationHUB.UI_MODE_CREATED:
 			button.setVisibility(View.INVISIBLE);
 			break;
 			
-		case UI_MODE_CONNECTED:
+		case CommunicationHUB.UI_MODE_CONNECTED:
 			button.setVisibility(View.VISIBLE);
 			break;
 
-		case UI_MODE_DISCONNECTED:
+		case CommunicationHUB.UI_MODE_DISCONNECTED:
 			button.setVisibility(View.INVISIBLE);			
 			break;			
 
@@ -160,23 +147,23 @@ public class ConnectivityFragment extends Fragment {
 	private void RefreshBtDevList() {
 
 		switch (btDevList.RefreshList()) {
-		case ERROR_NO_ADAPTER:
+		case CommunicationHUB.ERROR_NO_ADAPTER:
 			Toast.makeText(getActivity().getApplicationContext(),
 					"No Bluetooth Adapter found.", Toast.LENGTH_LONG).show();
 			return;
-		case ERROR_ADAPTER_OFF:
+		case CommunicationHUB.ERROR_ADAPTER_OFF:
 			Intent enableBtIntent = new Intent(
 					BluetoothAdapter.ACTION_REQUEST_ENABLE);
-			this.startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+			this.startActivityForResult(enableBtIntent, CommunicationHUB.REQUEST_ENABLE_BT);
 			return;
-		case ERROR_NO_BONDED_DEV:
+		case CommunicationHUB.ERROR_NO_BONDED_DEV:
 			Toast.makeText(
 					getActivity().getApplicationContext(),
 					R.string.error_no_paired_bt_devices_found_pair_device_first,
 					Toast.LENGTH_LONG).show();
 			return;
 
-		case LIST_OK:
+		case CommunicationHUB.LIST_OK:
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(
 					getActivity().getApplicationContext(),
 					android.R.layout.simple_list_item_1,

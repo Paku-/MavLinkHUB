@@ -11,7 +11,7 @@ import android.util.Log;
 public class BTSocketThread extends Thread {
 
 	private static final String TAG = "BTSocketThread";
-	private static final int MESSAGE_READ = 101;
+
 
 	private final BluetoothSocket mmSocket;
 	private final InputStream mmInStream;
@@ -49,7 +49,7 @@ public class BTSocketThread extends Thread {
 				// Read from the InputStream
 				bytes = mmInStream.read(buffer);
 				// Send the obtained bytes to the UI activity
-				mmSocketHandler.obtainMessage(MESSAGE_READ, bytes, -1, buffer)
+				mmSocketHandler.obtainMessage(CommunicationHUB.MESSAGE_READ, bytes, -1, buffer)
 						.sendToTarget();
 			} catch (IOException e) {
 				Log.d(TAG, "Exception [run.read.buffer]:" + e.getMessage());

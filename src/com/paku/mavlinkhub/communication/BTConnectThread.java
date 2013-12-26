@@ -15,15 +15,15 @@ public class BTConnectThread extends Thread {
 	private final BluetoothAdapter mmBluetoothAdapter;
 	private final BluetoothSocket mmSocket;
 	private final BluetoothDevice mmDevice;
-	private Context hubContext;
+	private BtConnector parentBtConnector;
 
 	public BTConnectThread(BluetoothAdapter adapter, BluetoothDevice device,
-			Context context) {
+			BtConnector parent) {
 
 		BluetoothSocket tmp = null;
 		mmBluetoothAdapter = adapter;
 		mmDevice = device;
-		hubContext = context;
+		parentBtConnector = parent;
 
 		try {
 			tmp = mmDevice.createInsecureRfcommSocketToServiceRecord(UUID
@@ -58,8 +58,7 @@ public class BTConnectThread extends Thread {
 		Log.d(TAG, "Connected..");
 
 		// Do work to manage the connection (in a separate thread)
-		CommunicationHUB comHUB = (CommunicationHUB) hubContext;
-		comHUB.StartTransmission(mmSocket);
+		parentBtConnector.StartTransmission(mmSocket);
 	}
 
 	/** Will cancel an in-progress connection, and close the socket */

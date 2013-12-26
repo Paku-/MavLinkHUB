@@ -1,110 +1,53 @@
 package com.paku.mavlinkhub.communication;
 
 import android.app.Application;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.util.Log;
 
 public class CommunicationHUB extends Application {
 
+	@SuppressWarnings("unused")
 	private static final String TAG = "CommHUB";
 
+	// GUI state machine constants
+	public static final int UI_MODE_CREATED = 200;
+	public static final int UI_MODE_BT_OFF = 201;
+	public static final int UI_MODE_DISCONNECTED = 202;
+	public static final int UI_MODE_CONNECTED = 203;
+	
+	// BT Dev List state machine constants
+	public static final int LIST_OK = 1;
+	public static final int ERROR_NO_ADAPTER = 2;
+	public static final int ERROR_ADAPTER_OFF = 3;
+	public static final int ERROR_NO_BONDED_DEV = 4;	
+
+	//other constants
 	public static final int MESSAGE_READ = 101;
 	public static final int REQUEST_ENABLE_BT = 102;
 	
-	private static final int UI_MODE_NEW = 200;
-	//private static final int UI_MODE_DISCONNECTED = 201;
-	//private static final int UI_MODE_CONNECTED = 202;
-	
 
-	BluetoothAdapter mBluetoothAdapter;
-	BluetoothDevice mBluetoothDevice;
-	BluetoothSocket mBluetoothSocket;
-	Context appContext;
+	public Context appContext;
 	
-	int ui_Mode = UI_MODE_NEW;
-
-	BTConnectThread connThread;
-	BTSocketThread socketThread;
-	Handler socketHandler;
+	public int ui_Mode = CommunicationHUB.UI_MODE_CREATED;
+	
+	//main BT connector 
+	public BtConnector mBtConnector;
 
 	public void Init(Context mConext) {
 		appContext = mConext;
-		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-	}
-
-	public boolean IsConnected() {
-		if (mBluetoothSocket == null)
-			return false;
-		else
-			return mBluetoothSocket.isConnected();
+		mBtConnector = new BtConnector();
 
 	}
-
-	public boolean ConnectBT(String address) {
-
-		// start connection threat
-		if (mBluetoothAdapter == null) {
-			return false;
-		}
-		try {
-			mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(address);
-			connThread = new BTConnectThread(mBluetoothAdapter,
-					mBluetoothDevice, this);
-			connThread.start();
-			return true;
-		} catch (Exception e) {
-			Log.d(TAG, "ConnectBT: ");
-			return false;
-		}
-
+	
+	
+	public int getUiMode() {
+		return ui_Mode;
+		
 	}
-
-	public void StartTransmission(BluetoothSocket socket) {
-
-		mBluetoothSocket = socket;
-
-		socketHandler = new Handler(Looper.getMainLooper()) {
-			public void handleMessage(Message msg) {
-
-				switch (msg.what) {
-				// Received data from... somewhere
-				case MESSAGE_READ:
-
-					byte[] readBuf = (byte[]) msg.obj;
-					String readMessage = new String(readBuf, 0, msg.arg1);
-
-					Log.d("DATA", readMessage);
-
-					break;
-				// case MSG_SELF_DESTRY_SERVICE:
-				// close();
-				// break;
-				default:
-					super.handleMessage(msg);
-				}
-
-			}
-		};
-
-		socketThread = new BTSocketThread(socket, socketHandler);
-		socketThread.start();
-
+	
+	public void setUiMode(int mode) {
+		ui_Mode = mode;		
 	}
+	
 
-	public void CloseConnection() {
-
-		Log.d(TAG, "socketThread call - socketThread.cancel");
-		socketThread.cancel();
-
-		Log.d(TAG, "connThread call - conn.disconnect");
-		connThread.disconnect();
-
-	}
 
 }

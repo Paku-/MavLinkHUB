@@ -14,19 +14,19 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends FragmentActivity {
 
-	private static final int UI_MODE_NEW = 200;
-	private static final int UI_MODE_DISCONNECTED = 201;
-	private static final int UI_MODE_CONNECTED = 202;
-
+	
+	private static final String TAG = "MainActivity";	
+	
 	FragmentsAdapter mFragmentsPagerAdapter;
 	ViewPager mViewPager;
 	CommunicationHUB comHUB;
-	int ui_Mode = UI_MODE_NEW;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +45,11 @@ public class MainActivity extends FragmentActivity {
 		comHUB = (CommunicationHUB) this.getApplication();
 		comHUB.Init(this);
 
-		if (comHUB.IsConnected()) 
+		if (comHUB.mBtConnector.IsConnected()) 
 		{
-			ui_Mode = UI_MODE_CONNECTED;			
-		}else
-			ui_Mode = UI_MODE_NEW;		
+			comHUB.setUiMode(CommunicationHUB.UI_MODE_CONNECTED);			
+		}else	
+			comHUB.setUiMode(CommunicationHUB.UI_MODE_CREATED);
 		
 
 		IntentFilter BtIntentFilter = new IntentFilter();
@@ -67,6 +67,13 @@ public class MainActivity extends FragmentActivity {
 	protected void onResume() {
 		super.onResume();
 		// PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+	}
+	
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		unregisterReceiver(mBtReceiver);
 	}
 
 	@Override
@@ -103,72 +110,72 @@ public class MainActivity extends FragmentActivity {
 				final int state = intent.getIntExtra(
 						BluetoothAdapter.EXTRA_CONNECTION_STATE,
 						BluetoothAdapter.ERROR);
-/*
+
 				switch (state) {
 				case BluetoothAdapter.STATE_CONNECTING:
-					// button.setVisibility(View.INVISIBLE);
+					Log.d(TAG, "BTAdpter [ACTION_CONNECTION_STATE_CHANGED]: STATE_CONNECTING");										
 					break;
 				case BluetoothAdapter.STATE_CONNECTED:
-					// button.setVisibility(View.VISIBLE);
+					Log.d(TAG, "BTAdpter [ACTION_CONNECTION_STATE_CHANGED]: STATE_CONNECTED");					
 					break;
 				case BluetoothAdapter.STATE_DISCONNECTING:
-					// button.setVisibility(View.VISIBLE);
+					Log.d(TAG, "BTAdpter [ACTION_CONNECTION_STATE_CHANGED]: STATE_DISCONNECTING");					
 					break;
 				case BluetoothAdapter.STATE_DISCONNECTED:
-					// button.setVisibility(View.INVISIBLE);
+					Log.d(TAG, "BTAdpter [ACTION_CONNECTION_STATE_CHANGED]: STATE_DISCONNECTED");					
 					break;
 				}
-*/
+
 			}
 
 			if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
 				final int state = intent.getIntExtra(
 						BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
-/*
 				switch (state) {
 				case BluetoothAdapter.STATE_OFF:
-
+					Log.d(TAG, "BTAdpter [ACTION_STATE_CHANGED]: STATE_OFF");
 					break;
 				case BluetoothAdapter.STATE_TURNING_OFF:
-
+					Log.d(TAG, "BTAdpter [ACTION_STATE_CHANGED]: TURNING_OFF");
 					break;
 				case BluetoothAdapter.STATE_ON:
-
+					Log.d(TAG, "BTAdpter [ACTION_STATE_CHANGED]: STATE_ON");					
 					break;
 				case BluetoothAdapter.STATE_TURNING_ON:
-
+					Log.d(TAG, "BTAdpter [ACTION_STATE_CHANGED]: TURNING_ON");
+					break;
+				default:
+					Log.d(TAG, "BTAdpter [State]: unknown");
 					break;
 				}
-*/
+
 			}
 
 			if (action.equals(BluetoothDevice.ACTION_ACL_CONNECTED)) {
-				ui_Mode = UI_MODE_CONNECTED;
+				comHUB.setUiMode(CommunicationHUB.UI_MODE_CONNECTED);
 			}
 
 			if (action.equals(BluetoothDevice.ACTION_ACL_DISCONNECTED)) {
-				ui_Mode = UI_MODE_DISCONNECTED;
+				comHUB.setUiMode(CommunicationHUB.UI_MODE_DISCONNECTED);
 			}
+
+			//recreate fragments for pos 0,1,2			
+			ConnectivityFragment fragment = (ConnectivityFragment) mViewPager.getAdapter().instantiateItem(mViewPager, 0);
+			fragment.refreshUI();
+			//fragment = (ConnectivityFragment) mViewPager.getAdapter().instantiateItem(mViewPager, 1);
+			//fragment.refreshUI();
+			//fragment = (ConnectivityFragment) mViewPager.getAdapter().instantiateItem(mViewPager, 2);			
+			//fragment.refreshUI();
+			
 			
 			//redraw UI
 			//mViewPager.getAdapter().notifyDataSetChanged();
-			
-			ConnectivityFragment fragment = (ConnectivityFragment) mViewPager.getAdapter().instantiateItem(mViewPager, 0);			
-			fragment.refreshUI();
+
+			//mViewPager.getAdapter().instantiateItem(mViewPager, 0);
 
 		}
 	};
 
-	@Override
-	protected void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
-		unregisterReceiver(mBtReceiver);
-	}
 
-	public int getUiMode() {
-		return ui_Mode;
-		
-	}
 
 }
