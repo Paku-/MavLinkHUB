@@ -16,11 +16,18 @@ public class CommunicationHUB extends Application {
 
 	public static final int MESSAGE_READ = 101;
 	public static final int REQUEST_ENABLE_BT = 102;
+	
+	private static final int UI_MODE_NEW = 200;
+	//private static final int UI_MODE_DISCONNECTED = 201;
+	//private static final int UI_MODE_CONNECTED = 202;
+	
 
 	BluetoothAdapter mBluetoothAdapter;
 	BluetoothDevice mBluetoothDevice;
 	BluetoothSocket mBluetoothSocket;
 	Context appContext;
+	
+	int ui_Mode = UI_MODE_NEW;
 
 	BTConnectThread connThread;
 	BTSocketThread socketThread;

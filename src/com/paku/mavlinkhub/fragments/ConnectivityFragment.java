@@ -1,11 +1,11 @@
 package com.paku.mavlinkhub.fragments;
 
+import com.paku.mavlinkhub.MainActivity;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.communication.BTDevices;
 import com.paku.mavlinkhub.communication.CommunicationHUB;
 
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -31,6 +31,11 @@ public class ConnectivityFragment extends Fragment {
 	private static final int ERROR_NO_ADAPTER = 2;
 	private static final int ERROR_ADAPTER_OFF = 3;
 	private static final int ERROR_NO_BONDED_DEV = 4;
+	
+	private static final int UI_MODE_NEW = 200;
+	private static final int UI_MODE_DISCONNECTED = 201;
+	private static final int UI_MODE_CONNECTED = 202;
+
 
 	BTDevices btDevList = new BTDevices();
 	ListView btDevListView;
@@ -62,7 +67,7 @@ public class ConnectivityFragment extends Fragment {
 		super.onStart();
 
 		RefreshBtDevList();
-		button.setVisibility(View.INVISIBLE);
+
 
 	}
 
@@ -82,6 +87,16 @@ public class ConnectivityFragment extends Fragment {
 		btDevListView = (ListView) connView.findViewById(R.id.list_bt_bonded);
 		button = (Button) connView.findViewById(R.id.button_disconnect);
 
+/*		
+		if (comHUB.IsConnected()) 
+		{
+			button.setVisibility(View.VISIBLE);			
+		}else
+			button.setVisibility(View.INVISIBLE);		
+*/
+		
+		refreshUI();
+		
 		return connView;
 	}
 
@@ -119,53 +134,27 @@ public class ConnectivityFragment extends Fragment {
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	public void refreshUI(String action, int state) {
-
-		if (action.equals(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED)) {
-
-			switch (state) {
-			case BluetoothAdapter.STATE_CONNECTING:
-				button.setVisibility(View.INVISIBLE);
-				break;
-			case BluetoothAdapter.STATE_CONNECTED:
-				button.setVisibility(View.VISIBLE);
-				break;
-			case BluetoothAdapter.STATE_DISCONNECTING:
-				button.setVisibility(View.VISIBLE);
-				break;
-			case BluetoothAdapter.STATE_DISCONNECTED:
-				button.setVisibility(View.INVISIBLE);
-				break;
-			}
-		}
-
-		if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
-
-			switch (state) {
-			case BluetoothAdapter.STATE_OFF:
-
-				break;
-			case BluetoothAdapter.STATE_TURNING_OFF:
-
-				break;
-			case BluetoothAdapter.STATE_ON:
-
-				break;
-			case BluetoothAdapter.STATE_TURNING_ON:
-
-				break;
-			}
-		}
+	public void refreshUI() {
 		
-		if (action.equals(BluetoothDevice.ACTION_ACL_CONNECTED)){
-			button.setVisibility(View.VISIBLE);
-		}
-		
-		if (action.equals(BluetoothDevice.ACTION_ACL_DISCONNECTED)){
+		switch (((MainActivity)getActivity()).getUiMode()) {
+		case UI_MODE_NEW:
 			button.setVisibility(View.INVISIBLE);
-		}
-		
+			break;
+			
+		case UI_MODE_CONNECTED:
+			button.setVisibility(View.VISIBLE);
+			break;
 
+		case UI_MODE_DISCONNECTED:
+			button.setVisibility(View.INVISIBLE);			
+			break;			
+
+		default:
+			break;
+		}
+				
+				
+		
 	}
 
 	private void RefreshBtDevList() {

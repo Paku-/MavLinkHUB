@@ -6,14 +6,10 @@ import com.paku.mavlinkhub.MainActivity;
 import com.paku.mavlinkhub.R;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-/**
- * A {@link FragmentPagerAdapter} that returns a fragment corresponding to one
- * of the sections/tabs/pages.
- */
-public class FragmentsAdapter extends FragmentPagerAdapter {
+/** DO NOT change to the FragmentStatePagerAdapter !!! **/
+public class FragmentsAdapter extends FragmentStatePagerAdapter {
 
 	/**
 	 * 
