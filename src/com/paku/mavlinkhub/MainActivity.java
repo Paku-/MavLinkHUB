@@ -2,9 +2,7 @@ package com.paku.mavlinkhub;
 
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.communication.AppGlobals;
-import com.paku.mavlinkhub.fragments.ConnectivityFragment;
 import com.paku.mavlinkhub.fragments.FragmentsAdapter;
-
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -25,23 +23,23 @@ public class MainActivity extends FragmentActivity {
 
 	private static final String TAG = "MainActivity";
 
-	FragmentsAdapter mFragmentsPagerAdapter;
-	ViewPager mViewPager;
-	AppGlobals comHUB; // global vars and constants object.
+	private FragmentsAdapter mFragmentsPagerAdapter;
+	private ViewPager mViewPager;
+	private AppGlobals globalVars; // global vars and constants object.
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		comHUB = (AppGlobals) this.getApplication();
-		comHUB.Init(this);
+		globalVars = (AppGlobals) this.getApplication();
+		globalVars.Init(this);
 
-		if (comHUB.mBtConnector.isConnected()
-				|| comHUB.getUiMode() == AppGlobals.UI_MODE_CONNECTED) {
-			comHUB.setUiMode(AppGlobals.UI_MODE_CONNECTED);
+		if (globalVars.mBtConnector.isConnected()
+				|| globalVars.getUiMode() == AppGlobals.UI_MODE_CONNECTED) {
+			globalVars.setUiMode(AppGlobals.UI_MODE_CONNECTED);
 		} else
-			comHUB.setUiMode(AppGlobals.UI_MODE_CREATED);
+			globalVars.setUiMode(AppGlobals.UI_MODE_CREATED);
 
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
@@ -52,6 +50,7 @@ public class MainActivity extends FragmentActivity {
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mFragmentsPagerAdapter);
 
+		// register intents for BT adapter changes
 		IntentFilter BtIntentFilter = new IntentFilter();
 		BtIntentFilter
 				.addAction(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
@@ -137,24 +136,24 @@ public class MainActivity extends FragmentActivity {
 				switch (state) {
 				case BluetoothAdapter.STATE_OFF:
 					Log.d(TAG, "BTAdpter [ACTION_STATE_CHANGED]: STATE_OFF");
-					comHUB.setUiMode(AppGlobals.UI_MODE_STATE_OFF);
+					globalVars.setUiMode(AppGlobals.UI_MODE_STATE_OFF);
 					break;
 				case BluetoothAdapter.STATE_TURNING_OFF:
 					Log.d(TAG, "BTAdpter [ACTION_STATE_CHANGED]: TURNING_OFF");
-					comHUB.setUiMode(AppGlobals.UI_MODE_TURNING_OFF);
+					globalVars.setUiMode(AppGlobals.UI_MODE_TURNING_OFF);
 					break;
 				case BluetoothAdapter.STATE_ON:
 					Log.d(TAG, "BTAdpter [ACTION_STATE_CHANGED]: STATE_ON"); // 2nd
 																				// after
 																				// turning_on
-					comHUB.setUiMode(AppGlobals.UI_MODE_STATE_ON);
+					globalVars.setUiMode(AppGlobals.UI_MODE_STATE_ON);
 					break;
 				case BluetoothAdapter.STATE_TURNING_ON:
 					Log.d(TAG, "BTAdpter [ACTION_STATE_CHANGED]: TURNING_ON"); // 1st
 																				// on
 																				// bt
 																				// enable
-					comHUB.setUiMode(AppGlobals.UI_MODE_TURNING_ON);
+					globalVars.setUiMode(AppGlobals.UI_MODE_TURNING_ON);
 					break;
 				default:
 					Log.d(TAG, "BTAdpter [ACTION_STATE_CHANGED]: unknown");
@@ -165,39 +164,26 @@ public class MainActivity extends FragmentActivity {
 
 			if (action.equals(BluetoothDevice.ACTION_ACL_CONNECTED)) {
 				Log.d(TAG, "BTDevice [ACTION_ACL_CONNECTED]");
-				comHUB.setUiMode(AppGlobals.UI_MODE_CONNECTED);
+				globalVars.setUiMode(AppGlobals.UI_MODE_CONNECTED);
 			}
 
 			if (action.equals(BluetoothDevice.ACTION_ACL_DISCONNECTED)) {
 				Log.d(TAG, "BTDevice [ACTION_ACL_DISCONNECTED]");
-				comHUB.setUiMode(AppGlobals.UI_MODE_DISCONNECTED);
+				globalVars.setUiMode(AppGlobals.UI_MODE_DISCONNECTED);
 			}
 
-			// recreate fragments for pos 0,1,2
-			ConnectivityFragment fragment = (ConnectivityFragment) mViewPager
-					.getAdapter().instantiateItem(mViewPager, 0);
-			fragment.refreshUI();
-			// fragment = (ConnectivityFragment)
-			// mViewPager.getAdapter().instantiateItem(mViewPager, 1);
-			// fragment.refreshUI();
-			// fragment = (ConnectivityFragment)
-			// mViewPager.getAdapter().instantiateItem(mViewPager, 2);
-			// fragment.refreshUI();
-
-			// redraw UI
-			// mViewPager.getAdapter().notifyDataSetChanged();
-
-			// mViewPager.getAdapter().instantiateItem(mViewPager, 0);
+			globalVars.callerIUiModeChanged.onUiModeChanged();
 
 		}
 	};
 
+	// Call app respecting connection state
 	public void CloseMe() {
 
 		OnClickListener positiveButtonClickListener = new AlertDialog.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
-				comHUB.mBtConnector.closeConnection();
+				globalVars.mBtConnector.closeConnection();
 				finish();
 			}
 		};
@@ -208,10 +194,11 @@ public class MainActivity extends FragmentActivity {
 			}
 		};
 
-		if (comHUB.mBtConnector.isConnected()) {
+		if (globalVars.mBtConnector.isConnected()) {
 
 			AlertDialog.Builder dlg = new AlertDialog.Builder(this);
-			dlg.setTitle(getString(R.string.close_dlg_title_mavlink_closing)+"["+comHUB.mBtConnector.getPeerName()+"]");
+			dlg.setTitle(getString(R.string.close_dlg_title_mavlink_closing)
+					+ "[" + globalVars.mBtConnector.getPeerName() + "]");
 			dlg.setMessage(R.string.close_dlg_msg_current_connection_will_be_lost);
 			dlg.setCancelable(false);
 			dlg.setPositiveButton(R.string.close_dlg_positive,
@@ -221,8 +208,8 @@ public class MainActivity extends FragmentActivity {
 			dlg.create();
 			dlg.show();
 
-		}
-		else finish();
+		} else
+			finish();
 
 	}
 

@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
-import android.view.ViewDebug.IntToString;
 
 public class BluetoothConnector extends BufferedStreamConnector {
 
@@ -27,7 +26,7 @@ public class BluetoothConnector extends BufferedStreamConnector {
 		super(1024);
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 	}
-	
+
 	@Override
 	public boolean openConnection(String address) {
 
@@ -47,6 +46,7 @@ public class BluetoothConnector extends BufferedStreamConnector {
 		}
 
 	}
+
 	@Override
 	public void startTransmission(BluetoothSocket socket) {
 
@@ -59,21 +59,21 @@ public class BluetoothConnector extends BufferedStreamConnector {
 				// Received data from... somewhere
 				case AppGlobals.MESSAGE_READ:
 
-					//byte[] readBuf = (byte[]) msg.obj;
-					//String readMessage = new String(readBuf, 0, msg.arg1);					
-					//Log.d("DATA", readMessage);					
-					//lock buffer just for me :)
-					
+					// byte[] readBuf = (byte[]) msg.obj;
+					// String readMessage = new String(readBuf, 0, msg.arg1);
+					// Log.d("DATA", readMessage);
+					// lock buffer just for me :)
+
 					waitForBufferLock();
-					
+
 					buffer.write((byte[]) msg.obj, 0, msg.arg1);
-					
-					//Log.d("DATA", buffer.toString());
-					//Log.d("DATA"," *** " +String.valueOf(buffer.size()));
-					//buffer.reset();
-					
+
+					// Log.d("DATA", buffer.toString());
+					// Log.d("DATA"," *** " +String.valueOf(buffer.size()));
+					// buffer.reset();
+
 					releaseBuffer();
-					
+
 					processBuffer();
 
 					break;
@@ -91,6 +91,7 @@ public class BluetoothConnector extends BufferedStreamConnector {
 		socketThread.start();
 
 	}
+
 	@Override
 	public void closeConnection() {
 		Log.d(TAG, "Closing connection..");
@@ -106,7 +107,7 @@ public class BluetoothConnector extends BufferedStreamConnector {
 			Log.d(TAG, "Exception [connThread.disconnect]: " + e.getMessage());
 		}
 	}
-	
+
 	@Override
 	public boolean isConnected() {
 		if (mBluetoothSocket == null)
@@ -115,7 +116,7 @@ public class BluetoothConnector extends BufferedStreamConnector {
 			return mBluetoothSocket.isConnected();
 
 	}
-	
+
 	@Override
 	public String getPeerName() {
 

@@ -3,6 +3,7 @@ package com.paku.mavlinkhub.fragments;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.communication.BTDevicesListHandler;
 import com.paku.mavlinkhub.communication.AppGlobals;
+import com.paku.mavlinkhub.interfaces.IUiModeChanged;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
@@ -20,12 +21,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ConnectivityFragment extends Fragment {
+public class ConnectivityFragment extends Fragment implements IUiModeChanged {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "ConnectivityFragment";
 
 	BTDevicesListHandler btDevList = new BTDevicesListHandler();
+
 	ListView btDevListView;
 	Button disconnectButton;
 	ProgressBar connProgressBar;
@@ -40,6 +42,7 @@ public class ConnectivityFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 
 		comHUB = (AppGlobals) getActivity().getApplication();
+		comHUB.registerForIUiModeChanged(this);
 
 	}
 
@@ -57,7 +60,6 @@ public class ConnectivityFragment extends Fragment {
 
 		RefreshBtDevList();
 
-
 	}
 
 	@Override
@@ -73,18 +75,18 @@ public class ConnectivityFragment extends Fragment {
 		View connView = inflater.inflate(R.layout.fragment_connectivity,
 				container, false);
 
-		btDevListView = (ListView) connView.findViewById(R.id.list_bt_bonded);
-		disconnectButton = (Button) connView.findViewById(R.id.button_disconnect);
-		connProgressBar = (ProgressBar) connView.findViewById(R.id.progressBar1);
-
-		refreshUI();
-		
 		return connView;
 	}
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+
+		btDevListView = (ListView) getView().findViewById(R.id.list_bt_bonded);
+		disconnectButton = (Button) getView().findViewById(
+				R.id.button_disconnect);
+		connProgressBar = (ProgressBar) getView().findViewById(
+				R.id.progressBar1);
 
 		disconnectButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -93,6 +95,8 @@ public class ConnectivityFragment extends Fragment {
 
 			}
 		});
+
+		refreshUI();
 
 	}
 
@@ -111,19 +115,14 @@ public class ConnectivityFragment extends Fragment {
 		}
 	};
 
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-	}
-
 	public void refreshUI() {
-		
+
 		switch (comHUB.getUiMode()) {
 		case AppGlobals.UI_MODE_CREATED:
 			disconnectButton.setVisibility(View.INVISIBLE);
 			connProgressBar.setVisibility(View.INVISIBLE);
 			break;
-			
+
 		case AppGlobals.UI_MODE_TURNING_ON:
 			disconnectButton.setVisibility(View.INVISIBLE);
 			connProgressBar.setVisibility(View.VISIBLE);
@@ -133,7 +132,7 @@ public class ConnectivityFragment extends Fragment {
 			connProgressBar.setVisibility(View.INVISIBLE);
 			btDevListView.setVisibility(View.VISIBLE);
 			RefreshBtDevList();
-			break;			
+			break;
 		case AppGlobals.UI_MODE_TURNING_OFF:
 			disconnectButton.setVisibility(View.INVISIBLE);
 			connProgressBar.setVisibility(View.VISIBLE);
@@ -150,13 +149,11 @@ public class ConnectivityFragment extends Fragment {
 		case AppGlobals.UI_MODE_DISCONNECTED:
 			disconnectButton.setVisibility(View.INVISIBLE);
 			connProgressBar.setVisibility(View.INVISIBLE);
-			break;			
+			break;
 		default:
 			break;
 		}
-				
-				
-		
+
 	}
 
 	private void RefreshBtDevList() {
@@ -169,7 +166,8 @@ public class ConnectivityFragment extends Fragment {
 		case AppGlobals.ERROR_ADAPTER_OFF:
 			Intent enableBtIntent = new Intent(
 					BluetoothAdapter.ACTION_REQUEST_ENABLE);
-			this.startActivityForResult(enableBtIntent, AppGlobals.REQUEST_ENABLE_BT);
+			this.startActivityForResult(enableBtIntent,
+					AppGlobals.REQUEST_ENABLE_BT);
 			return;
 		case AppGlobals.ERROR_NO_BONDED_DEV:
 			Toast.makeText(
@@ -205,6 +203,11 @@ public class ConnectivityFragment extends Fragment {
 
 		}
 
+	}
+
+	@Override
+	public void onUiModeChanged() {
+		refreshUI();
 	}
 
 }

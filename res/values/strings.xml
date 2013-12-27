@@ -28,5 +28,6 @@
     <string name="close_dlg_title_mavlink_closing">MavLink Connection Active </string>    
     <string name="close_dlg_msg_current_connection_will_be_lost">Current connection will be lost.</string>    
     <string name="close_dlg_positive">Close me</string>    
-    <string name="close_dlg_negative">Keep running</string>
+    <string name="close_dlg_negative">Keep running</string>    
+    <string name="bufferEmpty">Medium Text</string>
 </resources>
