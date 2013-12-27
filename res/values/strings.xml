@@ -24,4 +24,9 @@
 <!-- Error Msgs-->    
     <string name="error_no_bt_adapter_or_paired_devices">No BT adapter or Paired Devices.</string>    
     <string name="error_no_paired_bt_devices_found_pair_device_first">No paired BT devices found. Pair device first.</string>
+<!-- Close Dialog Msgs-->            
+    <string name="close_dlg_title_mavlink_closing">MavLink Connection Active </string>    
+    <string name="close_dlg_msg_current_connection_will_be_lost">Current connection will be lost.</string>    
+    <string name="close_dlg_positive">Close me</string>    
+    <string name="close_dlg_negative">Keep running</string>
 </resources>

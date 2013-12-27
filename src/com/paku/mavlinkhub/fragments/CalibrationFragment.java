@@ -27,4 +27,8 @@ public class CalibrationFragment extends Fragment {
 				container, false);
 		return rootView;
 	}
+	
+	public void refreshUI(){
+		
+	}
 }

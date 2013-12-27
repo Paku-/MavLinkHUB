@@ -2,7 +2,7 @@ package com.paku.mavlinkhub.fragments;
 
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.communication.BTDevicesListHandler;
-import com.paku.mavlinkhub.communication.CommunicationHUB;
+import com.paku.mavlinkhub.communication.AppGlobals;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,8 +27,9 @@ public class ConnectivityFragment extends Fragment {
 
 	BTDevicesListHandler btDevList = new BTDevicesListHandler();
 	ListView btDevListView;
-	Button button;
-	CommunicationHUB comHUB;
+	Button disconnectButton;
+	ProgressBar connProgressBar;
+	AppGlobals comHUB;
 
 	public ConnectivityFragment() {
 	}
@@ -37,7 +39,7 @@ public class ConnectivityFragment extends Fragment {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 
-		comHUB = (CommunicationHUB) getActivity().getApplication();
+		comHUB = (AppGlobals) getActivity().getApplication();
 
 	}
 
@@ -72,16 +74,9 @@ public class ConnectivityFragment extends Fragment {
 				container, false);
 
 		btDevListView = (ListView) connView.findViewById(R.id.list_bt_bonded);
-		button = (Button) connView.findViewById(R.id.button_disconnect);
+		disconnectButton = (Button) connView.findViewById(R.id.button_disconnect);
+		connProgressBar = (ProgressBar) connView.findViewById(R.id.progressBar1);
 
-/*		
-		if (comHUB.IsConnected()) 
-		{
-			button.setVisibility(View.VISIBLE);			
-		}else
-			button.setVisibility(View.INVISIBLE);		
-*/
-		
 		refreshUI();
 		
 		return connView;
@@ -91,10 +86,10 @@ public class ConnectivityFragment extends Fragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		button.setOnClickListener(new View.OnClickListener() {
+		disconnectButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 
-				comHUB.mBtConnector.CloseConnection();
+				comHUB.mBtConnector.closeConnection();
 
 			}
 		});
@@ -111,7 +106,7 @@ public class ConnectivityFragment extends Fragment {
 			String info = ((TextView) view).getText().toString();
 			String address = info.substring(info.length() - 17);
 
-			comHUB.mBtConnector.ConnectBT(address);
+			comHUB.mBtConnector.openConnection(address);
 
 		}
 	};
@@ -124,18 +119,38 @@ public class ConnectivityFragment extends Fragment {
 	public void refreshUI() {
 		
 		switch (comHUB.getUiMode()) {
-		case CommunicationHUB.UI_MODE_CREATED:
-			button.setVisibility(View.INVISIBLE);
+		case AppGlobals.UI_MODE_CREATED:
+			disconnectButton.setVisibility(View.INVISIBLE);
+			connProgressBar.setVisibility(View.INVISIBLE);
 			break;
 			
-		case CommunicationHUB.UI_MODE_CONNECTED:
-			button.setVisibility(View.VISIBLE);
+		case AppGlobals.UI_MODE_TURNING_ON:
+			disconnectButton.setVisibility(View.INVISIBLE);
+			connProgressBar.setVisibility(View.VISIBLE);
 			break;
-
-		case CommunicationHUB.UI_MODE_DISCONNECTED:
-			button.setVisibility(View.INVISIBLE);			
+		case AppGlobals.UI_MODE_STATE_ON:
+			disconnectButton.setVisibility(View.INVISIBLE);
+			connProgressBar.setVisibility(View.INVISIBLE);
+			btDevListView.setVisibility(View.VISIBLE);
+			RefreshBtDevList();
 			break;			
-
+		case AppGlobals.UI_MODE_TURNING_OFF:
+			disconnectButton.setVisibility(View.INVISIBLE);
+			connProgressBar.setVisibility(View.VISIBLE);
+			break;
+		case AppGlobals.UI_MODE_STATE_OFF:
+			disconnectButton.setVisibility(View.INVISIBLE);
+			connProgressBar.setVisibility(View.INVISIBLE);
+			btDevListView.setVisibility(View.INVISIBLE);
+			break;
+		case AppGlobals.UI_MODE_CONNECTED:
+			disconnectButton.setVisibility(View.VISIBLE);
+			connProgressBar.setVisibility(View.INVISIBLE);
+			break;
+		case AppGlobals.UI_MODE_DISCONNECTED:
+			disconnectButton.setVisibility(View.INVISIBLE);
+			connProgressBar.setVisibility(View.INVISIBLE);
+			break;			
 		default:
 			break;
 		}
@@ -147,23 +162,23 @@ public class ConnectivityFragment extends Fragment {
 	private void RefreshBtDevList() {
 
 		switch (btDevList.RefreshList()) {
-		case CommunicationHUB.ERROR_NO_ADAPTER:
+		case AppGlobals.ERROR_NO_ADAPTER:
 			Toast.makeText(getActivity().getApplicationContext(),
 					"No Bluetooth Adapter found.", Toast.LENGTH_LONG).show();
 			return;
-		case CommunicationHUB.ERROR_ADAPTER_OFF:
+		case AppGlobals.ERROR_ADAPTER_OFF:
 			Intent enableBtIntent = new Intent(
 					BluetoothAdapter.ACTION_REQUEST_ENABLE);
-			this.startActivityForResult(enableBtIntent, CommunicationHUB.REQUEST_ENABLE_BT);
+			this.startActivityForResult(enableBtIntent, AppGlobals.REQUEST_ENABLE_BT);
 			return;
-		case CommunicationHUB.ERROR_NO_BONDED_DEV:
+		case AppGlobals.ERROR_NO_BONDED_DEV:
 			Toast.makeText(
 					getActivity().getApplicationContext(),
 					R.string.error_no_paired_bt_devices_found_pair_device_first,
 					Toast.LENGTH_LONG).show();
 			return;
 
-		case CommunicationHUB.LIST_OK:
+		case AppGlobals.LIST_OK:
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(
 					getActivity().getApplicationContext(),
 					android.R.layout.simple_list_item_1,

@@ -27,10 +27,10 @@ public class BTDevicesListHandler {
 		// check for nulls ...
 
 		if (mBluetoothAdapter == null) {
-			return CommunicationHUB.ERROR_NO_ADAPTER;
+			return AppGlobals.ERROR_NO_ADAPTER;
 
 		} else if (!mBluetoothAdapter.isEnabled()) {
-			return CommunicationHUB.ERROR_ADAPTER_OFF;
+			return AppGlobals.ERROR_ADAPTER_OFF;
 		}
 
 		bondedDevicesNameList.clear();
@@ -45,10 +45,10 @@ public class BTDevicesListHandler {
 						+ device.getAddress());
 			}
 
-			return CommunicationHUB.LIST_OK;
+			return AppGlobals.LIST_OK;
 
 		} else
-			return CommunicationHUB.ERROR_NO_BONDED_DEV;
+			return AppGlobals.ERROR_NO_BONDED_DEV;
 
 	}
 

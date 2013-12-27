@@ -6,7 +6,6 @@ import java.util.UUID;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.content.Context;
 import android.util.Log;
 
 public class BTConnectThread extends Thread {
@@ -15,10 +14,10 @@ public class BTConnectThread extends Thread {
 	private final BluetoothAdapter mmBluetoothAdapter;
 	private final BluetoothSocket mmSocket;
 	private final BluetoothDevice mmDevice;
-	private BtConnector parentBtConnector;
+	private BluetoothConnector parentBtConnector;
 
 	public BTConnectThread(BluetoothAdapter adapter, BluetoothDevice device,
-			BtConnector parent) {
+			BluetoothConnector parent) {
 
 		BluetoothSocket tmp = null;
 		mmBluetoothAdapter = adapter;
@@ -58,7 +57,7 @@ public class BTConnectThread extends Thread {
 		Log.d(TAG, "Connected..");
 
 		// Do work to manage the connection (in a separate thread)
-		parentBtConnector.StartTransmission(mmSocket);
+		parentBtConnector.startTransmission(mmSocket);
 	}
 
 	/** Will cancel an in-progress connection, and close the socket */

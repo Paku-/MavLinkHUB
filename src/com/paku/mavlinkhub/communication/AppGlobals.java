@@ -3,7 +3,7 @@ package com.paku.mavlinkhub.communication;
 import android.app.Application;
 import android.content.Context;
 
-public class CommunicationHUB extends Application {
+public class AppGlobals extends Application {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "CommHUB";
@@ -13,6 +13,10 @@ public class CommunicationHUB extends Application {
 	public static final int UI_MODE_BT_OFF = 201;
 	public static final int UI_MODE_DISCONNECTED = 202;
 	public static final int UI_MODE_CONNECTED = 203;
+	public static final int UI_MODE_TURNING_ON = 204;
+	public static final int UI_MODE_STATE_ON = 205;
+	public static final int UI_MODE_STATE_OFF = 206;
+	public static final int UI_MODE_TURNING_OFF = 207;
 	
 	// BT Dev List state machine constants
 	public static final int LIST_OK = 1;
@@ -23,18 +27,20 @@ public class CommunicationHUB extends Application {
 	//other constants
 	public static final int MESSAGE_READ = 101;
 	public static final int REQUEST_ENABLE_BT = 102;
+
+
 	
 
 	public Context appContext;
 	
-	public int ui_Mode = CommunicationHUB.UI_MODE_CREATED;
+	public int ui_Mode = AppGlobals.UI_MODE_CREATED;
 	
 	//main BT connector 
-	public BtConnector mBtConnector;
+	public BluetoothConnector mBtConnector;
 
 	public void Init(Context mConext) {
 		appContext = mConext;
-		mBtConnector = new BtConnector();
+		mBtConnector = new BluetoothConnector();
 
 	}
 	

@@ -1,5 +1,7 @@
 package com.paku.mavlinkhub.fragments;
 
+import java.io.ByteArrayOutputStream;
+
 import com.paku.mavlinkhub.R;
 
 import android.os.Bundle;
@@ -27,4 +29,11 @@ public class RealTimeMavlinkFragment extends Fragment {
 				container, false);
 		return rootView;
 	}
+	
+	public void refreshUI(){
+		
+		ByteArrayOutputStream buffer = new ByteArrayOutputStream(); 	
+		
+	}
+	
 }
