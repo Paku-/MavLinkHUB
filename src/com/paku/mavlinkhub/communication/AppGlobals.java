@@ -47,29 +47,28 @@ public class AppGlobals extends Application {
 	public IntentFilter mBtIntentFilter;
 	private BroadcastReceiver mBtReceiver;
 
-
 	public int ui_Mode = AppGlobals.UI_MODE_CREATED;
 	public int connectorBufferFlushSize = 64;
-	
+
 	public long ticker = -1;
 
 	public void Init(Context mConext) {
 
-		Log.d(TAG, "** Global Init section call **"); // 2nd		
-		
+		Log.d(TAG, "** Global Init section call **"); // 2nd
+
 		appContext = mConext;
 		setUiMode(AppGlobals.UI_MODE_CREATED);
 
 		mBtConnector = new BluetoothConnector();
-		
-		//get BT broadcasts
+
+		// get BT broadcasts
 		mBtIntentFilter = new IntentFilter();
 		mBtIntentFilter
 				.addAction(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
 		mBtIntentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
 		mBtIntentFilter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
 		mBtIntentFilter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
-		
+
 		// create and register BT BroadcastReceiver
 		mBtReceiver = new BroadcastReceiver() {
 			@Override
@@ -77,7 +76,8 @@ public class AppGlobals extends Application {
 
 				final String action = intent.getAction();
 
-				if (action.equals(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED)) {
+				if (action
+						.equals(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED)) {
 					final int state = intent.getIntExtra(
 							BluetoothAdapter.EXTRA_CONNECTION_STATE,
 							BluetoothAdapter.ERROR);
@@ -105,14 +105,16 @@ public class AppGlobals extends Application {
 
 				if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
 					final int state = intent.getIntExtra(
-							BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
+							BluetoothAdapter.EXTRA_STATE,
+							BluetoothAdapter.ERROR);
 					switch (state) {
 					case BluetoothAdapter.STATE_OFF:
 						Log.d(TAG, "BTAdpter [ACTION_STATE_CHANGED]: STATE_OFF");
 						setUiMode(AppGlobals.UI_MODE_STATE_OFF);
 						break;
 					case BluetoothAdapter.STATE_TURNING_OFF:
-						Log.d(TAG, "BTAdpter [ACTION_STATE_CHANGED]: TURNING_OFF");
+						Log.d(TAG,
+								"BTAdpter [ACTION_STATE_CHANGED]: TURNING_OFF");
 						setUiMode(AppGlobals.UI_MODE_TURNING_OFF);
 						break;
 					case BluetoothAdapter.STATE_ON:
@@ -122,10 +124,11 @@ public class AppGlobals extends Application {
 						setUiMode(AppGlobals.UI_MODE_STATE_ON);
 						break;
 					case BluetoothAdapter.STATE_TURNING_ON:
-						Log.d(TAG, "BTAdpter [ACTION_STATE_CHANGED]: TURNING_ON"); // 1st
-																					// on
-																					// bt
-																					// enable
+						Log.d(TAG,
+								"BTAdpter [ACTION_STATE_CHANGED]: TURNING_ON"); // 1st
+																				// on
+																				// bt
+																				// enable
 						setUiMode(AppGlobals.UI_MODE_TURNING_ON);
 						break;
 					default:
@@ -150,19 +153,16 @@ public class AppGlobals extends Application {
 
 			}
 		};
-		
-		
-		// register this receiver for intents for BT adapter changes
-		registerReceiver(mBtReceiver,mBtIntentFilter);
 
-	
-/*		
-		if (globalVars.mBtConnector.isConnected()
-				|| globalVars.getUiMode() == AppGlobals.UI_MODE_CONNECTED) {
-			globalVars.setUiMode(AppGlobals.UI_MODE_CONNECTED);
-		} else
-			globalVars.setUiMode(AppGlobals.UI_MODE_CREATED);
-		*/
+		// register this receiver for intents for BT adapter changes
+		registerReceiver(mBtReceiver, mBtIntentFilter);
+
+		/*
+		 * if (globalVars.mBtConnector.isConnected() || globalVars.getUiMode()
+		 * == AppGlobals.UI_MODE_CONNECTED) {
+		 * globalVars.setUiMode(AppGlobals.UI_MODE_CONNECTED); } else
+		 * globalVars.setUiMode(AppGlobals.UI_MODE_CREATED);
+		 */
 
 	}
 
@@ -174,9 +174,10 @@ public class AppGlobals extends Application {
 	public void setUiMode(int mode) {
 		ui_Mode = mode;
 	}
-	
-	//interface IUiModeChanged
+
+	// interface IUiModeChanged
 	public IUiModeChanged callerIUiModeChanged = null;
+
 	public void registerForIUiModeChanged(Fragment fragment) {
 		callerIUiModeChanged = (IUiModeChanged) fragment;
 	}

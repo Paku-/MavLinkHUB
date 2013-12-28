@@ -27,11 +27,10 @@ public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		
-		setRetainInstance(true);
-		
-		globalVars = (AppGlobals) getActivity().getApplication();
 
+		setRetainInstance(true);
+
+		globalVars = (AppGlobals) getActivity().getApplication();
 
 	}
 
@@ -40,26 +39,23 @@ public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_realtime_mavlink,
 				container, false);
-		
+
 		return rootView;
 	}
-	
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 	}
 
-	
 	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		
-		globalVars.mBtConnector.registerForIBufferReady(this);		
+
+		globalVars.mBtConnector.registerForIBufferReady(this);
 		refreshUI();
 	}
-	
 
 	public void refreshUI() {
 
@@ -69,26 +65,25 @@ public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 
 		TextView textView = (TextView) (getView()
 				.findViewById(R.id.textView_log));
-		textView.append(buffer.toString());				
-		
-		final ScrollView scrollview = ((ScrollView) getView().findViewById(R.id.scrollView1));
+		textView.append(buffer.toString());
+
+		final ScrollView scrollview = ((ScrollView) getView().findViewById(
+				R.id.scrollView1));
 		scrollview.post(new Runnable() {
-		    @Override
-		    public void run() {
-		        scrollview.fullScroll(ScrollView.FOCUS_DOWN);
-		    }
-		});		
-		
+			@Override
+			public void run() {
+				scrollview.fullScroll(ScrollView.FOCUS_DOWN);
+			}
+		});
+
 	}
 
 	@Override
-	public void onBufferReady() {	
-			refreshUI();
+	public void onBufferReady() {
+		refreshUI();
 	}
-
 
 }

@@ -62,9 +62,9 @@ public abstract class BufferedStreamConnector {
 		// releaseBuffer();
 
 		if ((callerFragment != null) && (buffer.size() > buffFlushSize)) {
-			Log.d("BUFFER","Size ["+String.valueOf(buffer.size())+"]:");
-			//Log.d("BUFFER","Size ["+String.valueOf(buffer.size())+"]:"+buffer.toString());
-			callerFragment.onBufferReady();			
+			Log.d("BUFFER", "Size [" + String.valueOf(buffer.size()) + "]:");
+			// Log.d("BUFFER","Size ["+String.valueOf(buffer.size())+"]:"+buffer.toString());
+			callerFragment.onBufferReady();
 		}
 	}
 

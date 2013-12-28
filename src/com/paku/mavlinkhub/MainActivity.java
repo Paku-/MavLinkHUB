@@ -4,10 +4,6 @@ import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.communication.AppGlobals;
 import com.paku.mavlinkhub.fragments.FragmentsAdapter;
 import android.app.AlertDialog;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -29,21 +25,19 @@ public class MainActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		globalVars = (AppGlobals) this.getApplication();	
-		
+		globalVars = (AppGlobals) this.getApplication();
+
 		if (savedInstanceState == null) {
-				
+
 			globalVars.Init(this);
 
 		}
-		
+
 		globalVars.mFragmentsPagerAdapter = new FragmentsAdapter(this,
 				getSupportFragmentManager());
 
 		globalVars.mViewPager = (ViewPager) findViewById(R.id.pager);
 		globalVars.mViewPager.setAdapter(globalVars.mFragmentsPagerAdapter);
-		
-		
 
 	}
 
@@ -57,7 +51,7 @@ public class MainActivity extends FragmentActivity {
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-		//unregisterReceiver(mBtReceiver);
+		// unregisterReceiver(mBtReceiver);
 	}
 
 	@Override

@@ -42,7 +42,7 @@ public class ConnectivityFragment extends Fragment implements IUiModeChanged {
 		super.onCreate(savedInstanceState);
 
 		setRetainInstance(true);
-		
+
 		globalVars = (AppGlobals) getActivity().getApplication();
 		globalVars.registerForIUiModeChanged(this);
 
@@ -67,8 +67,8 @@ public class ConnectivityFragment extends Fragment implements IUiModeChanged {
 	@Override
 	public void onResume() {
 		super.onResume();
-		
-		globalVars.registerForIUiModeChanged(this);		
+
+		globalVars.registerForIUiModeChanged(this);
 		refreshUI();
 
 	}
