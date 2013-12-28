@@ -18,6 +18,10 @@ import android.widget.TextView;
 public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
 
 	private AppGlobals globalVars;
+	ByteArrayOutputStream mStream;
+
+	//scrollView object used to force TextView object to keep scrolling down.
+	ScrollView scrollview;
 
 	public RealTimeMavlinkFragment() {
 
@@ -31,6 +35,8 @@ public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
 		setRetainInstance(true);
 
 		globalVars = (AppGlobals) getActivity().getApplication();
+
+		mStream = new ByteArrayOutputStream();
 
 	}
 
@@ -46,32 +52,33 @@ public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+		
+		scrollview = ((ScrollView) getView().findViewById(R.id.scrollView1));
 	}
 
 	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-
 		globalVars.mBtConnector.registerFragmentForIBufferReady(this);
 		refreshUI();
 	}
 
 	public void refreshUI() {
 
-		final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+		//get data from the connector mConnectorStream	
 		try {
-			globalVars.mBtConnector.getResetConnStream(buffer);
+			globalVars.mBtConnector.getResetStreamData(mStream);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		TextView textView = (TextView) (getView()
 				.findViewById(R.id.textView_log));
-		textView.append(buffer.toString());
+		textView.append(mStream.toString());
 
-		final ScrollView scrollview = ((ScrollView) getView().findViewById(
-				R.id.scrollView1));
+		mStream.reset();
+		
 		scrollview.post(new Runnable() {
 			@Override
 			public void run() {

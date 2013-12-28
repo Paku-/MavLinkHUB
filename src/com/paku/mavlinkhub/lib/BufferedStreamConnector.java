@@ -9,12 +9,14 @@ import com.paku.mavlinkhub.interfaces.IBufferReady;
 import android.bluetooth.BluetoothSocket;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+// this is a super class for connectors using buffered stream to keep incoming data
+// receiving Fragment class has to register for IBufferReady interface to be called on data arrival. 
 
 public abstract class BufferedStreamConnector {
 
 	public ByteArrayOutputStream mConnectorStream;
-	public boolean lockConnStream = false;
-	private int buffFlushSize = 64;
+	public boolean lockStream = false;
+	private int streamFlushSize = 64;
 
 	protected abstract boolean openConnection(String address); // throws
 																// UnknownHostException,IOException;
@@ -66,17 +68,14 @@ public abstract class BufferedStreamConnector {
 
 			if (callerFragment != null) {
 				callerFragment.onBufferReady();
+
 			}
 
 			if (callerMavLink != null) {
 				callerMavLink.onBufferReady();
 			}
 
-		}
-
-	}
-
-	private void resetBuffer(boolean withLock) {
+	private void resetStream(boolean withLock) {
 		if (withLock)
 			waitForStreamLock();
 		mConnectorStream.reset();
