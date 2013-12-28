@@ -8,11 +8,13 @@ import com.paku.mavlinkhub.interfaces.IBufferReady;
 
 import android.bluetooth.BluetoothSocket;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 public abstract class BufferedStreamConnector {
 
 	public ByteArrayOutputStream buffer;
 	public boolean lockBuffer = false;
+	private int buffFlushSize = 64;
 
 	protected abstract boolean openConnection(String address); // throws
 																// UnknownHostException,IOException;
@@ -26,7 +28,7 @@ public abstract class BufferedStreamConnector {
 
 	protected abstract void startTransmission(BluetoothSocket socket);
 
-	private IBufferReady callerFragment;
+	private IBufferReady callerFragment = null;
 
 	public void registerForIBufferReady(Fragment fragment) {
 		callerFragment = (IBufferReady) fragment;
@@ -59,10 +61,10 @@ public abstract class BufferedStreamConnector {
 		// buffer.reset();
 		// releaseBuffer();
 
-		if (buffer.size() > 100) {
-
-			callerFragment.onBufferReady();
-
+		if ((callerFragment != null) && (buffer.size() > buffFlushSize)) {
+			Log.d("BUFFER","Size ["+String.valueOf(buffer.size())+"]:");
+			//Log.d("BUFFER","Size ["+String.valueOf(buffer.size())+"]:"+buffer.toString());
+			callerFragment.onBufferReady();			
 		}
 	}
 

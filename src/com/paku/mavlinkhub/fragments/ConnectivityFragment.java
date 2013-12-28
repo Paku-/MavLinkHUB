@@ -31,7 +31,7 @@ public class ConnectivityFragment extends Fragment implements IUiModeChanged {
 	ListView btDevListView;
 	Button disconnectButton;
 	ProgressBar connProgressBar;
-	AppGlobals comHUB;
+	AppGlobals globalVars;
 
 	public ConnectivityFragment() {
 	}
@@ -41,8 +41,10 @@ public class ConnectivityFragment extends Fragment implements IUiModeChanged {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 
-		comHUB = (AppGlobals) getActivity().getApplication();
-		comHUB.registerForIUiModeChanged(this);
+		setRetainInstance(true);
+		
+		globalVars = (AppGlobals) getActivity().getApplication();
+		globalVars.registerForIUiModeChanged(this);
 
 	}
 
@@ -65,6 +67,9 @@ public class ConnectivityFragment extends Fragment implements IUiModeChanged {
 	@Override
 	public void onResume() {
 		super.onResume();
+		
+		globalVars.registerForIUiModeChanged(this);		
+		refreshUI();
 
 	}
 
@@ -91,7 +96,7 @@ public class ConnectivityFragment extends Fragment implements IUiModeChanged {
 		disconnectButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 
-				comHUB.mBtConnector.closeConnection();
+				globalVars.mBtConnector.closeConnection();
 
 			}
 		});
@@ -110,14 +115,14 @@ public class ConnectivityFragment extends Fragment implements IUiModeChanged {
 			String info = ((TextView) view).getText().toString();
 			String address = info.substring(info.length() - 17);
 
-			comHUB.mBtConnector.openConnection(address);
+			globalVars.mBtConnector.openConnection(address);
 
 		}
 	};
 
 	public void refreshUI() {
 
-		switch (comHUB.getUiMode()) {
+		switch (globalVars.getUiMode()) {
 		case AppGlobals.UI_MODE_CREATED:
 			disconnectButton.setVisibility(View.INVISIBLE);
 			connProgressBar.setVisibility(View.INVISIBLE);

@@ -1,4 +1,6 @@
 00001101-0000-1000-8000-00805F9B34FB
+android:configChanges="orientation|keyboardHidden|screenSize">
+
     private static final String UUID_SPP_DEVICE = "00001101-0000-1000-8000-00805F9B34FB";
     UUID.fromString(UUID_SPP_DEVICE)
     

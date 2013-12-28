@@ -11,7 +11,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -23,8 +22,6 @@ public class MainActivity extends FragmentActivity {
 
 	private static final String TAG = "MainActivity";
 
-	private FragmentsAdapter mFragmentsPagerAdapter;
-	private ViewPager mViewPager;
 	private AppGlobals globalVars; // global vars and constants object.
 
 	@Override
@@ -32,32 +29,21 @@ public class MainActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		globalVars = (AppGlobals) this.getApplication();
-		globalVars.Init(this);
+		globalVars = (AppGlobals) this.getApplication();	
+		
+		if (savedInstanceState == null) {
+				
+			globalVars.Init(this);
 
-		if (globalVars.mBtConnector.isConnected()
-				|| globalVars.getUiMode() == AppGlobals.UI_MODE_CONNECTED) {
-			globalVars.setUiMode(AppGlobals.UI_MODE_CONNECTED);
-		} else
-			globalVars.setUiMode(AppGlobals.UI_MODE_CREATED);
-
-		// Create the adapter that will return a fragment for each of the three
-		// primary sections of the app.
-		mFragmentsPagerAdapter = new FragmentsAdapter(this,
+		}
+		
+		globalVars.mFragmentsPagerAdapter = new FragmentsAdapter(this,
 				getSupportFragmentManager());
 
-		// Set up the ViewPager with the sections adapter.
-		mViewPager = (ViewPager) findViewById(R.id.pager);
-		mViewPager.setAdapter(mFragmentsPagerAdapter);
-
-		// register intents for BT adapter changes
-		IntentFilter BtIntentFilter = new IntentFilter();
-		BtIntentFilter
-				.addAction(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
-		BtIntentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
-		BtIntentFilter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
-		BtIntentFilter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
-		registerReceiver(mBtReceiver, BtIntentFilter);
+		globalVars.mViewPager = (ViewPager) findViewById(R.id.pager);
+		globalVars.mViewPager.setAdapter(globalVars.mFragmentsPagerAdapter);
+		
+		
 
 	}
 
@@ -71,7 +57,7 @@ public class MainActivity extends FragmentActivity {
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-		unregisterReceiver(mBtReceiver);
+		//unregisterReceiver(mBtReceiver);
 	}
 
 	@Override
@@ -98,84 +84,6 @@ public class MainActivity extends FragmentActivity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
-
-	private final BroadcastReceiver mBtReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			final String action = intent.getAction();
-
-			if (action.equals(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED)) {
-				final int state = intent.getIntExtra(
-						BluetoothAdapter.EXTRA_CONNECTION_STATE,
-						BluetoothAdapter.ERROR);
-
-				switch (state) {
-				case BluetoothAdapter.STATE_CONNECTING:
-					Log.d(TAG,
-							"BTAdpter [ACTION_CONNECTION_STATE_CHANGED]: STATE_CONNECTING");
-					break;
-				case BluetoothAdapter.STATE_CONNECTED:
-					Log.d(TAG,
-							"BTAdpter [ACTION_CONNECTION_STATE_CHANGED]: STATE_CONNECTED");
-					break;
-				case BluetoothAdapter.STATE_DISCONNECTING:
-					Log.d(TAG,
-							"BTAdpter [ACTION_CONNECTION_STATE_CHANGED]: STATE_DISCONNECTING");
-					break;
-				case BluetoothAdapter.STATE_DISCONNECTED:
-					Log.d(TAG,
-							"BTAdpter [ACTION_CONNECTION_STATE_CHANGED]: STATE_DISCONNECTED");
-					break;
-				}
-
-			}
-
-			if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
-				final int state = intent.getIntExtra(
-						BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
-				switch (state) {
-				case BluetoothAdapter.STATE_OFF:
-					Log.d(TAG, "BTAdpter [ACTION_STATE_CHANGED]: STATE_OFF");
-					globalVars.setUiMode(AppGlobals.UI_MODE_STATE_OFF);
-					break;
-				case BluetoothAdapter.STATE_TURNING_OFF:
-					Log.d(TAG, "BTAdpter [ACTION_STATE_CHANGED]: TURNING_OFF");
-					globalVars.setUiMode(AppGlobals.UI_MODE_TURNING_OFF);
-					break;
-				case BluetoothAdapter.STATE_ON:
-					Log.d(TAG, "BTAdpter [ACTION_STATE_CHANGED]: STATE_ON"); // 2nd
-																				// after
-																				// turning_on
-					globalVars.setUiMode(AppGlobals.UI_MODE_STATE_ON);
-					break;
-				case BluetoothAdapter.STATE_TURNING_ON:
-					Log.d(TAG, "BTAdpter [ACTION_STATE_CHANGED]: TURNING_ON"); // 1st
-																				// on
-																				// bt
-																				// enable
-					globalVars.setUiMode(AppGlobals.UI_MODE_TURNING_ON);
-					break;
-				default:
-					Log.d(TAG, "BTAdpter [ACTION_STATE_CHANGED]: unknown");
-					break;
-				}
-
-			}
-
-			if (action.equals(BluetoothDevice.ACTION_ACL_CONNECTED)) {
-				Log.d(TAG, "BTDevice [ACTION_ACL_CONNECTED]");
-				globalVars.setUiMode(AppGlobals.UI_MODE_CONNECTED);
-			}
-
-			if (action.equals(BluetoothDevice.ACTION_ACL_DISCONNECTED)) {
-				Log.d(TAG, "BTDevice [ACTION_ACL_DISCONNECTED]");
-				globalVars.setUiMode(AppGlobals.UI_MODE_DISCONNECTED);
-			}
-
-			globalVars.callerIUiModeChanged.onUiModeChanged();
-
-		}
-	};
 
 	// Call app respecting connection state
 	public void CloseMe() {
@@ -218,6 +126,14 @@ public class MainActivity extends FragmentActivity {
 		// super.onBackPressed();
 
 		CloseMe();
+
+	}
+
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		Log.d(TAG, "** onStop call ...**"); // 2nd
 
 	}
 

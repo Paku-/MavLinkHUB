@@ -7,11 +7,8 @@ import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.communication.AppGlobals;
 import com.paku.mavlinkhub.interfaces.IBufferReady;
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v4.app.Fragment;
-import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,9 +27,11 @@ public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-
+		
+		setRetainInstance(true);
+		
 		globalVars = (AppGlobals) getActivity().getApplication();
-		globalVars.mBtConnector.registerForIBufferReady(this);
+
 
 	}
 
@@ -49,37 +48,33 @@ public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-
-		//TextView textView = (TextView) (getView()
-		//		.findViewById(R.id.textView_log));
-		//textView.setMovementMethod(new ScrollingMovementMethod());
-		
-		
 	}
 
+	
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		
+		globalVars.mBtConnector.registerForIBufferReady(this);		
+		refreshUI();
+	}
+	
 
 	public void refreshUI() {
 
-		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+		final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 		try {
 			globalVars.mBtConnector.copyandResetBuffer(buffer);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-/*		
-		   getScrollView().post(new Runnable() {
-
-		        @Override
-		        public void run() {
-		            getScrollView().fullScroll(ScrollView.FOCUS_DOWN);
-		        }
-		    });		
-*/		
 
 		TextView textView = (TextView) (getView()
 				.findViewById(R.id.textView_log));
 		textView.append(buffer.toString());				
+		
 		final ScrollView scrollview = ((ScrollView) getView().findViewById(R.id.scrollView1));
 		scrollview.post(new Runnable() {
 		    @Override
@@ -88,20 +83,12 @@ public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
 		    }
 		});		
 		
-
-		/*
-		 * String time = "Time Passed" + SystemClock.elapsedRealtime();
-		 * 
-		 * TextView textView = (TextView) (getView()
-		 * .findViewById(R.id.textView_log)); textView.setTextColor(Color.BLUE);
-		 * textView.setText(time);
-		 */
-
 	}
 
 	@Override
-	public void onBufferReady() {
-		refreshUI();
+	public void onBufferReady() {	
+			refreshUI();
 	}
+
 
 }
