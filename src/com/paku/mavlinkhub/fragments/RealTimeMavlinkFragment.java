@@ -53,7 +53,7 @@ public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
 		// TODO Auto-generated method stub
 		super.onResume();
 
-		globalVars.mBtConnector.registerForIBufferReady(this);
+		globalVars.mBtConnector.registerFragmentForIBufferReady(this);
 		refreshUI();
 	}
 
@@ -61,7 +61,7 @@ public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
 
 		final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 		try {
-			globalVars.mBtConnector.copyandResetBuffer(buffer);
+			globalVars.mBtConnector.getResetConnStream(buffer);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

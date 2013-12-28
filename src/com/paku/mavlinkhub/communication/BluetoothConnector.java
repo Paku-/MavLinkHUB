@@ -62,17 +62,17 @@ public class BluetoothConnector extends BufferedStreamConnector {
 					// byte[] readBuf = (byte[]) msg.obj;
 					// String readMessage = new String(readBuf, 0, msg.arg1);
 					// Log.d("DATA", readMessage);
-					// lock buffer just for me :)
+					// lock mConnectorStream just for me :)
 
-					waitForBufferLock();
+					waitForStreamLock();
 
-					buffer.write((byte[]) msg.obj, 0, msg.arg1);
+					mConnectorStream.write((byte[]) msg.obj, 0, msg.arg1);
 
-					// Log.d("DATA", buffer.toString());
-					// Log.d("DATA"," *** " +String.valueOf(buffer.size()));
-					// buffer.reset();
+					// Log.d("DATA", mConnectorStream.toString());
+					// Log.d("DATA"," *** " +String.valueOf(mConnectorStream.size()));
+					// mConnectorStream.reset();
 
-					releaseBuffer();
+					releaseStream();
 
 					processBuffer();
 

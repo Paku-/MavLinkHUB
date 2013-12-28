@@ -39,7 +39,7 @@ public class BTSocketThread extends Thread {
 	}
 
 	public void run() {
-		byte[] buffer = new byte[1024]; // buffer store for the stream
+		byte[] buffer = new byte[1024]; // mConnectorStream store for the stream
 		int bytes; // bytes returned from read()
 
 		// Keep listening to the InputStream until an exception occurs

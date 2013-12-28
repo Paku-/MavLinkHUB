@@ -12,8 +12,8 @@ import android.util.Log;
 
 public abstract class BufferedStreamConnector {
 
-	public ByteArrayOutputStream buffer;
-	public boolean lockBuffer = false;
+	public ByteArrayOutputStream mConnectorStream;
+	public boolean lockConnStream = false;
 	private int buffFlushSize = 64;
 
 	protected abstract boolean openConnection(String address); // throws
@@ -29,57 +29,65 @@ public abstract class BufferedStreamConnector {
 	protected abstract void startTransmission(BluetoothSocket socket);
 
 	private IBufferReady callerFragment = null;
+	private IBufferReady callerMavLink = null;
 
-	public void registerForIBufferReady(Fragment fragment) {
+	public void registerFragmentForIBufferReady(Fragment fragment) {
 		callerFragment = (IBufferReady) fragment;
+	}
+
+	public void registerMavLinkForIBufferReady(Fragment fragment) {
+		callerMavLink = (IBufferReady) fragment;
 	}
 
 	public BufferedStreamConnector(int capacity) {
 
-		buffer = new ByteArrayOutputStream(capacity);
-		buffer.reset();
+		mConnectorStream = new ByteArrayOutputStream(capacity);
+		mConnectorStream.reset();
 
 	}
 
-	public void waitForBufferLock() {
-		while (lockBuffer) {
+	public void waitForStreamLock() {
+		while (lockConnStream) {
 			;
 		}
 
-		lockBuffer = true;
+		lockConnStream = true;
 	}
 
-	public void releaseBuffer() {
-		lockBuffer = false;
+	public void releaseStream() {
+		lockConnStream = false;
 	}
 
 	public void processBuffer() {
 
-		// waitForBufferLock();
-		// Log.d("DATA","["+
-		// String.valueOf(buffer.size())+"]:"+buffer.toString());
-		// buffer.reset();
-		// releaseBuffer();
+		if (mConnectorStream.size() > buffFlushSize) {
 
-		if ((callerFragment != null) && (buffer.size() > buffFlushSize)) {
-			Log.d("BUFFER", "Size [" + String.valueOf(buffer.size()) + "]:");
-			// Log.d("BUFFER","Size ["+String.valueOf(buffer.size())+"]:"+buffer.toString());
-			callerFragment.onBufferReady();
+			Log.d("BUFFER", "Size [" + String.valueOf(mConnectorStream.size()) + "]:");
+
+			if (callerFragment != null) {
+				callerFragment.onBufferReady();
+			}
+
+			if (callerMavLink != null) {
+				callerMavLink.onBufferReady();
+			}
+
 		}
+
 	}
 
 	private void resetBuffer(boolean withLock) {
 		if (withLock)
-			waitForBufferLock();
-		buffer.reset();
+			waitForStreamLock();
+		mConnectorStream.reset();
 		if (withLock)
-			releaseBuffer();
+			releaseStream();
 	}
 
-	public void copyandResetBuffer(OutputStream targetStream)
+	public void getResetConnStream(OutputStream targetStream)
 			throws IOException {
 
-		buffer.writeTo(targetStream);
+		mConnectorStream.writeTo(targetStream);
 		resetBuffer(false);
 
 	}
