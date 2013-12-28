@@ -15,7 +15,7 @@ import android.util.Log;
 public abstract class BufferedStreamConnector {
 
 	public ByteArrayOutputStream mConnectorStream;
-	public boolean lockStream = false;
+	public boolean lockConnStream = false;
 	private int streamFlushSize = 64;
 
 	protected abstract boolean openConnection(String address); // throws
@@ -62,7 +62,7 @@ public abstract class BufferedStreamConnector {
 
 	public void processBuffer() {
 
-		if (mConnectorStream.size() > buffFlushSize) {
+		if (mConnectorStream.size() > streamFlushSize) {
 
 			Log.d("BUFFER", "Size [" + String.valueOf(mConnectorStream.size()) + "]:");
 
@@ -74,6 +74,8 @@ public abstract class BufferedStreamConnector {
 			if (callerMavLink != null) {
 				callerMavLink.onBufferReady();
 			}
+		}
+	}
 
 	private void resetStream(boolean withLock) {
 		if (withLock)
@@ -87,7 +89,7 @@ public abstract class BufferedStreamConnector {
 			throws IOException {
 
 		mConnectorStream.writeTo(targetStream);
-		resetBuffer(false);
+		resetStream(false);
 
 	}
 

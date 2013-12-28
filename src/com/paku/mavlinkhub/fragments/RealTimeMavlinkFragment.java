@@ -68,7 +68,7 @@ public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
 
 		//get data from the connector mConnectorStream	
 		try {
-			globalVars.mBtConnector.getResetStreamData(mStream);
+			globalVars.mBtConnector.getResetConnStream(mStream);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
