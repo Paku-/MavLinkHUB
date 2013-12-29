@@ -22,7 +22,7 @@ getFragmentManager().beginTransaction()
 }
 }
 
-
+textView
 
 
 PreferenceActivity 

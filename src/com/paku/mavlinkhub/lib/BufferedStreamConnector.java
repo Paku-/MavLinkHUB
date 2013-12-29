@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import com.paku.mavlinkhub.MavLinkStuff;
 import com.paku.mavlinkhub.interfaces.IBufferReady;
 
 import android.bluetooth.BluetoothSocket;
@@ -29,17 +30,20 @@ public abstract class BufferedStreamConnector {
 	protected abstract String getPeerName();
 
 	protected abstract void startTransmission(BluetoothSocket socket);
-
+	
+	
+	//interface
 	private IBufferReady callerFragment = null;
 	private IBufferReady callerMavLink = null;
-
-	public void registerFragmentForIBufferReady(Fragment fragment) {
+	
+	public void registerForIBufferReady(Fragment fragment) {
 		callerFragment = (IBufferReady) fragment;
 	}
 
-	public void registerMavLinkForIBufferReady(Fragment fragment) {
-		callerMavLink = (IBufferReady) fragment;
+	public void registerForIBufferReady(MavLinkStuff mMavLinkStuff) {
+		callerMavLink = (IBufferReady) mMavLinkStuff;
 	}
+	//end
 
 	public BufferedStreamConnector(int capacity) {
 
@@ -61,6 +65,7 @@ public abstract class BufferedStreamConnector {
 	}
 
 	public void processBuffer() {
+		boolean gotRead = false;
 
 		if (mConnectorStream.size() > streamFlushSize) {
 
@@ -68,12 +73,16 @@ public abstract class BufferedStreamConnector {
 
 			if (callerFragment != null) {
 				callerFragment.onBufferReady();
+				gotRead = true;
 
 			}
 
 			if (callerMavLink != null) {
 				callerMavLink.onBufferReady();
+				gotRead = true;
 			}
+			// reset stream if at least one caller got it ...
+			if (gotRead) resetStream(true);
 		}
 	}
 
@@ -85,12 +94,15 @@ public abstract class BufferedStreamConnector {
 			releaseStream();
 	}
 
-	public void getResetConnStream(OutputStream targetStream)
+	public void copyConnectorStream(OutputStream targetStream,boolean doReset)
 			throws IOException {
-
 		mConnectorStream.writeTo(targetStream);
-		resetStream(false);
-
+		if (doReset) resetStream(false);
 	}
+	
+	public ByteArrayOutputStream getConnectorStream(){
+		return mConnectorStream;
+	}
+
 
 }

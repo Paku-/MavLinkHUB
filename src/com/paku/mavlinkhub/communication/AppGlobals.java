@@ -1,5 +1,6 @@
 package com.paku.mavlinkhub.communication;
 
+import com.paku.mavlinkhub.MavLinkStuff;
 import com.paku.mavlinkhub.fragments.FragmentsAdapter;
 import com.paku.mavlinkhub.interfaces.IUiModeChanged;
 
@@ -27,7 +28,8 @@ public class AppGlobals extends Application {
 	public static final int UI_MODE_STATE_ON = 205;
 	public static final int UI_MODE_STATE_OFF = 206;
 	public static final int UI_MODE_TURNING_OFF = 207;
-
+	
+	
 	// BT Dev List state machine constants
 	public static final int LIST_OK = 1;
 	public static final int ERROR_NO_ADAPTER = 2;
@@ -46,20 +48,25 @@ public class AppGlobals extends Application {
 	public BluetoothConnector mBtConnector;
 	public IntentFilter mBtIntentFilter;
 	private BroadcastReceiver mBtReceiver;
+	
+	//MAVLink class holder/object	
+	public MavLinkStuff mMavLinkStuff;
 
 	public int ui_Mode = AppGlobals.UI_MODE_CREATED;
-	public int connectorBufferFlushSize = 64;
 
-	public long ticker = -1;
 
-	public void Init(Context mConext) {
+	public void Init(Context mContext) {
 
 		Log.d(TAG, "** Global Init section call **"); // 2nd
 
-		appContext = mConext;
-		setUiMode(AppGlobals.UI_MODE_CREATED);
+		appContext = mContext;
 
+		
+		setUiMode(AppGlobals.UI_MODE_CREATED);
+		
+		// !!! connector has to exist before the MavLink as there is interface to it.
 		mBtConnector = new BluetoothConnector();
+		mMavLinkStuff = new MavLinkStuff(appContext);
 
 		// get BT broadcasts
 		mBtIntentFilter = new IntentFilter();

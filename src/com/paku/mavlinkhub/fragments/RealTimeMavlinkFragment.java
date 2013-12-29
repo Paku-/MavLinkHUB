@@ -9,6 +9,8 @@ import com.paku.mavlinkhub.interfaces.IBufferReady;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Layout;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +21,8 @@ public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
 
 	private AppGlobals globalVars;
 	ByteArrayOutputStream mStream;
-
-	//scrollView object used to force TextView object to keep scrolling down.
-	ScrollView scrollview;
+	
+	int logCount = 0 ;
 
 	public RealTimeMavlinkFragment() {
 
@@ -53,44 +54,63 @@ public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		
-		scrollview = ((ScrollView) getView().findViewById(R.id.scrollView1));
+		TextView textView = (TextView) (getView()
+				.findViewById(R.id.textView_log));	
+		textView.setMovementMethod(new ScrollingMovementMethod());		
+		
+
 	}
 
 	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		globalVars.mBtConnector.registerFragmentForIBufferReady(this);
+		globalVars.mBtConnector.registerForIBufferReady(this);
 		refreshUI();
 	}
 
 	public void refreshUI() {
 
-		//get data from the connector mConnectorStream	
-		try {
-			globalVars.mBtConnector.getResetConnStream(mStream);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		TextView textView = (TextView) (getView()
+		TextView mTextView = (TextView) (getView()
 				.findViewById(R.id.textView_log));
-		textView.append(mStream.toString());
-
-		mStream.reset();
 		
-		scrollview.post(new Runnable() {
-			@Override
-			public void run() {
-				scrollview.fullScroll(ScrollView.FOCUS_DOWN);
-			}
-		});
+		mTextView.append(mStream.toString());
+
+		//scroll down
+        final Layout layout = mTextView.getLayout();
+        if(layout != null){
+            int scrollDelta = layout.getLineBottom(mTextView.getLineCount() - 1) 
+                - mTextView.getScrollY() - mTextView.getHeight();
+            if(scrollDelta > 0)
+                mTextView.scrollBy(0, scrollDelta);
+        }
+        
+        
+		TextView mTextViewLogStats = (TextView) (getView()
+				.findViewById(R.id.textView1));
+		
+		mTextViewLogStats.setText("Bytes Count: "+logCount);
+		
+        
+
 
 	}
 
 	@Override
 	public void onBufferReady() {
+
+		//get data from the connector mConnectorStream	
+		try {
+			globalVars.mBtConnector.copyConnectorStream(mStream,false);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		logCount+=mStream.size();
+		
 		refreshUI();
+		
+		mStream.reset();		
 	}
 
 }
