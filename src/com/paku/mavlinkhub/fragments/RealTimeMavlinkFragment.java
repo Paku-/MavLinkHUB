@@ -14,7 +14,6 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
@@ -44,7 +43,7 @@ public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_realtime_mavlink,
+		final View rootView = inflater.inflate(R.layout.fragment_realtime_mavlink,
 				container, false);
 
 		return rootView;
@@ -54,7 +53,7 @@ public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		
-		TextView textView = (TextView) (getView()
+		final TextView textView = (TextView) (getView()
 				.findViewById(R.id.textView_log));	
 		textView.setMovementMethod(new ScrollingMovementMethod());		
 		
@@ -71,7 +70,7 @@ public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
 
 	public void refreshUI() {
 
-		TextView mTextView = (TextView) (getView()
+		final TextView mTextView = (TextView) (getView()
 				.findViewById(R.id.textView_log));
 		
 		mTextView.append(mStream.toString());
@@ -86,7 +85,7 @@ public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
         }
         
         
-		TextView mTextViewLogStats = (TextView) (getView()
+		final TextView mTextViewLogStats = (TextView) (getView()
 				.findViewById(R.id.textView1));
 		
 		mTextViewLogStats.setText("Bytes Count: "+logCount);

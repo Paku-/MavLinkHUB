@@ -37,7 +37,7 @@ public class AppGlobals extends Application {
 	public static final int ERROR_NO_BONDED_DEV = 4;
 
 	// other constants
-	public static final int MESSAGE_READ = 101;
+	public static final int MSG_DATA_READY = 101;
 	public static final int REQUEST_ENABLE_BT = 102;
 
 	public Context appContext;

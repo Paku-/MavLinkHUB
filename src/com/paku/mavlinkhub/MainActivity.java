@@ -98,7 +98,7 @@ public class MainActivity extends FragmentActivity {
 
 		if (globalVars.mBtConnector.isConnected()) {
 
-			AlertDialog.Builder dlg = new AlertDialog.Builder(this);
+			final AlertDialog.Builder dlg = new AlertDialog.Builder(this);
 			dlg.setTitle(getString(R.string.close_dlg_title_mavlink_closing)
 					+ "[" + globalVars.mBtConnector.getPeerName() + "]");
 			dlg.setMessage(R.string.close_dlg_msg_current_connection_will_be_lost);

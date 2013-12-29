@@ -48,7 +48,7 @@ public class BluetoothConnector extends BufferedStreamConnector {
 	}
 
 	@Override
-	public void startTransmission(BluetoothSocket socket) {
+	public void startConnectorReceiver(BluetoothSocket socket) {
 
 		mBluetoothSocket = socket;
 
@@ -57,7 +57,7 @@ public class BluetoothConnector extends BufferedStreamConnector {
 
 				switch (msg.what) {
 				// Received data from... somewhere
-				case AppGlobals.MESSAGE_READ:
+				case AppGlobals.MSG_DATA_READY:
 
 					// byte[] readBuf = (byte[]) msg.obj;
 					// String readMessage = new String(readBuf, 0, msg.arg1);
@@ -74,7 +74,7 @@ public class BluetoothConnector extends BufferedStreamConnector {
 
 					releaseStream();
 
-					processBuffer();
+					processConnectorStream();
 
 					break;
 				// case MSG_SELF_DESTRY_SERVICE:

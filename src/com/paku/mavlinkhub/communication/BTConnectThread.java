@@ -57,7 +57,7 @@ public class BTConnectThread extends Thread {
 		Log.d(TAG, "Connected..");
 
 		// Do work to manage the connection (in a separate thread)
-		parentBtConnector.startTransmission(mmSocket);
+		parentBtConnector.startConnectorReceiver(mmSocket);
 	}
 
 	/** Will cancel an in-progress connection, and close the socket */

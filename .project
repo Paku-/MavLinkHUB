@@ -3,6 +3,7 @@
 	<name>AndroPlayground</name>
 	<comment></comment>
 	<projects>
+		<project>Mavlink</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

@@ -24,6 +24,7 @@ getFragmentManager().beginTransaction()
 
 textView
 
+CRC
 
 PreferenceActivity 
 

@@ -17,7 +17,7 @@ public abstract class BufferedStreamConnector {
 
 	public ByteArrayOutputStream mConnectorStream;
 	public boolean lockConnStream = false;
-	private int streamFlushSize = 64;
+	private int streamFlushSize = 16;
 
 	protected abstract boolean openConnection(String address); // throws
 																// UnknownHostException,IOException;
@@ -29,7 +29,7 @@ public abstract class BufferedStreamConnector {
 
 	protected abstract String getPeerName();
 
-	protected abstract void startTransmission(BluetoothSocket socket);
+	protected abstract void startConnectorReceiver(BluetoothSocket socket);
 	
 	
 	//interface
@@ -64,7 +64,7 @@ public abstract class BufferedStreamConnector {
 		lockConnStream = false;
 	}
 
-	public void processBuffer() {
+	public void processConnectorStream() {
 		boolean gotRead = false;
 
 		if (mConnectorStream.size() > streamFlushSize) {

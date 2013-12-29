@@ -48,7 +48,7 @@ public class BTSocketThread extends Thread {
 				// Read from the InputStream
 				bytes = mmInStream.read(buffer);
 				// Send the obtained bytes to the UI activity
-				mmSocketHandler.obtainMessage(AppGlobals.MESSAGE_READ, bytes,
+				mmSocketHandler.obtainMessage(AppGlobals.MSG_DATA_READY, bytes,
 						-1, buffer).sendToTarget();
 			} catch (IOException e) {
 				Log.d(TAG, "Exception [run.read.buffer]:" + e.getMessage());
