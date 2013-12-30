@@ -20,7 +20,7 @@ public class BluetoothConnector extends BufferedStreamConnector {
 
 	BTConnectThread connThread;
 	BTSocketThread socketThread;
-	Handler socketHandler;
+	Handler connectorReceiverHandler;
 
 	public BluetoothConnector() {
 		super(1024);
@@ -52,7 +52,7 @@ public class BluetoothConnector extends BufferedStreamConnector {
 
 		mBluetoothSocket = socket;
 
-		socketHandler = new Handler(Looper.getMainLooper()) {
+		connectorReceiverHandler = new Handler(Looper.getMainLooper()) {
 			public void handleMessage(Message msg) {
 
 				switch (msg.what) {
@@ -87,7 +87,7 @@ public class BluetoothConnector extends BufferedStreamConnector {
 			}
 		};
 
-		socketThread = new BTSocketThread(socket, socketHandler);
+		socketThread = new BTSocketThread(socket, connectorReceiverHandler);
 		socketThread.start();
 
 	}

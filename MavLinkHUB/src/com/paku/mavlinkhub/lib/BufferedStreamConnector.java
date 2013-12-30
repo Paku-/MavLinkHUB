@@ -4,8 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import com.paku.mavlinkhub.MavLinkStuff;
 import com.paku.mavlinkhub.interfaces.IBufferReady;
+import com.paku.mavlinkhub.mavlink.MavLinkStuff;
 
 import android.bluetooth.BluetoothSocket;
 import android.support.v4.app.Fragment;

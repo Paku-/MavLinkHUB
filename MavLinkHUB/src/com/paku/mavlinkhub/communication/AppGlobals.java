@@ -1,8 +1,10 @@
 package com.paku.mavlinkhub.communication;
 
-import com.paku.mavlinkhub.MavLinkStuff;
+import java.io.ObjectOutputStream;
+
 import com.paku.mavlinkhub.fragments.FragmentsAdapter;
 import com.paku.mavlinkhub.interfaces.IUiModeChanged;
+import com.paku.mavlinkhub.mavlink.MavLinkStuff;
 
 import android.app.Application;
 import android.bluetooth.BluetoothAdapter;
@@ -51,6 +53,8 @@ public class AppGlobals extends Application {
 	
 	//MAVLink class holder/object	
 	public MavLinkStuff mMavLinkStuff;
+	//MavLink decoded packets objects stream
+	
 
 	public int ui_Mode = AppGlobals.UI_MODE_CREATED;
 
@@ -66,7 +70,9 @@ public class AppGlobals extends Application {
 		
 		// !!! connector has to exist before the MavLink as there is interface to it.
 		mBtConnector = new BluetoothConnector();
+		
 		mMavLinkStuff = new MavLinkStuff(appContext);
+
 
 		// get BT broadcasts
 		mBtIntentFilter = new IntentFilter();

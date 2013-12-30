@@ -15,12 +15,12 @@ public class BTSocketThread extends Thread {
 	private final BluetoothSocket mmSocket;
 	private final InputStream mmInStream;
 	private final OutputStream mmOutStream;
-	private final Handler mmSocketHandler;
+	private final Handler mConnectorReceiverHandler;
 
-	public BTSocketThread(BluetoothSocket socket, Handler socketHandler) {
+	public BTSocketThread(BluetoothSocket socket, Handler connectorReceiverHandler) {
 
 		mmSocket = socket;
-		mmSocketHandler = socketHandler;
+		mConnectorReceiverHandler = connectorReceiverHandler;
 
 		InputStream tmpIn = null;
 		OutputStream tmpOut = null;
@@ -47,8 +47,8 @@ public class BTSocketThread extends Thread {
 			try {
 				// Read from the InputStream
 				bytes = mmInStream.read(buffer);
-				// Send the obtained bytes to the UI activity
-				mmSocketHandler.obtainMessage(AppGlobals.MSG_DATA_READY, bytes,
+				// Send the obtained bytes to the Connector
+				mConnectorReceiverHandler.obtainMessage(AppGlobals.MSG_DATA_READY, bytes,
 						-1, buffer).sendToTarget();
 			} catch (IOException e) {
 				Log.d(TAG, "Exception [run.read.buffer]:" + e.getMessage());
