@@ -97,7 +97,7 @@ public class ConnectivityFragment extends Fragment implements IUiModeChanged {
 			public void onClick(View v) {
 
 				globalVars.mBtConnector.closeConnection();
-				globalVars.mMavLinkStuff.stopMavLinkParserThread();
+				globalVars.mMavLinkCollector.stopMavLinkParserThread();
 
 			}
 		});
@@ -117,7 +117,7 @@ public class ConnectivityFragment extends Fragment implements IUiModeChanged {
 			String address = info.substring(info.length() - 17);
 
 			globalVars.mBtConnector.openConnection(address);
-			globalVars.mMavLinkStuff.startMavLinkParserThread();
+			globalVars.mMavLinkCollector.startMavLinkParserThread();
 
 		}
 	};

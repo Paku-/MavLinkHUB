@@ -8,9 +8,9 @@ import android.util.Log;
 import com.paku.mavlinkhub.communication.AppGlobals;
 import com.paku.mavlinkhub.interfaces.IBufferReady;
 
-public class MavLinkStuff implements IBufferReady {
+public class MavLinkCollector implements IBufferReady {
 
-	private static final String TAG = "MavLinkStuff";
+	private static final String TAG = "MavLinkCollector";
 
 	private AppGlobals globalVars;
 
@@ -25,7 +25,7 @@ public class MavLinkStuff implements IBufferReady {
 	
 	private MavLinkParserThread parserThread;
 
-	public MavLinkStuff(Context mConext) {
+	public MavLinkCollector(Context mConext) {
 
 		globalVars = ((AppGlobals) mConext.getApplicationContext());
 

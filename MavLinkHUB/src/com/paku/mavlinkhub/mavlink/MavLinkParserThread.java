@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 import android.util.Log;
 
 import com.MAVLink.Parser;
+import com.MAVLink.Messages.MAVLinkMessage;
 import com.MAVLink.Messages.MAVLinkPacket;
 
 public class MavLinkParserThread extends Thread {
@@ -55,17 +56,27 @@ public class MavLinkParserThread extends Thread {
 			for (int i = 0; i < bufferLen; i++) {
 				lastMavLinkPacket = parser.mavlink_parse_char(buffer[i]& 0x00ff);
 				if (lastMavLinkPacket != null) {
+					Log.d(TAG, "Got packet " + lastMavLinkPacket.seq + " "
+							+ lastMavLinkPacket.msgid);
+					MAVLinkMessage lastMavLinkMsg = lastMavLinkPacket.unpack();
+					
+					try {
+						mPacketsOutputStream.writeObject(lastMavLinkMsg);
+					} catch (IOException e) {
+						Log.d(TAG, "ObjectStream write: " + e.getMessage());
+						//e.printStackTrace();
+					}
+					
+					/*
 					try {
 						if (lastMavLinkPacket != null)
-							mPacketsOutputStream.writeObject(lastMavLinkPacket);
-						Log.d(TAG, "Got packet " + lastMavLinkPacket.seq + " "
-								+ lastMavLinkPacket.msgid);
+							mPacketsOutputStream.writeObject(lastMavLinkPacket);						
 
 					} catch (IOException e) {
 						Log.d(TAG, "ObjectStream write: " + e.getMessage());
 						e.printStackTrace();
 					}
-
+*/
 				}
 			}
 

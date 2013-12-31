@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import com.paku.mavlinkhub.interfaces.IBufferReady;
-import com.paku.mavlinkhub.mavlink.MavLinkStuff;
+import com.paku.mavlinkhub.mavlink.MavLinkCollector;
 
 import android.bluetooth.BluetoothSocket;
 import android.support.v4.app.Fragment;
@@ -15,6 +15,8 @@ import android.util.Log;
 
 public abstract class BufferedStreamConnector {
 
+	private static final String TAG = "BufferedStreamConnector";
+	
 	public ByteArrayOutputStream mConnectorStream;
 	public boolean lockConnStream = false;
 	private int streamFlushSize = 16;
@@ -40,7 +42,7 @@ public abstract class BufferedStreamConnector {
 		callerFragment = (IBufferReady) fragment;
 	}
 
-	public void registerForIBufferReady(MavLinkStuff mMavLinkStuff) {
+	public void registerForIBufferReady(MavLinkCollector mMavLinkStuff) {
 		callerMavLink = (IBufferReady) mMavLinkStuff;
 	}
 	//end
@@ -69,7 +71,7 @@ public abstract class BufferedStreamConnector {
 
 		if (mConnectorStream.size() > streamFlushSize) {
 
-			Log.d("BUFFER", "Size [" + String.valueOf(mConnectorStream.size()) + "]:");
+			Log.d(TAG, "Stream Size: [" + String.valueOf(mConnectorStream.size()) + "]:");
 
 			if (callerFragment != null) {
 				callerFragment.onBufferReady();
