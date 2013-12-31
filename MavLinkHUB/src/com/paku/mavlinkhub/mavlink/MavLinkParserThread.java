@@ -1,7 +1,7 @@
 package com.paku.mavlinkhub.mavlink;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.ObjectOutputStream;
 
 import android.util.Log;
@@ -14,19 +14,25 @@ public class MavLinkParserThread extends Thread {
 	private static final String TAG = "MavLinkParserThread";
 
 	private Parser parser;
+
+	private byte[] buffer;
+	private int bufferLen;
+
 	// data read stream
-	private ByteArrayInputStream mMavLinkInputStream;
+
+	private ByteArrayOutputStream mStoredDataStream;
 	private ObjectOutputStream mPacketsOutputStream;
 	private boolean running = true;
 	private MAVLinkPacket lastMavLinkPacket = null;
 
 	public MavLinkParserThread(ByteArrayOutputStream mDataStream,
 			ObjectOutputStream mOutputStream) {
+
 		parser = new Parser();
 
 		// read this
-		mMavLinkInputStream = new ByteArrayInputStream(
-				mDataStream.toByteArray());
+		mStoredDataStream = mDataStream;
+
 		// write pockets here
 		mPacketsOutputStream = mOutputStream;
 		running = true;
@@ -37,40 +43,35 @@ public class MavLinkParserThread extends Thread {
 
 		while (running) {
 
-			lastMavLinkPacket = null;
 
-			while (mMavLinkInputStream.available() > 0) {
-
-				while (((lastMavLinkPacket == null) && (mMavLinkInputStream
-						.available() > 0))
-
-				) {
-
-					lastMavLinkPacket = parser
-							.mavlink_parse_char(mMavLinkInputStream.read());
-				}
-				;
-				/*
-				 * try { if (lastMavLinkPacket != null)
-				 * mMavLinkPacketsObjectsOutputStream
-				 * .writeObject(lastMavLinkPacket); } catch (IOException e) {
-				 * Log.d(TAG, "ObjectStream write: " + e.getMessage());
-				 * e.printStackTrace(); }
-				 */
-
-				// Log.d(TAG,"ObjBuff size: " + mPacketsOutputStream.);
-
-				if (lastMavLinkPacket != null)
-					Log.d(TAG, "Got packet " + lastMavLinkPacket.seq + " "
-							+ lastMavLinkPacket.msgid);
-				else
-					Log.d(TAG, " ** Null **");
-
+			if (mStoredDataStream.size() > 0) {
+				lastMavLinkPacket = null;
+				buffer = mStoredDataStream.toByteArray();
+				bufferLen = mStoredDataStream.size();
+				mStoredDataStream.reset();
+				Log.d(TAG, "Array Size: " + bufferLen);
 			}
 
-			// mdatast.reset();
+			for (int i = 0; i < bufferLen; i++) {
+				lastMavLinkPacket = parser.mavlink_parse_char(buffer[i]& 0x00ff);
+				if (lastMavLinkPacket != null) {
+					try {
+						if (lastMavLinkPacket != null)
+							mPacketsOutputStream.writeObject(lastMavLinkPacket);
+						Log.d(TAG, "Got packet " + lastMavLinkPacket.seq + " "
+								+ lastMavLinkPacket.msgid);
 
+					} catch (IOException e) {
+						Log.d(TAG, "ObjectStream write: " + e.getMessage());
+						e.printStackTrace();
+					}
+
+				}
+			}
+
+			bufferLen = 0;
 		}
+
 	}
 
 	public void stopMe(boolean doStop) {
