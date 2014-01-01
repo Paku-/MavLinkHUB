@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import com.paku.mavlinkhub.interfaces.IBufferReady;
-import com.paku.mavlinkhub.mavlink.MavLinkCollector;
-
 import android.bluetooth.BluetoothSocket;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -19,7 +17,7 @@ public abstract class BufferedStreamConnector {
 	
 	public ByteArrayOutputStream mConnectorStream;
 	public boolean lockConnStream = false;
-	private int streamFlushSize = 16;
+	private int uiRefreshOnBuffSize = 16;
 
 	protected abstract boolean openConnection(String address); // throws
 																// UnknownHostException,IOException;
@@ -33,19 +31,13 @@ public abstract class BufferedStreamConnector {
 
 	protected abstract void startConnectorReceiver(BluetoothSocket socket);
 	
-	
+
 	//interface
 	private IBufferReady callerFragment = null;
-	private IBufferReady callerMavLink = null;
-	
+
 	public void registerForIBufferReady(Fragment fragment) {
 		callerFragment = (IBufferReady) fragment;
 	}
-
-	public void registerForIBufferReady(MavLinkCollector mMavLinkStuff) {
-		callerMavLink = (IBufferReady) mMavLinkStuff;
-	}
-	//end
 
 	public BufferedStreamConnector(int capacity) {
 
@@ -67,24 +59,15 @@ public abstract class BufferedStreamConnector {
 	}
 
 	public void processConnectorStream() {
-		boolean gotRead = false;
 
-		if (mConnectorStream.size() > streamFlushSize) {
+
+		if (mConnectorStream.size() > uiRefreshOnBuffSize) {
 
 			Log.d(TAG, "Stream Size: [" + String.valueOf(mConnectorStream.size()) + "]:");
 
 			if (callerFragment != null) {
 				callerFragment.onBufferReady();
-				gotRead = true;
-
 			}
-
-			if (callerMavLink != null) {
-				callerMavLink.onBufferReady();
-				gotRead = true;
-			}
-			// reset stream if at least one caller got it ...
-			if (gotRead) resetStream(true);
 		}
 	}
 

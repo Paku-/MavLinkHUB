@@ -1,7 +1,5 @@
 package com.paku.mavlinkhub.communication;
 
-import java.io.ObjectOutputStream;
-
 import com.paku.mavlinkhub.SysStatsHolder;
 import com.paku.mavlinkhub.fragments.FragmentsAdapter;
 import com.paku.mavlinkhub.interfaces.IUiModeChanged;

@@ -9,6 +9,7 @@ import android.util.Log;
 import com.MAVLink.Parser;
 import com.MAVLink.Messages.MAVLinkMessage;
 import com.MAVLink.Messages.MAVLinkPacket;
+import com.paku.mavlinkhub.SysStatsHolder;
 
 public class MavLinkParserThread extends Thread {
 
@@ -21,21 +22,29 @@ public class MavLinkParserThread extends Thread {
 
 	// data read stream
 
-	private ByteArrayOutputStream mMLCollectorTempByteDataStream;
-	private ObjectOutputStream mMavLinkMsgsOutputStream;
+	private ByteArrayOutputStream mByteDataStream;
+	private ByteArrayOutputStream mByteLoggingOutputStream;
+	private ObjectOutputStream mMsgsLoggingOutputStream;
 	private boolean running = true;
 	private MAVLinkPacket lastMavLinkPacket = null;
+	private SysStatsHolder mSysStatsHolder;
 
-	public MavLinkParserThread(ByteArrayOutputStream mDataStream,
-			ObjectOutputStream mOutputStream) {
+	public MavLinkParserThread(ByteArrayOutputStream mDataStream,ByteArrayOutputStream mByteOutputStream,
+			ObjectOutputStream mMsgOutputStream,SysStatsHolder mStatsHolder) {
 
 		parser = new Parser();
 
 		// read this
-		mMLCollectorTempByteDataStream = mDataStream;
+		mByteDataStream = mDataStream;
 
-		// write pockets here
-		mMavLinkMsgsOutputStream = mOutputStream;
+		//write bytes here - logging stream
+		mByteLoggingOutputStream = mByteOutputStream;
+		
+		// write ML messages here
+		mMsgsLoggingOutputStream = mMsgOutputStream;
+		
+		mSysStatsHolder = mStatsHolder;
+		
 		running = true;
 
 	}
@@ -44,47 +53,50 @@ public class MavLinkParserThread extends Thread {
 
 		while (running) {
 
-
-			if (mMLCollectorTempByteDataStream.size() > 0) {
+			if (mByteDataStream.size() > 0) {
 				lastMavLinkPacket = null;
-				buffer = mMLCollectorTempByteDataStream.toByteArray();
-				bufferLen = mMLCollectorTempByteDataStream.size();
-				mMLCollectorTempByteDataStream.reset();
-				Log.d(TAG, "Parser IN: " + bufferLen);
-			}
+				
+				buffer = mByteDataStream.toByteArray();
+				bufferLen = mByteDataStream.size();
 
-			for (int i = 0; i < bufferLen; i++) {
-				lastMavLinkPacket = parser.mavlink_parse_char(buffer[i]& 0x00ff);
-				if (lastMavLinkPacket != null) {
-					Log.d(TAG, "Pkg: " + lastMavLinkPacket.seq + " "
-							+ lastMavLinkPacket.msgid);
-					MAVLinkMessage lastMavLinkMsg = lastMavLinkPacket.unpack();
-					Log.d(TAG, "Msg: " + lastMavLinkMsg.toString());					
-					
-					//fill msgs stream with new arrival
-					try {
-						mMavLinkMsgsOutputStream.writeObject(lastMavLinkMsg);
-					} catch (IOException e) {
-						Log.d(TAG, "MsgStream write: " + e.getMessage());
-						//e.printStackTrace();
-					}
-					
-					/*
-					try {
-						if (lastMavLinkPacket != null)
-							mPacketsOutputStream.writeObject(lastMavLinkPacket);						
+				//flush input stream
+				mByteDataStream.reset();				
+				
+				//store bytes stream
+				
+				mByteLoggingOutputStream.write(buffer, 0, bufferLen);				
+				
+				mSysStatsHolder.statsByteCount+=bufferLen;
 
-					} catch (IOException e) {
-						Log.d(TAG, "ObjectStream write: " + e.getMessage());
-						e.printStackTrace();
+
+				Log.d(TAG, "ML Parser IN: " + bufferLen);
+
+				for (int i = 0; i < bufferLen; i++) {
+
+					lastMavLinkPacket = parser
+							.mavlink_parse_char(buffer[i] & 0x00ff);
+					if (lastMavLinkPacket != null) {
+						Log.d(TAG, "Pkg: " + lastMavLinkPacket.seq + " "
+								+ lastMavLinkPacket.msgid);
+						MAVLinkMessage lastMavLinkMsg = lastMavLinkPacket
+								.unpack();
+						Log.d(TAG, "Msg: " + lastMavLinkMsg.toString());
+
+						// fill msgs stream with new arrival
+						try {
+							mMsgsLoggingOutputStream
+									.writeObject(lastMavLinkMsg);
+						} catch (IOException e) {
+							Log.d(TAG, "MsgStream write: " + e.getMessage());
+							// e.printStackTrace();
+						}
+
 					}
-*/
 				}
+
+				bufferLen = 0;
 			}
-
-			bufferLen = 0;
 		}
-
 	}
 
 	public void stopMe(boolean doStop) {

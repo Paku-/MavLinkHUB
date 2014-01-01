@@ -1,8 +1,5 @@
 package com.paku.mavlinkhub.fragments;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.communication.AppGlobals;
 import com.paku.mavlinkhub.interfaces.IBufferReady;
@@ -19,9 +16,9 @@ import android.widget.TextView;
 
 public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
 
+	//@SuppressWarnings("unused")
 	private static final String TAG = "RealTimeMavlinkFragment";
 	private AppGlobals globalVars;
-	ByteArrayOutputStream mByteLogTempStream;
 	
 	public RealTimeMavlinkFragment() {
 
@@ -35,8 +32,6 @@ public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
 		setRetainInstance(true);
 
 		globalVars = (AppGlobals) getActivity().getApplication();
-
-		mByteLogTempStream = new ByteArrayOutputStream();
 
 	}
 
@@ -73,24 +68,24 @@ public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
 		final TextView mTextViewBytesLog = (TextView) (getView()
 				.findViewById(R.id.textView_logByte));
 		
-		mTextViewBytesLog.append(mByteLogTempStream.toString());
+		mTextViewBytesLog.setText(globalVars.mMavLinkCollector.mByteLogStream.toString());
 		//mByteLogTempStream.reset();
 		
 		
-		final TextView mTextViewMsgLog = (TextView) (getView()
-				.findViewById(R.id.TextView_logMavLinkMsg));
+		//final TextView mTextViewMsgLog = (TextView) (getView()
+				//.findViewById(R.id.TextView_logMavLinkMsg));
 
-		mTextViewMsgLog.append(mByteLogTempStream.toString());
-		mByteLogTempStream.reset();
+		//mTextViewMsgLog.append(mByteLogTempStream.toString());
+		//mByteLogTempStream.reset();
 		
 		
 		//scroll down
-        final Layout layout = mTextViewMsgLog.getLayout();
+        final Layout layout = mTextViewBytesLog.getLayout();
         if(layout != null){
-            int scrollDelta = layout.getLineBottom(mTextViewMsgLog.getLineCount() - 1) 
-                - mTextViewMsgLog.getScrollY() - mTextViewMsgLog.getHeight();
+            int scrollDelta = layout.getLineBottom(mTextViewBytesLog.getLineCount() - 1) 
+                - mTextViewBytesLog.getScrollY() - mTextViewBytesLog.getHeight();
             if(scrollDelta > 0)
-                mTextViewMsgLog.scrollBy(0, scrollDelta);
+            	mTextViewBytesLog.scrollBy(0, scrollDelta);
         }
         
         
@@ -106,18 +101,8 @@ public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
 
 	@Override
 	public void onBufferReady() {
-
-		//get data from the connector mConnectorStream	
-		try {
-			globalVars.mBtConnector.copyConnectorStream(mByteLogTempStream,false);
-		} catch (IOException e) {
-			Log.d(TAG, "Stream copy: " + e.getMessage());
-			e.printStackTrace();
-		}
-
-		refreshUI();
-		
-				
+		Log.d(TAG, "[ByteLog]"+globalVars.mMavLinkCollector.mByteLogStream.size());
+		refreshUI();				
 	}
 
 }
