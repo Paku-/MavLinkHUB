@@ -19,7 +19,7 @@ import android.widget.TextView;
 public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
 
 	private AppGlobals globalVars;
-	ByteArrayOutputStream mStream;
+	ByteArrayOutputStream mPackagesLogStream;
 	
 	int logCount = 0 ;
 
@@ -36,7 +36,7 @@ public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
 
 		globalVars = (AppGlobals) getActivity().getApplication();
 
-		mStream = new ByteArrayOutputStream();
+		mPackagesLogStream = new ByteArrayOutputStream();
 
 	}
 
@@ -73,7 +73,7 @@ public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
 		final TextView mTextView = (TextView) (getView()
 				.findViewById(R.id.textView_log));
 		
-		mTextView.append(mStream.toString());
+		mTextView.append(mPackagesLogStream.toString());
 
 		//scroll down
         final Layout layout = mTextView.getLayout();
@@ -88,7 +88,7 @@ public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
 		final TextView mTextViewLogStats = (TextView) (getView()
 				.findViewById(R.id.textView1));
 		
-		mTextViewLogStats.setText("Bytes Count: "+logCount);
+		mTextViewLogStats.setText("Bytes Count: "+globalVars.sysStatsHolder.statsByteCount);
 		
         
 
@@ -100,16 +100,16 @@ public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
 
 		//get data from the connector mConnectorStream	
 		try {
-			globalVars.mBtConnector.copyConnectorStream(mStream,false);
+			globalVars.mBtConnector.copyConnectorStream(mPackagesLogStream,false);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		logCount+=mStream.size();
+		globalVars.sysStatsHolder.statsByteCount+=mPackagesLogStream.size();
 		
 		refreshUI();
 		
-		mStream.reset();		
+		mPackagesLogStream.reset();		
 	}
 
 }
