@@ -80,7 +80,7 @@ public class AppGlobals extends Application {
 		sysStatsHolder = new SysStatsHolder();
 
 
-		// get BT broadcasts
+		// create BT broadcasts  receiver
 		mBtIntentFilter = new IntentFilter();
 		mBtIntentFilter
 				.addAction(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);

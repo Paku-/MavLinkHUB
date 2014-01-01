@@ -21,8 +21,8 @@ public class MavLinkParserThread extends Thread {
 
 	// data read stream
 
-	private ByteArrayOutputStream mStoredDataStream;
-	private ObjectOutputStream mPacketsOutputStream;
+	private ByteArrayOutputStream mMLCollectorTempByteDataStream;
+	private ObjectOutputStream mMavLinkMsgsOutputStream;
 	private boolean running = true;
 	private MAVLinkPacket lastMavLinkPacket = null;
 
@@ -32,10 +32,10 @@ public class MavLinkParserThread extends Thread {
 		parser = new Parser();
 
 		// read this
-		mStoredDataStream = mDataStream;
+		mMLCollectorTempByteDataStream = mDataStream;
 
 		// write pockets here
-		mPacketsOutputStream = mOutputStream;
+		mMavLinkMsgsOutputStream = mOutputStream;
 		running = true;
 
 	}
@@ -45,25 +45,27 @@ public class MavLinkParserThread extends Thread {
 		while (running) {
 
 
-			if (mStoredDataStream.size() > 0) {
+			if (mMLCollectorTempByteDataStream.size() > 0) {
 				lastMavLinkPacket = null;
-				buffer = mStoredDataStream.toByteArray();
-				bufferLen = mStoredDataStream.size();
-				mStoredDataStream.reset();
-				Log.d(TAG, "Array Size: " + bufferLen);
+				buffer = mMLCollectorTempByteDataStream.toByteArray();
+				bufferLen = mMLCollectorTempByteDataStream.size();
+				mMLCollectorTempByteDataStream.reset();
+				Log.d(TAG, "Parser IN: " + bufferLen);
 			}
 
 			for (int i = 0; i < bufferLen; i++) {
 				lastMavLinkPacket = parser.mavlink_parse_char(buffer[i]& 0x00ff);
 				if (lastMavLinkPacket != null) {
-					Log.d(TAG, "Got packet " + lastMavLinkPacket.seq + " "
+					Log.d(TAG, "Pkg: " + lastMavLinkPacket.seq + " "
 							+ lastMavLinkPacket.msgid);
 					MAVLinkMessage lastMavLinkMsg = lastMavLinkPacket.unpack();
+					Log.d(TAG, "Msg: " + lastMavLinkMsg.toString());					
 					
+					//fill msgs stream with new arrival
 					try {
-						mPacketsOutputStream.writeObject(lastMavLinkMsg);
+						mMavLinkMsgsOutputStream.writeObject(lastMavLinkMsg);
 					} catch (IOException e) {
-						Log.d(TAG, "ObjectStream write: " + e.getMessage());
+						Log.d(TAG, "MsgStream write: " + e.getMessage());
 						//e.printStackTrace();
 					}
 					

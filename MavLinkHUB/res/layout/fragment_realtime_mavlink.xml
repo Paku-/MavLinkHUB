@@ -11,20 +11,27 @@
         android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/textView_log"
+            android:id="@+id/TextView_logMavLinkMsg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight=".5"
+            android:layout_weight="3"
             android:text="@string/bufferEmpty"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/textView_logByte"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/bufferEmpty"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/textView_logStatsbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Log Statistics"
             android:textAppearance="?android:attr/textAppearanceMedium" />
-
     </LinearLayout>
 
 </LinearLayout>

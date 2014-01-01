@@ -15,13 +15,13 @@ public class MavLinkCollector implements IBufferReady {
 	private AppGlobals globalVars;
 
 	// here data arrive
-	private ByteArrayOutputStream mMavLinkTempOutputStream;
+	private ByteArrayOutputStream mByteLogTempStream;
 
 	// And are stored in this stream for further distribution
-	private ByteArrayOutputStream mMavLinkPacketByteOutputStream;
+	private ByteArrayOutputStream mMavLinkMsgByteBackgroundOutputStream;
 
 	// true parser output - the mavlink pockets stream
-	public ObjectOutputStream mMavLinkPacketObjectsOutputStream;
+	public ObjectOutputStream mMavLinkMsgObjectsOutputStream;
 	
 	private MavLinkParserThread parserThread;
 
@@ -30,16 +30,16 @@ public class MavLinkCollector implements IBufferReady {
 		globalVars = ((AppGlobals) mConext.getApplicationContext());
 
 		// set the arrival data stream ready for data collecting..
-		mMavLinkTempOutputStream = new ByteArrayOutputStream();
-		mMavLinkTempOutputStream.reset();
+		mByteLogTempStream = new ByteArrayOutputStream();
+		mByteLogTempStream.reset();
 
-		// set the decoded packets streams ready.
+		// set the decoded msg streams ready.
 		try {
-			// mavlink packets as byte data
-			mMavLinkPacketByteOutputStream = new ByteArrayOutputStream();
-			// true mavlink packets objects stream (based on above)
-			mMavLinkPacketObjectsOutputStream = new ObjectOutputStream(
-					mMavLinkPacketByteOutputStream);
+			// mavlink msg objects as byte data
+			mMavLinkMsgByteBackgroundOutputStream = new ByteArrayOutputStream();
+			// true mavlink msg objects stream (based on above)
+			mMavLinkMsgObjectsOutputStream = new ObjectOutputStream(
+					mMavLinkMsgByteBackgroundOutputStream);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -47,8 +47,6 @@ public class MavLinkCollector implements IBufferReady {
 
 		globalVars.mBtConnector.registerForIBufferReady(this);
 		
-		parserThread = new MavLinkParserThread(mMavLinkTempOutputStream, mMavLinkPacketObjectsOutputStream);
-
 	}
 
 	@Override
@@ -56,19 +54,23 @@ public class MavLinkCollector implements IBufferReady {
 
 		try {
 			// get data copy
-			globalVars.mBtConnector.mConnectorStream
-					.writeTo(mMavLinkTempOutputStream);
+			//globalVars.mBtConnector.mConnectorStream
+			//		.writeTo(mMavLinkTempOutputStream);
+			globalVars.mBtConnector.copyConnectorStream(mByteLogTempStream,false);
 		} catch (IOException e) {
 			Log.d(TAG, "Stream copy: " + e.getMessage());
 			e.printStackTrace();
 		}
 
-		Log.d(TAG, "Buff START size: " + mMavLinkTempOutputStream.size());
+		globalVars.sysStatsHolder.statsByteCount+=mByteLogTempStream.size();
+		
+		Log.d(TAG, "Buff START size: " + mByteLogTempStream.size());
 
 	}
 	
 	public void startMavLinkParserThread()
 	{
+		parserThread = new MavLinkParserThread(mByteLogTempStream, mMavLinkMsgObjectsOutputStream);
 		parserThread.start();
 	}
 	
