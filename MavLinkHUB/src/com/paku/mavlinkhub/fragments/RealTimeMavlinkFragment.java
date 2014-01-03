@@ -68,7 +68,7 @@ public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
 		final TextView mTextViewBytesLog = (TextView) (getView()
 				.findViewById(R.id.textView_logByte));
 		
-		mTextViewBytesLog.setText(globalVars.mMavLinkCollector.mByteLogStream.toString());
+		mTextViewBytesLog.setText(globalVars.mMavLinkCollector.mByteSysWideLogStream.toString());
 		//mByteLogTempStream.reset();
 		
 		
@@ -101,7 +101,7 @@ public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
 
 	@Override
 	public void onBufferReady() {
-		Log.d(TAG, "[ByteLog]"+globalVars.mMavLinkCollector.mByteLogStream.size());
+		Log.d(TAG, "[ByteLog]"+globalVars.mMavLinkCollector.mByteSysWideLogStream.size());
 		refreshUI();				
 	}
 

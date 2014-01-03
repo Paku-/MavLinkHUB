@@ -17,7 +17,7 @@ public class SettingsFragment extends PreferenceFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		getView().setBackgroundColor(Color.WHITE);
+		getView().setBackgroundColor(Color.GRAY);
 	}
 
 }

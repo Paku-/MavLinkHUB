@@ -1,11 +1,11 @@
 package com.paku.mavlinkhub.mavlink;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import android.content.Context;
 import com.paku.mavlinkhub.communication.AppGlobals;
-
 
 public class MavLinkCollector {
 
@@ -15,48 +15,53 @@ public class MavLinkCollector {
 	private AppGlobals globalVars;
 
 	// here data arrive
-	public ByteArrayOutputStream mByteLogStream;
+	public ByteArrayOutputStream mByteSysWideLogStream;
 
 	// And are stored in this stream for further distribution
-	private ByteArrayOutputStream mMavLinkMsgByteBackgroundOutputStream;
+	private ByteArrayOutputStream mMsgByteBasedBackgroundStream;
 
 	// true parser output - the mavlink pockets stream
-	public ObjectOutputStream mMavLinkMsgLogOutputStream;
-	
+	public ObjectOutputStream mMsgSysWideLogStream;
+
 	private MavLinkParserThread parserThread;
 
 	public MavLinkCollector(Context mConext) {
 
 		globalVars = ((AppGlobals) mConext.getApplicationContext());
 
-		// set the arrival data stream ready for data collecting..
-		mByteLogStream = new ByteArrayOutputStream();
-		mByteLogStream.reset();
+		// set the system wide byte stream ready for data collecting..
+		mByteSysWideLogStream = new ByteArrayOutputStream();
+		mByteSysWideLogStream.reset();
 
 		// set the decoded msg streams ready.
 		try {
 			// mavlink msg objects as byte data
-			mMavLinkMsgByteBackgroundOutputStream = new ByteArrayOutputStream();
-			// true mavlink msg objects stream (based on above)
-			mMavLinkMsgLogOutputStream = new ObjectOutputStream(
-					mMavLinkMsgByteBackgroundOutputStream);
+			mMsgByteBasedBackgroundStream = new ByteArrayOutputStream();
+			// true system wide mavlink msg objects stream (based on above)
+			mMsgSysWideLogStream = new ObjectOutputStream(
+					mMsgByteBasedBackgroundStream);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		//globalVars.mBtConnector.registerForIBufferReady(this);
-		
+		// globalVars.mBtConnector.registerForIBufferReady(this);
+
 	}
 
+	public void startMavLinkParserThread() {
 
-	public void startMavLinkParserThread()
-	{
-		parserThread = new MavLinkParserThread(globalVars.mBtConnector.mConnectorStream,mByteLogStream, mMavLinkMsgLogOutputStream,globalVars.sysStatsHolder);
+		File logFile = new File(globalVars.appContext.getExternalFilesDir(null),
+				"paku.txt");
+
+		parserThread = new MavLinkParserThread(
+				globalVars.mBtConnector.mConnectorStream,
+				mByteSysWideLogStream, mMsgSysWideLogStream,
+				globalVars.sysStatsHolder, logFile);
 		parserThread.start();
 	}
-	
-	public void stopMavLinkParserThread(){
+
+	public void stopMavLinkParserThread() {
 		parserThread.stopMe(true);
 	}
 

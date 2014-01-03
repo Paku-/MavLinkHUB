@@ -14,9 +14,11 @@
     <string name="bt_calibrate">Calibrate</string>
     <string name="bt_connectivity">Disconnect</string>    
 <!-- Pref Section I  -->
-    <string name="pref_title_section1">Section1 Title</string>    
-    <string name="pref_title_enable_it">Enable something</string>
-    <string name="pref_summary_enable_it">And this is a summary</string>
+    <string name="pref_log_section_title">Logging</string>    
+    <string name="pref_log_system_title">File log system activities.</string>
+    <string name="pref_log_system_summary">Log internal MavLinkHUB activities like connection opening, new data arrival or buffers sizes.</string>
+    <string name="pref_log_mavlink_byte_title">File log MavLink data stream</string>
+    <string name="pref_log_mavlink_byte_summary">Log poor MavLink datas stream into the file.</string>    
 <!-- Pref Section II  -->
     <string name="pref_title_section2">Section2 Title</string>    
     <string name="pref_title_do_it">Force me to do something</string>
@@ -32,5 +34,7 @@
     <string name="bufferEmpty">Buffer empty</string>    
     <string name="log_ml_msg_log_empty">MavLink messages log empty</string>    
     <string name="ml_byte_log_empty">Transmission log empty</string>    
-    <string name="log_ml_stats">Log statistics</string>
+    <string name="log_ml_stats">Log statistics</string>    
+    <string name="pref_log_mavlink_file_folder_title">MavLink log file location folder</string>    
+    <string name="pref_log_system_file_folder_title">System log file default folder</string>
 </resources>

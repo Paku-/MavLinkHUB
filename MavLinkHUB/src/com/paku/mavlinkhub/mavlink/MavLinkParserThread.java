@@ -1,6 +1,10 @@
 package com.paku.mavlinkhub.mavlink;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
@@ -28,28 +32,41 @@ public class MavLinkParserThread extends Thread {
 	private boolean running = true;
 	private MAVLinkPacket lastMavLinkPacket = null;
 	private SysStatsHolder mSysStatsHolder;
+	private BufferedOutputStream mFileByteLogStream;
 
 	public MavLinkParserThread(ByteArrayOutputStream mDataStream,ByteArrayOutputStream mByteOutputStream,
-			ObjectOutputStream mMsgOutputStream,SysStatsHolder mStatsHolder) {
+			ObjectOutputStream mMsgOutputStream,SysStatsHolder mStatsHolder,File logFile) {
 
 		parser = new Parser();
 
 		// read this
 		mByteDataStream = mDataStream;
 
-		//write bytes here - logging stream
+		//write bytes here - system logging stream
 		mByteLoggingOutputStream = mByteOutputStream;
 		
+
 		// write ML messages here
 		mMsgsLoggingOutputStream = mMsgOutputStream;
 		
 		mSysStatsHolder = mStatsHolder;
 		
 		running = true;
+		
+		
+		//file logging
+		try {
+			mFileByteLogStream  = new BufferedOutputStream(new FileOutputStream(logFile, true));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 
 	}
 
 	public void run() {
+				
 
 		while (running) {
 
@@ -64,12 +81,22 @@ public class MavLinkParserThread extends Thread {
 				
 				//store bytes stream
 				
-				mByteLoggingOutputStream.write(buffer, 0, bufferLen);				
+				mByteLoggingOutputStream.write(buffer, 0, bufferLen);
+				
+				try {
+					mFileByteLogStream.write(buffer, 0, bufferLen);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					Log.d(TAG, e1.getMessage());
+					e1.printStackTrace();
+				}
+				
+				
 				
 				mSysStatsHolder.statsByteCount+=bufferLen;
 
 
-				Log.d(TAG, "ML Parser IN: " + bufferLen);
+				Log.d(TAG, "ML Parser got bytes: " + bufferLen);
 
 				for (int i = 0; i < bufferLen; i++) {
 
@@ -97,10 +124,22 @@ public class MavLinkParserThread extends Thread {
 				bufferLen = 0;
 			}
 		}
+		
+	
 	}
 
 	public void stopMe(boolean doStop) {
 		running = doStop;
+		
+		try {
+			mFileByteLogStream.flush(); //working ??
+			mFileByteLogStream.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
 
 }

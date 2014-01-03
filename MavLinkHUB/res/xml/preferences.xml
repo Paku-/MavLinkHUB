@@ -1,28 +1,42 @@
-<PreferenceScreen
-        xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <PreferenceCategory
-            android:title="@string/pref_title_section1">
+    <PreferenceCategory android:title="@string/pref_log_section_title" >
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_log_mavlink_byte"
+            android:summary="@string/pref_log_mavlink_byte_summary"
+            android:title="@string/pref_log_mavlink_byte_title" />
 
-    	<CheckBoxPreference
-        	android:key="pref_enable_it"
-        	android:title="@string/pref_title_enable_it"
-        	android:summary="@string/pref_summary_enable_it"
-        	android:defaultValue="true" />  
+        <EditTextPreference
+            android:key="pref_log_mavlink_folder"
+            android:title="@string/pref_log_mavlink_file_folder_title" />
 
-   	</PreferenceCategory>
-   	
-    <PreferenceCategory
-            android:title="@string/pref_title_section2">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_log_system"
+            android:summary="@string/pref_log_system_summary"
+            android:title="@string/pref_log_system_title" />
 
-    	<CheckBoxPreference
-        	android:key="pref_do_it"
-        	android:title="@string/pref_title_do_it"
-        	android:summary="@string/pref_summary_do_it"
-        	android:defaultValue="false" />  
+        <EditTextPreference
+            android:key="pref_log_system_folder"
+            android:title="@string/pref_log_system_file_folder_title" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_title_section2" >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="pref_do_it"
+            android:summary="@string/pref_summary_do_it"
+            android:title="@string/pref_title_do_it" />
+        <!--
+     backup
+        <ListPreference
+            android:dialogTitle="@string/dialog_title_list_preference"
+            android:entries="@array/entries_list_preference"
+            android:entryValues="@array/entryvalues_list_preference"
+            android:key="list_preference"
+            android:summary="@string/summary_list_preference"
+            android:title="@string/title_list_preference" />
+        -->
+    </PreferenceCategory>
 
-   	</PreferenceCategory>
-    
-
-</PreferenceScreen>    
-    
+</PreferenceScreen>
