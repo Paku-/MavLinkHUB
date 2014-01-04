@@ -115,9 +115,15 @@ public class ConnectivityFragment extends Fragment implements IUiModeChanged {
 			// View
 			String info = ((TextView) view).getText().toString();
 			String address = info.substring(info.length() - 17);
+			
+			globalVars.logger.sys_(TAG, "Connecting...");			
+			globalVars.logger.sys_(TAG, "Me  : "+globalVars.mBtConnector.getBluetoothAdapter().getName()+" ["+globalVars.mBtConnector.getBluetoothAdapter().getAddress()+"]");
+			globalVars.logger.sys_(TAG, "Peer: "+info.replaceAll("\\n", " [")+"]");											
+			
 
 			globalVars.mBtConnector.openConnection(address);
 			globalVars.mMavLinkCollector.startMavLinkParserThread();
+			
 
 		}
 	};

@@ -14,13 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
+public class SysLogFragment extends Fragment implements IBufferReady {
 
 	//@SuppressWarnings("unused")
-	private static final String TAG = "RealTimeMavlinkFragment";
+	private static final String TAG = "SysLogFragment";
 	private AppGlobals globalVars;
 	
-	public RealTimeMavlinkFragment() {
+	public SysLogFragment() {
 
 	}
 
@@ -38,7 +38,7 @@ public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		final View rootView = inflater.inflate(R.layout.fragment_realtime_mavlink,
+		final View rootView = inflater.inflate(R.layout.fragment_sys_log,
 				container, false);
 
 		return rootView;
@@ -49,7 +49,7 @@ public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
 		super.onViewCreated(view, savedInstanceState);
 		
 		final TextView textView = (TextView) (getView()
-				.findViewById(R.id.textView_logByte));	
+				.findViewById(R.id.TextView_logSysLog));	
 		textView.setMovementMethod(new ScrollingMovementMethod());		
 		
 
@@ -59,16 +59,16 @@ public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		globalVars.mBtConnector.registerRealTimeMavlinkForIBufferReady(this);
+		globalVars.mBtConnector.registerSysLogForIBufferReady(this);
 		refreshUI();
 	}
 
 	public void refreshUI() {
 
 		final TextView mTextViewBytesLog = (TextView) (getView()
-				.findViewById(R.id.textView_logByte));
+				.findViewById(R.id.TextView_logSysLog));
 		
-		mTextViewBytesLog.setText(globalVars.logger.mInMemIncomingBytesStream.toString());
+		mTextViewBytesLog.setText(globalVars.logger.mInMemSysLogStream.toString());
 		
 		
 		//final TextView mTextViewMsgLog = (TextView) (getView()
@@ -88,7 +88,7 @@ public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
         
         
 		final TextView mTextViewLogStats = (TextView) (getView()
-				.findViewById(R.id.textView_logStatsbar));
+				.findViewById(R.id.textView_logSysLogStatsbar));
 		
 		mTextViewLogStats.setText("Bytes Count: "+globalVars.logger.statsReadByteCount);
 		
@@ -99,7 +99,7 @@ public class RealTimeMavlinkFragment extends Fragment implements IBufferReady {
 
 	@Override
 	public void onBufferReady() {
-		Log.d(TAG, "[ByteLog]"+globalVars.logger.mInMemIncomingBytesStream.size());
+		Log.d(TAG, "[SysLogLog]"+globalVars.logger.mInMemSysLogStream.size());
 		refreshUI();				
 	}
 

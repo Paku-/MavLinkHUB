@@ -1,6 +1,6 @@
 package com.paku.mavlinkhub.communication;
 
-import com.paku.mavlinkhub.SysStatsHolder;
+import com.paku.mavlinkhub.Logger;
 import com.paku.mavlinkhub.fragments.FragmentsAdapter;
 import com.paku.mavlinkhub.interfaces.IUiModeChanged;
 import com.paku.mavlinkhub.mavlink.MavLinkCollector;
@@ -54,15 +54,23 @@ public class AppGlobals extends Application {
 	public MavLinkCollector mMavLinkCollector;
 	
 	//sys log stats holder object
-	public SysStatsHolder sysStatsHolder;
-	
+
+
+	public Logger logger;
 
 	public int ui_Mode = AppGlobals.UI_MODE_CREATED;
 
 
 	public void Init(Context mContext) {
+		
+		//create logger holder		
+		logger = new Logger(this);
+		//start logging
+		logger.restartSysLog();
+		logger.restartByteLog();
+				
 
-		Log.d(TAG, "** Global Init section call **"); // 2nd
+		logger.sys_(TAG, "** MavLinkHUB Init **"); 
 
 		appContext = mContext;
 
@@ -73,10 +81,7 @@ public class AppGlobals extends Application {
 		mBtConnector = new BluetoothConnector();		
 		mMavLinkCollector = new MavLinkCollector(appContext);
 		
-		//create Stats holder
-		
-		sysStatsHolder = new SysStatsHolder();
-
+	
 
 		// create BT broadcasts  receiver
 		mBtIntentFilter = new IntentFilter();
@@ -86,90 +91,7 @@ public class AppGlobals extends Application {
 		mBtIntentFilter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
 		mBtIntentFilter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
 
-		// create and register BT BroadcastReceiver
-		mBtReceiver = new BroadcastReceiver() {
-			@Override
-			public void onReceive(Context context, Intent intent) {
-
-				final String action = intent.getAction();
-
-				if (action
-						.equals(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED)) {
-					final int state = intent.getIntExtra(
-							BluetoothAdapter.EXTRA_CONNECTION_STATE,
-							BluetoothAdapter.ERROR);
-
-					switch (state) {
-					case BluetoothAdapter.STATE_CONNECTING:
-						Log.d(TAG,
-								"BTAdpter [ACTION_CONNECTION_STATE_CHANGED]: STATE_CONNECTING");
-						break;
-					case BluetoothAdapter.STATE_CONNECTED:
-						Log.d(TAG,
-								"BTAdpter [ACTION_CONNECTION_STATE_CHANGED]: STATE_CONNECTED");
-						break;
-					case BluetoothAdapter.STATE_DISCONNECTING:
-						Log.d(TAG,
-								"BTAdpter [ACTION_CONNECTION_STATE_CHANGED]: STATE_DISCONNECTING");
-						break;
-					case BluetoothAdapter.STATE_DISCONNECTED:
-						Log.d(TAG,
-								"BTAdpter [ACTION_CONNECTION_STATE_CHANGED]: STATE_DISCONNECTED");
-						break;
-					}
-
-				}
-
-				if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
-					final int state = intent.getIntExtra(
-							BluetoothAdapter.EXTRA_STATE,
-							BluetoothAdapter.ERROR);
-					switch (state) {
-					case BluetoothAdapter.STATE_OFF:
-						Log.d(TAG, "BTAdpter [ACTION_STATE_CHANGED]: STATE_OFF");
-						setUiMode(AppGlobals.UI_MODE_STATE_OFF);
-						break;
-					case BluetoothAdapter.STATE_TURNING_OFF:
-						Log.d(TAG,
-								"BTAdpter [ACTION_STATE_CHANGED]: TURNING_OFF");
-						setUiMode(AppGlobals.UI_MODE_TURNING_OFF);
-						break;
-					case BluetoothAdapter.STATE_ON:
-						Log.d(TAG, "BTAdpter [ACTION_STATE_CHANGED]: STATE_ON"); // 2nd
-																					// after
-																					// turning_on
-						setUiMode(AppGlobals.UI_MODE_STATE_ON);
-						break;
-					case BluetoothAdapter.STATE_TURNING_ON:
-						Log.d(TAG,
-								"BTAdpter [ACTION_STATE_CHANGED]: TURNING_ON"); // 1st
-																				// on
-																				// bt
-																				// enable
-						setUiMode(AppGlobals.UI_MODE_TURNING_ON);
-						break;
-					default:
-						Log.d(TAG, "BTAdpter [ACTION_STATE_CHANGED]: unknown");
-						break;
-					}
-
-				}
-
-				if (action.equals(BluetoothDevice.ACTION_ACL_CONNECTED)) {
-					Log.d(TAG, "BTDevice [ACTION_ACL_CONNECTED]");
-					setUiMode(AppGlobals.UI_MODE_CONNECTED);
-				}
-
-				if (action.equals(BluetoothDevice.ACTION_ACL_DISCONNECTED)) {
-					Log.d(TAG, "BTDevice [ACTION_ACL_DISCONNECTED]");
-					setUiMode(AppGlobals.UI_MODE_DISCONNECTED);
-				}
-
-				if (callerIUiModeChanged != null)
-					callerIUiModeChanged.onUiModeChanged();
-
-			}
-		};
+		getBTBroadcasts();
 
 		// register this receiver for intents for BT adapter changes
 		registerReceiver(mBtReceiver, mBtIntentFilter);
@@ -197,6 +119,96 @@ public class AppGlobals extends Application {
 
 	public void registerForIUiModeChanged(Fragment fragment) {
 		callerIUiModeChanged = (IUiModeChanged) fragment;
+	}
+	
+	private void getBTBroadcasts()
+	{
+		
+		// create and register BT BroadcastReceiver
+		mBtReceiver = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+
+				final String action = intent.getAction();
+
+				if (action
+						.equals(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED)) {
+					final int state = intent.getIntExtra(
+							BluetoothAdapter.EXTRA_CONNECTION_STATE,
+							BluetoothAdapter.ERROR);
+
+					switch (state) {
+					case BluetoothAdapter.STATE_CONNECTING:
+						logger.sys_(TAG,
+								"BTAdpter [ACTION_CONNECTION_STATE_CHANGED]: STATE_CONNECTING");
+						break;
+					case BluetoothAdapter.STATE_CONNECTED:
+						logger.sys_(TAG,
+								"BTAdpter [ACTION_CONNECTION_STATE_CHANGED]: STATE_CONNECTED");
+						break;
+					case BluetoothAdapter.STATE_DISCONNECTING:
+						logger.sys_(TAG,
+								"BTAdpter [ACTION_CONNECTION_STATE_CHANGED]: STATE_DISCONNECTING");
+						break;
+					case BluetoothAdapter.STATE_DISCONNECTED:
+						logger.sys_(TAG,
+								"BTAdpter [ACTION_CONNECTION_STATE_CHANGED]: STATE_DISCONNECTED");
+						break;
+					}
+
+				}
+
+				if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
+					final int state = intent.getIntExtra(
+							BluetoothAdapter.EXTRA_STATE,
+							BluetoothAdapter.ERROR);
+					switch (state) {
+					case BluetoothAdapter.STATE_OFF:
+						logger.sys_(TAG, "BTAdpter [ACTION_STATE_CHANGED]: STATE_OFF");
+						setUiMode(AppGlobals.UI_MODE_STATE_OFF);
+						break;
+					case BluetoothAdapter.STATE_TURNING_OFF:
+						logger.sys_(TAG,
+								"BTAdpter [ACTION_STATE_CHANGED]: TURNING_OFF");
+						setUiMode(AppGlobals.UI_MODE_TURNING_OFF);
+						break;
+					case BluetoothAdapter.STATE_ON:
+						logger.sys_(TAG, "BTAdpter [ACTION_STATE_CHANGED]: STATE_ON"); // 2nd
+																					// after
+																					// turning_on
+						setUiMode(AppGlobals.UI_MODE_STATE_ON);
+						break;
+					case BluetoothAdapter.STATE_TURNING_ON:
+						logger.sys_(TAG,
+								"BTAdpter [ACTION_STATE_CHANGED]: TURNING_ON"); // 1st
+																				// on
+																				// bt
+																				// enable
+						setUiMode(AppGlobals.UI_MODE_TURNING_ON);
+						break;
+					default:
+						logger.sys_(TAG, "BTAdpter [ACTION_STATE_CHANGED]: unknown");
+						break;
+					}
+
+				}
+
+				if (action.equals(BluetoothDevice.ACTION_ACL_CONNECTED)) {
+					logger.sys_(TAG, "BTDevice [ACTION_ACL_CONNECTED]");
+					setUiMode(AppGlobals.UI_MODE_CONNECTED);
+				}
+
+				if (action.equals(BluetoothDevice.ACTION_ACL_DISCONNECTED)) {
+					logger.sys_(TAG, "BTDevice [ACTION_ACL_DISCONNECTED]");
+					setUiMode(AppGlobals.UI_MODE_DISCONNECTED);
+				}
+
+				if (callerIUiModeChanged != null)
+					callerIUiModeChanged.onUiModeChanged();
+
+			}
+		};
+		
 	}
 
 }

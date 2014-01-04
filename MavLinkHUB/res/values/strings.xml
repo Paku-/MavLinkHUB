@@ -6,6 +6,7 @@
     <string name="menu_title_select_bt">Select BT</string>
     <string name="title_realtime_mavlink">RealTime MavLink</string>
     <string name="title_connectivity">Connectivity</string>
+    <string name="title_syslog">System log</string>
     <string name="title_calibration">Calibration</string>
     <string name="cb_accelerometers">Accelerometers</string>
     <string name="cb_gyros">Gyros</string>
@@ -36,5 +37,6 @@
     <string name="ml_byte_log_empty">Transmission log empty</string>    
     <string name="log_ml_stats">Log statistics</string>    
     <string name="pref_log_mavlink_file_folder_title">MavLink log file location folder</string>    
-    <string name="pref_log_system_file_folder_title">System log file default folder</string>
+    <string name="pref_log_system_file_folder_title">System log file default folder</string>    
+    <string name="log_sys_log_empty">System log empty</string>
 </resources>

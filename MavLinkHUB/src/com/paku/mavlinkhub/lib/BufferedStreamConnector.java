@@ -28,16 +28,24 @@ public abstract class BufferedStreamConnector {
 	protected abstract boolean isConnected();
 
 	protected abstract String getPeerName();
+	
+	protected abstract String getPeerAddress();	
 
 	protected abstract void startConnectorReceiver(BluetoothSocket socket);
 	
 
 	//interface
-	private IBufferReady callerFragment = null;
+	private IBufferReady callRealTimeMavlinkFragment = null;
+	private IBufferReady callSysLogFragment = null;
 
-	public void registerForIBufferReady(Fragment fragment) {
-		callerFragment = (IBufferReady) fragment;
+	public void registerRealTimeMavlinkForIBufferReady(Fragment fragment) {
+		callRealTimeMavlinkFragment = (IBufferReady) fragment;
 	}
+	
+	public void registerSysLogForIBufferReady(Fragment fragment) {
+		callSysLogFragment = (IBufferReady) fragment;
+	}
+	
 
 	public BufferedStreamConnector(int capacity) {
 
@@ -65,9 +73,14 @@ public abstract class BufferedStreamConnector {
 
 			Log.d(TAG, "Stream Size: [" + String.valueOf(mConnectorStream.size()) + "]:");
 
-			if (callerFragment != null) {
-				callerFragment.onBufferReady();
+			if (callRealTimeMavlinkFragment != null) {
+				callRealTimeMavlinkFragment.onBufferReady();
 			}
+			
+			if (callSysLogFragment != null) {
+				callSysLogFragment.onBufferReady();
+			}
+			
 		}
 	}
 

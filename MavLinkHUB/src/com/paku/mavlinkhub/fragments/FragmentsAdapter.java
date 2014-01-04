@@ -34,12 +34,11 @@ public class FragmentsAdapter extends FragmentPagerAdapter {
 			fragment = new RealTimeMavlinkFragment();
 			break;
 		case 2:
+			fragment = new SysLogFragment();
+			break;
+		case 3:
 			fragment = new CalibrationFragment();
 			break;
-		// case 3:
-		// fragment = new SettingsFragment().getFragmentManager().;
-		// break;
-
 		default:
 			fragment = new DummySectionFragment();
 			break;
@@ -50,7 +49,7 @@ public class FragmentsAdapter extends FragmentPagerAdapter {
 	@Override
 	public int getCount() {
 		// Show 3 total pages.
-		return 3;
+		return 4;
 	}
 
 	@Override
@@ -64,8 +63,12 @@ public class FragmentsAdapter extends FragmentPagerAdapter {
 			return this.mainActivity.getString(R.string.title_realtime_mavlink)
 					.toUpperCase(l);
 		case 2:
+			return this.mainActivity.getString(R.string.title_syslog)
+					.toUpperCase(l);
+		case 3:
 			return this.mainActivity.getString(R.string.title_calibration)
 					.toUpperCase(l);
+
 		}
 		return null;
 	}

@@ -87,6 +87,7 @@ public class MainActivity extends FragmentActivity {
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
 				globalVars.mBtConnector.closeConnection();
+				globalVars.logger.stopAllLogs();
 				finish();
 			}
 		};
@@ -111,8 +112,10 @@ public class MainActivity extends FragmentActivity {
 			dlg.create();
 			dlg.show();
 
-		} else
+		} else {
+			globalVars.logger.stopAllLogs();
 			finish();
+		}
 
 	}
 
@@ -128,7 +131,7 @@ public class MainActivity extends FragmentActivity {
 	protected void onStop() {
 		// TODO Auto-generated method stub
 		super.onStop();
-		Log.d(TAG, "** onStop call ...**"); // 2nd
+		Log.d(TAG, "** App onStop call ...**"); // 2nd
 
 	}
 

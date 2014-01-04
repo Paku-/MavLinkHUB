@@ -14,7 +14,7 @@ public class BluetoothConnector extends BufferedStreamConnector {
 
 	private static final String TAG = "BluetoothConnector";
 
-	BluetoothAdapter mBluetoothAdapter;
+	private BluetoothAdapter mBluetoothAdapter;
 	BluetoothDevice mBluetoothDevice;
 	BluetoothSocket mBluetoothSocket;
 
@@ -88,7 +88,7 @@ public class BluetoothConnector extends BufferedStreamConnector {
 		};
 
 		socketThread = new BTSocketThread(socket, connectorReceiverHandler);
-		socketThread.start();
+		socketThread.start();				
 
 	}
 
@@ -123,5 +123,19 @@ public class BluetoothConnector extends BufferedStreamConnector {
 		return mBluetoothSocket.getRemoteDevice().getName();
 
 	}
+	
+	@Override
+	public String getPeerAddress() {
+		return mBluetoothSocket.getRemoteDevice().getAddress();
+
+	}
+
+	public BluetoothAdapter getBluetoothAdapter() {
+		return mBluetoothAdapter;
+	}
+
+	public void setBluetoothAdapter(BluetoothAdapter mBluetoothAdapter) {
+		this.mBluetoothAdapter = mBluetoothAdapter;
+	}	
 
 }
