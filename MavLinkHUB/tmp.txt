@@ -3,6 +3,13 @@ MAVLINK_MSG_ID_HEARTBEAT - custom_mode:0 type:2 autopilot:3 base_mode:81 system_
 
 1010001 = 81
 
+BTDevice
+
+Closing
+[sysLog]
+
+unreg
+
 crc
 BUFFER
 start(

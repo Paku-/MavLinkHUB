@@ -1,8 +1,8 @@
 package com.paku.mavlinkhub.fragments;
 
+import com.paku.mavlinkhub.AppGlobals;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.communication.BTDevicesListHandler;
-import com.paku.mavlinkhub.communication.AppGlobals;
 import com.paku.mavlinkhub.interfaces.IUiModeChanged;
 
 import android.bluetooth.BluetoothAdapter;
@@ -23,7 +23,6 @@ import android.widget.Toast;
 
 public class ConnectivityFragment extends Fragment implements IUiModeChanged {
 
-	@SuppressWarnings("unused")
 	private static final String TAG = "ConnectivityFragment";
 
 	BTDevicesListHandler btDevList = new BTDevicesListHandler();
@@ -95,7 +94,7 @@ public class ConnectivityFragment extends Fragment implements IUiModeChanged {
 
 		disconnectButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-
+				globalVars.logger.sysLog(TAG, "Closing Connection ...");
 				globalVars.mBtConnector.closeConnection();
 				globalVars.mMavLinkCollector.stopMavLinkParserThread();
 
@@ -115,15 +114,18 @@ public class ConnectivityFragment extends Fragment implements IUiModeChanged {
 			// View
 			String info = ((TextView) view).getText().toString();
 			String address = info.substring(info.length() - 17);
-			
-			globalVars.logger.sys_(TAG, "Connecting...");			
-			globalVars.logger.sys_(TAG, "Me  : "+globalVars.mBtConnector.getBluetoothAdapter().getName()+" ["+globalVars.mBtConnector.getBluetoothAdapter().getAddress()+"]");
-			globalVars.logger.sys_(TAG, "Peer: "+info.replaceAll("\\n", " [")+"]");											
-			
+
+			globalVars.logger.sysLog(TAG, "Connecting...");
+			globalVars.logger.sysLog(TAG, "Me  : "
+					+ globalVars.mBtConnector.getBluetoothAdapter().getName()
+					+ " ["
+					+ globalVars.mBtConnector.getBluetoothAdapter()
+							.getAddress() + "]");
+			globalVars.logger.sysLog(TAG,
+					"Peer: " + info.replaceAll("\\n", " [") + "]");
 
 			globalVars.mBtConnector.openConnection(address);
 			globalVars.mMavLinkCollector.startMavLinkParserThread();
-			
 
 		}
 	};

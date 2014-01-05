@@ -1,23 +1,20 @@
-package com.paku.mavlinkhub.lib;
+package com.paku.mavlinkhub.communication;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import com.paku.mavlinkhub.interfaces.IBufferReady;
 import android.bluetooth.BluetoothSocket;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 // this is a super class for connectors using buffered stream to keep incoming data
-// receiving Fragment class has to register for IBufferReady interface to be called on data arrival. 
+// receiving Fragment class has to register for IDataLoggedIn interface to be called on data arrival. 
 
 public abstract class BufferedStreamConnector {
 
 	private static final String TAG = "BufferedStreamConnector";
-	
+
 	public ByteArrayOutputStream mConnectorStream;
 	public boolean lockConnStream = false;
-	private int uiRefreshOnBuffSize = 16;
 
 	protected abstract boolean openConnection(String address); // throws
 																// UnknownHostException,IOException;
@@ -28,24 +25,10 @@ public abstract class BufferedStreamConnector {
 	protected abstract boolean isConnected();
 
 	protected abstract String getPeerName();
-	
-	protected abstract String getPeerAddress();	
+
+	protected abstract String getPeerAddress();
 
 	protected abstract void startConnectorReceiver(BluetoothSocket socket);
-	
-
-	//interface
-	private IBufferReady callRealTimeMavlinkFragment = null;
-	private IBufferReady callSysLogFragment = null;
-
-	public void registerRealTimeMavlinkForIBufferReady(Fragment fragment) {
-		callRealTimeMavlinkFragment = (IBufferReady) fragment;
-	}
-	
-	public void registerSysLogForIBufferReady(Fragment fragment) {
-		callSysLogFragment = (IBufferReady) fragment;
-	}
-	
 
 	public BufferedStreamConnector(int capacity) {
 
@@ -56,7 +39,7 @@ public abstract class BufferedStreamConnector {
 
 	public void waitForStreamLock() {
 		while (lockConnStream) {
-			;
+			Log.d(TAG, "Stream Locked..");
 		}
 
 		lockConnStream = true;
@@ -67,21 +50,8 @@ public abstract class BufferedStreamConnector {
 	}
 
 	public void processConnectorStream() {
-
-
-		if (mConnectorStream.size() > uiRefreshOnBuffSize) {
-
-			Log.d(TAG, "Stream Size: [" + String.valueOf(mConnectorStream.size()) + "]:");
-
-			if (callRealTimeMavlinkFragment != null) {
-				callRealTimeMavlinkFragment.onBufferReady();
-			}
-			
-			if (callSysLogFragment != null) {
-				callSysLogFragment.onBufferReady();
-			}
-			
-		}
+		Log.d(TAG, "Stream Size: [" + String.valueOf(mConnectorStream.size())
+				+ "]:");
 	}
 
 	private void resetStream(boolean withLock) {
@@ -92,15 +62,15 @@ public abstract class BufferedStreamConnector {
 			releaseStream();
 	}
 
-	public void copyConnectorStream(OutputStream targetStream,boolean doReset)
+	public void copyConnectorStream(OutputStream targetStream, boolean doReset)
 			throws IOException {
 		mConnectorStream.writeTo(targetStream);
-		if (doReset) resetStream(false);
-	}
-	
-	public ByteArrayOutputStream getConnectorStream(){
-		return mConnectorStream;
+		if (doReset)
+			resetStream(false);
 	}
 
+	public ByteArrayOutputStream getConnectorStream() {
+		return mConnectorStream;
+	}
 
 }

@@ -1,7 +1,12 @@
 package com.paku.mavlinkhub.mavlink;
 
 import android.content.Context;
-import com.paku.mavlinkhub.communication.AppGlobals;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.support.v4.app.Fragment;
+import com.paku.mavlinkhub.AppGlobals;
+import com.paku.mavlinkhub.interfaces.IDataLoggedIn;
 
 public class MavLinkCollector {
 
@@ -11,23 +16,84 @@ public class MavLinkCollector {
 	private AppGlobals globalVars;
 
 	private MavLinkParserThread parserThread;
+	private Handler mavlinkCollectorMsgHandler;
 
-	public MavLinkCollector(Context mConext) {
+	// interface
+	private IDataLoggedIn callRealTimeMavlinkFragment = null;
+	private IDataLoggedIn callSysLogFragment = null;
 
-		globalVars = ((AppGlobals) mConext.getApplicationContext());
+	public void registerRealTimeMavlinkForIDataLoggedIn(Fragment fragment) {
+		callRealTimeMavlinkFragment = (IDataLoggedIn) fragment;
+	}
 
-		// globalVars.mBtConnector.registerForIBufferReady(this);
+	public void registerSysLogForIDataLoggedIn(Fragment fragment) {
+		callSysLogFragment = (IDataLoggedIn) fragment;
+	}
+
+	public void unregisterSysLogForIDataLoggedIn() {
+		callSysLogFragment = null;
+	}
+
+	public void unregisterRealTimeMavlinkForIDataLoggedIn() {
+		// TODO Auto-generated method stub
+		callRealTimeMavlinkFragment = null;
+	}
+
+	public void processMavLinkCollectorDataLoggedIn() {
+
+		if (callRealTimeMavlinkFragment != null) {
+			callRealTimeMavlinkFragment.onDataLoggedInReady();
+		}
+
+		if (callSysLogFragment != null) {
+			callSysLogFragment.onDataLoggedInReady();
+		}
+
+	}
+
+	// interface end
+
+	public MavLinkCollector(Context mContext) {
+
+		globalVars = ((AppGlobals) mContext.getApplicationContext());
 
 	}
 
 	public void startMavLinkParserThread() {
 
-		parserThread = new MavLinkParserThread(globalVars);
+		// prepare msg handler for MLMsg_ready msg.
+
+		mavlinkCollectorMsgHandler = new Handler(Looper.getMainLooper()) {
+			public void handleMessage(Message msg) {
+
+				switch (msg.what) {
+				// Received MLmsg
+				case AppGlobals.MSG_MAVLINK_MSG_READY:
+					break;
+				// all data logged in
+				case AppGlobals.MSG_LOGGER_DATA_READY:
+					processMavLinkCollectorDataLoggedIn();
+					break;
+				case AppGlobals.MSG_CONNECTOR_DATA_READY:
+					// globalVars.logger.byteLog((byte[]) msg.obj, 0, msg.arg1);
+					// mavlinkCollectorMsgHandler
+					// .obtainMessage(AppGlobals.MSG_LOGGER_DATA_READY).sendToTarget();
+					break;
+				default:
+					super.handleMessage(msg);
+				}
+
+			}
+		};
+
+		parserThread = new MavLinkParserThread(globalVars,
+				mavlinkCollectorMsgHandler);
 		parserThread.start();
 	}
 
 	public void stopMavLinkParserThread() {
-		parserThread.stopMe(true);
+		if (parserThread != null)
+			parserThread.stopRunning();
 	}
 
 }

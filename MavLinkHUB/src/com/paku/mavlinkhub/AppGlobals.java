@@ -1,6 +1,6 @@
-package com.paku.mavlinkhub.communication;
+package com.paku.mavlinkhub;
 
-import com.paku.mavlinkhub.Logger;
+import com.paku.mavlinkhub.communication.BluetoothConnector;
 import com.paku.mavlinkhub.fragments.FragmentsAdapter;
 import com.paku.mavlinkhub.interfaces.IUiModeChanged;
 import com.paku.mavlinkhub.mavlink.MavLinkCollector;
@@ -14,7 +14,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 
 public class AppGlobals extends Application {
 
@@ -29,8 +28,7 @@ public class AppGlobals extends Application {
 	public static final int UI_MODE_STATE_ON = 205;
 	public static final int UI_MODE_STATE_OFF = 206;
 	public static final int UI_MODE_TURNING_OFF = 207;
-	
-	
+
 	// BT Dev List state machine constants
 	public static final int LIST_OK = 1;
 	public static final int ERROR_NO_ADAPTER = 2;
@@ -38,8 +36,10 @@ public class AppGlobals extends Application {
 	public static final int ERROR_NO_BONDED_DEV = 4;
 
 	// other constants
-	public static final int MSG_DATA_READY = 101;
-	public static final int REQUEST_ENABLE_BT = 102;
+	public static final int MSG_CONNECTOR_DATA_READY = 101;
+	public static final int MSG_MAVLINK_MSG_READY = 102;
+	public static final int MSG_LOGGER_DATA_READY = 103;
+	public static final int REQUEST_ENABLE_BT = 104;
 
 	public Context appContext;
 	public FragmentsAdapter mFragmentsPagerAdapter;
@@ -49,41 +49,37 @@ public class AppGlobals extends Application {
 	public BluetoothConnector mBtConnector;
 	public IntentFilter mBtIntentFilter;
 	private BroadcastReceiver mBtReceiver;
-	
-	//MAVLink class holder/object	
-	public MavLinkCollector mMavLinkCollector;
-	
-	//sys log stats holder object
 
+	// MAVLink class holder/object
+	public MavLinkCollector mMavLinkCollector;
+
+	// sys log stats holder object
 
 	public Logger logger;
 
 	public int ui_Mode = AppGlobals.UI_MODE_CREATED;
-
+	public int visibleBuffersSize = 2048;
 
 	public void Init(Context mContext) {
-		
-		//create logger holder		
+
+		// create logger holder
 		logger = new Logger(this);
-		//start logging
+		// start logging
 		logger.restartSysLog();
 		logger.restartByteLog();
-				
 
-		logger.sys_(TAG, "** MavLinkHUB Init **"); 
+		logger.sysLog(TAG, "** MavLinkHUB Init **");
 
 		appContext = mContext;
 
-		
 		setUiMode(AppGlobals.UI_MODE_CREATED);
-		
-		// !!! connector has to exist before the MavLink as there is interface to it.
-		mBtConnector = new BluetoothConnector();		
-		mMavLinkCollector = new MavLinkCollector(appContext);
-		
-	
 
-		// create BT broadcasts  receiver
+		// !!! connector has to exist before the MavLink as there is interface
+		// to it.
+		mBtConnector = new BluetoothConnector();
+		mMavLinkCollector = new MavLinkCollector(appContext);
+
+		// create BT broadcasts receiver
 		mBtIntentFilter = new IntentFilter();
 		mBtIntentFilter
 				.addAction(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
@@ -120,10 +116,9 @@ public class AppGlobals extends Application {
 	public void registerForIUiModeChanged(Fragment fragment) {
 		callerIUiModeChanged = (IUiModeChanged) fragment;
 	}
-	
-	private void getBTBroadcasts()
-	{
-		
+
+	private void getBTBroadcasts() {
+
 		// create and register BT BroadcastReceiver
 		mBtReceiver = new BroadcastReceiver() {
 			@Override
@@ -139,19 +134,19 @@ public class AppGlobals extends Application {
 
 					switch (state) {
 					case BluetoothAdapter.STATE_CONNECTING:
-						logger.sys_(TAG,
+						logger.sysLog(TAG,
 								"BTAdpter [ACTION_CONNECTION_STATE_CHANGED]: STATE_CONNECTING");
 						break;
 					case BluetoothAdapter.STATE_CONNECTED:
-						logger.sys_(TAG,
+						logger.sysLog(TAG,
 								"BTAdpter [ACTION_CONNECTION_STATE_CHANGED]: STATE_CONNECTED");
 						break;
 					case BluetoothAdapter.STATE_DISCONNECTING:
-						logger.sys_(TAG,
+						logger.sysLog(TAG,
 								"BTAdpter [ACTION_CONNECTION_STATE_CHANGED]: STATE_DISCONNECTING");
 						break;
 					case BluetoothAdapter.STATE_DISCONNECTED:
-						logger.sys_(TAG,
+						logger.sysLog(TAG,
 								"BTAdpter [ACTION_CONNECTION_STATE_CHANGED]: STATE_DISCONNECTED");
 						break;
 					}
@@ -164,22 +159,24 @@ public class AppGlobals extends Application {
 							BluetoothAdapter.ERROR);
 					switch (state) {
 					case BluetoothAdapter.STATE_OFF:
-						logger.sys_(TAG, "BTAdpter [ACTION_STATE_CHANGED]: STATE_OFF");
+						logger.sysLog(TAG,
+								"BTAdpter [ACTION_STATE_CHANGED]: STATE_OFF");
 						setUiMode(AppGlobals.UI_MODE_STATE_OFF);
 						break;
 					case BluetoothAdapter.STATE_TURNING_OFF:
-						logger.sys_(TAG,
+						logger.sysLog(TAG,
 								"BTAdpter [ACTION_STATE_CHANGED]: TURNING_OFF");
 						setUiMode(AppGlobals.UI_MODE_TURNING_OFF);
 						break;
 					case BluetoothAdapter.STATE_ON:
-						logger.sys_(TAG, "BTAdpter [ACTION_STATE_CHANGED]: STATE_ON"); // 2nd
-																					// after
-																					// turning_on
+						logger.sysLog(TAG,
+								"BTAdpter [ACTION_STATE_CHANGED]: STATE_ON"); // 2nd
+						// after
+						// turning_on
 						setUiMode(AppGlobals.UI_MODE_STATE_ON);
 						break;
 					case BluetoothAdapter.STATE_TURNING_ON:
-						logger.sys_(TAG,
+						logger.sysLog(TAG,
 								"BTAdpter [ACTION_STATE_CHANGED]: TURNING_ON"); // 1st
 																				// on
 																				// bt
@@ -187,19 +184,20 @@ public class AppGlobals extends Application {
 						setUiMode(AppGlobals.UI_MODE_TURNING_ON);
 						break;
 					default:
-						logger.sys_(TAG, "BTAdpter [ACTION_STATE_CHANGED]: unknown");
+						logger.sysLog(TAG,
+								"BTAdpter [ACTION_STATE_CHANGED]: unknown");
 						break;
 					}
 
 				}
 
 				if (action.equals(BluetoothDevice.ACTION_ACL_CONNECTED)) {
-					logger.sys_(TAG, "BTDevice [ACTION_ACL_CONNECTED]");
+					logger.sysLog(TAG, "BTDevice [ACTION_ACL_CONNECTED]");
 					setUiMode(AppGlobals.UI_MODE_CONNECTED);
 				}
 
 				if (action.equals(BluetoothDevice.ACTION_ACL_DISCONNECTED)) {
-					logger.sys_(TAG, "BTDevice [ACTION_ACL_DISCONNECTED]");
+					logger.sysLog(TAG, "BTDevice [ACTION_ACL_DISCONNECTED]");
 					setUiMode(AppGlobals.UI_MODE_DISCONNECTED);
 				}
 
@@ -208,7 +206,7 @@ public class AppGlobals extends Application {
 
 			}
 		};
-		
+
 	}
 
 }

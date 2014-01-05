@@ -59,13 +59,9 @@ public class BTConnectThread extends Thread {
 		// Do work to manage the connection (in a separate thread)
 		parentBtConnector.startConnectorReceiver(mmSocket);
 	}
-
-	/** Will cancel an in-progress connection, and close the socket */
-	public void disconnect() {
-		try {
-			mmSocket.close();
-		} catch (IOException e) {
-			Log.d(TAG, "Exception [disconnect]: " + e.getMessage());
-		}
-	}
+	/*
+	 * 
+	 * public void disconnect() { try { mmSocket.close(); } catch (IOException
+	 * e) { Log.d(TAG, "Exception [disconnect]: " + e.getMessage()); } }
+	 */
 }

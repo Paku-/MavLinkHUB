@@ -1,7 +1,6 @@
 package com.paku.mavlinkhub;
 
 import com.paku.mavlinkhub.R;
-import com.paku.mavlinkhub.communication.AppGlobals;
 import com.paku.mavlinkhub.fragments.FragmentsAdapter;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -52,7 +51,6 @@ public class MainActivity extends FragmentActivity {
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-		// unregisterReceiver(mBtReceiver);
 	}
 
 	@Override
@@ -86,8 +84,7 @@ public class MainActivity extends FragmentActivity {
 		OnClickListener positiveButtonClickListener = new AlertDialog.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
-				globalVars.mBtConnector.closeConnection();
-				globalVars.logger.stopAllLogs();
+				closeHUB();
 				finish();
 			}
 		};
@@ -113,7 +110,7 @@ public class MainActivity extends FragmentActivity {
 			dlg.show();
 
 		} else {
-			globalVars.logger.stopAllLogs();
+			closeHUB();
 			finish();
 		}
 
@@ -133,6 +130,13 @@ public class MainActivity extends FragmentActivity {
 		super.onStop();
 		Log.d(TAG, "** App onStop call ...**"); // 2nd
 
+	}
+
+	private void closeHUB() {
+		globalVars.logger.sysLog(TAG, "MavLinkHUB closing ...");
+		globalVars.mBtConnector.closeConnection();
+		globalVars.mMavLinkCollector.stopMavLinkParserThread();
+		globalVars.logger.stopAllLogs();
 	}
 
 }

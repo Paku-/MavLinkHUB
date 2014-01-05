@@ -3,6 +3,8 @@ package com.paku.mavlinkhub.communication;
 import java.util.ArrayList;
 import java.util.Set;
 
+import com.paku.mavlinkhub.AppGlobals;
+
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 

@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import com.paku.mavlinkhub.AppGlobals;
+
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
 import android.util.Log;
@@ -16,8 +18,10 @@ public class BTSocketThread extends Thread {
 	private final InputStream mmInStream;
 	private final OutputStream mmOutStream;
 	private final Handler mConnectorReceiverHandler;
+	private boolean running = true;
 
-	public BTSocketThread(BluetoothSocket socket, Handler connectorReceiverHandler) {
+	public BTSocketThread(BluetoothSocket socket,
+			Handler connectorReceiverHandler) {
 
 		mmSocket = socket;
 		mConnectorReceiverHandler = connectorReceiverHandler;
@@ -40,24 +44,32 @@ public class BTSocketThread extends Thread {
 
 	public void run() {
 		byte[] buffer = new byte[1024]; // mConnectorStream store for the stream
-		int bytes; // bytes returned from read()
+		int bytes; // bytes received
 
-		// Keep listening to the InputStream until an exception occurs
-		while (true) {
+		while (running) {
 			try {
 				// Read from the InputStream
 				bytes = mmInStream.read(buffer);
 				// Send the obtained bytes to the Connector
-				mConnectorReceiverHandler.obtainMessage(AppGlobals.MSG_DATA_READY, bytes,
-						-1, buffer).sendToTarget();
+				mConnectorReceiverHandler.obtainMessage(
+						AppGlobals.MSG_CONNECTOR_DATA_READY, bytes, -1, buffer)
+						.sendToTarget();
 			} catch (IOException e) {
 				Log.d(TAG, "Exception [run.read.buffer]:" + e.getMessage());
 				break;
 			}
 		}
+
+		// if we are here it's time to close ...
+		try {
+			mmSocket.close();
+		} catch (IOException e) {
+			Log.d(TAG, "Exception [mmSocket Close]:" + e.getMessage());
+			e.printStackTrace();
+		}
+
 	}
 
-	/* Call this from the main activity to send data to the remote device */
 	public void write(byte[] bytes) {
 		try {
 			mmOutStream.write(bytes);
@@ -66,12 +78,7 @@ public class BTSocketThread extends Thread {
 		}
 	}
 
-	/* Call this from the main activity to shutdown the connection */
-	public void cancel() {
-		try {
-			mmSocket.close();
-		} catch (IOException e) {
-			Log.d(TAG, "Exception [cancel]:" + e.getMessage());
-		}
+	public void stopRunning() {
+		running = false;
 	}
 }
