@@ -7,10 +7,18 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+import android.annotation.SuppressLint;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.MAVLink.Messages.MAVLinkMessage;
+import com.paku.mavlinkhub.interfaces.IDataLoggedIn;
 
 public class Logger {
 
@@ -34,6 +42,10 @@ public class Logger {
 	// stats vars
 	public int statsReadByteCount = 0;
 	private boolean lock = false;
+
+	// handler
+
+	public Handler loggerMsgHandler;
 
 	public Logger(AppGlobals context) {
 
@@ -59,12 +71,41 @@ public class Logger {
 			e.printStackTrace();
 		}
 
+		// msg handler for asynch UI updates
+
+		loggerMsgHandler = new Handler(Looper.getMainLooper()) {
+			public void handleMessage(Message msg) {
+
+				switch (msg.what) {
+				// Received MLmsg
+				case AppGlobals.MSG_MAVLINK_MSG_READY:
+					break;
+				// all data logged in
+				case AppGlobals.MSG_SYSLOG_DATA_READY:
+					processSysLogDataLoggedIn();
+					break;
+				case AppGlobals.MSG_BYTELOG_DATA_READY:
+					processByteLogDataLoggedIn();
+					break;
+
+				case AppGlobals.MSG_CONNECTOR_DATA_READY:
+					// globalVars.logger.byteLog((byte[]) msg.obj, 0, msg.arg1);
+					// mavlinkCollectorMsgHandler
+					// .obtainMessage(AppGlobals.MSG_LOGGER_DATA_READY).sendToTarget();
+					break;
+				default:
+					super.handleMessage(msg);
+				}
+
+			}
+		};
+
 	}
 
 	public void sysLog(String string) {
 		String tempStr;
 
-		tempStr = string + "\n";
+		tempStr = timeStamp() + string + "\n";
 
 		// syslog write
 		try {
@@ -75,7 +116,6 @@ public class Logger {
 		} catch (IOException e1) {
 			Log.d(TAG, "[sysLog] " + e1.getMessage());
 		}
-
 	}
 
 	public void sysLog(String tag, String msg) {
@@ -105,7 +145,6 @@ public class Logger {
 		} catch (IOException e1) {
 			Log.d(TAG, "[byteLog] " + e1.getMessage());
 		}
-
 	}
 
 	public void mavlinkMsg(MAVLinkMessage msg) {
@@ -185,5 +224,71 @@ public class Logger {
 	public void releaseLock() {
 		lock = false;
 	}
+
+	@SuppressLint("SimpleDateFormat")
+	public String timeStamp() {
+
+		SimpleDateFormat s = new SimpleDateFormat("[hh:mm:ss.SSS]");
+		return s.format(new Date());
+
+		// Time dtNow = new Time();
+		// dtNow.setToNow();
+		// return dtNow.format("[%Y.%m.%d %H:%M]");
+
+		// SimpleDateFormat s = new SimpleDateFormat("ddMMyyyyhhmmss.SSS");
+
+		// return dtNow.format("[%H:%M:%S.%ss]");
+		// int hours = dtNow.hour;
+
+		// String lsYMD = dtNow.toString(); // YYYYMMDDTHHMMSS
+
+	}
+
+	// *****************************************
+	// interface
+	// *****************************************
+	private IDataLoggedIn callRealTimeMavlinkFragment = null;
+	private IDataLoggedIn callSysLogFragment = null;
+
+	public void registerRealTimeMavlinkForIDataLoggedIn(Fragment fragment) {
+		callRealTimeMavlinkFragment = (IDataLoggedIn) fragment;
+	}
+
+	public void registerSysLogForIDataLoggedIn(Fragment fragment) {
+		callSysLogFragment = (IDataLoggedIn) fragment;
+	}
+
+	public void unregisterSysLogForIDataLoggedIn() {
+		callSysLogFragment = null;
+	}
+
+	public void unregisterRealTimeMavlinkForIDataLoggedIn() {
+		// TODO Auto-generated method stub
+		callRealTimeMavlinkFragment = null;
+	}
+
+	public void processSysLogDataLoggedIn() {
+
+		if (callSysLogFragment != null) {
+			callSysLogFragment.onDataLoggedInReady();
+		}
+
+	}
+
+	public void processByteLogDataLoggedIn() {
+
+		if (callRealTimeMavlinkFragment != null) {
+			callRealTimeMavlinkFragment.onDataLoggedInReady();
+		}
+	}
+
+	/*
+	 * runOnUiThread(new Runnable() { public void run() {
+	 * titleProgress.setVisibility(View.VISIBLE); } });
+	 */
+
+	// *****************************************
+	// interface end
+	// *****************************************
 
 }

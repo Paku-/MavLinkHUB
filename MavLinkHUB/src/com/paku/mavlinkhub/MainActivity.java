@@ -28,7 +28,7 @@ public class MainActivity extends FragmentActivity {
 		globalVars = (AppGlobals) this.getApplication();
 
 		if (savedInstanceState == null) {
-
+			// init only if we are just borned ...
 			globalVars.Init(this);
 
 		}

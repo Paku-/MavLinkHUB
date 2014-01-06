@@ -65,8 +65,10 @@ public class BluetoothConnector extends BufferedStreamConnector {
 						waitForStreamLock();
 
 						mConnectorStream.write((byte[]) msg.obj, 0, msg.arg1);
-						
-						Log.d(TAG,"#"+mConnectorStream.toString()+"["+mConnectorStream.size()+"]:["+msg.arg1+"]");
+
+						Log.d(TAG, "#" + mConnectorStream.toString() + "["
+								+ mConnectorStream.size() + "]:[" + msg.arg1
+								+ "]");
 
 						releaseStream();
 

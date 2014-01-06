@@ -1,10 +1,5 @@
 package com.paku.mavlinkhub.mavlink;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-
-import android.os.Handler;
-
 import com.MAVLink.Parser;
 import com.MAVLink.Messages.MAVLinkMessage;
 import com.MAVLink.Messages.MAVLinkPacket;
@@ -12,14 +7,12 @@ import com.paku.mavlinkhub.AppGlobals;
 
 public class MavLinkParserThread extends Thread {
 
-	private static final String TAG = "MavLinkParserThread";
+	private static final String TAG = "MavLinkParser";
 
 	private Parser parser;
 
 	private byte[] buffer;
 	private int bufferLen;
-
-	private int minBuffSize = 128;
 
 	// data read stream
 
@@ -31,18 +24,12 @@ public class MavLinkParserThread extends Thread {
 	private MAVLinkPacket lastMavLinkPacket = null;
 
 	private AppGlobals globalVars;
-	private Handler mavlinkCollectorMsgHandler;
 
-	public MavLinkParserThread(AppGlobals context, Handler msgHandler) {
+	public MavLinkParserThread(AppGlobals context) {
 
 		globalVars = context;
 
 		parser = new Parser();
-
-		mavlinkCollectorMsgHandler = msgHandler;
-
-		// read this
-		// mByteDataStream = globalVars.mBtConnector.mConnectorStream;
 
 		running = true;
 
@@ -54,16 +41,16 @@ public class MavLinkParserThread extends Thread {
 
 		while (running) {
 
-			if (globalVars.mBtConnector.mConnectorStream.size() > minBuffSize) {
+			if (globalVars.mBtConnector.mConnectorStream.size() > globalVars.minStreamReadSize) {
 
+				// lock, read and clear input stream
 				globalVars.mBtConnector.waitForStreamLock();
 				buffer = globalVars.mBtConnector.mConnectorStream.toByteArray();
 				bufferLen = globalVars.mBtConnector.mConnectorStream.size();
-				// clear input stream
 				globalVars.mBtConnector.mConnectorStream.reset();
 				globalVars.mBtConnector.releaseStream();
 
-				globalVars.logger.sysLog(TAG, "[bytes]: " + bufferLen);
+				// globalVars.logger.sysLog(TAG, "[bytes]: " + bufferLen);
 
 				lastMavLinkPacket = null;
 
@@ -76,21 +63,23 @@ public class MavLinkParserThread extends Thread {
 								.unpack();
 						// log ml msg
 						globalVars.logger.mavlinkMsg(lastMavLinkMsg);
-						globalVars.logger.sysLog(TAG,
-								lastMavLinkPacket.toString() + " : "
-										+ lastMavLinkMsg.toString());
-						// Broadcast it's ready
-						mavlinkCollectorMsgHandler.obtainMessage(
+						globalVars.logger.loggerMsgHandler.obtainMessage(
 								AppGlobals.MSG_MAVLINK_MSG_READY, -1, -1,
 								lastMavLinkMsg).sendToTarget();
 
+						globalVars.logger.sysLog("MavlinkMsg", " sysId: "
+								+ lastMavLinkPacket.sysid + " seqNo: "
+								+ lastMavLinkPacket.seq + " msg: "
+								+ lastMavLinkMsg.toString());
+						globalVars.logger.loggerMsgHandler.obtainMessage(
+								AppGlobals.MSG_SYSLOG_DATA_READY)
+								.sendToTarget();
 					}
 				}
-
 				// store bytes stream
 				globalVars.logger.byteLog(buffer, 0, bufferLen);
-				mavlinkCollectorMsgHandler.obtainMessage(
-						AppGlobals.MSG_LOGGER_DATA_READY).sendToTarget();
+				globalVars.logger.loggerMsgHandler.obtainMessage(
+						AppGlobals.MSG_BYTELOG_DATA_READY).sendToTarget();
 
 				bufferLen = 0;
 
@@ -98,6 +87,8 @@ public class MavLinkParserThread extends Thread {
 		}
 
 		globalVars.logger.sysLog(TAG, "MavLink Parser Stopped");
+		globalVars.logger.loggerMsgHandler.obtainMessage(
+				AppGlobals.MSG_SYSLOG_DATA_READY).sendToTarget();
 
 	}
 

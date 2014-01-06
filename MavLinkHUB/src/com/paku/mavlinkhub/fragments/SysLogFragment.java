@@ -58,14 +58,14 @@ public class SysLogFragment extends Fragment implements IDataLoggedIn {
 	@Override
 	public void onResume() {
 		super.onResume();
-		globalVars.mMavLinkCollector.registerSysLogForIDataLoggedIn(this);
+		globalVars.logger.registerSysLogForIDataLoggedIn(this);
 		refreshUI();
 	}
 
 	@Override
 	public void onPause() {
 		// TODO Auto-generated method stub
-		globalVars.mMavLinkCollector.unregisterSysLogForIDataLoggedIn();
+		globalVars.logger.unregisterSysLogForIDataLoggedIn();
 		super.onPause();
 	}
 
@@ -89,20 +89,17 @@ public class SysLogFragment extends Fragment implements IDataLoggedIn {
 		}
 
 		mTextViewBytesLog.setText(buff);
-		
-		
-		
-		//scroll down
-		final ScrollView mScrollView = (ScrollView) (getView().findViewById(R.id.scrollView_logSys));
-				
-		mScrollView.post(new Runnable() {            
-		    @Override
-		    public void run() {
-		    	mScrollView.fullScroll(View.FOCUS_DOWN);              
-		    }
-		});		
-		
-		
+
+		// scroll down
+		final ScrollView mScrollView = (ScrollView) (getView()
+				.findViewById(R.id.scrollView_logSys));
+
+		mScrollView.post(new Runnable() {
+			@Override
+			public void run() {
+				mScrollView.fullScroll(View.FOCUS_DOWN);
+			}
+		});
 
 		// final TextView mTextViewMsgLog = (TextView) (getView()
 		// .findViewById(R.id.TextView_logMavLinkMsg));
@@ -125,6 +122,12 @@ public class SysLogFragment extends Fragment implements IDataLoggedIn {
 
 		mTextViewLogStats.setText("Bytes Count: "
 				+ globalVars.logger.statsReadByteCount);
+
+		/*
+		 * TextView txtView1 = (TextView) findViewById(R.id.textView1); Typeface
+		 * externalFont = Typeface.createFromAsset(getAssets(),
+		 * "fonts/CONSOLA.TTF"); txtView1.setTypeface(externalFont);
+		 */
 
 	}
 

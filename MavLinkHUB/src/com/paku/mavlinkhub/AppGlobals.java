@@ -38,8 +38,9 @@ public class AppGlobals extends Application {
 	// other constants
 	public static final int MSG_CONNECTOR_DATA_READY = 101;
 	public static final int MSG_MAVLINK_MSG_READY = 102;
-	public static final int MSG_LOGGER_DATA_READY = 103;
-	public static final int REQUEST_ENABLE_BT = 104;
+	public static final int MSG_SYSLOG_DATA_READY = 103;
+	public static final int MSG_BYTELOG_DATA_READY = 104;
+	public static final int REQUEST_ENABLE_BT = 111;
 
 	public Context appContext;
 	public FragmentsAdapter mFragmentsPagerAdapter;
@@ -58,7 +59,10 @@ public class AppGlobals extends Application {
 	public Logger logger;
 
 	public int ui_Mode = AppGlobals.UI_MODE_CREATED;
-	public int visibleBuffersSize = 2048;
+
+	// buffer, stream sizes
+	public int visibleBuffersSize = 1024 * 10;
+	public int minStreamReadSize = 2 ^ 4; // ^6 = 64 ^5=32 ^4=16
 
 	public void Init(Context mContext) {
 
@@ -192,12 +196,24 @@ public class AppGlobals extends Application {
 				}
 
 				if (action.equals(BluetoothDevice.ACTION_ACL_CONNECTED)) {
-					logger.sysLog(TAG, "BTDevice [ACTION_ACL_CONNECTED]");
+					BluetoothDevice connDevice = intent
+							.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+					logger.sysLog(TAG,
+							"[ACTION_ACL_CONNECTED] [" + connDevice.getName()
+									+ ":" + connDevice.getAddress() + "]");
+
 					setUiMode(AppGlobals.UI_MODE_CONNECTED);
 				}
 
 				if (action.equals(BluetoothDevice.ACTION_ACL_DISCONNECTED)) {
-					logger.sysLog(TAG, "BTDevice [ACTION_ACL_DISCONNECTED]");
+					BluetoothDevice connDevice = intent
+							.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+					logger.sysLog(
+							TAG,
+							"[ACTION_ACL_DISCONNECTED] ["
+									+ connDevice.getName() + ":"
+									+ connDevice.getAddress() + "]");
+
 					setUiMode(AppGlobals.UI_MODE_DISCONNECTED);
 				}
 
