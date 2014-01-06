@@ -11,6 +11,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class RealTimeMavlinkFragment extends Fragment implements IDataLoggedIn {
@@ -47,9 +48,9 @@ public class RealTimeMavlinkFragment extends Fragment implements IDataLoggedIn {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		final TextView textView = (TextView) (getView()
-				.findViewById(R.id.textView_logByte));
-		textView.setMovementMethod(new ScrollingMovementMethod());
+		// final TextView textView = (TextView) (getView()
+		// .findViewById(R.id.textView_logByte));
+		// textView.setMovementMethod(new ScrollingMovementMethod());
 
 	}
 
@@ -90,22 +91,22 @@ public class RealTimeMavlinkFragment extends Fragment implements IDataLoggedIn {
 
 		mTextViewBytesLog.setText(buff);
 
-		// final TextView mTextViewMsgLog = (TextView) (getView()
-		// .findViewById(R.id.TextView_logMavLinkMsg));
-		// mTextViewMsgLog.setText(globalVars.mMavLinkCollector.mMsgSysWideLogStream)
-		// mByteLogTempStream.reset();
-
 		// scroll down
-		final Layout layout = mTextViewBytesLog.getLayout();
-		if (layout != null) {
-			int scrollDelta = layout.getLineBottom(mTextViewBytesLog
-					.getLineCount() - 1)
-					- mTextViewBytesLog.getScrollY()
-					- mTextViewBytesLog.getHeight();
-			if (scrollDelta > 0)
-				mTextViewBytesLog.scrollBy(0, scrollDelta);
+		final ScrollView mScrollView = (ScrollView) (getView()
+				.findViewById(R.id.scrollView_logByte));
+
+		if (mScrollView != null) {
+
+			mScrollView.post(new Runnable() {
+				@Override
+				public void run() {
+					mScrollView.fullScroll(View.FOCUS_DOWN);
+				}
+			});
+
 		}
 
+		// stats bar
 		final TextView mTextViewLogStats = (TextView) (getView()
 				.findViewById(R.id.textView_logStatsbar));
 

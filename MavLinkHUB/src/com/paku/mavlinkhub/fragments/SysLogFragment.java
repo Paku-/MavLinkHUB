@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class SysLogFragment extends Fragment implements IDataLoggedIn {
@@ -88,6 +89,20 @@ public class SysLogFragment extends Fragment implements IDataLoggedIn {
 		}
 
 		mTextViewBytesLog.setText(buff);
+		
+		
+		
+		//scroll down
+		final ScrollView mScrollView = (ScrollView) (getView().findViewById(R.id.scrollView_logSys));
+				
+		mScrollView.post(new Runnable() {            
+		    @Override
+		    public void run() {
+		    	mScrollView.fullScroll(View.FOCUS_DOWN);              
+		    }
+		});		
+		
+		
 
 		// final TextView mTextViewMsgLog = (TextView) (getView()
 		// .findViewById(R.id.TextView_logMavLinkMsg));
