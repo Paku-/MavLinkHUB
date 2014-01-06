@@ -1,5 +1,6 @@
 package com.paku.mavlinkhub.communication;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -15,7 +16,7 @@ public class BTSocketThread extends Thread {
 	private static final String TAG = "BTSocketThread";
 
 	private final BluetoothSocket mmSocket;
-	private final InputStream mmInStream;
+	private final BufferedInputStream mmInStream;
 	private final OutputStream mmOutStream;
 	private final Handler mConnectorReceiverHandler;
 	private boolean running = true;
@@ -38,22 +39,31 @@ public class BTSocketThread extends Thread {
 			Log.d(TAG, "Exception [getstreams]:" + e.getMessage());
 		}
 
-		mmInStream = tmpIn;
+		mmInStream = new BufferedInputStream(tmpIn);
 		mmOutStream = tmpOut;
 	}
 
 	public void run() {
-		byte[] buffer = new byte[1024]; // mConnectorStream store for the stream
+		byte[] buffer = new byte[2048]; // mConnectorStream store for the stream
 		int bytes; // bytes received
 
 		while (running) {
 			try {
-				// Read from the InputStream
-				bytes = mmInStream.read(buffer);
-				// Send the obtained bytes to the Connector
-				mConnectorReceiverHandler.obtainMessage(
-						AppGlobals.MSG_CONNECTOR_DATA_READY, bytes, -1, buffer)
-						.sendToTarget();
+				// sleep as we are to fast for BT serial :)
+				sleep(50);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+			try {
+
+				bytes = mmInStream.read(buffer, 0, buffer.length);
+
+				if (bytes > 0) {
+					mConnectorReceiverHandler.obtainMessage(
+							AppGlobals.MSG_CONNECTOR_DATA_READY, bytes, -1,
+							buffer).sendToTarget();
+				} else
+					Log.d(TAG, "** empty stream **");
 			} catch (IOException e) {
 				Log.d(TAG, "Exception [run.read.buffer]:" + e.getMessage());
 				break;
