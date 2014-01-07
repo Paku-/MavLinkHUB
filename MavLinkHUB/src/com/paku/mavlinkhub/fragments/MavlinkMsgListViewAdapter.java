@@ -3,6 +3,7 @@ package com.paku.mavlinkhub.fragments;
 import java.util.ArrayList;
 
 import com.paku.mavlinkhub.R;
+import com.paku.mavlinkhub.mavlink.MavlinkMsgItem;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -31,22 +32,19 @@ public class MavlinkMsgListViewAdapter extends ArrayAdapter<MavlinkMsgItem> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        // 1. Create inflater
         LayoutInflater inflater = (LayoutInflater) context
             .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        // 2. Get rowView from inflater
         View rowView = inflater.inflate(R.layout.listviewitem_mavlinkmsg, parent, false);
+        
+        TextView labelView = (TextView) rowView.findViewById(R.id.listViewItemTxt_mainText);
+        TextView valueView1 = (TextView) rowView.findViewById(R.id.listViewItemTxt_desc_1);
+        TextView valueView2 = (TextView) rowView.findViewById(R.id.listViewItemTxt_desc_2);
 
-        // 3. Get the two text view from the rowView
-        TextView labelView = (TextView) rowView.findViewById(R.id.textView1);
-        TextView valueView = (TextView) rowView.findViewById(R.id.textView2);
 
-        // 4. Set the text for textView
-        labelView.setText(itemsArrayList.get(position).getTitle());
-        valueView.setText(itemsArrayList.get(position).getDescription());
+        labelView.setText(itemsArrayList.get(position).getMainText());
+        valueView1.setText(itemsArrayList.get(position).getDescription_1());
+        valueView2.setText(itemsArrayList.get(position).getDescription_2());
 
-        // 5. Return rowView
         return rowView;
     }
     

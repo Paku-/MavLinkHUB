@@ -1,10 +1,16 @@
 package com.paku.mavlinkhub.fragments;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.StreamCorruptedException;
 import java.util.ArrayList;
 
+import com.MAVLink.Messages.MAVLinkMessage;
 import com.paku.mavlinkhub.AppGlobals;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.interfaces.IDataLoggedIn;
+import com.paku.mavlinkhub.mavlink.MavlinkMsgItem;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,6 +28,7 @@ public class RealTimeMavlinkFragment extends Fragment implements IDataLoggedIn {
 	private AppGlobals globalVars;
 	
 	MavlinkMsgListViewAdapter mavlinkListAdapter;
+	ListView mavlinkMsgListView;
 
 	public RealTimeMavlinkFragment() {
 
@@ -38,20 +45,29 @@ public class RealTimeMavlinkFragment extends Fragment implements IDataLoggedIn {
 
 	}
 	
-	
 	//get data to fill the list view
-	private ArrayList<MavlinkMsgItem> generateData() {
-		
+	private ArrayList<MavlinkMsgItem> generateMavlinkListData() {		
 		ArrayList<MavlinkMsgItem> tempArray = new ArrayList<MavlinkMsgItem>();
+		MAVLinkMessage tempMsg;
 		
+		ByteArrayInputStream msgByteInputStream = new ByteArrayInputStream(globalVars.logger.mInMemMsgBackgroundStream.toByteArray());
 		
-		for (int i = 0; i < 20; i++) {
-			
-			tempArray.add(new MavlinkMsgItem("tile "+i, "description"+i));
-			
-			
-		}
 
+		
+		try {
+			ObjectInputStream msgObjectInputStream = new ObjectInputStream(msgByteInputStream);
+			if (msgByteInputStream.available()>0)
+			while ((tempMsg = (MAVLinkMessage) msgObjectInputStream.readObject()) != null) {
+				tempArray.add(new MavlinkMsgItem(0,tempMsg.toString(), "description","3","4","5"));
+			}								
+		} catch (StreamCorruptedException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
 		return tempArray;
 	}
 
@@ -68,15 +84,10 @@ public class RealTimeMavlinkFragment extends Fragment implements IDataLoggedIn {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		
+		mavlinkListAdapter = new MavlinkMsgListViewAdapter (this.getActivity(), generateMavlinkListData());
 		
-		mavlinkListAdapter = new MavlinkMsgListViewAdapter (this.getActivity(), generateData());
-		 
-		
-        ListView listView = (ListView) (getView().findViewById(R.id.listView_mavlinkMsgs));
-        listView.setAdapter(mavlinkListAdapter);		
-		
-		
-
+        mavlinkMsgListView = (ListView) (getView().findViewById(R.id.listView_mavlinkMsgs));
+        mavlinkMsgListView.setAdapter(mavlinkListAdapter);		
 	}
 
 	@Override
@@ -135,7 +146,30 @@ public class RealTimeMavlinkFragment extends Fragment implements IDataLoggedIn {
 				.findViewById(R.id.textView_logStatsbar));
 
 		mTextViewLogStats.setText(globalVars.mMavLinkCollector.getLastParserStats());
-
+		
+		//msgs listview
+		//mavlinkListAdapter.notifyDataSetChanged();
+		//mavlinkMsgListView.setVisibility(ListView.INVISIBLE);
+		//mavlinkMsgListView.setVisibility(ListView.VISIBLE);
+		//mavlinkMsgListView.
+		/*
+		mavlinkMsgListView.post(new Runnable() {
+			@Override
+			public void run() {				
+				mavlinkListAdapter.notifyDataSetChanged();
+				//mavlinkMsgListView.setSelection(1);
+				mavlinkMsgListView.invalidateViews();
+				//mavlinkMsgListView.setVisibility(ListView.INVISIBLE);
+				//mavlinkMsgListView.setVisibility(ListView.VISIBLE);				
+			}
+		});
+*/
+		mavlinkListAdapter.clear();
+		mavlinkListAdapter.addAll(generateMavlinkListData());
+		mavlinkListAdapter.notifyDataSetChanged();
+		mavlinkMsgListView.setSelection(mavlinkListAdapter.getCount());
+		
+		
 	}
 
 	@Override

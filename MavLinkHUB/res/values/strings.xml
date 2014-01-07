@@ -40,5 +40,6 @@
     <string name="pref_log_system_file_folder_title">System log file default folder</string>    
     <string name="log_sys_log_empty">System log empty</string>    
     <string name="connectivity_txt_select_device">Select Device</string>    
-    <string name="connectivity_txt_disconnected">Disconnected</string>
+    <string name="connectivity_txt_disconnected">Disconnected</string>    
+    <string name="txt_no_data">No Data</string>
 </resources>

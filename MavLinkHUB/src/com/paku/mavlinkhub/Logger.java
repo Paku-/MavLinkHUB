@@ -34,7 +34,7 @@ public class Logger {
 	// incoming bytes
 	public ByteArrayOutputStream mInMemIncomingBytesStream;
 	// Mavlink messages as bytes
-	private ByteArrayOutputStream mInMemMsgBackgroundStream;
+	public ByteArrayOutputStream mInMemMsgBackgroundStream;
 	// true parser output - Mavlink messages objects stream
 	public ObjectOutputStream mInMemMsgStream;
 	public ByteArrayOutputStream mInMemSysLogStream;

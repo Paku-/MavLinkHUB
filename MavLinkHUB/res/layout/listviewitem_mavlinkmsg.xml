@@ -4,34 +4,32 @@
     android:layout_height="match_parent" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/listViewItemTxt_mainText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="18dp"
-        android:text="Large Text"
+        android:layout_margin="5dp"
+        android:text="@string/txt_no_data"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/listViewItemTxt_desc_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/textView1"
-        android:text="Small Text"
+        android:layout_alignLeft="@+id/listViewItemTxt_mainText"
+        android:layout_below="@+id/listViewItemTxt_mainText"
+        android:text="@string/txt_no_data"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/listViewItemTxt_desc_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView2"
-        android:layout_alignBottom="@+id/textView2"
-        android:layout_marginLeft="17dp"
-        android:layout_toRightOf="@+id/textView2"
-        android:text="Small Text"
+        android:layout_below="@+id/listViewItemTxt_mainText"
+        android:layout_marginLeft="18dp"
+        android:layout_toRightOf="@+id/listViewItemTxt_desc_1"
+        android:text="@string/txt_no_data"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>
