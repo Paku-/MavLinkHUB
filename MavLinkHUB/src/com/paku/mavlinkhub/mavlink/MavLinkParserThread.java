@@ -14,12 +14,6 @@ public class MavLinkParserThread extends Thread {
 	private byte[] buffer;
 	private int bufferLen;
 
-	// data read stream
-
-	// private ByteArrayOutputStream mByteDataStream;
-
-	// private ByteArrayInputStream collectedDataStream;
-
 	private boolean running = true;
 	private MAVLinkPacket lastMavLinkPacket = null;
 
@@ -67,13 +61,17 @@ public class MavLinkParserThread extends Thread {
 								AppGlobals.MSG_MAVLINK_MSG_READY, -1, -1,
 								lastMavLinkMsg).sendToTarget();
 
-						globalVars.logger.sysLog("MavlinkMsg", " sysId: "
-								+ lastMavLinkPacket.sysid + " seqNo: "
-								+ lastMavLinkPacket.seq + " msg: "
-								+ lastMavLinkMsg.toString());
+						globalVars.logger
+								.sysLog("MavlinkMsg",
+										globalVars.mMavLinkCollector
+												.decodeMavlinkPkg(lastMavLinkPacket)
+												+ " msg: "
+												+ globalVars.mMavLinkCollector
+														.decodeMavlinkMsg(lastMavLinkMsg));
 						globalVars.logger.loggerMsgHandler.obtainMessage(
 								AppGlobals.MSG_SYSLOG_DATA_READY)
 								.sendToTarget();
+						globalVars.mMavLinkCollector.storeLastParserStats(parser.stats);
 					}
 				}
 				// store bytes stream

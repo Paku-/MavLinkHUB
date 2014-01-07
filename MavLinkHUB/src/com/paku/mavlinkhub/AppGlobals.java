@@ -224,5 +224,6 @@ public class AppGlobals extends Application {
 		};
 
 	}
+	
 
 }

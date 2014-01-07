@@ -51,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@+id/textView_BTDev"
                     android:layout_below="@+id/textView_BTDev"
-                    android:text="Disconnected"
+                    android:text="@string/connectivity_txt_disconnected"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
 
                 <TextView
@@ -60,7 +60,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:text="Select Device"
+                    android:text="@string/connectivity_txt_select_device"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
             </RelativeLayout>
         </LinearLayout>        

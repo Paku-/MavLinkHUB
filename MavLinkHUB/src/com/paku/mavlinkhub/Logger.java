@@ -270,7 +270,7 @@ public class Logger {
 	public void processSysLogDataLoggedIn() {
 
 		if (callSysLogFragment != null) {
-			callSysLogFragment.onDataLoggedInReady();
+			callSysLogFragment.onDataLoggedIn();
 		}
 
 	}
@@ -278,7 +278,7 @@ public class Logger {
 	public void processByteLogDataLoggedIn() {
 
 		if (callRealTimeMavlinkFragment != null) {
-			callRealTimeMavlinkFragment.onDataLoggedInReady();
+			callRealTimeMavlinkFragment.onDataLoggedIn();
 		}
 	}
 

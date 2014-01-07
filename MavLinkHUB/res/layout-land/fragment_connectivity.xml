@@ -50,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Select Device"
+                android:text="@string/connectivity_txt_select_device"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/textView_BTDev"
                 android:layout_below="@+id/textView_BTDev"
-                android:text="Disconnected"
+                android:text="@string/connectivity_txt_disconnected"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         </RelativeLayout>
 

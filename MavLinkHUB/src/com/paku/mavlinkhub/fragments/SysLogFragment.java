@@ -6,7 +6,6 @@ import com.paku.mavlinkhub.interfaces.IDataLoggedIn;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Layout;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,10 +47,6 @@ public class SysLogFragment extends Fragment implements IDataLoggedIn {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-
-		final TextView textView = (TextView) (getView()
-				.findViewById(R.id.TextView_logSysLog));
-		textView.setMovementMethod(new ScrollingMovementMethod());
 
 	}
 
@@ -105,24 +100,12 @@ public class SysLogFragment extends Fragment implements IDataLoggedIn {
 		// .findViewById(R.id.TextView_logMavLinkMsg));
 		// mTextViewMsgLog.setText(globalVars.mMavLinkCollector.mMsgSysWideLogStream)
 		// mByteLogTempStream.reset();
-
-		// scroll down
-		final Layout layout = mTextViewBytesLog.getLayout();
-		if (layout != null) {
-			int scrollDelta = layout.getLineBottom(mTextViewBytesLog
-					.getLineCount() - 1)
-					- mTextViewBytesLog.getScrollY()
-					- mTextViewBytesLog.getHeight();
-			if (scrollDelta > 0)
-				mTextViewBytesLog.scrollBy(0, scrollDelta);
-		}
-
+		
 		final TextView mTextViewLogStats = (TextView) (getView()
 				.findViewById(R.id.textView_logSysLogStatsbar));
-
-		mTextViewLogStats.setText("Bytes Count: "
-				+ globalVars.logger.statsReadByteCount);
-
+		
+		mTextViewLogStats.setText(globalVars.mMavLinkCollector.getLastParserStats());
+		
 		/*
 		 * TextView txtView1 = (TextView) findViewById(R.id.textView1); Typeface
 		 * externalFont = Typeface.createFromAsset(getAssets(),
@@ -132,7 +115,7 @@ public class SysLogFragment extends Fragment implements IDataLoggedIn {
 	}
 
 	@Override
-	public void onDataLoggedInReady() {
+	public void onDataLoggedIn() {
 		Log.d(TAG, "[SysLogLog]" + globalVars.logger.mInMemSysLogStream.size());
 		refreshUI();
 	}

@@ -9,6 +9,8 @@ Closing
 [sysLog]
 
 [bytes
+autopilot
+heartbeat
 
 unreg
 

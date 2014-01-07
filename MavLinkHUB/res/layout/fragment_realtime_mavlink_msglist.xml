@@ -2,9 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-
-     >
+    android:layout_height="match_parent" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,27 +10,22 @@
         android:layout_above="@+id/textView_logStatsbar"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true" android:baselineAligned="false">
+        android:layout_alignParentTop="true"
+        android:baselineAligned="false"
+        android:orientation="vertical" >
 
-        <ScrollView
-            android:id="@+id/scrollView_logMavlinkMsg"
+        <ListView
+            android:id="@+id/listView_mavlinkMsgs"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" >
-
-            <TextView
-                android:id="@+id/textView_logMavlinkMsg"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/log_ml_msg_log_empty" />
-
-        </ScrollView>
+        </ListView>
 
         <ScrollView
             android:id="@+id/scrollView_logByte"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1" >
+            android:layout_weight="2" >
 
             <TextView
                 android:id="@+id/textView_logByte"
