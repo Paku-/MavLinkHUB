@@ -3,7 +3,7 @@ package com.paku.mavlinkhub.fragments;
 import java.util.ArrayList;
 
 import com.paku.mavlinkhub.R;
-import com.paku.mavlinkhub.mavlink.MavlinkMsgItem;
+import com.paku.mavlinkhub.mavlink.MavLinkMsgItem;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,13 +12,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class MavlinkMsgListViewAdapter extends ArrayAdapter<MavlinkMsgItem> {
+public class MavlinkMsgListViewAdapter extends ArrayAdapter<MavLinkMsgItem> {
 
 	
 	private final Context context;
-    private final ArrayList<MavlinkMsgItem> itemsArrayList;
+    private final ArrayList<MavLinkMsgItem> itemsArrayList;
 
-    public MavlinkMsgListViewAdapter(Context context, ArrayList<MavlinkMsgItem> itemsArrayList) {
+    public MavlinkMsgListViewAdapter(Context context, ArrayList<MavLinkMsgItem> itemsArrayList) {
 
         super(context, R.layout.listviewitem_mavlinkmsg, itemsArrayList);
 

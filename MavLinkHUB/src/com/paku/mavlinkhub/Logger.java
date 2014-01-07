@@ -17,8 +17,8 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
-import com.MAVLink.Messages.MAVLinkMessage;
 import com.paku.mavlinkhub.interfaces.IDataLoggedIn;
+import com.paku.mavlinkhub.mavlink.MavLinkMsgItem;
 
 public class Logger {
 
@@ -147,10 +147,10 @@ public class Logger {
 		}
 	}
 
-	public void mavlinkMsg(MAVLinkMessage msg) {
+	public void streamMavLinkMsgItem(MavLinkMsgItem msgItem) {
 		// fill msgs stream with new arrival
 		try {
-			mInMemMsgStream.writeObject(msg);
+			mInMemMsgStream.writeObject(msgItem);
 		} catch (IOException e) {
 			Log.d(TAG, "MsgStream write: " + e.getMessage());
 		}

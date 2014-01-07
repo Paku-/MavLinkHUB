@@ -1,7 +1,6 @@
 package com.paku.mavlinkhub.mavlink;
 
 import com.MAVLink.Parser;
-import com.MAVLink.Messages.MAVLinkMessage;
 import com.MAVLink.Messages.MAVLinkPacket;
 import com.paku.mavlinkhub.AppGlobals;
 
@@ -53,25 +52,35 @@ public class MavLinkParserThread extends Thread {
 					lastMavLinkPacket = parser
 							.mavlink_parse_char(buffer[i] & 0x00ff);
 					if (lastMavLinkPacket != null) {
-						MAVLinkMessage lastMavLinkMsg = lastMavLinkPacket
-								.unpack();
-						// log ml msg
-						globalVars.logger.mavlinkMsg(lastMavLinkMsg);
+						// MAVLinkMessage lastMavLinkMsg = lastMavLinkPacket
+						// .unpack();
+
+						MavLinkMsgItem lastMavLinkMsgItem = new MavLinkMsgItem(
+								lastMavLinkPacket, 1);
+
+						// stream msg for UI
+						globalVars.logger.streamMavLinkMsgItem(lastMavLinkMsgItem);
+						
+						//not used now
+						/*
 						globalVars.logger.loggerMsgHandler.obtainMessage(
 								AppGlobals.MSG_MAVLINK_MSG_READY, -1, -1,
-								lastMavLinkMsg).sendToTarget();
+								lastMavLinkMsgItem).sendToTarget();
+								*/
 
+						// stream for syslog
 						globalVars.logger
 								.sysLog("MavlinkMsg",
 										globalVars.mMavLinkCollector
-												.decodeMavlinkPkg(lastMavLinkPacket)
-												+ " msg: "
-												+ globalVars.mMavLinkCollector
-														.decodeMavlinkMsg(lastMavLinkMsg));
+												.decodeMavlinkMsgItem(lastMavLinkMsgItem));
+						// broadcast logged data ready. /UI/
 						globalVars.logger.loggerMsgHandler.obtainMessage(
 								AppGlobals.MSG_SYSLOG_DATA_READY)
 								.sendToTarget();
-						globalVars.mMavLinkCollector.storeLastParserStats(parser.stats);
+
+						// store parser stats
+						globalVars.mMavLinkCollector
+								.storeLastParserStats(parser.stats);
 					}
 				}
 				// store bytes stream

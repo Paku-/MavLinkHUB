@@ -2,7 +2,6 @@ package com.paku.mavlinkhub.mavlink;
 
 import android.content.Context;
 
-import com.MAVLink.Messages.MAVLinkMessage;
 import com.MAVLink.Messages.MAVLinkPacket;
 import com.MAVLink.Messages.MAVLinkStats;
 import com.paku.mavlinkhub.AppGlobals;
@@ -35,8 +34,8 @@ public class MavLinkCollector {
 			parserThread.stopRunning();
 	}
 
-	public String decodeMavlinkMsg(MAVLinkMessage msg) {
-		return msg.toString();
+	public String decodeMavlinkMsgItem(MavLinkMsgItem lastMavLinkMsgItem) {
+		return lastMavLinkMsgItem.toString();
 	}
 
 	public String decodeMavlinkPkg(MAVLinkPacket pkg) {
