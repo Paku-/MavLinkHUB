@@ -3,6 +3,7 @@ package com.paku.mavlinkhub.fragments;
 import java.util.ArrayList;
 
 import com.paku.mavlinkhub.R;
+import com.paku.mavlinkhub.mavlink.MavLinkClassExtractor;
 import com.paku.mavlinkhub.mavlink.MavLinkMsgItem;
 import com.paku.mavlinkhub.mavlink.MavLinkMsgTxtItem;
 
@@ -18,6 +19,10 @@ public class MavlinkMsgListViewAdapter extends ArrayAdapter<MavLinkMsgItem> {
 	
 	private final Context context;
     private final ArrayList<MavLinkMsgItem> itemsArrayList;
+    
+	// mavlink classes' string names helper class
+	public MavLinkClassExtractor mavClasses;
+
 
     public MavlinkMsgListViewAdapter(Context context, ArrayList<MavLinkMsgItem> itemsArrayList) {
 
@@ -25,6 +30,11 @@ public class MavlinkMsgListViewAdapter extends ArrayAdapter<MavLinkMsgItem> {
 
         this.context = context;
         this.itemsArrayList = itemsArrayList;
+		
+        // mavlink msgs fields name reference object
+		this.mavClasses = new MavLinkClassExtractor();
+
+        
     }
     
     
@@ -43,7 +53,7 @@ public class MavlinkMsgListViewAdapter extends ArrayAdapter<MavLinkMsgItem> {
         TextView desc2 = (TextView) rowView.findViewById(R.id.listViewItemTxt_desc_2);
         TextView desc3 = (TextView) rowView.findViewById(R.id.listViewItemTxt_desc_3);
         
-        MavLinkMsgTxtItem msgTxtItem = new MavLinkMsgTxtItem(itemsArrayList.get(position));
+        MavLinkMsgTxtItem msgTxtItem = new MavLinkMsgTxtItem(itemsArrayList.get(position),mavClasses);
 
         msgName.setText(msgTxtItem.getName());
         mainText.setText(msgTxtItem.getMainTxt());

@@ -3,6 +3,7 @@ package com.paku.mavlinkhub;
 import com.paku.mavlinkhub.communication.BluetoothConnector;
 import com.paku.mavlinkhub.fragments.FragmentsAdapter;
 import com.paku.mavlinkhub.interfaces.IUiModeChanged;
+import com.paku.mavlinkhub.mavlink.MavLinkClassExtractor;
 import com.paku.mavlinkhub.mavlink.MavLinkCollector;
 
 import android.app.Application;
@@ -73,7 +74,7 @@ public class AppGlobals extends Application {
 		logger.restartByteLog();
 
 		logger.sysLog(TAG, "** MavLinkHUB Init **");
-
+		
 		appContext = mContext;
 
 		setUiMode(AppGlobals.UI_MODE_CREATED);

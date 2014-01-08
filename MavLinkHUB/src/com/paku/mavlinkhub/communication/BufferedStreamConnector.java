@@ -62,7 +62,7 @@ public abstract class BufferedStreamConnector {
 
 	private void resetStream(boolean withLock) {
 		if (withLock)
-			waitForStreamLock(10);
+			waitForStreamLock(2);
 		mConnectorStream.reset();
 		if (withLock)
 			releaseStream();
