@@ -37,11 +37,11 @@ public abstract class BufferedStreamConnector {
 
 	}
 
-	public void waitForStreamLock() {
+	public void waitForStreamLock(int milis) {
 		while (lockConnStream) {
 			//Log.d(TAG, "Stream Locked..");
 			try {
-				Thread.sleep(10);
+				Thread.sleep(milis);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -62,7 +62,7 @@ public abstract class BufferedStreamConnector {
 
 	private void resetStream(boolean withLock) {
 		if (withLock)
-			waitForStreamLock();
+			waitForStreamLock(10);
 		mConnectorStream.reset();
 		if (withLock)
 			releaseStream();

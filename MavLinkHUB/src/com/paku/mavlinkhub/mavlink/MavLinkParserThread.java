@@ -37,7 +37,7 @@ public class MavLinkParserThread extends Thread {
 			if (globalVars.mBtConnector.mConnectorStream.size() > globalVars.minStreamReadSize) {
 
 				// lock, read and clear input stream
-				globalVars.mBtConnector.waitForStreamLock();
+				globalVars.mBtConnector.waitForStreamLock(3);
 				buffer = globalVars.mBtConnector.mConnectorStream.toByteArray();
 				bufferLen = globalVars.mBtConnector.mConnectorStream.size();
 				globalVars.mBtConnector.mConnectorStream.reset();

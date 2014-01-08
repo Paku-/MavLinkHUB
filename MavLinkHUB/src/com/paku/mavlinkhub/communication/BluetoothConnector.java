@@ -62,7 +62,7 @@ public class BluetoothConnector extends BufferedStreamConnector {
 					switch (msg.what) {
 					// Received data
 					case AppGlobals.MSG_CONNECTOR_DATA_READY:
-						waitForStreamLock();
+						waitForStreamLock(3);
 
 						mConnectorStream.write((byte[]) msg.obj, 0, msg.arg1);
 /*

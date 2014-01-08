@@ -16,10 +16,15 @@ public class MavLinkCollector {
 	private MAVLinkStats mMavlinkParserStats;
 
 	private MavLinkParserThread parserThread;
+	
+	public MavLinkClassExtractor mavClasses;
 
 	public MavLinkCollector(Context mContext) {
 
 		globalVars = ((AppGlobals) mContext.getApplicationContext());
+		
+		//mavlink msgs' fields name reference object
+		mavClasses = new MavLinkClassExtractor();
 
 	}
 
