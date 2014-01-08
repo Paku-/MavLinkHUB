@@ -6,8 +6,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import android.annotation.SuppressLint;
@@ -30,13 +30,14 @@ public class Logger {
 	private File byteLogFile, sysLogFile;
 	private BufferedOutputStream mFileIncomingByteLogStream, mFileSysLogStream;
 
+
 	// sys wide in memory logging streams
 	// incoming bytes
 	public ByteArrayOutputStream mInMemIncomingBytesStream;
-	// Mavlink messages as bytes
-	public ByteArrayOutputStream mInMemMsgBackgroundStream;
-	// true parser output - Mavlink messages objects stream
-	public ObjectOutputStream mInMemMsgStream;
+
+	//in mem msgItems storage
+	public ArrayList<MavLinkMsgItem> mavlinkMsgItemsArray;
+	
 	public ByteArrayOutputStream mInMemSysLogStream;
 
 	// stats vars
@@ -61,15 +62,8 @@ public class Logger {
 		mInMemIncomingBytesStream = new ByteArrayOutputStream();
 		mInMemIncomingBytesStream.reset();
 
-		// set the decoded msg streams ready.
-		try {
-			// mavlink msg objects as byte data
-			mInMemMsgBackgroundStream = new ByteArrayOutputStream();
-			// true system wide mavlink msg objects stream (based on above)
-			mInMemMsgStream = new ObjectOutputStream(mInMemMsgBackgroundStream);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		// set the decoded msgItems array ready.
+		mavlinkMsgItemsArray = new ArrayList<MavLinkMsgItem>();
 
 		// msg handler for asynch UI updates
 
@@ -147,13 +141,10 @@ public class Logger {
 		}
 	}
 
-	public void streamMavLinkMsgItem(MavLinkMsgItem msgItem) {
+	public void storeMavLinkMsgItem(MavLinkMsgItem msgItem) {
 		// fill msgs stream with new arrival
-		try {
-			mInMemMsgStream.writeObject(msgItem);
-		} catch (IOException e) {
-			Log.d(TAG, "MsgStream write: " + e.getMessage());
-		}
+
+		mavlinkMsgItemsArray.add(msgItem);
 
 	}
 
@@ -282,10 +273,7 @@ public class Logger {
 		}
 	}
 
-	/*
-	 * runOnUiThread(new Runnable() { public void run() {
-	 * titleProgress.setVisibility(View.VISIBLE); } });
-	 */
+	
 
 	// *****************************************
 	// interface end

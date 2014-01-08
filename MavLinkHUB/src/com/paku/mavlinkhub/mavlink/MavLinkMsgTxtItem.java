@@ -3,7 +3,6 @@ package com.paku.mavlinkhub.mavlink;
 import com.MAVLink.Messages.ApmModes;
 import com.MAVLink.Messages.ardupilotmega.msg_heartbeat;
 import com.MAVLink.Messages.ardupilotmega.msg_statustext;
-import com.MAVLink.Messages.enums.MAV_AUTOPILOT;
 
 public class MavLinkMsgTxtItem {
 

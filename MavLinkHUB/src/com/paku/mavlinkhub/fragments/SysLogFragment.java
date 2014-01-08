@@ -6,7 +6,6 @@ import com.paku.mavlinkhub.interfaces.IDataLoggedIn;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,7 @@ import android.widget.TextView;
 
 public class SysLogFragment extends Fragment implements IDataLoggedIn {
 
-	// @SuppressWarnings("unused")
+	@SuppressWarnings("unused")
 	private static final String TAG = "SysLogFragment";
 	private AppGlobals globalVars;
 
@@ -95,11 +94,6 @@ public class SysLogFragment extends Fragment implements IDataLoggedIn {
 			}
 		});
 
-		// final TextView mTextViewMsgLog = (TextView) (getView()
-		// .findViewById(R.id.TextView_logMavLinkMsg));
-		// mTextViewMsgLog.setText(globalVars.mMavLinkCollector.mMsgSysWideLogStream)
-		// mByteLogTempStream.reset();
-		
 		final TextView mTextViewLogStats = (TextView) (getView()
 				.findViewById(R.id.textView_logSysLogStatsbar));
 		

@@ -59,7 +59,7 @@ public class MavLinkParserThread extends Thread {
 								lastMavLinkPacket, 1);
 
 						// stream msg for UI
-						globalVars.logger.streamMavLinkMsgItem(lastMavLinkMsgItem);
+						globalVars.logger.storeMavLinkMsgItem(lastMavLinkMsgItem);
 						
 						//not used now
 						/*

@@ -1,9 +1,5 @@
 package com.paku.mavlinkhub.fragments;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.StreamCorruptedException;
 import java.util.ArrayList;
 
 import com.paku.mavlinkhub.AppGlobals;
@@ -44,33 +40,6 @@ public class RealTimeMavlinkFragment extends Fragment implements IDataLoggedIn {
 
 	}
 	
-	//get data to fill the list view
-	private ArrayList<MavLinkMsgItem> generateMavlinkListData() {		
-		ArrayList<MavLinkMsgItem> tempArray = new ArrayList<MavLinkMsgItem>();
-		MavLinkMsgItem tempMsg;
-		
-		ByteArrayInputStream msgByteInputStream = new ByteArrayInputStream(globalVars.logger.mInMemMsgBackgroundStream.toByteArray());
-		
-
-		
-		try {
-			ObjectInputStream msgObjectInputStream = new ObjectInputStream(msgByteInputStream);
-			if (msgByteInputStream.available()>0)
-			while ((tempMsg = (MavLinkMsgItem) msgObjectInputStream.readObject()) != null) {
-				//tempArray.add(new MavLinkMsgItem(0,tempMsg.toString(), "description","3","4","5"));
-				tempArray.add(tempMsg);
-			}								
-		} catch (StreamCorruptedException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			//e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		
-		return tempArray;
-	}
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -147,35 +116,34 @@ public class RealTimeMavlinkFragment extends Fragment implements IDataLoggedIn {
 
 		mTextViewLogStats.setText(globalVars.mMavLinkCollector.getLastParserStats());
 		
-		//msgs listview
-		//mavlinkListAdapter.notifyDataSetChanged();
-		//mavlinkMsgListView.setVisibility(ListView.INVISIBLE);
-		//mavlinkMsgListView.setVisibility(ListView.VISIBLE);
-		//mavlinkMsgListView.
-		/*
-		mavlinkMsgListView.post(new Runnable() {
-			@Override
-			public void run() {				
-				mavlinkListAdapter.notifyDataSetChanged();
-				//mavlinkMsgListView.setSelection(1);
-				mavlinkMsgListView.invalidateViews();
-				//mavlinkMsgListView.setVisibility(ListView.INVISIBLE);
-				//mavlinkMsgListView.setVisibility(ListView.VISIBLE);				
-			}
-		});
-*/
 		mavlinkListAdapter.clear();
 		mavlinkListAdapter.addAll(generateMavlinkListData());
-		mavlinkListAdapter.notifyDataSetChanged();
 		mavlinkMsgListView.setSelection(mavlinkListAdapter.getCount());
-		
+
 		
 	}
+	
+	
+	//get data to fill the list view
+	private ArrayList<MavLinkMsgItem> generateMavlinkListData() {		
+		
+		//limit size
+		while (globalVars.logger.mavlinkMsgItemsArray.size() > globalVars.visibleMsgList)
+			globalVars.logger.mavlinkMsgItemsArray.remove(0);
+		
+		//flush mem
+		globalVars.logger.mavlinkMsgItemsArray.trimToSize();
+		
+		//we need a clone for adapter.
+		ArrayList<MavLinkMsgItem> clone = new ArrayList<MavLinkMsgItem>();
+		clone.addAll(globalVars.logger.mavlinkMsgItemsArray);
+		
+		return clone;
+	}
+	
 
 	@Override
 	public void onDataLoggedIn() {
-		// Log.d(TAG,
-		// "[ByteLog]"+globalVars.logger.mInMemIncomingBytesStream.size());
 		refreshUI();
 	}
 

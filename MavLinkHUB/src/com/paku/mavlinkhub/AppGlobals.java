@@ -3,7 +3,6 @@ package com.paku.mavlinkhub;
 import com.paku.mavlinkhub.communication.BluetoothConnector;
 import com.paku.mavlinkhub.fragments.FragmentsAdapter;
 import com.paku.mavlinkhub.interfaces.IUiModeChanged;
-import com.paku.mavlinkhub.mavlink.MavLinkClassExtractor;
 import com.paku.mavlinkhub.mavlink.MavLinkCollector;
 
 import android.app.Application;
@@ -64,6 +63,7 @@ public class AppGlobals extends Application {
 	// buffer, stream sizes
 	public int visibleBuffersSize = 1024 * 10;
 	public int minStreamReadSize = 2 ^ 4; // ^6 = 64 ^5=32 ^4=16
+	public int visibleMsgList = 20;
 
 	public void Init(Context mContext) {
 
