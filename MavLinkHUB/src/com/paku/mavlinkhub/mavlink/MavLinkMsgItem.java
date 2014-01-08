@@ -9,19 +9,15 @@ public class MavLinkMsgItem implements Serializable{
 	
 
 	/**
-	 * serializable MavlinkMsg extended with packet data and in the stream repetition count 
+	 * serializable MavlinkMsg extended with packet data and the in-stream repetition count 
 	 */
 	private static final long serialVersionUID = -2616788128278070587L;
 	
 	MAVLinkMessage msg;
 	int seqNo,sysId;
 	
-    private int count;	
-	
-    private String description_3;
-    private String description_4;
-
-    
+    private int count; // how many times the the same msg was repeated 	
+	   
     public MavLinkMsgItem(MAVLinkMessage msg,MAVLinkPacket pkt, int count) {
         super();
         this.count = count;
@@ -44,26 +40,6 @@ public class MavLinkMsgItem implements Serializable{
     	return String.valueOf(count);
     }
     
-    public String getMainText(){
-    	return this.toString();
-    }
-    
-    public String getDescription_1(){
-    	return "Desc1";
-    }
-
-    public String getDescription_2(){
-    	return "Desc2";
-    }
-
-    public String getDescription_3(){
-    	return description_3;
-    }
-
-    public String getDescription_4(){
-    	return description_4;
-    }
-
     @Override
     public String toString(){    	
     	return "SysId:"+sysId+" SeqNo:"+seqNo+" "+msg.toString();    	

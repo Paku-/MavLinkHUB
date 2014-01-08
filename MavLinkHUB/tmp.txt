@@ -8,6 +8,8 @@ MavlinkMsg
 Closing
 [sysLog]
 
+ardu
+
 [bytes
 autopilot
 heartbeat

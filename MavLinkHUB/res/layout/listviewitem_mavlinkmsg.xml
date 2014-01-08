@@ -3,33 +3,76 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <TextView
-        android:id="@+id/listViewItemTxt_desc_2"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/listViewItemTxt_mainText"
-        android:layout_marginLeft="18dp"
-        android:layout_toRightOf="@+id/listViewItemTxt_desc_1"
-        android:text="@string/txt_no_data"
-        android:textSize="12sp" />
+        android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/listViewItemTxt_mainText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_margin="3dp"
-        android:text="@string/txt_no_data"
-        android:textSize="15sp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
 
-    <TextView
-        android:id="@+id/listViewItemTxt_desc_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/listViewItemTxt_mainText"
-        android:layout_below="@+id/listViewItemTxt_mainText"
-        android:text="@string/txt_no_data"
-        android:textSize="12sp" />
+            <TextView
+                android:id="@+id/listViewItemTxt_mainText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:text="@string/txt_no_data"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/listViewItemTxt_desc_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="25dp"
+                android:layout_toRightOf="@+id/listViewItemTxt_mainText"
+                android:text="@string/txt_no_data"
+                android:textSize="15sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/listViewItemTxt_msgName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_margin="2dp"
+                android:text="@string/txt_no_data"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/listViewItemTxt_desc_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/listViewItemTxt_desc_1"
+                android:layout_alignBottom="@+id/listViewItemTxt_desc_1"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_toRightOf="@+id/listViewItemTxt_desc_1"
+                android:text="@string/txt_no_data"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/listViewItemTxt_desc_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/listViewItemTxt_msgName"
+                android:layout_alignBottom="@+id/listViewItemTxt_msgName"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_toRightOf="@+id/listViewItemTxt_msgName"
+                android:text="@string/txt_no_data"
+                android:textSize="12sp" />
+
+        </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>

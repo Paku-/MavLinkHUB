@@ -115,7 +115,7 @@ public class SysLogFragment extends Fragment implements IDataLoggedIn {
 
 	@Override
 	public void onDataLoggedIn() {
-		Log.d(TAG, "[SysLogLog]" + globalVars.logger.mInMemSysLogStream.size());
+		///Log.d(TAG, "[SysLogLog]" + globalVars.logger.mInMemSysLogStream.size());
 		refreshUI();
 	}
 

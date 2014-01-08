@@ -121,7 +121,7 @@ public class Logger {
 	public void sysLog(String tag, String msg) {
 
 		sysLog("[" + tag + "] " + msg);
-		Log.d(tag, msg);
+		//Log.d(tag, msg);
 
 	}
 

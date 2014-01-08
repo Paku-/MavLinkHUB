@@ -39,7 +39,13 @@ public abstract class BufferedStreamConnector {
 
 	public void waitForStreamLock() {
 		while (lockConnStream) {
-			Log.d(TAG, "Stream Locked..");
+			//Log.d(TAG, "Stream Locked..");
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
 		}
 
 		lockConnStream = true;
