@@ -3,7 +3,7 @@ package com.paku.mavlinkhub.mavlink;
 import com.MAVLink.Parser;
 import com.MAVLink.Messages.MAVLinkPacket;
 import com.paku.mavlinkhub.AppGlobals;
-import com.paku.mavlinkhub.objects.MavLinkMsgItem;
+import com.paku.mavlinkhub.objects.ItemMavLinkMsg;
 
 public class MavLinkParserThread extends Thread {
 
@@ -55,7 +55,7 @@ public class MavLinkParserThread extends Thread {
 						// MAVLinkMessage lastMavLinkMsg = lastMavLinkPacket
 						// .unpack();
 
-						MavLinkMsgItem lastMavLinkMsgItem = new MavLinkMsgItem(lastMavLinkPacket, 1);
+						ItemMavLinkMsg lastMavLinkMsgItem = new ItemMavLinkMsg(lastMavLinkPacket, 1);
 
 						// stream msg for UI
 						globalVars.logger.storeMavLinkMsgItem(lastMavLinkMsgItem);

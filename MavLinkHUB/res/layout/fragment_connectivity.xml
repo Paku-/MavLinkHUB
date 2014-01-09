@@ -63,22 +63,7 @@
                     android:text="@string/connectivity_txt_select_device"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
             </RelativeLayout>
-        </LinearLayout>        
-
-        <RelativeLayout
-            android:id="@+id/RelativeLayout_Butt_Disconnect"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <Button
-                android:id="@+id/button_disconnect"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:text="@string/bt_connectivity" />
-            
-        </RelativeLayout>
+        </LinearLayout>
         
 
     </LinearLayout>

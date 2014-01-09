@@ -5,7 +5,7 @@ import java.io.Serializable;
 import com.MAVLink.Messages.MAVLinkMessage;
 import com.MAVLink.Messages.MAVLinkPacket;
 
-public class MavLinkMsgItem implements Serializable {
+public class ItemMavLinkMsg implements Serializable {
 
 	/**
 	 * serializable MavlinkMsg extended with packet data and the in-stream
@@ -14,22 +14,10 @@ public class MavLinkMsgItem implements Serializable {
 	private static final long serialVersionUID = -2616788128278070587L;
 
 	private MAVLinkMessage msg;
+	private int count; // how many times the the same msg was repeated
 	private int seqNo;
 
-	private int sysId;
-
-	private int count; // how many times the the same msg was repeated
-
-	public MavLinkMsgItem(MAVLinkMessage msg, MAVLinkPacket pkt, int count) {
-		super();
-		this.count = count;
-		this.setMsg(msg);
-		this.setSeqNo(pkt.seq);
-		this.setSysId(pkt.sysid);
-
-	}
-
-	public MavLinkMsgItem(MAVLinkPacket pkt, int count) {
+	public ItemMavLinkMsg(MAVLinkPacket pkt, int count) {
 		super();
 		this.count = count;
 		this.setMsg(pkt.unpack());
@@ -55,11 +43,11 @@ public class MavLinkMsgItem implements Serializable {
 	}
 
 	public int getSysId() {
-		return sysId;
+		return msg.sysid;
 	}
 
 	public void setSysId(int sysId) {
-		this.sysId = sysId;
+		this.msg.sysid = sysId;
 	}
 
 	public int getSeqNo() {

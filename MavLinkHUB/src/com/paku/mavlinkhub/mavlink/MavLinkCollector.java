@@ -5,7 +5,7 @@ import android.content.Context;
 import com.MAVLink.Messages.MAVLinkPacket;
 import com.MAVLink.Messages.MAVLinkStats;
 import com.paku.mavlinkhub.AppGlobals;
-import com.paku.mavlinkhub.objects.MavLinkMsgItem;
+import com.paku.mavlinkhub.objects.ItemMavLinkMsg;
 
 public class MavLinkCollector {
 
@@ -34,7 +34,7 @@ public class MavLinkCollector {
 		if (parserThread != null) parserThread.stopRunning();
 	}
 
-	public String decodeMavlinkMsgItem(MavLinkMsgItem lastMavLinkMsgItem) {
+	public String decodeMavlinkMsgItem(ItemMavLinkMsg lastMavLinkMsgItem) {
 		return lastMavLinkMsgItem.toString();
 	}
 

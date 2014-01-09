@@ -5,7 +5,7 @@ import com.MAVLink.Messages.ardupilotmega.msg_heartbeat;
 import com.MAVLink.Messages.ardupilotmega.msg_statustext;
 import com.paku.mavlinkhub.mavlink.MavLinkClassExtractor;
 
-public class MavLinkMsgTxtItem {
+public class ItemMavLinkMsgTxt {
 
 	private String msgName;
 	private String mainTxt;
@@ -15,11 +15,11 @@ public class MavLinkMsgTxtItem {
 	private String desc_4;
 	private String desc_5;
 
-	public MavLinkMsgTxtItem(MavLinkMsgItem msgItem, MavLinkClassExtractor mavClasses) {
+	public ItemMavLinkMsgTxt(ItemMavLinkMsg msgItem, MavLinkClassExtractor mavClasses) {
 		setMe(msgItem, mavClasses);
 	}
 
-	private void setMe(MavLinkMsgItem msgItem, MavLinkClassExtractor mavClasses) {
+	private void setMe(ItemMavLinkMsg msgItem, MavLinkClassExtractor mavClasses) {
 
 		switch (msgItem.getMsg().msgid) {
 		case msg_heartbeat.MAVLINK_MSG_ID_HEARTBEAT:

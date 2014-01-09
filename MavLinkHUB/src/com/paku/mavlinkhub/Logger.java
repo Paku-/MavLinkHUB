@@ -18,7 +18,7 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.paku.mavlinkhub.interfaces.IDataLoggedIn;
-import com.paku.mavlinkhub.objects.MavLinkMsgItem;
+import com.paku.mavlinkhub.objects.ItemMavLinkMsg;
 
 public class Logger {
 
@@ -35,7 +35,7 @@ public class Logger {
 	public ByteArrayOutputStream mInMemIncomingBytesStream;
 
 	// in mem msgItems storage
-	public ArrayList<MavLinkMsgItem> mavlinkMsgItemsArray;
+	public ArrayList<ItemMavLinkMsg> mavlinkMsgItemsArray;
 
 	public ByteArrayOutputStream mInMemSysLogStream;
 
@@ -62,7 +62,7 @@ public class Logger {
 		mInMemIncomingBytesStream.reset();
 
 		// set the decoded msgItems array ready.
-		mavlinkMsgItemsArray = new ArrayList<MavLinkMsgItem>();
+		mavlinkMsgItemsArray = new ArrayList<ItemMavLinkMsg>();
 
 		// msg handler for asynch UI updates
 
@@ -142,7 +142,7 @@ public class Logger {
 		}
 	}
 
-	public void storeMavLinkMsgItem(MavLinkMsgItem msgItem) {
+	public void storeMavLinkMsgItem(ItemMavLinkMsg msgItem) {
 		// fill msgs stream with new arrival
 
 		mavlinkMsgItemsArray.add(msgItem);

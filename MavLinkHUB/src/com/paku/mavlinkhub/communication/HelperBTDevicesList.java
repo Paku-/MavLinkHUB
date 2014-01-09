@@ -1,10 +1,13 @@
 package com.paku.mavlinkhub.communication;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Set;
 
 import com.paku.mavlinkhub.enums.DEV_LIST_STATE;
-import com.paku.mavlinkhub.objects.PeerDeviceItem;
+import com.paku.mavlinkhub.enums.PEER_DEV_STATE;
+import com.paku.mavlinkhub.objects.ItemPeerDevice;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -14,55 +17,59 @@ public class HelperBTDevicesList {
 	@SuppressWarnings("unused")
 	private static final String TAG = "HelperBTDevicesList";
 
-	private BluetoothAdapter mBluetoothAdapter;
-	Set<BluetoothDevice> pairedDevices;
-	ArrayList<PeerDeviceItem> devicesList = new ArrayList<PeerDeviceItem>();
+	ArrayList<ItemPeerDevice> devList = new ArrayList<ItemPeerDevice>();
 
 	public HelperBTDevicesList() {
-		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-		pairedDevices = mBluetoothAdapter.getBondedDevices();
 	}
 
-	public DEV_LIST_STATE RefreshList() {
+	public DEV_LIST_STATE refreshMe() {
 
-		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-		pairedDevices = mBluetoothAdapter.getBondedDevices();
 		// check for nulls ...
-
-		if (mBluetoothAdapter == null) {
+		if (BluetoothAdapter.getDefaultAdapter() == null) {
 			return DEV_LIST_STATE.ERROR_NO_ADAPTER;
-
 		}
-		else if (!mBluetoothAdapter.isEnabled()) {
+		else if (!BluetoothAdapter.getDefaultAdapter().isEnabled()) {
 			return DEV_LIST_STATE.ERROR_ADAPTER_OFF;
 		}
 
-		devicesList.clear();
+		// get local adapter and paired dev list
+		BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+		Set<BluetoothDevice> pairedDevList = mBluetoothAdapter.getBondedDevices();
 
+		devList.clear();
 		// If there are paired devices
-		if (pairedDevices.size() > 0) {
-
-			for (BluetoothDevice device : pairedDevices) {
-				// Add the name and address to an array adapter to show in a
-				// btDevListView
-				devicesList.add(new PeerDeviceItem(device.getName(), device.getAddress()));
+		if (pairedDevList.size() > 0) {
+			for (BluetoothDevice device : pairedDevList) {
+				devList.add(new ItemPeerDevice(device.getName(), device.getAddress()));
 			}
-
+			Collections.sort(devList, new DevNameComparator());
 			return DEV_LIST_STATE.LIST_OK;
-
 		}
 		else
 			return DEV_LIST_STATE.ERROR_NO_BONDED_DEV;
+	}
+
+	public ArrayList<ItemPeerDevice> getDeviceList() {
+		return devList;
+	}
+
+	public ItemPeerDevice getItem(int pos) {
+		return devList.get(pos);
 
 	}
 
-	public ArrayList<PeerDeviceItem> GetDeviceList() {
-		return devicesList;
+	public void setDevState(int pos, PEER_DEV_STATE state) {
+		devList.get(pos).setState(state);
 	}
 
-	public PeerDeviceItem getItem(int pos) {
-		return devicesList.get(pos);
-
+	// sorting comparator
+	private class DevNameComparator implements Comparator<ItemPeerDevice> {
+		public int compare(ItemPeerDevice left, ItemPeerDevice right) {
+			// if (left.getId() > right.getId()) return 1;
+			// if (left.getId() < right.getId()) return -1;
+			// return 0;
+			return left.getName().compareTo(right.getName());
+		}
 	}
 
 }

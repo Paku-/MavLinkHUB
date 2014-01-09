@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.mavlink.MavLinkClassExtractor;
-import com.paku.mavlinkhub.objects.MavLinkMsgItem;
-import com.paku.mavlinkhub.objects.MavLinkMsgTxtItem;
+import com.paku.mavlinkhub.objects.ItemMavLinkMsg;
+import com.paku.mavlinkhub.objects.ItemMavLinkMsgTxt;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,15 +14,15 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class ViewAdapterMavlinkMsgList extends ArrayAdapter<MavLinkMsgItem> {
+public class ViewAdapterMavlinkMsgList extends ArrayAdapter<ItemMavLinkMsg> {
 
 	private final Context context;
-	private final ArrayList<MavLinkMsgItem> itemsArrayList;
+	private final ArrayList<ItemMavLinkMsg> itemsArrayList;
 
 	// mavlink classes' string names helper class
 	public MavLinkClassExtractor mavClasses;
 
-	public ViewAdapterMavlinkMsgList(Context context, ArrayList<MavLinkMsgItem> itemsArrayList) {
+	public ViewAdapterMavlinkMsgList(Context context, ArrayList<ItemMavLinkMsg> itemsArrayList) {
 
 		super(context, R.layout.listviewitem_mavlinkmsg, itemsArrayList);
 
@@ -40,13 +40,13 @@ public class ViewAdapterMavlinkMsgList extends ArrayAdapter<MavLinkMsgItem> {
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View rowView = inflater.inflate(R.layout.listviewitem_mavlinkmsg, parent, false);
 
-		TextView msgName = (TextView) rowView.findViewById(R.id.listViewItemTxt_msgName);
-		TextView mainText = (TextView) rowView.findViewById(R.id.listViewItemTxt_mainText);
-		TextView desc1 = (TextView) rowView.findViewById(R.id.listViewItemTxt_desc_1);
-		TextView desc2 = (TextView) rowView.findViewById(R.id.listViewItemTxt_desc_2);
-		TextView desc3 = (TextView) rowView.findViewById(R.id.listViewItemTxt_desc_3);
+		TextView msgName = (TextView) rowView.findViewById(R.id.listViewMsgItemTxt_Text1);
+		TextView mainText = (TextView) rowView.findViewById(R.id.listViewMsgItemTxt_Text2);
+		TextView desc1 = (TextView) rowView.findViewById(R.id.listViewMsgItemTxt_desc1);
+		TextView desc2 = (TextView) rowView.findViewById(R.id.listViewItemTxt_dev_desc_2);
+		TextView desc3 = (TextView) rowView.findViewById(R.id.listViewMsgItemTxt_desc3);
 
-		MavLinkMsgTxtItem msgTxtItem = new MavLinkMsgTxtItem(itemsArrayList.get(position), mavClasses);
+		ItemMavLinkMsgTxt msgTxtItem = new ItemMavLinkMsgTxt(itemsArrayList.get(position), mavClasses);
 
 		msgName.setText(msgTxtItem.getName());
 		mainText.setText(msgTxtItem.getMainTxt());

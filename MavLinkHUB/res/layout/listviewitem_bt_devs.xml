@@ -10,23 +10,14 @@
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/listViewMsgItemTxt_Text1"
+            android:id="@+id/listViewItemTxt_dev_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
             android:text="@string/txt_no_data"
-            android:textSize="15sp" />
-
-        <TextView
-            android:id="@+id/listViewMsgItemTxt_Text2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="22dp"
-            android:layout_toRightOf="@+id/listViewMsgItemTxt_Text1"
-            android:text="@string/txt_no_data"
-            android:textSize="15sp" />
+            android:textSize="30sp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -34,31 +25,47 @@
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/listViewMsgItemTxt_desc1"
+            android:id="@+id/listViewItemTxt_dev_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="2dp"
+            android:text="@string/txt_no_data"
+            android:textSize="15sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible" >
+
+        <TextView
+            android:id="@+id/listViewItemTxt_dev_desc1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/listViewItemTxt_dev_desc_2"
+            android:layout_alignBottom="@+id/listViewItemTxt_dev_desc_2"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
             android:text="@string/txt_no_data"
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/listViewMsgItemTxt_desc2"
+            android:id="@+id/listViewItemTxt_dev_desc_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="26dp"
-            android:layout_toRightOf="@+id/listViewMsgItemTxt_desc1"
+            android:layout_alignBaseline="@+id/listViewItemTxt_dev_desc_3"
+            android:layout_alignBottom="@+id/listViewItemTxt_dev_desc_3"
+            android:layout_toRightOf="@+id/listViewItemTxt_dev_desc1"
             android:text="@string/txt_no_data"
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/listViewMsgItemTxt_desc3"
+            android:id="@+id/listViewItemTxt_dev_desc_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="32dp"
-            android:layout_toRightOf="@+id/listViewMsgItemTxt_desc2"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/listViewItemTxt_dev_desc_2"
             android:text="@string/txt_no_data"
             android:textSize="12sp" />
     </RelativeLayout>

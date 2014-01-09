@@ -1,10 +1,13 @@
 package com.paku.mavlinkhub.fragments;
 
+import java.util.ArrayList;
+
 import com.paku.mavlinkhub.AppGlobals;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.communication.HelperBTDevicesList;
+import com.paku.mavlinkhub.enums.PEER_DEV_STATE;
 import com.paku.mavlinkhub.interfaces.IUiModeChanged;
-import com.paku.mavlinkhub.objects.PeerDeviceItem;
+import com.paku.mavlinkhub.objects.ItemPeerDevice;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
@@ -14,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -27,7 +29,6 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged {
 	ListView btDevListView;
 	ViewAdapterPeerDevsList devListAdapter;
 
-	Button disconnectButton;
 	ProgressBar connProgressBar;
 	AppGlobals globalVars;
 
@@ -58,7 +59,7 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged {
 		// TODO Auto-generated method stub
 		super.onStart();
 
-		RefreshBtDevList();
+		refreshBtDevList();
 
 	}
 
@@ -84,73 +85,46 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged {
 		super.onViewCreated(view, savedInstanceState);
 
 		btDevListView = (ListView) getView().findViewById(R.id.list_bt_bonded);
-		disconnectButton = (Button) getView().findViewById(R.id.button_disconnect);
 		connProgressBar = (ProgressBar) getView().findViewById(R.id.progressBar1);
-
-		disconnectButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				globalVars.logger.sysLog(TAG, "Closing Connection ...");
-				globalVars.mBtConnector.closeConnection();
-				globalVars.mMavLinkCollector.stopMavLinkParserThread();
-
-			}
-		});
 
 		refreshUI();
 
 	}
 
-	private final AdapterView.OnItemClickListener btListClickListener = new AdapterView.OnItemClickListener() {
-		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-			PeerDeviceItem selectedDev = btDevList.getItem(position);
-
-			globalVars.logger.sysLog(TAG, "Connecting...");
-			globalVars.logger.sysLog(TAG, "Me  : " + globalVars.mBtConnector.getBluetoothAdapter().getName() + " ["
-					+ globalVars.mBtConnector.getBluetoothAdapter().getAddress() + "]");
-			globalVars.logger.sysLog(TAG, "Peer: " + selectedDev.getName() + " [" + selectedDev.getAddress() + "]");
-
-			globalVars.mBtConnector.openConnection(selectedDev.getAddress());
-			globalVars.mMavLinkCollector.startMavLinkParserThread();
-
-		}
-	};
+	@Override
+	public void onUiModeChanged() {
+		refreshUI();
+	}
 
 	public void refreshUI() {
 
 		switch (globalVars.getUiMode()) {
 		case UI_MODE_CREATED:
-			disconnectButton.setVisibility(View.INVISIBLE);
 			connProgressBar.setVisibility(View.INVISIBLE);
 			break;
 
 		case UI_MODE_TURNING_ON:
-			disconnectButton.setVisibility(View.INVISIBLE);
 			connProgressBar.setVisibility(View.VISIBLE);
 			break;
 		case UI_MODE_STATE_ON:
-			disconnectButton.setVisibility(View.INVISIBLE);
 			connProgressBar.setVisibility(View.INVISIBLE);
 			btDevListView.setVisibility(View.VISIBLE);
-			RefreshBtDevList();
+			refreshBtDevList();
 			break;
 		case UI_MODE_TURNING_OFF:
-			disconnectButton.setVisibility(View.INVISIBLE);
 			connProgressBar.setVisibility(View.VISIBLE);
 			break;
 		case UI_MODE_STATE_OFF:
-			disconnectButton.setVisibility(View.INVISIBLE);
 			connProgressBar.setVisibility(View.INVISIBLE);
 			btDevListView.setVisibility(View.INVISIBLE);
 			break;
 		case UI_MODE_CONNECTED:
-			disconnectButton.setVisibility(View.VISIBLE);
 			connProgressBar.setVisibility(View.INVISIBLE);
+			refreshBtDevListView();
 			break;
 		case UI_MODE_DISCONNECTED:
-			disconnectButton.setVisibility(View.INVISIBLE);
 			connProgressBar.setVisibility(View.INVISIBLE);
+			refreshBtDevListView();
 			break;
 		default:
 			break;
@@ -158,9 +132,19 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged {
 
 	}
 
-	private void RefreshBtDevList() {
+	// to be called on possible peer BT device state change (connect disconnect
+	// etc)
+	private void refreshBtDevListView() {
+		ArrayList<ItemPeerDevice> clone = new ArrayList<ItemPeerDevice>();
+		clone.addAll(btDevList.getDeviceList());
+		devListAdapter.clear();
+		devListAdapter.addAll(clone);
+	}
 
-		switch (btDevList.RefreshList()) {
+	// to be called on start and after re-enabling the BT module
+	private void refreshBtDevList() {
+
+		switch (btDevList.refreshMe()) {
 		case ERROR_NO_ADAPTER:
 			Toast.makeText(getActivity().getApplicationContext(), "No Bluetooth Adapter found.", Toast.LENGTH_LONG)
 					.show();
@@ -175,8 +159,7 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged {
 			return;
 
 		case LIST_OK:
-
-			devListAdapter = new ViewAdapterPeerDevsList(this.getActivity(), btDevList.GetDeviceList());
+			devListAdapter = new ViewAdapterPeerDevsList(this.getActivity(), btDevList.getDeviceList());
 			btDevListView.setAdapter(devListAdapter);
 			btDevListView.setOnItemClickListener(btListClickListener);
 
@@ -186,9 +169,46 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged {
 
 	}
 
-	@Override
-	public void onUiModeChanged() {
-		refreshUI();
-	}
+	private final AdapterView.OnItemClickListener btListClickListener = new AdapterView.OnItemClickListener() {
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+			ItemPeerDevice selectedDev = btDevList.getItem(position);
+			// TextView txtView = (TextView)
+			// view.findViewById(R.id.listViewItemTxt_dev_name);
+
+			switch (selectedDev.getState()) {
+			case DEV_STATE_UNKNOWN:
+			case DEV_STATE_DISCONNECTED:
+
+				globalVars.logger.sysLog(TAG, "Connecting...");
+				globalVars.logger.sysLog(TAG, "Me  : " + globalVars.mBtConnector.getBluetoothAdapter().getName() + " ["
+						+ globalVars.mBtConnector.getBluetoothAdapter().getAddress() + "]");
+				globalVars.logger.sysLog(TAG, "Peer: " + selectedDev.getName() + " [" + selectedDev.getAddress() + "]");
+
+				globalVars.mBtConnector.openConnection(selectedDev.getAddress());
+				globalVars.mMavLinkCollector.startMavLinkParserThread();
+
+				btDevList.setDevState(position, PEER_DEV_STATE.DEV_STATE_CONNECTED);
+
+				break;
+
+			case DEV_STATE_CONNECTED:
+
+				globalVars.logger.sysLog(TAG, "Closing Connection ...");
+				globalVars.mBtConnector.closeConnection();
+				globalVars.mMavLinkCollector.stopMavLinkParserThread();
+
+				btDevList.setDevState(position, PEER_DEV_STATE.DEV_STATE_DISCONNECTED);
+
+				break;
+
+			default:
+				break;
+			}
+			;
+
+		}
+	};
 
 }

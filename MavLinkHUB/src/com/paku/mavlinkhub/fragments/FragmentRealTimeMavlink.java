@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.paku.mavlinkhub.AppGlobals;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.interfaces.IDataLoggedIn;
-import com.paku.mavlinkhub.objects.MavLinkMsgItem;
+import com.paku.mavlinkhub.objects.ItemMavLinkMsg;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -58,7 +58,7 @@ public class FragmentRealTimeMavlink extends Fragment implements IDataLoggedIn {
 		final TextView mTextViewBytesLog = (TextView) (getView().findViewById(R.id.textView_logByte));
 		mTextViewBytesLog.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
 
-		mavlinkListAdapter = new ViewAdapterMavlinkMsgList(this.getActivity(), generateMavlinkListData());
+		mavlinkListAdapter = new ViewAdapterMavlinkMsgList(this.getActivity(), generateCloneMavlinkListData());
 
 		mavlinkMsgListView = (ListView) (getView().findViewById(R.id.listView_mavlinkMsgs));
 		mavlinkMsgListView.setAdapter(mavlinkListAdapter);
@@ -117,13 +117,13 @@ public class FragmentRealTimeMavlink extends Fragment implements IDataLoggedIn {
 		mTextViewLogStats.setText(globalVars.mMavLinkCollector.getLastParserStats());
 
 		mavlinkListAdapter.clear();
-		mavlinkListAdapter.addAll(generateMavlinkListData());
+		mavlinkListAdapter.addAll(generateCloneMavlinkListData());
 		mavlinkMsgListView.setSelection(mavlinkListAdapter.getCount());
 
 	}
 
 	// get data to fill the list view
-	private ArrayList<MavLinkMsgItem> generateMavlinkListData() {
+	private ArrayList<ItemMavLinkMsg> generateCloneMavlinkListData() {
 
 		// limit size
 		while (globalVars.logger.mavlinkMsgItemsArray.size() > globalVars.visibleMsgList)
@@ -133,7 +133,7 @@ public class FragmentRealTimeMavlink extends Fragment implements IDataLoggedIn {
 		globalVars.logger.mavlinkMsgItemsArray.trimToSize();
 
 		// we need a clone for adapter.
-		ArrayList<MavLinkMsgItem> clone = new ArrayList<MavLinkMsgItem>();
+		ArrayList<ItemMavLinkMsg> clone = new ArrayList<ItemMavLinkMsg>();
 		clone.addAll(globalVars.logger.mavlinkMsgItemsArray);
 
 		return clone;
