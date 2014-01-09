@@ -4,6 +4,7 @@ import com.paku.mavlinkhub.AppGlobals;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.interfaces.IDataLoggedIn;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -45,6 +46,20 @@ public class SysLogFragment extends Fragment implements IDataLoggedIn {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+
+		final TextView txtView = (TextView) (getView()
+				.findViewById(R.id.TextView_logSysLog));
+		Typeface externalFont = Typeface.createFromAsset(
+				globalVars.getAssets(), "fonts/Roboto-Condensed.ttf");
+		txtView.setTypeface(externalFont);
+
+		final TextView mTextViewLogStats = (TextView) (getView()
+				.findViewById(R.id.textView_logSysLogStatsbar));
+		
+		Typeface externalFontStats = Typeface.createFromAsset(
+				globalVars.getAssets(), "fonts/Roboto-Bold.ttf");
+		mTextViewLogStats.setTypeface(externalFontStats);
+		
 
 	}
 
@@ -96,20 +111,14 @@ public class SysLogFragment extends Fragment implements IDataLoggedIn {
 
 		final TextView mTextViewLogStats = (TextView) (getView()
 				.findViewById(R.id.textView_logSysLogStatsbar));
-		
-		mTextViewLogStats.setText(globalVars.mMavLinkCollector.getLastParserStats());
-		
-		/*
-		 * TextView txtView1 = (TextView) findViewById(R.id.textView1); Typeface
-		 * externalFont = Typeface.createFromAsset(getAssets(),
-		 * "fonts/CONSOLA.TTF"); txtView1.setTypeface(externalFont);
-		 */
+
+		mTextViewLogStats.setText(globalVars.mMavLinkCollector
+				.getLastParserStats());
 
 	}
 
 	@Override
 	public void onDataLoggedIn() {
-		///Log.d(TAG, "[SysLogLog]" + globalVars.logger.mInMemSysLogStream.size());
 		refreshUI();
 	}
 
