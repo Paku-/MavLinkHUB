@@ -11,7 +11,6 @@ public class ActivitySettings extends Activity {
 		super.onCreate(savedInstanceState);
 
 		// Display the fragment as the main content.
-		getFragmentManager().beginTransaction()
-				.replace(android.R.id.content, new FragmentSettings()).commit();
+		getFragmentManager().beginTransaction().replace(android.R.id.content, new FragmentSettings()).commit();
 	}
 }

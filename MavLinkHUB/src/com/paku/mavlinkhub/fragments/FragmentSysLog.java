@@ -35,10 +35,8 @@ public class FragmentSysLog extends Fragment implements IDataLoggedIn {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		final View rootView = inflater.inflate(R.layout.fragment_sys_log,
-				container, false);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		final View rootView = inflater.inflate(R.layout.fragment_sys_log, container, false);
 
 		return rootView;
 	}
@@ -47,19 +45,16 @@ public class FragmentSysLog extends Fragment implements IDataLoggedIn {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		final TextView txtView = (TextView) (getView()
-				.findViewById(R.id.TextView_logSysLog));
-		//Typeface externalFont = Typeface.createFromAsset(
-		//		globalVars.getAssets(), "fonts/Roboto-Condensed.ttf");
-		//txtView.setTypeface(externalFont);
-		txtView.setTypeface(Typeface.MONOSPACE,Typeface.BOLD);
+		final TextView txtView = (TextView) (getView().findViewById(R.id.TextView_logSysLog));
+		// Typeface externalFont = Typeface.createFromAsset(
+		// globalVars.getAssets(), "fonts/Roboto-Condensed.ttf");
+		// txtView.setTypeface(externalFont);
+		txtView.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
 
-		final TextView mTextViewLogStats = (TextView) (getView()
-				.findViewById(R.id.textView_logSysLogStatsbar));		
-		//Typeface externalFontStats = Typeface.createFromAsset(
-				//globalVars.getAssets(), "fonts/Roboto-Regular.ttf");
-		mTextViewLogStats.setTypeface(Typeface.MONOSPACE,Typeface.BOLD);
-		
+		final TextView mTextViewLogStats = (TextView) (getView().findViewById(R.id.textView_logSysLogStatsbar));
+		// Typeface externalFontStats = Typeface.createFromAsset(
+		// globalVars.getAssets(), "fonts/Roboto-Regular.ttf");
+		mTextViewLogStats.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
 
 	}
 
@@ -79,28 +74,24 @@ public class FragmentSysLog extends Fragment implements IDataLoggedIn {
 
 	public void refreshUI() {
 
-		final TextView mTextViewBytesLog = (TextView) (getView()
-				.findViewById(R.id.TextView_logSysLog));
+		final TextView mTextViewBytesLog = (TextView) (getView().findViewById(R.id.TextView_logSysLog));
 
 		String buff;
 
 		if (globalVars.logger.mInMemSysLogStream.size() > globalVars.visibleBuffersSize) {
-			buff = new String(
-					globalVars.logger.mInMemSysLogStream.toByteArray(),
-					globalVars.logger.mInMemSysLogStream.size()
-							- globalVars.visibleBuffersSize,
+			buff = new String(globalVars.logger.mInMemSysLogStream.toByteArray(),
+					globalVars.logger.mInMemSysLogStream.size() - globalVars.visibleBuffersSize,
 					globalVars.visibleBuffersSize);
-		} else {
-			buff = new String(
-					globalVars.logger.mInMemSysLogStream.toByteArray());
+		}
+		else {
+			buff = new String(globalVars.logger.mInMemSysLogStream.toByteArray());
 
 		}
 
 		mTextViewBytesLog.setText(buff);
 
 		// scroll down
-		final ScrollView mScrollView = (ScrollView) (getView()
-				.findViewById(R.id.scrollView_logSys));
+		final ScrollView mScrollView = (ScrollView) (getView().findViewById(R.id.scrollView_logSys));
 
 		mScrollView.post(new Runnable() {
 			@Override
@@ -109,11 +100,9 @@ public class FragmentSysLog extends Fragment implements IDataLoggedIn {
 			}
 		});
 
-		final TextView mTextViewLogStats = (TextView) (getView()
-				.findViewById(R.id.textView_logSysLogStatsbar));
+		final TextView mTextViewLogStats = (TextView) (getView().findViewById(R.id.textView_logSysLogStatsbar));
 
-		mTextViewLogStats.setText(globalVars.mMavLinkCollector
-				.getLastParserStats());
+		mTextViewLogStats.setText(globalVars.mMavLinkCollector.getLastParserStats());
 
 	}
 

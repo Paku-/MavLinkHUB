@@ -5,6 +5,7 @@ import android.content.Context;
 import com.MAVLink.Messages.MAVLinkPacket;
 import com.MAVLink.Messages.MAVLinkStats;
 import com.paku.mavlinkhub.AppGlobals;
+import com.paku.mavlinkhub.objects.MavLinkMsgItem;
 
 public class MavLinkCollector {
 
@@ -16,11 +17,11 @@ public class MavLinkCollector {
 	private MAVLinkStats mMavlinkParserStats;
 
 	private MavLinkParserThread parserThread;
-	
+
 	public MavLinkCollector(Context mContext) {
 
 		globalVars = ((AppGlobals) mContext.getApplicationContext());
-		
+
 	}
 
 	public void startMavLinkParserThread() {
@@ -30,8 +31,7 @@ public class MavLinkCollector {
 	}
 
 	public void stopMavLinkParserThread() {
-		if (parserThread != null)
-			parserThread.stopRunning();
+		if (parserThread != null) parserThread.stopRunning();
 	}
 
 	public String decodeMavlinkMsgItem(MavLinkMsgItem lastMavLinkMsgItem) {
@@ -45,10 +45,9 @@ public class MavLinkCollector {
 	}
 
 	public String getLastParserStats() {
-		String byteStats = "Transfer [Bytes] - "+ globalVars.logger.statsReadByteCount;
+		String byteStats = "Transfer [Bytes] - " + globalVars.logger.statsReadByteCount;
 		if (mMavlinkParserStats != null)
-			return 	byteStats+
-					"    MavLink Parser Stats [Pkg Count] - " + mMavlinkParserStats.receivedPacketCount
+			return byteStats + "    MavLink Parser Stats [Pkg Count] - " + mMavlinkParserStats.receivedPacketCount
 					+ " [CRC errors] - " + mMavlinkParserStats.crcErrorCount;
 		else
 			return byteStats;

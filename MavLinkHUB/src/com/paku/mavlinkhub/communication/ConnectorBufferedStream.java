@@ -39,13 +39,14 @@ public abstract class ConnectorBufferedStream {
 
 	public void waitForStreamLock(int milis) {
 		while (lockConnStream) {
-			//Log.d(TAG, "Stream Locked..");
+			// Log.d(TAG, "Stream Locked..");
 			try {
 				Thread.sleep(milis);
-			} catch (InterruptedException e) {
+			}
+			catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			
+
 		}
 
 		lockConnStream = true;
@@ -56,23 +57,18 @@ public abstract class ConnectorBufferedStream {
 	}
 
 	public void processConnectorStream() {
-		Log.d(TAG, "Stream Size: [" + String.valueOf(mConnectorStream.size())
-				+ "]:");
+		Log.d(TAG, "Stream Size: [" + String.valueOf(mConnectorStream.size()) + "]:");
 	}
 
 	private void resetStream(boolean withLock) {
-		if (withLock)
-			waitForStreamLock(2);
+		if (withLock) waitForStreamLock(2);
 		mConnectorStream.reset();
-		if (withLock)
-			releaseStream();
+		if (withLock) releaseStream();
 	}
 
-	public void copyConnectorStream(OutputStream targetStream, boolean doReset)
-			throws IOException {
+	public void copyConnectorStream(OutputStream targetStream, boolean doReset) throws IOException {
 		mConnectorStream.writeTo(targetStream);
-		if (doReset)
-			resetStream(false);
+		if (doReset) resetStream(false);
 	}
 
 	public ByteArrayOutputStream getConnectorStream() {

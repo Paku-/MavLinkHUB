@@ -18,7 +18,7 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.paku.mavlinkhub.interfaces.IDataLoggedIn;
-import com.paku.mavlinkhub.mavlink.MavLinkMsgItem;
+import com.paku.mavlinkhub.objects.MavLinkMsgItem;
 
 public class Logger {
 
@@ -30,14 +30,13 @@ public class Logger {
 	private File byteLogFile, sysLogFile;
 	private BufferedOutputStream mFileIncomingByteLogStream, mFileSysLogStream;
 
-
 	// sys wide in memory logging streams
 	// incoming bytes
 	public ByteArrayOutputStream mInMemIncomingBytesStream;
 
-	//in mem msgItems storage
+	// in mem msgItems storage
 	public ArrayList<MavLinkMsgItem> mavlinkMsgItemsArray;
-	
+
 	public ByteArrayOutputStream mInMemSysLogStream;
 
 	// stats vars
@@ -107,7 +106,8 @@ public class Logger {
 			mFileSysLogStream.write(tempStr.getBytes(), 0, tempStr.length());
 			mInMemSysLogStream.write(tempStr.getBytes(), 0, tempStr.length());
 			releaseLock();
-		} catch (IOException e1) {
+		}
+		catch (IOException e1) {
 			Log.d(TAG, "[sysLog] " + e1.getMessage());
 		}
 	}
@@ -115,7 +115,7 @@ public class Logger {
 	public void sysLog(String tag, String msg) {
 
 		sysLog("[" + tag + "] " + msg);
-		//Log.d(tag, msg);
+		// Log.d(tag, msg);
 
 	}
 
@@ -136,7 +136,8 @@ public class Logger {
 			mInMemIncomingBytesStream.write(buffer, 0, bufferLen);
 			releaseLock();
 			statsReadByteCount += bufferLen;
-		} catch (IOException e1) {
+		}
+		catch (IOException e1) {
 			Log.d(TAG, "[byteLog] " + e1.getMessage());
 		}
 	}
@@ -150,15 +151,14 @@ public class Logger {
 
 	public void restartByteLog() {
 
-		byteLogFile = new File(appContext.getExternalFilesDir(null),
-				"bytes.txt");
+		byteLogFile = new File(appContext.getExternalFilesDir(null), "bytes.txt");
 
 		// **** file logging
 		// byte log stream
 		try {
-			mFileIncomingByteLogStream = new BufferedOutputStream(
-					new FileOutputStream(byteLogFile, false), 1024);
-		} catch (FileNotFoundException e) {
+			mFileIncomingByteLogStream = new BufferedOutputStream(new FileOutputStream(byteLogFile, false), 1024);
+		}
+		catch (FileNotFoundException e) {
 			Log.d(TAG, e.getMessage());
 		}
 
@@ -166,14 +166,13 @@ public class Logger {
 
 	public void restartSysLog() {
 
-		sysLogFile = new File(appContext.getExternalFilesDir(null),
-				"syslog.txt");
+		sysLogFile = new File(appContext.getExternalFilesDir(null), "syslog.txt");
 
 		// syslog stream
 		try {
-			mFileSysLogStream = new BufferedOutputStream(new FileOutputStream(
-					sysLogFile, false), 1024);
-		} catch (FileNotFoundException e) {
+			mFileSysLogStream = new BufferedOutputStream(new FileOutputStream(sysLogFile, false), 1024);
+		}
+		catch (FileNotFoundException e) {
 			Log.d(TAG, e.getMessage());
 		}
 
@@ -184,7 +183,8 @@ public class Logger {
 		try {
 			mFileIncomingByteLogStream.flush(); // working ??
 			mFileIncomingByteLogStream.close();
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			Log.d(TAG, e.getMessage());
 		}
 	}
@@ -194,7 +194,8 @@ public class Logger {
 		try {
 			mFileSysLogStream.flush(); // working ??
 			mFileSysLogStream.close();
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			Log.d(TAG, e.getMessage());
 		}
 	}
@@ -272,8 +273,6 @@ public class Logger {
 			callRealTimeMavlinkFragment.onDataLoggedIn();
 		}
 	}
-
-	
 
 	// *****************************************
 	// interface end

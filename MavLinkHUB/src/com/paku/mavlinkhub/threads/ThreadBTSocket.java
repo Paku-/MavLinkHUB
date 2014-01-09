@@ -1,4 +1,4 @@
-package com.paku.mavlinkhub.communication;
+package com.paku.mavlinkhub.threads;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -21,8 +21,7 @@ public class ThreadBTSocket extends Thread {
 	private final Handler mConnectorReceiverHandler;
 	private boolean running = true;
 
-	public ThreadBTSocket(BluetoothSocket socket,
-			Handler connectorReceiverHandler) {
+	public ThreadBTSocket(BluetoothSocket socket, Handler connectorReceiverHandler) {
 
 		mmSocket = socket;
 		mConnectorReceiverHandler = connectorReceiverHandler;
@@ -35,7 +34,8 @@ public class ThreadBTSocket extends Thread {
 		try {
 			tmpIn = socket.getInputStream();
 			tmpOut = socket.getOutputStream();
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			Log.d(TAG, "Exception [getstreams]:" + e.getMessage());
 		}
 
@@ -51,7 +51,8 @@ public class ThreadBTSocket extends Thread {
 			try {
 				// sleep as we are to fast for BT serial :)
 				sleep(50);
-			} catch (InterruptedException e1) {
+			}
+			catch (InterruptedException e1) {
 				e1.printStackTrace();
 			}
 			try {
@@ -59,12 +60,13 @@ public class ThreadBTSocket extends Thread {
 				bytes = mmInStream.read(buffer, 0, buffer.length);
 
 				if (bytes > 0) {
-					mConnectorReceiverHandler.obtainMessage(
-							AppGlobals.MSG_CONNECTOR_DATA_READY, bytes, -1,
-							buffer).sendToTarget();
-				} else
+					mConnectorReceiverHandler.obtainMessage(AppGlobals.MSG_CONNECTOR_DATA_READY, bytes, -1, buffer)
+							.sendToTarget();
+				}
+				else
 					Log.d(TAG, "** empty stream **");
-			} catch (IOException e) {
+			}
+			catch (IOException e) {
 				Log.d(TAG, "Exception [run.read.buffer]:" + e.getMessage());
 				break;
 			}
@@ -73,7 +75,8 @@ public class ThreadBTSocket extends Thread {
 		// if we are here it's time to close ...
 		try {
 			mmSocket.close();
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			Log.d(TAG, "Exception [mmSocket Close]:" + e.getMessage());
 			e.printStackTrace();
 		}
@@ -83,7 +86,8 @@ public class ThreadBTSocket extends Thread {
 	public void write(byte[] bytes) {
 		try {
 			mmOutStream.write(bytes);
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			Log.d(TAG, "Exception [write]:" + e.getMessage());
 		}
 	}

@@ -3,23 +3,20 @@ package com.paku.mavlinkhub.fragments;
 import com.paku.mavlinkhub.AppGlobals;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.communication.HelperBTDevicesList;
-import com.paku.mavlinkhub.communication.PeerDevice;
 import com.paku.mavlinkhub.interfaces.IUiModeChanged;
+import com.paku.mavlinkhub.objects.PeerDeviceItem;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class FragmentConnectivity extends Fragment implements IUiModeChanged {
@@ -27,8 +24,9 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged {
 	private static final String TAG = "FragmentConnectivity";
 
 	HelperBTDevicesList btDevList = new HelperBTDevicesList();
-
 	ListView btDevListView;
+	ViewAdapterPeerDevsList devListAdapter;
+
 	Button disconnectButton;
 	ProgressBar connProgressBar;
 	AppGlobals globalVars;
@@ -74,11 +72,9 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		View connView = inflater.inflate(R.layout.fragment_connectivity,
-				container, false);
+		View connView = inflater.inflate(R.layout.fragment_connectivity, container, false);
 
 		return connView;
 	}
@@ -88,10 +84,8 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged {
 		super.onViewCreated(view, savedInstanceState);
 
 		btDevListView = (ListView) getView().findViewById(R.id.list_bt_bonded);
-		disconnectButton = (Button) getView().findViewById(
-				R.id.button_disconnect);
-		connProgressBar = (ProgressBar) getView().findViewById(
-				R.id.progressBar1);
+		disconnectButton = (Button) getView().findViewById(R.id.button_disconnect);
+		connProgressBar = (ProgressBar) getView().findViewById(R.id.progressBar1);
 
 		disconnectButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -108,24 +102,16 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged {
 
 	private final AdapterView.OnItemClickListener btListClickListener = new AdapterView.OnItemClickListener() {
 		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-			// Get the device MAC address, which is the last 17 chars in the
-			// View
-			String info = ((TextView) view).getText().toString();
-			String address = info.substring(info.length() - 17);
+			PeerDeviceItem selectedDev = btDevList.getItem(position);
 
 			globalVars.logger.sysLog(TAG, "Connecting...");
-			globalVars.logger.sysLog(TAG, "Me  : "
-					+ globalVars.mBtConnector.getBluetoothAdapter().getName()
-					+ " ["
-					+ globalVars.mBtConnector.getBluetoothAdapter()
-							.getAddress() + "]");
-			globalVars.logger.sysLog(TAG,
-					"Peer: " + info.replaceAll("\\n", " [") + "]");
+			globalVars.logger.sysLog(TAG, "Me  : " + globalVars.mBtConnector.getBluetoothAdapter().getName() + " ["
+					+ globalVars.mBtConnector.getBluetoothAdapter().getAddress() + "]");
+			globalVars.logger.sysLog(TAG, "Peer: " + selectedDev.getName() + " [" + selectedDev.getAddress() + "]");
 
-			globalVars.mBtConnector.openConnection(address);
+			globalVars.mBtConnector.openConnection(selectedDev.getAddress());
 			globalVars.mMavLinkCollector.startMavLinkParserThread();
 
 		}
@@ -134,35 +120,35 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged {
 	public void refreshUI() {
 
 		switch (globalVars.getUiMode()) {
-		case AppGlobals.UI_MODE_CREATED:
+		case UI_MODE_CREATED:
 			disconnectButton.setVisibility(View.INVISIBLE);
 			connProgressBar.setVisibility(View.INVISIBLE);
 			break;
 
-		case AppGlobals.UI_MODE_TURNING_ON:
+		case UI_MODE_TURNING_ON:
 			disconnectButton.setVisibility(View.INVISIBLE);
 			connProgressBar.setVisibility(View.VISIBLE);
 			break;
-		case AppGlobals.UI_MODE_STATE_ON:
+		case UI_MODE_STATE_ON:
 			disconnectButton.setVisibility(View.INVISIBLE);
 			connProgressBar.setVisibility(View.INVISIBLE);
 			btDevListView.setVisibility(View.VISIBLE);
 			RefreshBtDevList();
 			break;
-		case AppGlobals.UI_MODE_TURNING_OFF:
+		case UI_MODE_TURNING_OFF:
 			disconnectButton.setVisibility(View.INVISIBLE);
 			connProgressBar.setVisibility(View.VISIBLE);
 			break;
-		case AppGlobals.UI_MODE_STATE_OFF:
+		case UI_MODE_STATE_OFF:
 			disconnectButton.setVisibility(View.INVISIBLE);
 			connProgressBar.setVisibility(View.INVISIBLE);
 			btDevListView.setVisibility(View.INVISIBLE);
 			break;
-		case AppGlobals.UI_MODE_CONNECTED:
+		case UI_MODE_CONNECTED:
 			disconnectButton.setVisibility(View.VISIBLE);
 			connProgressBar.setVisibility(View.INVISIBLE);
 			break;
-		case AppGlobals.UI_MODE_DISCONNECTED:
+		case UI_MODE_DISCONNECTED:
 			disconnectButton.setVisibility(View.INVISIBLE);
 			connProgressBar.setVisibility(View.INVISIBLE);
 			break;
@@ -175,47 +161,23 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged {
 	private void RefreshBtDevList() {
 
 		switch (btDevList.RefreshList()) {
-		case AppGlobals.ERROR_NO_ADAPTER:
+		case ERROR_NO_ADAPTER:
+			Toast.makeText(getActivity().getApplicationContext(), "No Bluetooth Adapter found.", Toast.LENGTH_LONG)
+					.show();
+			return;
+		case ERROR_ADAPTER_OFF:
+			Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+			this.startActivityForResult(enableBtIntent, AppGlobals.REQUEST_ENABLE_BT);
+			return;
+		case ERROR_NO_BONDED_DEV:
 			Toast.makeText(getActivity().getApplicationContext(),
-					"No Bluetooth Adapter found.", Toast.LENGTH_LONG).show();
-			return;
-		case AppGlobals.ERROR_ADAPTER_OFF:
-			Intent enableBtIntent = new Intent(
-					BluetoothAdapter.ACTION_REQUEST_ENABLE);
-			this.startActivityForResult(enableBtIntent,
-					AppGlobals.REQUEST_ENABLE_BT);
-			return;
-		case AppGlobals.ERROR_NO_BONDED_DEV:
-			Toast.makeText(
-					getActivity().getApplicationContext(),
-					R.string.error_no_paired_bt_devices_found_pair_device_first,
-					Toast.LENGTH_LONG).show();
+					R.string.error_no_paired_bt_devices_found_pair_device_first, Toast.LENGTH_LONG).show();
 			return;
 
-		case AppGlobals.LIST_OK:
-			/*
-			ArrayAdapter<PeerDevice> adapter = new ArrayAdapter<PeerDevice>(
-					getActivity().getApplicationContext(),
-					android.R.layout.simple_list_item_1,
-					// android.R.layout.simple_dropdown_item_1line,
-					btDevList.GetDeviceList().toArray(new String[0])) {
+		case LIST_OK:
 
-				@Override
-				public View getView(int position, View convertView,
-						ViewGroup parent) {
-					View view = super.getView(position, convertView, parent);
-
-					TextView textView = (TextView) view
-							.findViewById(android.R.id.text1);
-					textView.setTextColor(Color.DKGRAY);
-
-					return view;
-				}
-			};
-*/
-			
-			ViewAdapterPeerDevsList adapter = new ViewAdapterPeerDevsList(this.getActivity(),btDevList.GetDeviceList()) ;			
-			btDevListView.setAdapter(adapter);
+			devListAdapter = new ViewAdapterPeerDevsList(this.getActivity(), btDevList.GetDeviceList());
+			btDevListView.setAdapter(devListAdapter);
 			btDevListView.setOnItemClickListener(btListClickListener);
 
 			return;

@@ -57,17 +57,13 @@ public class FragmentsAdapter extends FragmentPagerAdapter {
 		Locale l = Locale.getDefault();
 		switch (position) {
 		case 0:
-			return this.mainActivity.getString(R.string.title_connectivity)
-					.toUpperCase(l);
+			return this.mainActivity.getString(R.string.title_connectivity).toUpperCase(l);
 		case 1:
-			return this.mainActivity.getString(R.string.title_realtime_mavlink)
-					.toUpperCase(l);
+			return this.mainActivity.getString(R.string.title_realtime_mavlink).toUpperCase(l);
 		case 2:
-			return this.mainActivity.getString(R.string.title_syslog)
-					.toUpperCase(l);
+			return this.mainActivity.getString(R.string.title_syslog).toUpperCase(l);
 		case 3:
-			return this.mainActivity.getString(R.string.title_calibration)
-					.toUpperCase(l);
+			return this.mainActivity.getString(R.string.title_calibration).toUpperCase(l);
 
 		}
 		return null;

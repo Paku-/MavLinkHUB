@@ -11,9 +11,9 @@ import com.MAVLink.Messages.enums.MAV_TYPE;
 
 public class MavLinkClassExtractor {
 
-	ArrayList<ClassItem> mavType;
-	ArrayList<ClassItem> mavAutopilot;
-	ArrayList<ClassItem> mavState;
+	private ArrayList<ClassItem> mavType;
+	private ArrayList<ClassItem> mavAutopilot;
+	private ArrayList<ClassItem> mavState;
 
 	// helper class
 	public class ClassItem {
@@ -43,99 +43,123 @@ public class MavLinkClassExtractor {
 		}
 
 	}
-	
-	
-	//sorting comparator
-	private class ClassIdComparator implements Comparator<ClassItem>
-	{
-	    public int compare(ClassItem left, ClassItem right) {
-	    	if (left.getId() > right.getId()) return 1;
-	    	if (left.getId() < right.getId()) return -1;
-	    	return 0;
-	        //return left.name.compareTo(right.name);
-	    }
+
+	// sorting comparator
+	private class ClassIdComparator implements Comparator<ClassItem> {
+		public int compare(ClassItem left, ClassItem right) {
+			if (left.getId() > right.getId()) return 1;
+			if (left.getId() < right.getId()) return -1;
+			return 0;
+			// return left.name.compareTo(right.name);
+		}
 	}
-	
 
 	public MavLinkClassExtractor() {
-		
-		
-		//MAV_TYPE class fields extractor
-		mavType = new ArrayList<MavLinkClassExtractor.ClassItem>();
+
+		// MAV_TYPE class fields extractor
+		setMavType(new ArrayList<MavLinkClassExtractor.ClassItem>());
 		MAV_TYPE tmpType = new MAV_TYPE();
 		for (Field mavField : tmpType.getClass().getFields()) {
 			try {
-				mavType.add(new ClassItem(mavField.getName().replace("MAV_", ""), tmpType
-						.getClass().getField(mavField.getName())
-						.getInt(tmpType)));
-			} catch (IllegalAccessException e) {
+				getMavType().add(
+						new ClassItem(mavField.getName().replace("MAV_", ""), tmpType.getClass()
+								.getField(mavField.getName()).getInt(tmpType)));
+			}
+			catch (IllegalAccessException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (IllegalArgumentException e) {
+			}
+			catch (IllegalArgumentException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (NoSuchFieldException e) {
+			}
+			catch (NoSuchFieldException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
 		}
-		
-		Collections.sort(mavType, new ClassIdComparator());
 
-		
-		//MAV_AUTOPILOT class fields extractor		
-		mavAutopilot = new ArrayList<MavLinkClassExtractor.ClassItem>();
+		Collections.sort(getMavType(), new ClassIdComparator());
+
+		// MAV_AUTOPILOT class fields extractor
+		setMavAutopilot(new ArrayList<MavLinkClassExtractor.ClassItem>());
 
 		MAV_AUTOPILOT tmpAutopilot = new MAV_AUTOPILOT();
 		for (Field mavField : tmpAutopilot.getClass().getFields()) {
 			try {
-				mavAutopilot.add(new ClassItem(mavField.getName().replace("MAV_", ""), tmpAutopilot
-						.getClass().getField(mavField.getName())
-						.getInt(tmpAutopilot)));
-			} catch (IllegalAccessException e) {
+				getMavAutopilot().add(
+						new ClassItem(mavField.getName().replace("MAV_", ""), tmpAutopilot.getClass()
+								.getField(mavField.getName()).getInt(tmpAutopilot)));
+			}
+			catch (IllegalAccessException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (IllegalArgumentException e) {
+			}
+			catch (IllegalArgumentException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (NoSuchFieldException e) {
+			}
+			catch (NoSuchFieldException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
 		}
-		
-		Collections.sort(mavAutopilot, new ClassIdComparator());
-		
-		
-		//MAV_STATE class fields extractor		
-		mavState = new ArrayList<MavLinkClassExtractor.ClassItem>();
+
+		Collections.sort(getMavAutopilot(), new ClassIdComparator());
+
+		// MAV_STATE class fields extractor
+		setMavState(new ArrayList<MavLinkClassExtractor.ClassItem>());
 
 		MAV_STATE tmpState = new MAV_STATE();
 		for (Field mavField : tmpState.getClass().getFields()) {
 			try {
-				mavState.add(new ClassItem(mavField.getName().replace("MAV_", ""), tmpState
-						.getClass().getField(mavField.getName())
-						.getInt(tmpState)));
-			} catch (IllegalAccessException e) {
+				getMavState().add(
+						new ClassItem(mavField.getName().replace("MAV_", ""), tmpState.getClass()
+								.getField(mavField.getName()).getInt(tmpState)));
+			}
+			catch (IllegalAccessException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (IllegalArgumentException e) {
+			}
+			catch (IllegalArgumentException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (NoSuchFieldException e) {
+			}
+			catch (NoSuchFieldException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
 		}
-		
-		Collections.sort(mavState, new ClassIdComparator());
-		
-		
-		
 
+		Collections.sort(getMavState(), new ClassIdComparator());
+
+	}
+
+	public ArrayList<ClassItem> getMavState() {
+		return mavState;
+	}
+
+	public void setMavState(ArrayList<ClassItem> mavState) {
+		this.mavState = mavState;
+	}
+
+	public ArrayList<ClassItem> getMavType() {
+		return mavType;
+	}
+
+	public void setMavType(ArrayList<ClassItem> mavType) {
+		this.mavType = mavType;
+	}
+
+	public ArrayList<ClassItem> getMavAutopilot() {
+		return mavAutopilot;
+	}
+
+	public void setMavAutopilot(ArrayList<ClassItem> mavAutopilot) {
+		this.mavAutopilot = mavAutopilot;
 	}
 
 }

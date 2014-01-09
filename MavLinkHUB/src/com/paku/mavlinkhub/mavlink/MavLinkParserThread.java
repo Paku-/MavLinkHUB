@@ -3,6 +3,7 @@ package com.paku.mavlinkhub.mavlink;
 import com.MAVLink.Parser;
 import com.MAVLink.Messages.MAVLinkPacket;
 import com.paku.mavlinkhub.AppGlobals;
+import com.paku.mavlinkhub.objects.MavLinkMsgItem;
 
 public class MavLinkParserThread extends Thread {
 
@@ -49,44 +50,37 @@ public class MavLinkParserThread extends Thread {
 
 				for (int i = 0; i < bufferLen; i++) {
 
-					lastMavLinkPacket = parser
-							.mavlink_parse_char(buffer[i] & 0x00ff);
+					lastMavLinkPacket = parser.mavlink_parse_char(buffer[i] & 0x00ff);
 					if (lastMavLinkPacket != null) {
 						// MAVLinkMessage lastMavLinkMsg = lastMavLinkPacket
 						// .unpack();
 
-						MavLinkMsgItem lastMavLinkMsgItem = new MavLinkMsgItem(
-								lastMavLinkPacket, 1);
+						MavLinkMsgItem lastMavLinkMsgItem = new MavLinkMsgItem(lastMavLinkPacket, 1);
 
 						// stream msg for UI
 						globalVars.logger.storeMavLinkMsgItem(lastMavLinkMsgItem);
-						
-						//not used now
+
+						// not used now
 						/*
-						globalVars.logger.loggerMsgHandler.obtainMessage(
-								AppGlobals.MSG_MAVLINK_MSG_READY, -1, -1,
-								lastMavLinkMsgItem).sendToTarget();
-								*/
+						 * globalVars.logger.loggerMsgHandler.obtainMessage(
+						 * AppGlobals.MSG_MAVLINK_MSG_READY, -1, -1,
+						 * lastMavLinkMsgItem).sendToTarget();
+						 */
 
 						// stream for syslog
-						globalVars.logger
-								.sysLog("MavlinkMsg",
-										globalVars.mMavLinkCollector
-												.decodeMavlinkMsgItem(lastMavLinkMsgItem));
+						globalVars.logger.sysLog("MavlinkMsg",
+								globalVars.mMavLinkCollector.decodeMavlinkMsgItem(lastMavLinkMsgItem));
 						// broadcast logged data ready. /UI/
-						globalVars.logger.loggerMsgHandler.obtainMessage(
-								AppGlobals.MSG_SYSLOG_DATA_READY)
+						globalVars.logger.loggerMsgHandler.obtainMessage(AppGlobals.MSG_SYSLOG_DATA_READY)
 								.sendToTarget();
 
 						// store parser stats
-						globalVars.mMavLinkCollector
-								.storeLastParserStats(parser.stats);
+						globalVars.mMavLinkCollector.storeLastParserStats(parser.stats);
 					}
 				}
 				// store bytes stream
 				globalVars.logger.byteLog(buffer, 0, bufferLen);
-				globalVars.logger.loggerMsgHandler.obtainMessage(
-						AppGlobals.MSG_BYTELOG_DATA_READY).sendToTarget();
+				globalVars.logger.loggerMsgHandler.obtainMessage(AppGlobals.MSG_BYTELOG_DATA_READY).sendToTarget();
 
 				bufferLen = 0;
 
@@ -94,8 +88,7 @@ public class MavLinkParserThread extends Thread {
 		}
 
 		globalVars.logger.sysLog(TAG, "MavLink Parser Stopped");
-		globalVars.logger.loggerMsgHandler.obtainMessage(
-				AppGlobals.MSG_SYSLOG_DATA_READY).sendToTarget();
+		globalVars.logger.loggerMsgHandler.obtainMessage(AppGlobals.MSG_SYSLOG_DATA_READY).sendToTarget();
 
 	}
 

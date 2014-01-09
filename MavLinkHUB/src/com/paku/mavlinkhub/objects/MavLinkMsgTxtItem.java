@@ -1,8 +1,9 @@
-package com.paku.mavlinkhub.mavlink;
+package com.paku.mavlinkhub.objects;
 
 import com.MAVLink.Messages.ApmModes;
 import com.MAVLink.Messages.ardupilotmega.msg_heartbeat;
 import com.MAVLink.Messages.ardupilotmega.msg_statustext;
+import com.paku.mavlinkhub.mavlink.MavLinkClassExtractor;
 
 public class MavLinkMsgTxtItem {
 
@@ -14,37 +15,33 @@ public class MavLinkMsgTxtItem {
 	private String desc_4;
 	private String desc_5;
 
-	public MavLinkMsgTxtItem(MavLinkMsgItem msgItem,
-			MavLinkClassExtractor mavClasses) {
+	public MavLinkMsgTxtItem(MavLinkMsgItem msgItem, MavLinkClassExtractor mavClasses) {
 		setMe(msgItem, mavClasses);
 	}
 
 	private void setMe(MavLinkMsgItem msgItem, MavLinkClassExtractor mavClasses) {
 
-		switch (msgItem.msg.msgid) {
+		switch (msgItem.getMsg().msgid) {
 		case msg_heartbeat.MAVLINK_MSG_ID_HEARTBEAT:
-			msg_heartbeat msg_heartbeat_ = (msg_heartbeat) msgItem.msg;
+			msg_heartbeat msg_heartbeat_ = (msg_heartbeat) msgItem.getMsg();
 			// setMsgName(msg_heartbeat_.toString().substring(0,msg_heartbeat_.toString().indexOf("-",
 			// 0)-1));
 			setMsgName(msg_heartbeat_.getClass().getSimpleName());
 
-			//operation mode + state
+			// operation mode + state
 			ApmModes mode;
-			mode = ApmModes.getMode(msg_heartbeat_.custom_mode,
-					msg_heartbeat_.type);
-			setMainTxt(mode.name()+" "+mavClasses.mavState.get(msg_heartbeat_.system_status).getName());
+			mode = ApmModes.getMode(msg_heartbeat_.custom_mode, msg_heartbeat_.type);
+			setMainTxt(mode.name() + " " + mavClasses.getMavState().get(msg_heartbeat_.system_status).getName());
 
 			// ship's type name + autopilot name
-			setDesc_3(mavClasses.mavType.get(msg_heartbeat_.type).getName()
-					+ ":"
-					+ mavClasses.mavAutopilot.get(msg_heartbeat_.autopilot)
-							.getName());
+			setDesc_3(mavClasses.getMavType().get(msg_heartbeat_.type).getName() + ":"
+					+ mavClasses.getMavAutopilot().get(msg_heartbeat_.autopilot).getName());
 
 			break;
 
 		case msg_statustext.MAVLINK_MSG_ID_STATUSTEXT:
 
-			msg_statustext msg_statustext_ = (msg_statustext) msgItem.msg;
+			msg_statustext msg_statustext_ = (msg_statustext) msgItem.getMsg();
 			// setMsgName(msg_statustext_.toString().substring(0,msg_statustext_.toString().indexOf("-",
 			// 0)-1));
 			setMsgName(msg_statustext_.getClass().getSimpleName());
@@ -56,10 +53,10 @@ public class MavLinkMsgTxtItem {
 		default:
 			break;
 		}
-		
-		//MavLink package sender and sequence number
-		setDesc_1("[" + String.valueOf(msgItem.sysId) + "]");
-		setDesc_2("[" + String.valueOf(msgItem.seqNo) + "]");
+
+		// MavLink package sender and sequence number
+		setDesc_1("[" + String.valueOf(msgItem.getSysId()) + "]");
+		setDesc_2("[" + String.valueOf(msgItem.getSeqNo()) + "]");
 
 	}
 

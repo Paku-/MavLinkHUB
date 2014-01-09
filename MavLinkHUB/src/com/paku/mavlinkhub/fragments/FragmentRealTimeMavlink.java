@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.paku.mavlinkhub.AppGlobals;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.interfaces.IDataLoggedIn;
-import com.paku.mavlinkhub.mavlink.MavLinkMsgItem;
+import com.paku.mavlinkhub.objects.MavLinkMsgItem;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -22,7 +22,7 @@ public class FragmentRealTimeMavlink extends Fragment implements IDataLoggedIn {
 	@SuppressWarnings("unused")
 	private static final String TAG = "FragmentRealTimeMavlink";
 	private AppGlobals globalVars;
-	
+
 	ViewAdapterMavlinkMsgList mavlinkListAdapter;
 	ListView mavlinkMsgListView;
 
@@ -37,15 +37,13 @@ public class FragmentRealTimeMavlink extends Fragment implements IDataLoggedIn {
 
 		setRetainInstance(true);
 
-		globalVars = (AppGlobals) getActivity().getApplication();        
+		globalVars = (AppGlobals) getActivity().getApplication();
 
 	}
-	
+
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		final View rootView = inflater.inflate(
-				R.layout.fragment_realtime_mavlink_msglist, container, false);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		final View rootView = inflater.inflate(R.layout.fragment_realtime_mavlink_msglist, container, false);
 
 		return rootView;
 	}
@@ -53,20 +51,17 @@ public class FragmentRealTimeMavlink extends Fragment implements IDataLoggedIn {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		
-		final TextView mTextViewLogStats = (TextView) (getView()
-				.findViewById(R.id.textView_logStatsbar));
-		mTextViewLogStats.setTypeface(Typeface.MONOSPACE,Typeface.BOLD);
-		
-		final TextView mTextViewBytesLog = (TextView) (getView()
-				.findViewById(R.id.textView_logByte));
-		mTextViewBytesLog.setTypeface(Typeface.MONOSPACE,Typeface.BOLD);
-		
-		
-		mavlinkListAdapter = new ViewAdapterMavlinkMsgList (this.getActivity(), generateMavlinkListData());
-		
-        mavlinkMsgListView = (ListView) (getView().findViewById(R.id.listView_mavlinkMsgs));
-        mavlinkMsgListView.setAdapter(mavlinkListAdapter);		
+
+		final TextView mTextViewLogStats = (TextView) (getView().findViewById(R.id.textView_logStatsbar));
+		mTextViewLogStats.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
+
+		final TextView mTextViewBytesLog = (TextView) (getView().findViewById(R.id.textView_logByte));
+		mTextViewBytesLog.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
+
+		mavlinkListAdapter = new ViewAdapterMavlinkMsgList(this.getActivity(), generateMavlinkListData());
+
+		mavlinkMsgListView = (ListView) (getView().findViewById(R.id.listView_mavlinkMsgs));
+		mavlinkMsgListView.setAdapter(mavlinkListAdapter);
 	}
 
 	@Override
@@ -85,29 +80,25 @@ public class FragmentRealTimeMavlink extends Fragment implements IDataLoggedIn {
 
 	public void refreshUI() {
 
-		final TextView mTextViewBytesLog = (TextView) (getView()
-				.findViewById(R.id.textView_logByte));
+		final TextView mTextViewBytesLog = (TextView) (getView().findViewById(R.id.textView_logByte));
 
 		String buff;
-		
-		//get last n kb of data
+
+		// get last n kb of data
 		if (globalVars.logger.mInMemIncomingBytesStream.size() > globalVars.visibleBuffersSize) {
-			buff = new String(
-					globalVars.logger.mInMemIncomingBytesStream.toByteArray(),
-					globalVars.logger.mInMemIncomingBytesStream.size()
-							- globalVars.visibleBuffersSize,
+			buff = new String(globalVars.logger.mInMemIncomingBytesStream.toByteArray(),
+					globalVars.logger.mInMemIncomingBytesStream.size() - globalVars.visibleBuffersSize,
 					globalVars.visibleBuffersSize);
-		} else {
-			buff = new String(
-					globalVars.logger.mInMemIncomingBytesStream.toByteArray());
+		}
+		else {
+			buff = new String(globalVars.logger.mInMemIncomingBytesStream.toByteArray());
 
 		}
 
 		mTextViewBytesLog.setText(buff);
 
 		// scroll down
-		final ScrollView mScrollView = (ScrollView) (getView()
-				.findViewById(R.id.scrollView_logByte));
+		final ScrollView mScrollView = (ScrollView) (getView().findViewById(R.id.scrollView_logByte));
 
 		if (mScrollView != null) {
 
@@ -121,36 +112,32 @@ public class FragmentRealTimeMavlink extends Fragment implements IDataLoggedIn {
 		}
 
 		// stats bar
-		final TextView mTextViewLogStats = (TextView) (getView()
-				.findViewById(R.id.textView_logStatsbar));
+		final TextView mTextViewLogStats = (TextView) (getView().findViewById(R.id.textView_logStatsbar));
 
 		mTextViewLogStats.setText(globalVars.mMavLinkCollector.getLastParserStats());
-		
+
 		mavlinkListAdapter.clear();
 		mavlinkListAdapter.addAll(generateMavlinkListData());
 		mavlinkMsgListView.setSelection(mavlinkListAdapter.getCount());
 
-		
 	}
-	
-	
-	//get data to fill the list view
-	private ArrayList<MavLinkMsgItem> generateMavlinkListData() {		
-		
-		//limit size
+
+	// get data to fill the list view
+	private ArrayList<MavLinkMsgItem> generateMavlinkListData() {
+
+		// limit size
 		while (globalVars.logger.mavlinkMsgItemsArray.size() > globalVars.visibleMsgList)
 			globalVars.logger.mavlinkMsgItemsArray.remove(0);
-		
-		//flush mem
+
+		// flush mem
 		globalVars.logger.mavlinkMsgItemsArray.trimToSize();
-		
-		//we need a clone for adapter.
+
+		// we need a clone for adapter.
 		ArrayList<MavLinkMsgItem> clone = new ArrayList<MavLinkMsgItem>();
 		clone.addAll(globalVars.logger.mavlinkMsgItemsArray);
-		
+
 		return clone;
 	}
-	
 
 	@Override
 	public void onDataLoggedIn() {

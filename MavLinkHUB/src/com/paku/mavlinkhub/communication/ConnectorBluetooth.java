@@ -1,6 +1,8 @@
 package com.paku.mavlinkhub.communication;
 
 import com.paku.mavlinkhub.AppGlobals;
+import com.paku.mavlinkhub.threads.ThreadBTConnect;
+import com.paku.mavlinkhub.threads.ThreadBTSocket;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -36,11 +38,11 @@ public class ConnectorBluetooth extends ConnectorBufferedStream {
 		}
 		try {
 			mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(address);
-			connThread = new ThreadBTConnect(mBluetoothAdapter,
-					mBluetoothDevice, this);
+			connThread = new ThreadBTConnect(mBluetoothAdapter, mBluetoothDevice, this);
 			connThread.start();
 			return true;
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			Log.d(TAG, "ConnectBT: " + e.getMessage());
 			return false;
 		}
@@ -65,11 +67,10 @@ public class ConnectorBluetooth extends ConnectorBufferedStream {
 						waitForStreamLock(3);
 
 						mConnectorStream.write((byte[]) msg.obj, 0, msg.arg1);
-/*
-						Log.d(TAG, "#" + mConnectorStream.toString() + "["
-								+ mConnectorStream.size() + "]:[" + msg.arg1
-								+ "]");
-*/
+						/*
+						 * Log.d(TAG, "#" + mConnectorStream.toString() + "[" +
+						 * mConnectorStream.size() + "]:[" + msg.arg1 + "]");
+						 */
 						releaseStream();
 
 						break;
@@ -93,7 +94,8 @@ public class ConnectorBluetooth extends ConnectorBufferedStream {
 
 		try {
 			socketThread.stopRunning();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			Log.d(TAG, "Exception [socketThread.cancel]: " + e.getMessage());
 		}
 	}

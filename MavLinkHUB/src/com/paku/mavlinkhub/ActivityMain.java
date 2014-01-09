@@ -33,8 +33,7 @@ public class ActivityMain extends FragmentActivity {
 
 		}
 
-		globalVars.mFragmentsPagerAdapter = new FragmentsAdapter(this,
-				getSupportFragmentManager());
+		globalVars.mFragmentsPagerAdapter = new FragmentsAdapter(this, getSupportFragmentManager());
 
 		globalVars.mViewPager = (ViewPager) findViewById(R.id.pager);
 		globalVars.mViewPager.setAdapter(globalVars.mFragmentsPagerAdapter);
@@ -98,18 +97,17 @@ public class ActivityMain extends FragmentActivity {
 		if (globalVars.mBtConnector.isConnected()) {
 
 			final AlertDialog.Builder dlg = new AlertDialog.Builder(this);
-			dlg.setTitle(getString(R.string.close_dlg_title_mavlink_closing)
-					+ "[" + globalVars.mBtConnector.getPeerName() + "]");
+			dlg.setTitle(getString(R.string.close_dlg_title_mavlink_closing) + "["
+					+ globalVars.mBtConnector.getPeerName() + "]");
 			dlg.setMessage(R.string.close_dlg_msg_current_connection_will_be_lost);
 			dlg.setCancelable(false);
-			dlg.setPositiveButton(R.string.close_dlg_positive,
-					positiveButtonClickListener);
-			dlg.setNegativeButton(R.string.close_dlg_negative,
-					negativeButtonClickListener);
+			dlg.setPositiveButton(R.string.close_dlg_positive, positiveButtonClickListener);
+			dlg.setNegativeButton(R.string.close_dlg_negative, negativeButtonClickListener);
 			dlg.create();
 			dlg.show();
 
-		} else {
+		}
+		else {
 			closeHUB();
 			finish();
 		}

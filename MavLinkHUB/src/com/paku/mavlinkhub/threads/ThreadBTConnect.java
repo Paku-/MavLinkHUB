@@ -1,7 +1,9 @@
-package com.paku.mavlinkhub.communication;
+package com.paku.mavlinkhub.threads;
 
 import java.io.IOException;
 import java.util.UUID;
+
+import com.paku.mavlinkhub.communication.ConnectorBluetooth;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -16,8 +18,7 @@ public class ThreadBTConnect extends Thread {
 	private final BluetoothDevice mmDevice;
 	private ConnectorBluetooth parentBtConnector;
 
-	public ThreadBTConnect(BluetoothAdapter adapter, BluetoothDevice device,
-			ConnectorBluetooth parent) {
+	public ThreadBTConnect(BluetoothAdapter adapter, BluetoothDevice device, ConnectorBluetooth parent) {
 
 		BluetoothSocket tmp = null;
 		mmBluetoothAdapter = adapter;
@@ -25,9 +26,9 @@ public class ThreadBTConnect extends Thread {
 		parentBtConnector = parent;
 
 		try {
-			tmp = mmDevice.createInsecureRfcommSocketToServiceRecord(UUID
-					.fromString(UUID_SPP));
-		} catch (IOException e) {
+			tmp = mmDevice.createInsecureRfcommSocketToServiceRecord(UUID.fromString(UUID_SPP));
+		}
+		catch (IOException e) {
 		}
 		mmSocket = tmp;
 	}
@@ -41,15 +42,15 @@ public class ThreadBTConnect extends Thread {
 			// until it succeeds or throws an exception
 			Log.d(TAG, "Connecting socket..");
 			mmSocket.connect();
-		} catch (IOException connectException) {
+		}
+		catch (IOException connectException) {
 			// Unable to connect; close the socket and get out
-			Log.d(TAG,
-					"Exception: [run.connect]" + connectException.getMessage());
+			Log.d(TAG, "Exception: [run.connect]" + connectException.getMessage());
 			try {
 				mmSocket.close();
-			} catch (IOException closeException) {
-				Log.d(TAG,
-						"Exception: [run.close]" + closeException.getMessage());
+			}
+			catch (IOException closeException) {
+				Log.d(TAG, "Exception: [run.close]" + closeException.getMessage());
 			}
 			return;
 		}
@@ -60,7 +61,6 @@ public class ThreadBTConnect extends Thread {
 		parentBtConnector.startConnectorReceiver(mmSocket);
 	}
 	/*
-	 * 
 	 * public void disconnect() { try { mmSocket.close(); } catch (IOException
 	 * e) { Log.d(TAG, "Exception [disconnect]: " + e.getMessage()); } }
 	 */
