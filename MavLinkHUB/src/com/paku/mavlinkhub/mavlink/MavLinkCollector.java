@@ -45,12 +45,13 @@ public class MavLinkCollector {
 	}
 
 	public String getLastParserStats() {
+		String byteStats = "Transfer [Bytes] - "+ globalVars.logger.statsReadByteCount;
 		if (mMavlinkParserStats != null)
-			return 	"Transfer [Bytes] - "+ globalVars.logger.statsReadByteCount+
+			return 	byteStats+
 					"    MavLink Parser Stats [Pkg Count] - " + mMavlinkParserStats.receivedPacketCount
 					+ " [CRC errors] - " + mMavlinkParserStats.crcErrorCount;
 		else
-			return "No data";
+			return byteStats;
 
 	}
 

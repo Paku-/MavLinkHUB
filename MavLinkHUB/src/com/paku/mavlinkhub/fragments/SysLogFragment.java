@@ -49,16 +49,16 @@ public class SysLogFragment extends Fragment implements IDataLoggedIn {
 
 		final TextView txtView = (TextView) (getView()
 				.findViewById(R.id.TextView_logSysLog));
-		Typeface externalFont = Typeface.createFromAsset(
-				globalVars.getAssets(), "fonts/Roboto-Condensed.ttf");
-		txtView.setTypeface(externalFont);
+		//Typeface externalFont = Typeface.createFromAsset(
+		//		globalVars.getAssets(), "fonts/Roboto-Condensed.ttf");
+		//txtView.setTypeface(externalFont);
+		txtView.setTypeface(Typeface.MONOSPACE,Typeface.BOLD);
 
 		final TextView mTextViewLogStats = (TextView) (getView()
-				.findViewById(R.id.textView_logSysLogStatsbar));
-		
-		Typeface externalFontStats = Typeface.createFromAsset(
-				globalVars.getAssets(), "fonts/Roboto-Bold.ttf");
-		mTextViewLogStats.setTypeface(externalFontStats);
+				.findViewById(R.id.textView_logSysLogStatsbar));		
+		//Typeface externalFontStats = Typeface.createFromAsset(
+				//globalVars.getAssets(), "fonts/Roboto-Regular.ttf");
+		mTextViewLogStats.setTypeface(Typeface.MONOSPACE,Typeface.BOLD);
 		
 
 	}

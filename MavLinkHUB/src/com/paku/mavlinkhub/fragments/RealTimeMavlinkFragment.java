@@ -7,6 +7,7 @@ import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.interfaces.IDataLoggedIn;
 import com.paku.mavlinkhub.mavlink.MavLinkMsgItem;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -52,6 +53,15 @@ public class RealTimeMavlinkFragment extends Fragment implements IDataLoggedIn {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+		
+		final TextView mTextViewLogStats = (TextView) (getView()
+				.findViewById(R.id.textView_logStatsbar));
+		mTextViewLogStats.setTypeface(Typeface.MONOSPACE,Typeface.BOLD);
+		
+		final TextView mTextViewBytesLog = (TextView) (getView()
+				.findViewById(R.id.textView_logByte));
+		mTextViewBytesLog.setTypeface(Typeface.MONOSPACE,Typeface.BOLD);
+		
 		
 		mavlinkListAdapter = new MavlinkMsgListViewAdapter (this.getActivity(), generateMavlinkListData());
 		
