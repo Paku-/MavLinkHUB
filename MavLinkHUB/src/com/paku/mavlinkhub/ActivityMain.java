@@ -14,9 +14,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends FragmentActivity {
+public class ActivityMain extends FragmentActivity {
 
-	private static final String TAG = "MainActivity";
+	private static final String TAG = "ActivityMain";
 
 	private AppGlobals globalVars; // global vars and constants object.
 
@@ -66,7 +66,7 @@ public class MainActivity extends FragmentActivity {
 		case R.id.menu_settings:
 
 			Intent intent = new Intent();
-			intent.setClass(MainActivity.this, SettingsActivity.class);
+			intent.setClass(ActivityMain.this, ActivitySettings.class);
 			startActivityForResult(intent, 0);
 
 			return true;

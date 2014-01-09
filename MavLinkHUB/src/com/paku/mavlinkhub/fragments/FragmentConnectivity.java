@@ -2,7 +2,8 @@ package com.paku.mavlinkhub.fragments;
 
 import com.paku.mavlinkhub.AppGlobals;
 import com.paku.mavlinkhub.R;
-import com.paku.mavlinkhub.communication.BTDevicesListHandler;
+import com.paku.mavlinkhub.communication.HelperBTDevicesList;
+import com.paku.mavlinkhub.communication.PeerDevice;
 import com.paku.mavlinkhub.interfaces.IUiModeChanged;
 
 import android.bluetooth.BluetoothAdapter;
@@ -21,18 +22,18 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ConnectivityFragment extends Fragment implements IUiModeChanged {
+public class FragmentConnectivity extends Fragment implements IUiModeChanged {
 
-	private static final String TAG = "ConnectivityFragment";
+	private static final String TAG = "FragmentConnectivity";
 
-	BTDevicesListHandler btDevList = new BTDevicesListHandler();
+	HelperBTDevicesList btDevList = new HelperBTDevicesList();
 
 	ListView btDevListView;
 	Button disconnectButton;
 	ProgressBar connProgressBar;
 	AppGlobals globalVars;
 
-	public ConnectivityFragment() {
+	public FragmentConnectivity() {
 	}
 
 	@Override
@@ -192,7 +193,8 @@ public class ConnectivityFragment extends Fragment implements IUiModeChanged {
 			return;
 
 		case AppGlobals.LIST_OK:
-			ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+			/*
+			ArrayAdapter<PeerDevice> adapter = new ArrayAdapter<PeerDevice>(
 					getActivity().getApplicationContext(),
 					android.R.layout.simple_list_item_1,
 					// android.R.layout.simple_dropdown_item_1line,
@@ -210,7 +212,9 @@ public class ConnectivityFragment extends Fragment implements IUiModeChanged {
 					return view;
 				}
 			};
-
+*/
+			
+			ViewAdapterPeerDevsList adapter = new ViewAdapterPeerDevsList(this.getActivity(),btDevList.GetDeviceList()) ;			
 			btDevListView.setAdapter(adapter);
 			btDevListView.setOnItemClickListener(btListClickListener);
 

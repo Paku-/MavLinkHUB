@@ -1,6 +1,6 @@
 package com.paku.mavlinkhub;
 
-import com.paku.mavlinkhub.communication.BluetoothConnector;
+import com.paku.mavlinkhub.communication.ConnectorBluetooth;
 import com.paku.mavlinkhub.fragments.FragmentsAdapter;
 import com.paku.mavlinkhub.interfaces.IUiModeChanged;
 import com.paku.mavlinkhub.mavlink.MavLinkCollector;
@@ -47,7 +47,7 @@ public class AppGlobals extends Application {
 	public ViewPager mViewPager;
 
 	// main BT connector
-	public BluetoothConnector mBtConnector;
+	public ConnectorBluetooth mBtConnector;
 	public IntentFilter mBtIntentFilter;
 	private BroadcastReceiver mBtReceiver;
 
@@ -81,7 +81,7 @@ public class AppGlobals extends Application {
 
 		// !!! connector has to exist before the MavLink as there is interface
 		// to it.
-		mBtConnector = new BluetoothConnector();
+		mBtConnector = new ConnectorBluetooth();
 		mMavLinkCollector = new MavLinkCollector(appContext);
 
 		// create BT broadcasts receiver

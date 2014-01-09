@@ -8,16 +8,16 @@ import com.paku.mavlinkhub.AppGlobals;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 
-public class BTDevicesListHandler {
+public class HelperBTDevicesList {
 
 	@SuppressWarnings("unused")
-	private static final String TAG = "BTDevicesListHandler";
+	private static final String TAG = "HelperBTDevicesList";
 
 	private BluetoothAdapter mBluetoothAdapter;
 	Set<BluetoothDevice> pairedDevices;
-	ArrayList<String> bondedDevicesNameList = new ArrayList<String>();
+	ArrayList<PeerDevice> devicesList = new ArrayList<PeerDevice>();
 
-	public BTDevicesListHandler() {
+	public HelperBTDevicesList() {
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		pairedDevices = mBluetoothAdapter.getBondedDevices();
 	}
@@ -35,7 +35,7 @@ public class BTDevicesListHandler {
 			return AppGlobals.ERROR_ADAPTER_OFF;
 		}
 
-		bondedDevicesNameList.clear();
+		devicesList.clear();
 
 		// If there are paired devices
 		if (pairedDevices.size() > 0) {
@@ -43,8 +43,8 @@ public class BTDevicesListHandler {
 			for (BluetoothDevice device : pairedDevices) {
 				// Add the name and address to an array adapter to show in a
 				// btDevListView
-				bondedDevicesNameList.add(device.getName() + "\n"
-						+ device.getAddress());
+				devicesList.add(
+						new PeerDevice(device.getName(), device.getAddress()));
 			}
 
 			return AppGlobals.LIST_OK;
@@ -54,8 +54,8 @@ public class BTDevicesListHandler {
 
 	}
 
-	public ArrayList<String> GetDeviceList() {
-		return bondedDevicesNameList;
+	public ArrayList<PeerDevice> GetDeviceList() {
+		return devicesList;
 	}
 
 }

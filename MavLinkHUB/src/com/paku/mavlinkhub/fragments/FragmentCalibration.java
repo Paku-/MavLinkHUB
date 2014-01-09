@@ -12,12 +12,12 @@ import android.view.ViewGroup;
  * A dummy fragment representing a section of the app, but that simply displays
  * dummy text.
  */
-public class CalibrationFragment extends Fragment {
+public class FragmentCalibration extends Fragment {
 	/**
 	 * The fragment argument representing the section number for this fragment.
 	 */
 
-	public CalibrationFragment() {
+	public FragmentCalibration() {
 	}
 
 	@Override

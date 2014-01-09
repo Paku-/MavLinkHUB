@@ -2,7 +2,7 @@ package com.paku.mavlinkhub.fragments;
 
 import java.util.Locale;
 
-import com.paku.mavlinkhub.MainActivity;
+import com.paku.mavlinkhub.ActivityMain;
 import com.paku.mavlinkhub.R;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,9 +14,9 @@ public class FragmentsAdapter extends FragmentPagerAdapter {
 	/**
 	 * 
 	 */
-	private final MainActivity mainActivity;
+	private final ActivityMain mainActivity;
 
-	public FragmentsAdapter(MainActivity mainActivity, FragmentManager fm) {
+	public FragmentsAdapter(ActivityMain mainActivity, FragmentManager fm) {
 		super(fm);
 		this.mainActivity = mainActivity;
 	}
@@ -28,19 +28,19 @@ public class FragmentsAdapter extends FragmentPagerAdapter {
 
 		switch (position) {
 		case 0:
-			fragment = new ConnectivityFragment();
+			fragment = new FragmentConnectivity();
 			break;
 		case 1:
-			fragment = new RealTimeMavlinkFragment();
+			fragment = new FragmentRealTimeMavlink();
 			break;
 		case 2:
-			fragment = new SysLogFragment();
+			fragment = new FragmentSysLog();
 			break;
 		case 3:
-			fragment = new CalibrationFragment();
+			fragment = new FragmentCalibration();
 			break;
 		default:
-			fragment = new DummySectionFragment();
+			fragment = new FragmentDummySection();
 			break;
 		}
 		return fragment;

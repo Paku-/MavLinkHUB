@@ -13,13 +13,13 @@ import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class SysLogFragment extends Fragment implements IDataLoggedIn {
+public class FragmentSysLog extends Fragment implements IDataLoggedIn {
 
 	@SuppressWarnings("unused")
-	private static final String TAG = "SysLogFragment";
+	private static final String TAG = "FragmentSysLog";
 	private AppGlobals globalVars;
 
-	public SysLogFragment() {
+	public FragmentSysLog() {
 
 	}
 

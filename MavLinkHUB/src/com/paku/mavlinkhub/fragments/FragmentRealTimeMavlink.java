@@ -17,16 +17,16 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class RealTimeMavlinkFragment extends Fragment implements IDataLoggedIn {
+public class FragmentRealTimeMavlink extends Fragment implements IDataLoggedIn {
 
 	@SuppressWarnings("unused")
-	private static final String TAG = "RealTimeMavlinkFragment";
+	private static final String TAG = "FragmentRealTimeMavlink";
 	private AppGlobals globalVars;
 	
-	MavlinkMsgListViewAdapter mavlinkListAdapter;
+	ViewAdapterMavlinkMsgList mavlinkListAdapter;
 	ListView mavlinkMsgListView;
 
-	public RealTimeMavlinkFragment() {
+	public FragmentRealTimeMavlink() {
 
 	}
 
@@ -63,7 +63,7 @@ public class RealTimeMavlinkFragment extends Fragment implements IDataLoggedIn {
 		mTextViewBytesLog.setTypeface(Typeface.MONOSPACE,Typeface.BOLD);
 		
 		
-		mavlinkListAdapter = new MavlinkMsgListViewAdapter (this.getActivity(), generateMavlinkListData());
+		mavlinkListAdapter = new ViewAdapterMavlinkMsgList (this.getActivity(), generateMavlinkListData());
 		
         mavlinkMsgListView = (ListView) (getView().findViewById(R.id.listView_mavlinkMsgs));
         mavlinkMsgListView.setAdapter(mavlinkListAdapter);		

@@ -10,19 +10,19 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
-public class BluetoothConnector extends BufferedStreamConnector {
+public class ConnectorBluetooth extends ConnectorBufferedStream {
 
-	private static final String TAG = "BluetoothConnector";
+	private static final String TAG = "ConnectorBluetooth";
 
 	private BluetoothAdapter mBluetoothAdapter;
 	BluetoothDevice mBluetoothDevice;
 	BluetoothSocket mBluetoothSocket;
 
-	BTConnectThread connThread;
-	BTSocketThread socketThread;
+	ThreadBTConnect connThread;
+	ThreadBTSocket socketThread;
 	Handler btConnectorMsgHandler;
 
-	public BluetoothConnector() {
+	public ConnectorBluetooth() {
 		super(1024);
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 	}
@@ -36,7 +36,7 @@ public class BluetoothConnector extends BufferedStreamConnector {
 		}
 		try {
 			mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(address);
-			connThread = new BTConnectThread(mBluetoothAdapter,
+			connThread = new ThreadBTConnect(mBluetoothAdapter,
 					mBluetoothDevice, this);
 			connThread.start();
 			return true;
@@ -80,7 +80,7 @@ public class BluetoothConnector extends BufferedStreamConnector {
 				}
 			};
 
-			socketThread = new BTSocketThread(socket, btConnectorMsgHandler);
+			socketThread = new ThreadBTSocket(socket, btConnectorMsgHandler);
 			socketThread.start();
 
 		}

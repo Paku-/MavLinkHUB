@@ -8,16 +8,16 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
-public class BTConnectThread extends Thread {
+public class ThreadBTConnect extends Thread {
 	private static final String UUID_SPP = "00001101-0000-1000-8000-00805F9B34FB";
-	private static final String TAG = "BTConnectThread";
+	private static final String TAG = "ThreadBTConnect";
 	private final BluetoothAdapter mmBluetoothAdapter;
 	private final BluetoothSocket mmSocket;
 	private final BluetoothDevice mmDevice;
-	private BluetoothConnector parentBtConnector;
+	private ConnectorBluetooth parentBtConnector;
 
-	public BTConnectThread(BluetoothAdapter adapter, BluetoothDevice device,
-			BluetoothConnector parent) {
+	public ThreadBTConnect(BluetoothAdapter adapter, BluetoothDevice device,
+			ConnectorBluetooth parent) {
 
 		BluetoothSocket tmp = null;
 		mmBluetoothAdapter = adapter;
