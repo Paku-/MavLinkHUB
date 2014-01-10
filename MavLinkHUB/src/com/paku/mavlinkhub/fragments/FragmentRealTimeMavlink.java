@@ -2,7 +2,7 @@ package com.paku.mavlinkhub.fragments;
 
 import java.util.ArrayList;
 
-import com.paku.mavlinkhub.AppGlobals;
+import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.interfaces.ISysLogDataLoggedIn;
 import com.paku.mavlinkhub.objects.ItemMavLinkMsg;
@@ -21,7 +21,7 @@ public class FragmentRealTimeMavlink extends Fragment implements ISysLogDataLogg
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "FragmentRealTimeMavlink";
-	private AppGlobals globalVars;
+	private HUBGlobals globalVars;
 
 	ViewAdapterMavlinkMsgList mavlinkListAdapter;
 	ListView mavlinkMsgListView;
@@ -37,7 +37,7 @@ public class FragmentRealTimeMavlink extends Fragment implements ISysLogDataLogg
 
 		setRetainInstance(true);
 
-		globalVars = (AppGlobals) getActivity().getApplication();
+		globalVars = (HUBGlobals) getActivity().getApplication();
 
 	}
 

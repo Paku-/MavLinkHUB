@@ -10,10 +10,10 @@ import android.content.Context;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 
-public class AppGlobals extends Application {
+public class HUBGlobals extends Application {
 
 	@SuppressWarnings("unused")
-	private static final String TAG = "AppGlobals";
+	private static final String TAG = "HUBGlobals";
 
 	// other constants
 	public static final int MSG_CONNECTOR_DATA_READY = 101;
@@ -27,7 +27,7 @@ public class AppGlobals extends Application {
 	public ViewPager mViewPager;
 
 	// messages handler
-	public AppMessenger messanger;
+	public HUBMessenger messanger;
 
 	// main BT connector
 	public ConnectorBluetooth connectorBluetooth;
@@ -36,7 +36,7 @@ public class AppGlobals extends Application {
 	public MavLinkCollector mMavLinkCollector;
 
 	// sys log stats holder object
-	public Logger logger;
+	public HUBLogger logger;
 
 	public UI_MODE uiMode = UI_MODE.UI_MODE_CREATED;
 
@@ -49,9 +49,9 @@ public class AppGlobals extends Application {
 
 		// start application asynchronous messaging hub
 		// has to be first !!!
-		messanger = new AppMessenger(this);
+		messanger = new HUBMessenger(this);
 
-		logger = new Logger(this);
+		logger = new HUBLogger(this);
 
 		uiMode = UI_MODE.UI_MODE_CREATED;
 

@@ -2,7 +2,7 @@ package com.paku.mavlinkhub.mavlink;
 
 import com.MAVLink.Parser;
 import com.MAVLink.Messages.MAVLinkPacket;
-import com.paku.mavlinkhub.AppGlobals;
+import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.objects.ItemMavLinkMsg;
 
 public class MavLinkParserThread extends Thread {
@@ -17,9 +17,9 @@ public class MavLinkParserThread extends Thread {
 	private boolean running = true;
 	private MAVLinkPacket lastMavLinkPacket = null;
 
-	private AppGlobals globalVars;
+	private HUBGlobals globalVars;
 
-	public MavLinkParserThread(AppGlobals context) {
+	public MavLinkParserThread(HUBGlobals context) {
 
 		globalVars = context;
 

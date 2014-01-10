@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.MAVLink.Messages.MAVLinkPacket;
 import com.MAVLink.Messages.MAVLinkStats;
-import com.paku.mavlinkhub.AppGlobals;
+import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.objects.ItemMavLinkMsg;
 
 public class MavLinkCollector {
@@ -12,7 +12,7 @@ public class MavLinkCollector {
 	@SuppressWarnings("unused")
 	private static final String TAG = "MavLinkCollector";
 
-	private AppGlobals globalVars;
+	private HUBGlobals globalVars;
 
 	private MAVLinkStats mMavlinkParserStats;
 
@@ -20,7 +20,7 @@ public class MavLinkCollector {
 
 	public MavLinkCollector(Context mContext) {
 
-		globalVars = ((AppGlobals) mContext.getApplicationContext());
+		globalVars = ((HUBGlobals) mContext.getApplicationContext());
 
 	}
 

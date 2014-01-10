@@ -15,11 +15,11 @@ import android.util.Log;
 
 import com.paku.mavlinkhub.objects.ItemMavLinkMsg;
 
-public class Logger {
+public class HUBLogger {
 
-	private static final String TAG = "Logger";
+	private static final String TAG = "HUBLogger";
 
-	private AppGlobals globalVars;
+	private HUBGlobals globalVars;
 
 	// log files & files writing streams
 	private File byteLogFile, sysLogFile;
@@ -38,7 +38,7 @@ public class Logger {
 	public int statsReadByteCount = 0;
 	private boolean lock = false;
 
-	public Logger(AppGlobals context) {
+	public HUBLogger(HUBGlobals context) {
 
 		globalVars = context;
 
@@ -72,7 +72,7 @@ public class Logger {
 			mFileSysLogStream.write(tempStr.getBytes(), 0, tempStr.length());
 			mInMemSysLogStream.write(tempStr.getBytes(), 0, tempStr.length());
 			releaseLock();
-			globalVars.messanger.appMsgHandler.obtainMessage(AppGlobals.MSG_DATA_READY_SYSLOG).sendToTarget();
+			globalVars.messanger.appMsgHandler.obtainMessage(HUBGlobals.MSG_DATA_READY_SYSLOG).sendToTarget();
 		}
 		catch (IOException e1) {
 			Log.d(TAG, "[sysLog] " + e1.getMessage());
@@ -95,7 +95,7 @@ public class Logger {
 			mInMemIncomingBytesStream.write(buffer, 0, bufferLen);
 			releaseLock();
 			statsReadByteCount += bufferLen;
-			globalVars.messanger.appMsgHandler.obtainMessage(AppGlobals.MSG_DATA_READY_BYTELOG).sendToTarget();
+			globalVars.messanger.appMsgHandler.obtainMessage(HUBGlobals.MSG_DATA_READY_BYTELOG).sendToTarget();
 		}
 		catch (IOException e1) {
 			Log.d(TAG, "[byteLog] " + e1.getMessage());
@@ -106,7 +106,7 @@ public class Logger {
 		// fill msgs stream with new arrival
 
 		mavlinkMsgItemsArray.add(msgItem);
-		globalVars.messanger.appMsgHandler.obtainMessage(AppGlobals.MSG_MAVLINK_MSG_READY, -1, -1, msgItem)
+		globalVars.messanger.appMsgHandler.obtainMessage(HUBGlobals.MSG_MAVLINK_MSG_READY, -1, -1, msgItem)
 				.sendToTarget();
 
 	}

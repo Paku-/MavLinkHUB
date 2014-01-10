@@ -18,14 +18,14 @@ public class ActivityMain extends FragmentActivity {
 
 	private static final String TAG = "ActivityMain";
 
-	private AppGlobals globalVars; // global vars and constants object.
+	private HUBGlobals globalVars; // global vars and constants object.
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		globalVars = (AppGlobals) this.getApplication();
+		globalVars = (HUBGlobals) this.getApplication();
 
 		if (savedInstanceState == null) {
 			// init only if we are just borned ...

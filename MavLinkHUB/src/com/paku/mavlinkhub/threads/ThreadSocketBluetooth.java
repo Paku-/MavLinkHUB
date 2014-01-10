@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import com.paku.mavlinkhub.AppGlobals;
+import com.paku.mavlinkhub.HUBGlobals;
 
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
@@ -60,7 +60,7 @@ public class ThreadSocketBluetooth extends Thread {
 				bytes = mmInStream.read(buffer, 0, buffer.length);
 
 				if (bytes > 0) {
-					mConnectorReceiverHandler.obtainMessage(AppGlobals.MSG_CONNECTOR_DATA_READY, bytes, -1, buffer)
+					mConnectorReceiverHandler.obtainMessage(HUBGlobals.MSG_CONNECTOR_DATA_READY, bytes, -1, buffer)
 							.sendToTarget();
 				}
 				else

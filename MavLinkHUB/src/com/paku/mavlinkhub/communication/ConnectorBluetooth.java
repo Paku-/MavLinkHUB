@@ -1,6 +1,6 @@
 package com.paku.mavlinkhub.communication;
 
-import com.paku.mavlinkhub.AppGlobals;
+import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.threads.ThreadConnectBluetooth;
 import com.paku.mavlinkhub.threads.ThreadSocketBluetooth;
 
@@ -60,7 +60,7 @@ public class ConnectorBluetooth extends Connector {
 
 				switch (msg.what) {
 				// Received data
-				case AppGlobals.MSG_CONNECTOR_DATA_READY:
+				case HUBGlobals.MSG_CONNECTOR_DATA_READY:
 					waitForStreamLock(3);
 					mConnectorStream.write((byte[]) msg.obj, 0, msg.arg1);
 					releaseStream();

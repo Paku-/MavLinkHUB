@@ -2,7 +2,7 @@ package com.paku.mavlinkhub.fragments;
 
 import java.util.ArrayList;
 
-import com.paku.mavlinkhub.AppGlobals;
+import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.communication.HelperBTDevicesList;
 import com.paku.mavlinkhub.enums.PEER_DEV_STATE;
@@ -31,7 +31,7 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged, IC
 	ViewAdapterPeerDevsList devListAdapter;
 
 	ProgressBar connProgressBar;
-	AppGlobals globalVars;
+	HUBGlobals globalVars;
 
 	public FragmentConnectivity() {
 	}
@@ -43,8 +43,8 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged, IC
 
 		setRetainInstance(true);
 
-		globalVars = (AppGlobals) getActivity().getApplication();
-		globalVars.messanger.registerForIUiModeChanged(this);
+		globalVars = (HUBGlobals) getActivity().getApplication();
+		globalVars.messanger.registerForOnUiModeChanged(this);
 		globalVars.messanger.registerForIConnectionFailed(this);
 
 	}
@@ -69,7 +69,7 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged, IC
 	public void onResume() {
 		super.onResume();
 
-		globalVars.messanger.registerForIUiModeChanged(this);
+		globalVars.messanger.registerForOnUiModeChanged(this);
 		refreshUI();
 
 	}
@@ -161,7 +161,7 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged, IC
 			return;
 		case ERROR_ADAPTER_OFF:
 			Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-			this.startActivityForResult(enableBtIntent, AppGlobals.REQUEST_ENABLE_BT);
+			this.startActivityForResult(enableBtIntent, HUBGlobals.REQUEST_ENABLE_BT);
 			return;
 		case ERROR_NO_BONDED_DEV:
 			Toast.makeText(getActivity().getApplicationContext(),

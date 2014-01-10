@@ -1,5 +1,7 @@
 package com.paku.mavlinkhub;
 
+import java.util.ArrayList;
+
 import com.paku.mavlinkhub.enums.UI_MODE;
 import com.paku.mavlinkhub.interfaces.IConnectionFailed;
 import com.paku.mavlinkhub.interfaces.ISysLogDataLoggedIn;
@@ -15,38 +17,38 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 
-public class AppMessenger {
+public class HUBMessenger extends HUBInterfaceManager {
 
-	private static final String TAG = "AppMessenger";
+	private static final String TAG = "HUBMessenger";
 
 	public Handler appMsgHandler;
-	private AppGlobals globalVars;
+	private HUBGlobals globalVars;
 
-	public AppMessenger(Context mContext) {
+	public HUBMessenger(Context mContext) {
 
-		globalVars = ((AppGlobals) mContext.getApplicationContext());
+		globalVars = ((HUBGlobals) mContext.getApplicationContext());
 
 		appMsgHandler = new Handler(Looper.getMainLooper()) {
 			public void handleMessage(Message msg) {
 
 				switch (msg.what) {
 				// Received MLmsg
-				case AppGlobals.MSG_MAVLINK_MSG_READY:
+				case HUBGlobals.MSG_MAVLINK_MSG_READY:
 					// ItemMavLinkMsg mavlinkMsg = (ItemMavLinkMsg) msg.obj;
 					break;
 				// all data logged in
-				case AppGlobals.MSG_DATA_READY_SYSLOG:
-					processSysLogDataLoggedIn();
+				case HUBGlobals.MSG_DATA_READY_SYSLOG:
+					processOnSysLogDataLoggedIn();
 					break;
-				case AppGlobals.MSG_DATA_READY_BYTELOG:
-					processByteLogDataLoggedIn();
+				case HUBGlobals.MSG_DATA_READY_BYTELOG:
+					processOnByteLogDataLoggedIn();
 					break;
 
-				case AppGlobals.MSG_CONNECTOR_DATA_READY:
+				case HUBGlobals.MSG_CONNECTOR_DATA_READY:
 					break;
-				case AppGlobals.MSG_CONNECTOR_CONNECTION_FAILED:
+				case HUBGlobals.MSG_CONNECTOR_CONNECTION_FAILED:
 					String msgTxt = new String((byte[]) msg.obj);
-					processFailedConnection("Connection Failure with message: " + msgTxt);
+					processOnConnectionFailed("Connection Failure with message: " + msgTxt);
 					break;
 				default:
 					super.handleMessage(msg);
@@ -58,68 +60,6 @@ public class AppMessenger {
 		startBroadcastReceiverBluetooth();
 
 	}
-
-	// *****************************************
-	// UI objects interfaces
-	// *****************************************
-
-	// interfaces
-
-	private ISysLogDataLoggedIn listenerRealTimeMavlinkFragment = null;
-	private ISysLogDataLoggedIn listenerSysLogFragment = null;
-	private IUiModeChanged listenerOnUIModeChanged = null;
-	private IConnectionFailed listenerIConnectionFailed = null;
-
-	// registering for interfaces
-	public void registerForIConnectionFailed(Fragment fragment) {
-		listenerIConnectionFailed = (IConnectionFailed) fragment;
-	}
-
-	public void unregisterIConnectionFailed() {
-		listenerSysLogFragment = null;
-	}
-
-	public void registerForIUiModeChanged(Fragment fragment) {
-		listenerOnUIModeChanged = (IUiModeChanged) fragment;
-	}
-
-	public void registerRealTimeMavlinkForIDataLoggedIn(Fragment fragment) {
-		listenerRealTimeMavlinkFragment = (ISysLogDataLoggedIn) fragment;
-	}
-
-	public void registerSysLogForIDataLoggedIn(Fragment fragment) {
-		listenerSysLogFragment = (ISysLogDataLoggedIn) fragment;
-	}
-
-	public void unregisterSysLogForIDataLoggedIn() {
-		listenerSysLogFragment = null;
-	}
-
-	public void unregisterRealTimeMavlinkForIDataLoggedIn() {
-		listenerRealTimeMavlinkFragment = null;
-	}
-
-	// Messages processing routines
-	private void processSysLogDataLoggedIn() {
-
-		if (listenerSysLogFragment != null) {
-			listenerSysLogFragment.onSysLogDataLoggedIn();
-		}
-	}
-
-	private void processByteLogDataLoggedIn() {
-
-		if (listenerRealTimeMavlinkFragment != null) {
-			listenerRealTimeMavlinkFragment.onSysLogDataLoggedIn();
-		}
-	}
-
-	private void processFailedConnection(String errorMsg) {
-		listenerIConnectionFailed.onConnectionFailed(errorMsg);
-	}
-
-	// *****************************************
-	// interface end
 
 	// Bluetooth specific messages handling
 	// *****************************************
@@ -209,7 +149,7 @@ public class AppMessenger {
 					globalVars.uiMode = UI_MODE.UI_MODE_DISCONNECTED;
 				}
 
-				if (listenerOnUIModeChanged != null) listenerOnUIModeChanged.onUiModeChanged();
+				processOnUiModeChanged();
 
 			}
 		};

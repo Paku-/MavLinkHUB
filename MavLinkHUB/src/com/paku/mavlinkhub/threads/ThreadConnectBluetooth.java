@@ -3,7 +3,7 @@ package com.paku.mavlinkhub.threads;
 import java.io.IOException;
 import java.util.UUID;
 
-import com.paku.mavlinkhub.AppGlobals;
+import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.communication.Connector;
 import com.paku.mavlinkhub.communication.ConnectorBluetooth;
 
@@ -51,7 +51,7 @@ public class ThreadConnectBluetooth extends Thread {
 			try {
 				mmSocket.close();
 				String msgTxt = connectException.getMessage();
-				parentConnector.appMsgHandler.obtainMessage(AppGlobals.MSG_CONNECTOR_CONNECTION_FAILED,
+				parentConnector.appMsgHandler.obtainMessage(HUBGlobals.MSG_CONNECTOR_CONNECTION_FAILED,
 						msgTxt.length(), -1, msgTxt.getBytes()).sendToTarget();
 			}
 			catch (IOException closeException) {

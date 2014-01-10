@@ -1,6 +1,6 @@
 package com.paku.mavlinkhub.fragments;
 
-import com.paku.mavlinkhub.AppGlobals;
+import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.interfaces.ISysLogDataLoggedIn;
 
@@ -17,7 +17,7 @@ public class FragmentSysLog extends Fragment implements ISysLogDataLoggedIn {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "FragmentSysLog";
-	private AppGlobals globalVars;
+	private HUBGlobals globalVars;
 
 	public FragmentSysLog() {
 
@@ -30,7 +30,7 @@ public class FragmentSysLog extends Fragment implements ISysLogDataLoggedIn {
 
 		setRetainInstance(true);
 
-		globalVars = (AppGlobals) getActivity().getApplication();
+		globalVars = (HUBGlobals) getActivity().getApplication();
 
 	}
 
