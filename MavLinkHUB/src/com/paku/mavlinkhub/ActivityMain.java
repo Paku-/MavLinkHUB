@@ -2,6 +2,7 @@ package com.paku.mavlinkhub;
 
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.fragments.FragmentsAdapter;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;

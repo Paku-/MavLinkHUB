@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
+import com.paku.mavlinkhub.fragments.viewadapter.ItemMavLinkMsg;
+import com.paku.mavlinkhub.fragments.viewadapter.ViewAdapterMavlinkMsgList;
 import com.paku.mavlinkhub.interfaces.IByteLogDataLoggedIn;
-import com.paku.mavlinkhub.interfaces.ISysLogDataLoggedIn;
-import com.paku.mavlinkhub.objects.ItemMavLinkMsg;
 
 import android.graphics.Typeface;
 import android.os.Bundle;

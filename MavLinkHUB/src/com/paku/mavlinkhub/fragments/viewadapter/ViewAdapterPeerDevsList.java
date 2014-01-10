@@ -1,10 +1,10 @@
-package com.paku.mavlinkhub.fragments;
+package com.paku.mavlinkhub.fragments.viewadapter;
 
 import java.util.ArrayList;
 
 import com.paku.mavlinkhub.R;
+import com.paku.mavlinkhub.communication.devicelist.ItemPeerDevice;
 import com.paku.mavlinkhub.enums.PEER_DEV_STATE;
-import com.paku.mavlinkhub.objects.ItemPeerDevice;
 
 import android.content.Context;
 import android.graphics.Color;

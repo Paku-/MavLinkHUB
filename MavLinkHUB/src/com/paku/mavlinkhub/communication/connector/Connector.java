@@ -4,11 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import com.paku.mavlinkhub.HUBMessenger;
-import com.paku.mavlinkhub.interfaces.IConnectionFailed;
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 
 public abstract class Connector {
 

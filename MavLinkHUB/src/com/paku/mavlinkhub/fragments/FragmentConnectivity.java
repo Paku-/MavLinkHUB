@@ -4,11 +4,12 @@ import java.util.ArrayList;
 
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
-import com.paku.mavlinkhub.communication.deviceslist.DevicesListBluetooth;
+import com.paku.mavlinkhub.communication.devicelist.ListPeerDevicesBluetooth;
+import com.paku.mavlinkhub.communication.devicelist.ItemPeerDevice;
 import com.paku.mavlinkhub.enums.PEER_DEV_STATE;
+import com.paku.mavlinkhub.fragments.viewadapter.ViewAdapterPeerDevsList;
 import com.paku.mavlinkhub.interfaces.IConnectionFailed;
 import com.paku.mavlinkhub.interfaces.IUiModeChanged;
-import com.paku.mavlinkhub.objects.ItemPeerDevice;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
@@ -26,7 +27,7 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged, IC
 
 	private static final String TAG = "FragmentConnectivity";
 
-	DevicesListBluetooth btDevList = new DevicesListBluetooth();
+	ListPeerDevicesBluetooth btDevList = new ListPeerDevicesBluetooth();
 	ListView btDevListView;
 	ViewAdapterPeerDevsList devListAdapter;
 

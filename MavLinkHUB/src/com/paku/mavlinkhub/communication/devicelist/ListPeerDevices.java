@@ -1,26 +1,23 @@
-package com.paku.mavlinkhub.communication.deviceslist;
+package com.paku.mavlinkhub.communication.devicelist;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Set;
-
 import com.paku.mavlinkhub.enums.DEV_LIST_STATE;
 import com.paku.mavlinkhub.enums.PEER_DEV_STATE;
-import com.paku.mavlinkhub.objects.ItemPeerDevice;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-
-public class DevicesList {
+public abstract class ListPeerDevices {
 
 	@SuppressWarnings("unused")
-	private static final String TAG = "DevicesList";
+	private static final String TAG = "ListPeerDevices";
 
 	ArrayList<ItemPeerDevice> devList = new ArrayList<ItemPeerDevice>();
 
-	public DevicesList() {
+	public ListPeerDevices() {
 	}
+
+	// fill the list with your devices
+	abstract DEV_LIST_STATE refresh();
 
 	public ArrayList<ItemPeerDevice> getDeviceList() {
 		return devList;

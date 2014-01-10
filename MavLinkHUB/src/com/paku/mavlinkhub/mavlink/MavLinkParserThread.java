@@ -3,7 +3,7 @@ package com.paku.mavlinkhub.mavlink;
 import com.MAVLink.Parser;
 import com.MAVLink.Messages.MAVLinkPacket;
 import com.paku.mavlinkhub.HUBGlobals;
-import com.paku.mavlinkhub.objects.ItemMavLinkMsg;
+import com.paku.mavlinkhub.fragments.viewadapter.ItemMavLinkMsg;
 
 public class MavLinkParserThread extends Thread {
 

@@ -5,7 +5,7 @@ import android.content.Context;
 import com.MAVLink.Messages.MAVLinkPacket;
 import com.MAVLink.Messages.MAVLinkStats;
 import com.paku.mavlinkhub.HUBGlobals;
-import com.paku.mavlinkhub.objects.ItemMavLinkMsg;
+import com.paku.mavlinkhub.fragments.viewadapter.ItemMavLinkMsg;
 
 public class MavLinkCollector {
 

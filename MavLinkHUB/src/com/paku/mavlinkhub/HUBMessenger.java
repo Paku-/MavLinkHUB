@@ -1,11 +1,6 @@
 package com.paku.mavlinkhub;
 
-import java.util.ArrayList;
-
 import com.paku.mavlinkhub.enums.UI_MODE;
-import com.paku.mavlinkhub.interfaces.IConnectionFailed;
-import com.paku.mavlinkhub.interfaces.ISysLogDataLoggedIn;
-import com.paku.mavlinkhub.interfaces.IUiModeChanged;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -15,7 +10,6 @@ import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.support.v4.app.Fragment;
 
 public class HUBMessenger extends HUBInterfaceManager {
 

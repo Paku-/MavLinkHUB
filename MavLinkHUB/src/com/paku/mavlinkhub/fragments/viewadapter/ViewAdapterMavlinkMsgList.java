@@ -1,11 +1,9 @@
-package com.paku.mavlinkhub.fragments;
+package com.paku.mavlinkhub.fragments.viewadapter;
 
 import java.util.ArrayList;
 
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.mavlink.MavLinkClassExtractor;
-import com.paku.mavlinkhub.objects.ItemMavLinkMsg;
-import com.paku.mavlinkhub.objects.ItemMavLinkMsgTxt;
 
 import android.content.Context;
 import android.view.LayoutInflater;

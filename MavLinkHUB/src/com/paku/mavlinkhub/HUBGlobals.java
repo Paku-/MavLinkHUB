@@ -7,7 +7,6 @@ import com.paku.mavlinkhub.mavlink.MavLinkCollector;
 
 import android.app.Application;
 import android.content.Context;
-import android.os.Handler;
 import android.support.v4.view.ViewPager;
 
 public class HUBGlobals extends Application {
