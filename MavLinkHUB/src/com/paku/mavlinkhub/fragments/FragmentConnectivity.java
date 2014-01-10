@@ -14,7 +14,6 @@ import com.paku.mavlinkhub.interfaces.IUiModeChanged;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,27 +23,20 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-public class FragmentConnectivity extends Fragment implements IUiModeChanged, IConnectionFailed {
+public class FragmentConnectivity extends HUBFragment implements IUiModeChanged, IConnectionFailed {
 
 	private static final String TAG = "FragmentConnectivity";
 
 	ListPeerDevicesBluetooth btDevList;
-
 	ListView btDevListView;
 	ViewAdapterPeerDevsList devListAdapter;
 
 	ProgressBar connProgressBar;
-	HUBGlobals globalVars;
-
-	public FragmentConnectivity() {
-	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setRetainInstance(true);
-		globalVars = (HUBGlobals) getActivity().getApplication();
 		btDevList = new ListPeerDevicesBluetooth(globalVars);
 
 	}

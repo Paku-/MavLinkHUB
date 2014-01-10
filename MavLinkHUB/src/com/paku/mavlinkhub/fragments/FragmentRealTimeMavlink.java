@@ -2,7 +2,6 @@ package com.paku.mavlinkhub.fragments;
 
 import java.util.ArrayList;
 
-import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.fragments.viewadapters.ViewAdapterMavlinkMsgList;
 import com.paku.mavlinkhub.fragments.viewadapters.items.ItemMavLinkMsg;
@@ -10,7 +9,6 @@ import com.paku.mavlinkhub.interfaces.IByteLogDataLoggedIn;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,29 +16,13 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class FragmentRealTimeMavlink extends Fragment implements IByteLogDataLoggedIn {
+public class FragmentRealTimeMavlink extends HUBFragment implements IByteLogDataLoggedIn {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "FragmentRealTimeMavlink";
-	private HUBGlobals globalVars;
 
 	ViewAdapterMavlinkMsgList mavlinkListAdapter;
 	ListView mavlinkMsgListView;
-
-	public FragmentRealTimeMavlink() {
-
-	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onCreate(savedInstanceState);
-
-		setRetainInstance(true);
-
-		globalVars = (HUBGlobals) getActivity().getApplication();
-
-	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

@@ -1,38 +1,20 @@
 package com.paku.mavlinkhub.fragments;
 
-import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.interfaces.ISysLogDataLoggedIn;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class FragmentSysLog extends Fragment implements ISysLogDataLoggedIn {
+public class FragmentSysLog extends HUBFragment implements ISysLogDataLoggedIn {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "FragmentSysLog";
-	private HUBGlobals globalVars;
-
-	public FragmentSysLog() {
-
-	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onCreate(savedInstanceState);
-
-		setRetainInstance(true);
-
-		globalVars = (HUBGlobals) getActivity().getApplication();
-
-	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
