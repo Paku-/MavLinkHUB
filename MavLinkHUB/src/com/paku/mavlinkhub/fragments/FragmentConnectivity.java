@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
-import com.paku.mavlinkhub.communication.HelperBTDevicesList;
+import com.paku.mavlinkhub.communication.deviceslist.DevicesListBluetooth;
 import com.paku.mavlinkhub.enums.PEER_DEV_STATE;
 import com.paku.mavlinkhub.interfaces.IConnectionFailed;
 import com.paku.mavlinkhub.interfaces.IUiModeChanged;
@@ -26,7 +26,7 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged, IC
 
 	private static final String TAG = "FragmentConnectivity";
 
-	HelperBTDevicesList btDevList = new HelperBTDevicesList();
+	DevicesListBluetooth btDevList = new DevicesListBluetooth();
 	ListView btDevListView;
 	ViewAdapterPeerDevsList devListAdapter;
 
@@ -44,8 +44,6 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged, IC
 		setRetainInstance(true);
 
 		globalVars = (HUBGlobals) getActivity().getApplication();
-		globalVars.messanger.registerForOnUiModeChanged(this);
-		globalVars.messanger.registerForOnConnectionFailed(this);
 
 	}
 
@@ -68,8 +66,8 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged, IC
 	@Override
 	public void onResume() {
 		super.onResume();
-
 		globalVars.messanger.registerForOnUiModeChanged(this);
+		globalVars.messanger.registerForOnConnectionFailed(this);
 		refreshUI();
 
 	}
@@ -93,19 +91,6 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged, IC
 
 	}
 
-	// interfaces
-	@Override
-	public void onConnectionFailed(String errorMsg) {
-		// Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_LONG).show();
-		globalVars.logger.sysLog(TAG, errorMsg);
-	}
-
-	@Override
-	public void onUiModeChanged() {
-		refreshUI();
-	}
-
-	// **
 	public void refreshUI() {
 
 		switch (globalVars.uiMode) {
@@ -220,5 +205,17 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged, IC
 
 		}
 	};
+
+	// interfaces
+	@Override
+	public void onConnectionFailed(String errorMsg) {
+		Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_LONG).show();
+		globalVars.logger.sysLog(TAG, errorMsg);
+	}
+
+	@Override
+	public void onUiModeChanged() {
+		refreshUI();
+	}
 
 }

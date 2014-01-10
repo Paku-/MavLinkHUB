@@ -1,4 +1,4 @@
-package com.paku.mavlinkhub.communication;
+package com.paku.mavlinkhub.communication.connector;
 
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.threads.ThreadConnectBluetooth;

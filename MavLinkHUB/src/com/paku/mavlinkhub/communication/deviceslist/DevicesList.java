@@ -1,4 +1,4 @@
-package com.paku.mavlinkhub.communication;
+package com.paku.mavlinkhub.communication.deviceslist;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,41 +12,14 @@ import com.paku.mavlinkhub.objects.ItemPeerDevice;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 
-public class HelperBTDevicesList {
+public class DevicesList {
 
 	@SuppressWarnings("unused")
-	private static final String TAG = "HelperBTDevicesList";
+	private static final String TAG = "DevicesList";
 
 	ArrayList<ItemPeerDevice> devList = new ArrayList<ItemPeerDevice>();
 
-	public HelperBTDevicesList() {
-	}
-
-	public DEV_LIST_STATE refresh() {
-
-		// check for nulls ...
-		if (BluetoothAdapter.getDefaultAdapter() == null) {
-			return DEV_LIST_STATE.ERROR_NO_ADAPTER;
-		}
-		else if (!BluetoothAdapter.getDefaultAdapter().isEnabled()) {
-			return DEV_LIST_STATE.ERROR_ADAPTER_OFF;
-		}
-
-		// get local adapter and paired dev list
-		BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-		Set<BluetoothDevice> pairedDevList = mBluetoothAdapter.getBondedDevices();
-
-		devList.clear();
-		// If there are paired devices
-		if (pairedDevList.size() > 0) {
-			for (BluetoothDevice device : pairedDevList) {
-				devList.add(new ItemPeerDevice(device.getName(), device.getAddress()));
-			}
-			Collections.sort(devList, new DevNameComparator());
-			return DEV_LIST_STATE.LIST_OK;
-		}
-		else
-			return DEV_LIST_STATE.ERROR_NO_BONDED_DEV;
+	public DevicesList() {
 	}
 
 	public ArrayList<ItemPeerDevice> getDeviceList() {
@@ -62,6 +35,12 @@ public class HelperBTDevicesList {
 		devList.get(pos).setState(state);
 	}
 
+	public void setAllDevState(PEER_DEV_STATE state) {
+		for (ItemPeerDevice dev : devList) {
+			dev.setState(state);
+		}
+	}
+
 	// sorting comparator
 	private class DevNameComparator implements Comparator<ItemPeerDevice> {
 		public int compare(ItemPeerDevice left, ItemPeerDevice right) {
@@ -70,6 +49,10 @@ public class HelperBTDevicesList {
 			// return 0;
 			return left.getName().compareTo(right.getName());
 		}
+	}
+
+	public void sort() {
+		Collections.sort(devList, new DevNameComparator());
 	}
 
 }

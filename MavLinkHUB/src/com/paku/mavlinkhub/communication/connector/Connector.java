@@ -1,4 +1,4 @@
-package com.paku.mavlinkhub.communication;
+package com.paku.mavlinkhub.communication.connector;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

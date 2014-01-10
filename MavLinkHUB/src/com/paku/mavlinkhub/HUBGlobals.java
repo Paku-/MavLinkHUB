@@ -1,6 +1,6 @@
 package com.paku.mavlinkhub;
 
-import com.paku.mavlinkhub.communication.ConnectorBluetooth;
+import com.paku.mavlinkhub.communication.connector.ConnectorBluetooth;
 import com.paku.mavlinkhub.enums.UI_MODE;
 import com.paku.mavlinkhub.fragments.FragmentsAdapter;
 import com.paku.mavlinkhub.mavlink.MavLinkCollector;
