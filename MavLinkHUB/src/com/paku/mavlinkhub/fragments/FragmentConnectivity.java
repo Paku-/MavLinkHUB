@@ -7,7 +7,7 @@ import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.communication.devicelist.ListPeerDevicesBluetooth;
 import com.paku.mavlinkhub.communication.devicelist.ItemPeerDevice;
 import com.paku.mavlinkhub.enums.PEER_DEV_STATE;
-import com.paku.mavlinkhub.fragments.viewadapter.ViewAdapterPeerDevsList;
+import com.paku.mavlinkhub.fragments.viewadapters.ViewAdapterPeerDevsList;
 import com.paku.mavlinkhub.interfaces.IConnectionFailed;
 import com.paku.mavlinkhub.interfaces.IUiModeChanged;
 
@@ -15,6 +15,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,8 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged, IC
 
 	private static final String TAG = "FragmentConnectivity";
 
-	ListPeerDevicesBluetooth btDevList = new ListPeerDevicesBluetooth();
+	ListPeerDevicesBluetooth btDevList;
+
 	ListView btDevListView;
 	ViewAdapterPeerDevsList devListAdapter;
 
@@ -39,25 +41,22 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged, IC
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 
 		setRetainInstance(true);
-
 		globalVars = (HUBGlobals) getActivity().getApplication();
+		btDevList = new ListPeerDevicesBluetooth(globalVars);
 
 	}
 
 	@Override
 	public void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
 
 	}
 
 	@Override
 	public void onStart() {
-		// TODO Auto-generated method stub
 		super.onStart();
 
 		refreshBtDevList();
@@ -176,26 +175,36 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged, IC
 			switch (selectedDev.getState()) {
 			case DEV_STATE_UNKNOWN:
 			case DEV_STATE_DISCONNECTED:
+				if (!globalVars.connectorBluetooth.isConnected()) {
+					globalVars.logger.sysLog(TAG, "Connecting...");
+					globalVars.logger.sysLog(TAG, "Me  : "
+							+ globalVars.connectorBluetooth.getBluetoothAdapter().getName() + " ["
+							+ globalVars.connectorBluetooth.getBluetoothAdapter().getAddress() + "]");
+					globalVars.logger.sysLog(TAG, "Peer: " + selectedDev.getName() + " [" + selectedDev.getAddress()
+							+ "]");
 
-				globalVars.logger.sysLog(TAG, "Connecting...");
-				globalVars.logger.sysLog(TAG, "Me  : " + globalVars.connectorBluetooth.getBluetoothAdapter().getName()
-						+ " [" + globalVars.connectorBluetooth.getBluetoothAdapter().getAddress() + "]");
-				globalVars.logger.sysLog(TAG, "Peer: " + selectedDev.getName() + " [" + selectedDev.getAddress() + "]");
+					globalVars.connectorBluetooth.openConnection(selectedDev.getAddress());
+					globalVars.mMavLinkCollector.startMavLinkParserThread();
 
-				globalVars.connectorBluetooth.openConnection(selectedDev.getAddress());
-				globalVars.mMavLinkCollector.startMavLinkParserThread();
-
-				btDevList.setDevState(position, PEER_DEV_STATE.DEV_STATE_CONNECTED);
+					btDevList.setDevState(position, PEER_DEV_STATE.DEV_STATE_CONNECTED);
+				}
+				else {
+					Log.d(TAG, "Connect on connected device attempt");
+					Toast.makeText(getActivity(), R.string.disconnect_first, Toast.LENGTH_SHORT).show();
+				}
 
 				break;
 
 			case DEV_STATE_CONNECTED:
-
-				globalVars.logger.sysLog(TAG, "Closing Connection ...");
-				globalVars.connectorBluetooth.closeConnection();
-				globalVars.mMavLinkCollector.stopMavLinkParserThread();
-
-				btDevList.setDevState(position, PEER_DEV_STATE.DEV_STATE_DISCONNECTED);
+				if (globalVars.connectorBluetooth.isConnected()) {
+					globalVars.logger.sysLog(TAG, "Closing Connection ...");
+					globalVars.connectorBluetooth.closeConnection();
+					globalVars.mMavLinkCollector.stopMavLinkParserThread();
+					btDevList.setDevState(position, PEER_DEV_STATE.DEV_STATE_DISCONNECTED);
+				}
+				else {
+					Log.d(TAG, "Already disconnected ...");
+				}
 
 				break;
 
@@ -210,8 +219,11 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged, IC
 	// interfaces
 	@Override
 	public void onConnectionFailed(String errorMsg) {
-		Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_LONG).show();
+		Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_SHORT).show();
 		globalVars.logger.sysLog(TAG, errorMsg);
+
+		btDevList.setAllDevState(PEER_DEV_STATE.DEV_STATE_DISCONNECTED);
+		refreshBtDevListView();
 	}
 
 	@Override

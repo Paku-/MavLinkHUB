@@ -1,4 +1,4 @@
-package com.paku.mavlinkhub.fragments.viewadapter;
+package com.paku.mavlinkhub.fragments.viewadapters.items;
 
 import java.io.Serializable;
 

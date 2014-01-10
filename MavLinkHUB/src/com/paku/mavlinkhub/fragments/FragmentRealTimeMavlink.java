@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
-import com.paku.mavlinkhub.fragments.viewadapter.ItemMavLinkMsg;
-import com.paku.mavlinkhub.fragments.viewadapter.ViewAdapterMavlinkMsgList;
+import com.paku.mavlinkhub.fragments.viewadapters.ViewAdapterMavlinkMsgList;
+import com.paku.mavlinkhub.fragments.viewadapters.items.ItemMavLinkMsg;
 import com.paku.mavlinkhub.interfaces.IByteLogDataLoggedIn;
 
 import android.graphics.Typeface;
@@ -127,6 +127,7 @@ public class FragmentRealTimeMavlink extends Fragment implements IByteLogDataLog
 	private ArrayList<ItemMavLinkMsg> generateMavlinkListData() {
 
 		// limit size
+		// / failing pku
 		while (globalVars.logger.mavlinkMsgItemsArray.size() > globalVars.visibleMsgList)
 			globalVars.logger.mavlinkMsgItemsArray.remove(0);
 

@@ -11,7 +11,7 @@ public class ItemPeerDevice {
 	public ItemPeerDevice(String name, String address) {
 		this.name = name;
 		this.address = address;
-		this.state = PEER_DEV_STATE.DEV_STATE_UNKNOWN;
+		this.state = PEER_DEV_STATE.DEV_STATE_DISCONNECTED;
 	}
 
 	public String getName() {

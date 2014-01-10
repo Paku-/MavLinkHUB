@@ -1,4 +1,4 @@
-package com.paku.mavlinkhub.fragments.viewadapter;
+package com.paku.mavlinkhub.fragments.viewadapters.items;
 
 import com.MAVLink.Messages.ApmModes;
 import com.MAVLink.Messages.ardupilotmega.msg_heartbeat;

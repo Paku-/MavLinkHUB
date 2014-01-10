@@ -3,6 +3,8 @@ package com.paku.mavlinkhub.communication.devicelist;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+
+import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.enums.DEV_LIST_STATE;
 import com.paku.mavlinkhub.enums.PEER_DEV_STATE;
 
@@ -12,12 +14,14 @@ public abstract class ListPeerDevices {
 	private static final String TAG = "ListPeerDevices";
 
 	ArrayList<ItemPeerDevice> devList = new ArrayList<ItemPeerDevice>();
+	HUBGlobals globalVars;
 
-	public ListPeerDevices() {
+	public ListPeerDevices(HUBGlobals hubGlobals) {
+		globalVars = hubGlobals;
 	}
 
 	// fill the list with your devices
-	abstract DEV_LIST_STATE refresh();
+	protected abstract DEV_LIST_STATE refresh();
 
 	public ArrayList<ItemPeerDevice> getDeviceList() {
 		return devList;
@@ -48,7 +52,7 @@ public abstract class ListPeerDevices {
 		}
 	}
 
-	public void sort() {
+	protected void sort() {
 		Collections.sort(devList, new DevNameComparator());
 	}
 

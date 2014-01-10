@@ -13,7 +13,7 @@ import java.util.Date;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
-import com.paku.mavlinkhub.fragments.viewadapter.ItemMavLinkMsg;
+import com.paku.mavlinkhub.fragments.viewadapters.items.ItemMavLinkMsg;
 
 public class HUBLogger {
 

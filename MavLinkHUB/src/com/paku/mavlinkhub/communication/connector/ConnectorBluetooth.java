@@ -100,13 +100,13 @@ public class ConnectorBluetooth extends Connector {
 	@Override
 	public String getPeerName() {
 
-		return mBluetoothSocket.getRemoteDevice().getName();
+		return (isConnected()) ? mBluetoothSocket.getRemoteDevice().getName() : "";
 
 	}
 
 	@Override
 	public String getPeerAddress() {
-		return mBluetoothSocket.getRemoteDevice().getAddress();
+		return (isConnected()) ? mBluetoothSocket.getRemoteDevice().getAddress() : "";
 
 	}
 

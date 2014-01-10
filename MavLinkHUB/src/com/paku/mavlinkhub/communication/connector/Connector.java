@@ -16,11 +16,9 @@ public abstract class Connector {
 	public boolean lockConnStream = false;
 	public Handler appMsgHandler;
 
-	protected abstract boolean openConnection(String address); // throws
-																// nknownHostException,IOException;
+	protected abstract boolean openConnection(String address);
 
-	protected abstract void closeConnection(); // throws
-												// UnknownHostException,IOException;
+	protected abstract void closeConnection();
 
 	protected abstract boolean isConnected();
 
@@ -70,10 +68,4 @@ public abstract class Connector {
 	public ByteArrayOutputStream getConnectorStream() {
 		return mConnectorStream;
 	}
-
-	public void processConnectorStream() {
-		// Log.d(TAG, "Stream Size: [" + String.valueOf(mConnectorStream.size())
-		// + "]:");
-	}
-
 }
