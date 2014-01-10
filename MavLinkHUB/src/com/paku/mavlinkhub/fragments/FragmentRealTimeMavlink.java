@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.paku.mavlinkhub.AppGlobals;
 import com.paku.mavlinkhub.R;
-import com.paku.mavlinkhub.interfaces.IDataLoggedIn;
+import com.paku.mavlinkhub.interfaces.ISysLogDataLoggedIn;
 import com.paku.mavlinkhub.objects.ItemMavLinkMsg;
 
 import android.graphics.Typeface;
@@ -17,7 +17,7 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class FragmentRealTimeMavlink extends Fragment implements IDataLoggedIn {
+public class FragmentRealTimeMavlink extends Fragment implements ISysLogDataLoggedIn {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "FragmentRealTimeMavlink";
@@ -68,13 +68,13 @@ public class FragmentRealTimeMavlink extends Fragment implements IDataLoggedIn {
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		globalVars.logger.registerRealTimeMavlinkForIDataLoggedIn(this);
+		globalVars.messanger.registerRealTimeMavlinkForIDataLoggedIn(this);
 		refreshUI();
 	}
 
 	@Override
 	public void onPause() {
-		globalVars.logger.unregisterRealTimeMavlinkForIDataLoggedIn();
+		globalVars.messanger.unregisterRealTimeMavlinkForIDataLoggedIn();
 		super.onPause();
 	}
 
@@ -140,7 +140,7 @@ public class FragmentRealTimeMavlink extends Fragment implements IDataLoggedIn {
 	}
 
 	@Override
-	public void onDataLoggedIn() {
+	public void onSysLogDataLoggedIn() {
 		refreshUI();
 	}
 

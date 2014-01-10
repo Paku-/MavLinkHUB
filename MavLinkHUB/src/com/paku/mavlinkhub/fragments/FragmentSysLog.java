@@ -2,7 +2,7 @@ package com.paku.mavlinkhub.fragments;
 
 import com.paku.mavlinkhub.AppGlobals;
 import com.paku.mavlinkhub.R;
-import com.paku.mavlinkhub.interfaces.IDataLoggedIn;
+import com.paku.mavlinkhub.interfaces.ISysLogDataLoggedIn;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class FragmentSysLog extends Fragment implements IDataLoggedIn {
+public class FragmentSysLog extends Fragment implements ISysLogDataLoggedIn {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "FragmentSysLog";
@@ -61,14 +61,14 @@ public class FragmentSysLog extends Fragment implements IDataLoggedIn {
 	@Override
 	public void onResume() {
 		super.onResume();
-		globalVars.logger.registerSysLogForIDataLoggedIn(this);
+		globalVars.messanger.registerSysLogForIDataLoggedIn(this);
 		refreshUI();
 	}
 
 	@Override
 	public void onPause() {
 		// TODO Auto-generated method stub
-		globalVars.logger.unregisterSysLogForIDataLoggedIn();
+		globalVars.messanger.unregisterSysLogForIDataLoggedIn();
 		super.onPause();
 	}
 
@@ -107,7 +107,7 @@ public class FragmentSysLog extends Fragment implements IDataLoggedIn {
 	}
 
 	@Override
-	public void onDataLoggedIn() {
+	public void onSysLogDataLoggedIn() {
 		refreshUI();
 	}
 

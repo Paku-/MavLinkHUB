@@ -11,20 +11,15 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import android.annotation.SuppressLint;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 
-import com.paku.mavlinkhub.interfaces.IDataLoggedIn;
 import com.paku.mavlinkhub.objects.ItemMavLinkMsg;
 
 public class Logger {
 
 	private static final String TAG = "Logger";
 
-	private AppGlobals appContext;
+	private AppGlobals globalVars;
 
 	// log files & files writing streams
 	private File byteLogFile, sysLogFile;
@@ -43,13 +38,9 @@ public class Logger {
 	public int statsReadByteCount = 0;
 	private boolean lock = false;
 
-	// handler
-
-	public Handler loggerMsgHandler;
-
 	public Logger(AppGlobals context) {
 
-		appContext = context;
+		globalVars = context;
 
 		// **** memory logging/store
 
@@ -64,34 +55,9 @@ public class Logger {
 		// set the decoded msgItems array ready.
 		mavlinkMsgItemsArray = new ArrayList<ItemMavLinkMsg>();
 
-		// msg handler for asynch UI updates
-
-		loggerMsgHandler = new Handler(Looper.getMainLooper()) {
-			public void handleMessage(Message msg) {
-
-				switch (msg.what) {
-				// Received MLmsg
-				case AppGlobals.MSG_MAVLINK_MSG_READY:
-					break;
-				// all data logged in
-				case AppGlobals.MSG_SYSLOG_DATA_READY:
-					processSysLogDataLoggedIn();
-					break;
-				case AppGlobals.MSG_BYTELOG_DATA_READY:
-					processByteLogDataLoggedIn();
-					break;
-
-				case AppGlobals.MSG_CONNECTOR_DATA_READY:
-					// globalVars.logger.byteLog((byte[]) msg.obj, 0, msg.arg1);
-					// mavlinkCollectorMsgHandler
-					// .obtainMessage(AppGlobals.MSG_LOGGER_DATA_READY).sendToTarget();
-					break;
-				default:
-					super.handleMessage(msg);
-				}
-
-			}
-		};
+		restartSysLog();
+		restartByteLog();
+		sysLog(TAG, "** MavLinkHUB Syslog Init **");
 
 	}
 
@@ -106,6 +72,7 @@ public class Logger {
 			mFileSysLogStream.write(tempStr.getBytes(), 0, tempStr.length());
 			mInMemSysLogStream.write(tempStr.getBytes(), 0, tempStr.length());
 			releaseLock();
+			globalVars.messanger.appMsgHandler.obtainMessage(AppGlobals.MSG_DATA_READY_SYSLOG).sendToTarget();
 		}
 		catch (IOException e1) {
 			Log.d(TAG, "[sysLog] " + e1.getMessage());
@@ -119,14 +86,6 @@ public class Logger {
 
 	}
 
-	public void sys_(byte[] buffer, int pos, int bufferLen) {
-
-	}
-
-	public void byte_(String string) {
-
-	}
-
 	public void byteLog(byte[] buffer, int pos, int bufferLen) {
 
 		try {
@@ -136,6 +95,7 @@ public class Logger {
 			mInMemIncomingBytesStream.write(buffer, 0, bufferLen);
 			releaseLock();
 			statsReadByteCount += bufferLen;
+			globalVars.messanger.appMsgHandler.obtainMessage(AppGlobals.MSG_DATA_READY_BYTELOG).sendToTarget();
 		}
 		catch (IOException e1) {
 			Log.d(TAG, "[byteLog] " + e1.getMessage());
@@ -146,12 +106,14 @@ public class Logger {
 		// fill msgs stream with new arrival
 
 		mavlinkMsgItemsArray.add(msgItem);
+		globalVars.messanger.appMsgHandler.obtainMessage(AppGlobals.MSG_MAVLINK_MSG_READY, -1, -1, msgItem)
+				.sendToTarget();
 
 	}
 
 	public void restartByteLog() {
 
-		byteLogFile = new File(appContext.getExternalFilesDir(null), "bytes.txt");
+		byteLogFile = new File(globalVars.getExternalFilesDir(null), "bytes.txt");
 
 		// **** file logging
 		// byte log stream
@@ -166,7 +128,7 @@ public class Logger {
 
 	public void restartSysLog() {
 
-		sysLogFile = new File(appContext.getExternalFilesDir(null), "syslog.txt");
+		sysLogFile = new File(globalVars.getExternalFilesDir(null), "syslog.txt");
 
 		// syslog stream
 		try {
@@ -235,47 +197,5 @@ public class Logger {
 		// String lsYMD = dtNow.toString(); // YYYYMMDDTHHMMSS
 
 	}
-
-	// *****************************************
-	// interface
-	// *****************************************
-	private IDataLoggedIn callRealTimeMavlinkFragment = null;
-	private IDataLoggedIn callSysLogFragment = null;
-
-	public void registerRealTimeMavlinkForIDataLoggedIn(Fragment fragment) {
-		callRealTimeMavlinkFragment = (IDataLoggedIn) fragment;
-	}
-
-	public void registerSysLogForIDataLoggedIn(Fragment fragment) {
-		callSysLogFragment = (IDataLoggedIn) fragment;
-	}
-
-	public void unregisterSysLogForIDataLoggedIn() {
-		callSysLogFragment = null;
-	}
-
-	public void unregisterRealTimeMavlinkForIDataLoggedIn() {
-		// TODO Auto-generated method stub
-		callRealTimeMavlinkFragment = null;
-	}
-
-	public void processSysLogDataLoggedIn() {
-
-		if (callSysLogFragment != null) {
-			callSysLogFragment.onDataLoggedIn();
-		}
-
-	}
-
-	public void processByteLogDataLoggedIn() {
-
-		if (callRealTimeMavlinkFragment != null) {
-			callRealTimeMavlinkFragment.onDataLoggedIn();
-		}
-	}
-
-	// *****************************************
-	// interface end
-	// *****************************************
 
 }

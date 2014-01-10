@@ -6,6 +6,7 @@ import com.paku.mavlinkhub.AppGlobals;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.communication.HelperBTDevicesList;
 import com.paku.mavlinkhub.enums.PEER_DEV_STATE;
+import com.paku.mavlinkhub.interfaces.IConnectionFailed;
 import com.paku.mavlinkhub.interfaces.IUiModeChanged;
 import com.paku.mavlinkhub.objects.ItemPeerDevice;
 
@@ -21,7 +22,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-public class FragmentConnectivity extends Fragment implements IUiModeChanged {
+public class FragmentConnectivity extends Fragment implements IUiModeChanged, IConnectionFailed {
 
 	private static final String TAG = "FragmentConnectivity";
 
@@ -43,7 +44,8 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged {
 		setRetainInstance(true);
 
 		globalVars = (AppGlobals) getActivity().getApplication();
-		globalVars.registerForIUiModeChanged(this);
+		globalVars.messanger.registerForIUiModeChanged(this);
+		globalVars.messanger.registerForIConnectionFailed(this);
 
 	}
 
@@ -67,7 +69,7 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged {
 	public void onResume() {
 		super.onResume();
 
-		globalVars.registerForIUiModeChanged(this);
+		globalVars.messanger.registerForIUiModeChanged(this);
 		refreshUI();
 
 	}
@@ -91,14 +93,22 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged {
 
 	}
 
+	// interfaces
+	@Override
+	public void onConnectionFailed(String errorMsg) {
+		// Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_LONG).show();
+		globalVars.logger.sysLog(TAG, errorMsg);
+	}
+
 	@Override
 	public void onUiModeChanged() {
 		refreshUI();
 	}
 
+	// **
 	public void refreshUI() {
 
-		switch (globalVars.getUiMode()) {
+		switch (globalVars.uiMode) {
 		case UI_MODE_CREATED:
 			connProgressBar.setVisibility(View.INVISIBLE);
 			break;
@@ -144,10 +154,10 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged {
 	// to be called on start and after re-enabling the BT module
 	private void refreshBtDevList() {
 
-		switch (btDevList.refreshMe()) {
+		switch (btDevList.refresh()) {
 		case ERROR_NO_ADAPTER:
-			Toast.makeText(getActivity().getApplicationContext(), "No Bluetooth Adapter found.", Toast.LENGTH_LONG)
-					.show();
+			Toast.makeText(getActivity().getApplicationContext(), R.string.no_bluetooth_adapter_found,
+					Toast.LENGTH_LONG).show();
 			return;
 		case ERROR_ADAPTER_OFF:
 			Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -182,11 +192,11 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged {
 			case DEV_STATE_DISCONNECTED:
 
 				globalVars.logger.sysLog(TAG, "Connecting...");
-				globalVars.logger.sysLog(TAG, "Me  : " + globalVars.mBtConnector.getBluetoothAdapter().getName() + " ["
-						+ globalVars.mBtConnector.getBluetoothAdapter().getAddress() + "]");
+				globalVars.logger.sysLog(TAG, "Me  : " + globalVars.connectorBluetooth.getBluetoothAdapter().getName()
+						+ " [" + globalVars.connectorBluetooth.getBluetoothAdapter().getAddress() + "]");
 				globalVars.logger.sysLog(TAG, "Peer: " + selectedDev.getName() + " [" + selectedDev.getAddress() + "]");
 
-				globalVars.mBtConnector.openConnection(selectedDev.getAddress());
+				globalVars.connectorBluetooth.openConnection(selectedDev.getAddress());
 				globalVars.mMavLinkCollector.startMavLinkParserThread();
 
 				btDevList.setDevState(position, PEER_DEV_STATE.DEV_STATE_CONNECTED);
@@ -196,7 +206,7 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged {
 			case DEV_STATE_CONNECTED:
 
 				globalVars.logger.sysLog(TAG, "Closing Connection ...");
-				globalVars.mBtConnector.closeConnection();
+				globalVars.connectorBluetooth.closeConnection();
 				globalVars.mMavLinkCollector.stopMavLinkParserThread();
 
 				btDevList.setDevState(position, PEER_DEV_STATE.DEV_STATE_DISCONNECTED);

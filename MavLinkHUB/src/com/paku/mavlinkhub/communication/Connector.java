@@ -4,20 +4,23 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import com.paku.mavlinkhub.Messanger;
+import com.paku.mavlinkhub.interfaces.IConnectionFailed;
 import android.bluetooth.BluetoothSocket;
-import android.util.Log;
-// this is a super class for connectors using buffered stream to keep incoming data
-// receiving Fragment class has to register for IDataLoggedIn interface to be called on data arrival. 
+import android.os.Handler;
+import android.support.v4.app.Fragment;
 
-public abstract class ConnectorBufferedStream {
+public abstract class Connector {
 
-	private static final String TAG = "ConnectorBufferedStream";
+	@SuppressWarnings("unused")
+	private static final String TAG = "Connector";
 
 	public ByteArrayOutputStream mConnectorStream;
 	public boolean lockConnStream = false;
+	public Handler appMsgHandler;
 
 	protected abstract boolean openConnection(String address); // throws
-																// UnknownHostException,IOException;
+																// nknownHostException,IOException;
 
 	protected abstract void closeConnection(); // throws
 												// UnknownHostException,IOException;
@@ -30,10 +33,12 @@ public abstract class ConnectorBufferedStream {
 
 	protected abstract void startConnectorReceiver(BluetoothSocket socket);
 
-	public ConnectorBufferedStream(int capacity) {
+	public Connector(Handler handler, int capacity) {
 
 		mConnectorStream = new ByteArrayOutputStream(capacity);
 		mConnectorStream.reset();
+
+		appMsgHandler = handler;
 
 	}
 
@@ -46,18 +51,12 @@ public abstract class ConnectorBufferedStream {
 			catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-
 		}
-
 		lockConnStream = true;
 	}
 
 	public void releaseStream() {
 		lockConnStream = false;
-	}
-
-	public void processConnectorStream() {
-		Log.d(TAG, "Stream Size: [" + String.valueOf(mConnectorStream.size()) + "]:");
 	}
 
 	private void resetStream(boolean withLock) {
@@ -73,6 +72,11 @@ public abstract class ConnectorBufferedStream {
 
 	public ByteArrayOutputStream getConnectorStream() {
 		return mConnectorStream;
+	}
+
+	public void processConnectorStream() {
+		// Log.d(TAG, "Stream Size: [" + String.valueOf(mConnectorStream.size())
+		// + "]:");
 	}
 
 }

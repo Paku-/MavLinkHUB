@@ -41,5 +41,6 @@
     <string name="log_sys_log_empty">System log empty</string>    
     <string name="connectivity_txt_select_device">Select Device</string>    
     <string name="connectivity_txt_disconnected">Disconnected</string>    
-    <string name="txt_no_data">No Data</string>
+    <string name="txt_no_data">No Data</string>    
+    <string name="no_bluetooth_adapter_found">No Bluetooth Adapter found.</string>
 </resources>

@@ -34,7 +34,6 @@ public class ActivityMain extends FragmentActivity {
 		}
 
 		globalVars.mFragmentsPagerAdapter = new FragmentsAdapter(this, getSupportFragmentManager());
-
 		globalVars.mViewPager = (ViewPager) findViewById(R.id.pager);
 		globalVars.mViewPager.setAdapter(globalVars.mFragmentsPagerAdapter);
 
@@ -77,7 +76,7 @@ public class ActivityMain extends FragmentActivity {
 		}
 	}
 
-	// Call app respecting connection state
+	// Close app respecting connection state
 	public void CloseMe() {
 
 		OnClickListener positiveButtonClickListener = new AlertDialog.OnClickListener() {
@@ -94,11 +93,11 @@ public class ActivityMain extends FragmentActivity {
 			}
 		};
 
-		if (globalVars.mBtConnector.isConnected()) {
+		if (globalVars.connectorBluetooth.isConnected()) {
 
 			final AlertDialog.Builder dlg = new AlertDialog.Builder(this);
 			dlg.setTitle(getString(R.string.close_dlg_title_mavlink_closing) + "["
-					+ globalVars.mBtConnector.getPeerName() + "]");
+					+ globalVars.connectorBluetooth.getPeerName() + "]");
 			dlg.setMessage(R.string.close_dlg_msg_current_connection_will_be_lost);
 			dlg.setCancelable(false);
 			dlg.setPositiveButton(R.string.close_dlg_positive, positiveButtonClickListener);
@@ -132,7 +131,7 @@ public class ActivityMain extends FragmentActivity {
 
 	private void closeHUB() {
 		globalVars.logger.sysLog(TAG, "MavLinkHUB closing ...");
-		globalVars.mBtConnector.closeConnection();
+		globalVars.connectorBluetooth.closeConnection();
 		globalVars.mMavLinkCollector.stopMavLinkParserThread();
 		globalVars.logger.stopAllLogs();
 	}

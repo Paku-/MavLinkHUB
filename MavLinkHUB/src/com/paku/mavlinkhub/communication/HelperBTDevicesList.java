@@ -22,7 +22,7 @@ public class HelperBTDevicesList {
 	public HelperBTDevicesList() {
 	}
 
-	public DEV_LIST_STATE refreshMe() {
+	public DEV_LIST_STATE refresh() {
 
 		// check for nulls ...
 		if (BluetoothAdapter.getDefaultAdapter() == null) {

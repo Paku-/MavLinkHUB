@@ -3,6 +3,8 @@ package com.paku.mavlinkhub.threads;
 import java.io.IOException;
 import java.util.UUID;
 
+import com.paku.mavlinkhub.AppGlobals;
+import com.paku.mavlinkhub.communication.Connector;
 import com.paku.mavlinkhub.communication.ConnectorBluetooth;
 
 import android.bluetooth.BluetoothAdapter;
@@ -10,20 +12,20 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
-public class ThreadBTConnect extends Thread {
+public class ThreadConnectBluetooth extends Thread {
 	private static final String UUID_SPP = "00001101-0000-1000-8000-00805F9B34FB";
-	private static final String TAG = "ThreadBTConnect";
+	private static final String TAG = "ThreadConnectBluetooth";
 	private final BluetoothAdapter mmBluetoothAdapter;
 	private final BluetoothSocket mmSocket;
 	private final BluetoothDevice mmDevice;
-	private ConnectorBluetooth parentBtConnector;
+	private ConnectorBluetooth parentConnector;
 
-	public ThreadBTConnect(BluetoothAdapter adapter, BluetoothDevice device, ConnectorBluetooth parent) {
+	public ThreadConnectBluetooth(ConnectorBluetooth parent, BluetoothAdapter adapter, BluetoothDevice device) {
 
 		BluetoothSocket tmp = null;
 		mmBluetoothAdapter = adapter;
 		mmDevice = device;
-		parentBtConnector = parent;
+		parentConnector = parent;
 
 		try {
 			tmp = mmDevice.createInsecureRfcommSocketToServiceRecord(UUID.fromString(UUID_SPP));
@@ -45,20 +47,22 @@ public class ThreadBTConnect extends Thread {
 		}
 		catch (IOException connectException) {
 			// Unable to connect; close the socket and get out
-			Log.d(TAG, "Exception: [run.connect]" + connectException.getMessage());
+			Log.d(TAG, "Exception: [Failed Connection Attempt]" + connectException.getMessage());
 			try {
 				mmSocket.close();
+				String msgTxt = connectException.getMessage();
+				parentConnector.appMsgHandler.obtainMessage(AppGlobals.MSG_CONNECTOR_CONNECTION_FAILED,
+						msgTxt.length(), -1, msgTxt.getBytes()).sendToTarget();
 			}
 			catch (IOException closeException) {
-				Log.d(TAG, "Exception: [run.close]" + closeException.getMessage());
+				Log.d(TAG, "Exception: [Failed Connection Attempt: close failed as well]" + closeException.getMessage());
 			}
 			return;
 		}
 
 		Log.d(TAG, "Connected..");
-
-		// Do work to manage the connection (in a separate thread)
-		parentBtConnector.startConnectorReceiver(mmSocket);
+		// start Receiver on socket
+		parentConnector.startConnectorReceiver(mmSocket);
 	}
 	/*
 	 * public void disconnect() { try { mmSocket.close(); } catch (IOException
