@@ -4,7 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import com.paku.mavlinkhub.Messanger;
+import com.paku.mavlinkhub.AppMessenger;
 import com.paku.mavlinkhub.interfaces.IConnectionFailed;
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;

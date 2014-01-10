@@ -55,30 +55,24 @@ public class ConnectorBluetooth extends Connector {
 
 		mBluetoothSocket = socket;
 
-		// could be it's already running
-		// if (threadSocketBluetooth == null) {
-		if (true) {
+		btConnectorMsgHandler = new Handler(Looper.getMainLooper()) {
+			public void handleMessage(Message msg) {
 
-			btConnectorMsgHandler = new Handler(Looper.getMainLooper()) {
-				public void handleMessage(Message msg) {
-
-					switch (msg.what) {
-					// Received data
-					case AppGlobals.MSG_CONNECTOR_DATA_READY:
-						waitForStreamLock(3);
-						mConnectorStream.write((byte[]) msg.obj, 0, msg.arg1);
-						releaseStream();
-						break;
-					default:
-						super.handleMessage(msg);
-					}
+				switch (msg.what) {
+				// Received data
+				case AppGlobals.MSG_CONNECTOR_DATA_READY:
+					waitForStreamLock(3);
+					mConnectorStream.write((byte[]) msg.obj, 0, msg.arg1);
+					releaseStream();
+					break;
+				default:
+					super.handleMessage(msg);
 				}
-			};
+			}
+		};
 
-			threadSocketBluetooth = new ThreadSocketBluetooth(socket, btConnectorMsgHandler);
-			threadSocketBluetooth.start();
-
-		}
+		threadSocketBluetooth = new ThreadSocketBluetooth(socket, btConnectorMsgHandler);
+		threadSocketBluetooth.start();
 
 	}
 

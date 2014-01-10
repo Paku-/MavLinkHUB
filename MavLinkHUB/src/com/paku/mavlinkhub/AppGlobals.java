@@ -27,7 +27,7 @@ public class AppGlobals extends Application {
 	public ViewPager mViewPager;
 
 	// messages handler
-	public Messanger messanger;
+	public AppMessenger messanger;
 
 	// main BT connector
 	public ConnectorBluetooth connectorBluetooth;
@@ -49,7 +49,7 @@ public class AppGlobals extends Application {
 
 		// start application asynchronous messaging hub
 		// has to be first !!!
-		messanger = new Messanger(this);
+		messanger = new AppMessenger(this);
 
 		logger = new Logger(this);
 

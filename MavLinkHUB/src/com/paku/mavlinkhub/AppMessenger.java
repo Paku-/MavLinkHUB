@@ -15,14 +15,14 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 
-public class Messanger {
+public class AppMessenger {
 
-	private static final String TAG = "Messanger";
+	private static final String TAG = "AppMessenger";
 
 	public Handler appMsgHandler;
 	private AppGlobals globalVars;
 
-	public Messanger(Context mContext) {
+	public AppMessenger(Context mContext) {
 
 		globalVars = ((AppGlobals) mContext.getApplicationContext());
 
