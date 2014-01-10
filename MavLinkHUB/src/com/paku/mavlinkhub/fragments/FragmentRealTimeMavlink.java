@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
+import com.paku.mavlinkhub.interfaces.IByteLogDataLoggedIn;
 import com.paku.mavlinkhub.interfaces.ISysLogDataLoggedIn;
 import com.paku.mavlinkhub.objects.ItemMavLinkMsg;
 
@@ -17,7 +18,7 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class FragmentRealTimeMavlink extends Fragment implements ISysLogDataLoggedIn {
+public class FragmentRealTimeMavlink extends Fragment implements IByteLogDataLoggedIn {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "FragmentRealTimeMavlink";
@@ -58,7 +59,7 @@ public class FragmentRealTimeMavlink extends Fragment implements ISysLogDataLogg
 		final TextView mTextViewBytesLog = (TextView) (getView().findViewById(R.id.textView_logByte));
 		mTextViewBytesLog.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
 
-		mavlinkListAdapter = new ViewAdapterMavlinkMsgList(this.getActivity(), generateCloneMavlinkListData());
+		mavlinkListAdapter = new ViewAdapterMavlinkMsgList(this.getActivity(), generateMavlinkListData());
 
 		mavlinkMsgListView = (ListView) (getView().findViewById(R.id.listView_mavlinkMsgs));
 		mavlinkMsgListView.setAdapter(mavlinkListAdapter);
@@ -68,14 +69,14 @@ public class FragmentRealTimeMavlink extends Fragment implements ISysLogDataLogg
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		globalVars.messanger.registerRealTimeMavlinkForIDataLoggedIn(this);
+		globalVars.messanger.registerForOnByteLogDataLoggedIn(this);
 		refreshUI();
 	}
 
 	@Override
 	public void onPause() {
-		globalVars.messanger.unregisterRealTimeMavlinkForIDataLoggedIn();
 		super.onPause();
+		globalVars.messanger.unregisterFromOnByteLogDataLoggedIn(this);
 	}
 
 	public void refreshUI() {
@@ -117,13 +118,13 @@ public class FragmentRealTimeMavlink extends Fragment implements ISysLogDataLogg
 		mTextViewLogStats.setText(globalVars.mMavLinkCollector.getLastParserStats());
 
 		mavlinkListAdapter.clear();
-		mavlinkListAdapter.addAll(generateCloneMavlinkListData());
+		mavlinkListAdapter.addAll(generateMavlinkListData());
 		mavlinkMsgListView.setSelection(mavlinkListAdapter.getCount());
 
 	}
 
 	// get data to fill the list view
-	private ArrayList<ItemMavLinkMsg> generateCloneMavlinkListData() {
+	private ArrayList<ItemMavLinkMsg> generateMavlinkListData() {
 
 		// limit size
 		while (globalVars.logger.mavlinkMsgItemsArray.size() > globalVars.visibleMsgList)
@@ -140,7 +141,7 @@ public class FragmentRealTimeMavlink extends Fragment implements ISysLogDataLogg
 	}
 
 	@Override
-	public void onSysLogDataLoggedIn() {
+	public void onByteLogDataLoggedIn() {
 		refreshUI();
 	}
 

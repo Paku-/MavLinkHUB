@@ -45,7 +45,7 @@ public class FragmentConnectivity extends Fragment implements IUiModeChanged, IC
 
 		globalVars = (HUBGlobals) getActivity().getApplication();
 		globalVars.messanger.registerForOnUiModeChanged(this);
-		globalVars.messanger.registerForIConnectionFailed(this);
+		globalVars.messanger.registerForOnConnectionFailed(this);
 
 	}
 

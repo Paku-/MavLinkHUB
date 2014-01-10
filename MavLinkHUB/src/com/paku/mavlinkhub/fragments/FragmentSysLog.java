@@ -61,15 +61,14 @@ public class FragmentSysLog extends Fragment implements ISysLogDataLoggedIn {
 	@Override
 	public void onResume() {
 		super.onResume();
-		globalVars.messanger.registerSysLogForIDataLoggedIn(this);
+		globalVars.messanger.registerForOnSysLogDataLoggedIn(this);
 		refreshUI();
 	}
 
 	@Override
 	public void onPause() {
-		// TODO Auto-generated method stub
-		globalVars.messanger.unregisterSysLogForIDataLoggedIn();
 		super.onPause();
+		globalVars.messanger.unregisterFromOnSysLogDataLoggedIn(this);
 	}
 
 	public void refreshUI() {
