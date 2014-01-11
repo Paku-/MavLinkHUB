@@ -12,9 +12,9 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
-public class ConnectorBluetooth extends Connector {
+public class IncommingConnectorBluetooth extends IncommingConnector {
 
-	private static final String TAG = "ConnectorBluetooth";
+	private static final String TAG = "IncommingConnectorBluetooth";
 	private static final int sizeBuff = 1024;
 
 	private BluetoothAdapter mBluetoothAdapter;
@@ -25,7 +25,7 @@ public class ConnectorBluetooth extends Connector {
 	ThreadSocketBluetooth threadSocketBluetooth;
 	Handler btConnectorMsgHandler;
 
-	public ConnectorBluetooth(Handler messanger) {
+	public IncommingConnectorBluetooth(Handler messanger) {
 		super(messanger, sizeBuff);
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 	}

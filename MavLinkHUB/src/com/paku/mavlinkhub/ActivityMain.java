@@ -94,11 +94,11 @@ public class ActivityMain extends FragmentActivity {
 			}
 		};
 
-		if (globalVars.connectorBluetooth.isConnected()) {
+		if (globalVars.incommingConnector.isConnected()) {
 
 			final AlertDialog.Builder dlg = new AlertDialog.Builder(this);
 			dlg.setTitle(getString(R.string.close_dlg_title_mavlink_closing) + "["
-					+ globalVars.connectorBluetooth.getPeerName() + "]");
+					+ globalVars.incommingConnector.getPeerName() + "]");
 			dlg.setMessage(R.string.close_dlg_msg_current_connection_will_be_lost);
 			dlg.setCancelable(false);
 			dlg.setPositiveButton(R.string.close_dlg_positive, positiveButtonClickListener);
@@ -132,7 +132,7 @@ public class ActivityMain extends FragmentActivity {
 
 	private void closeHUB() {
 		globalVars.logger.sysLog(TAG, "MavLinkHUB closing ...");
-		globalVars.connectorBluetooth.closeConnection();
+		globalVars.incommingConnector.closeConnection();
 		globalVars.mMavLinkCollector.stopMavLinkParserThread();
 		globalVars.logger.stopAllLogs();
 	}

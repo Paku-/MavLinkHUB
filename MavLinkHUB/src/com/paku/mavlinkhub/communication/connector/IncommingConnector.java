@@ -7,28 +7,28 @@ import java.io.OutputStream;
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
 
-public abstract class Connector {
+public abstract class IncommingConnector {
 
 	@SuppressWarnings("unused")
-	private static final String TAG = "Connector";
+	private static final String TAG = "IncommingConnector";
 
 	public ByteArrayOutputStream mConnectorStream;
 	public boolean lockConnStream = false;
 	public Handler appMsgHandler;
 
-	protected abstract boolean openConnection(String address);
+	public abstract boolean openConnection(String address);
 
-	protected abstract void closeConnection();
+	public abstract void closeConnection();
 
-	protected abstract boolean isConnected();
+	public abstract boolean isConnected();
 
-	protected abstract String getPeerName();
+	public abstract String getPeerName();
 
-	protected abstract String getPeerAddress();
+	public abstract String getPeerAddress();
 
 	protected abstract void startConnectorReceiver(BluetoothSocket socket);
 
-	public Connector(Handler handler, int capacity) {
+	public IncommingConnector(Handler handler, int capacity) {
 
 		mConnectorStream = new ByteArrayOutputStream(capacity);
 		mConnectorStream.reset();
@@ -60,7 +60,7 @@ public abstract class Connector {
 		if (withLock) releaseStream();
 	}
 
-	public void copyConnectorStream(OutputStream targetStream, boolean doReset) throws IOException {
+	public void cloneConnectorStream(OutputStream targetStream, boolean doReset) throws IOException {
 		mConnectorStream.writeTo(targetStream);
 		if (doReset) resetStream(false);
 	}

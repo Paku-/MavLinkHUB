@@ -167,15 +167,14 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 			switch (selectedDev.getState()) {
 			case DEV_STATE_UNKNOWN:
 			case DEV_STATE_DISCONNECTED:
-				if (!globalVars.connectorBluetooth.isConnected()) {
+				if (!globalVars.incommingConnector.isConnected()) {
 					globalVars.logger.sysLog(TAG, "Connecting...");
-					globalVars.logger.sysLog(TAG, "Me  : "
-							+ globalVars.connectorBluetooth.getBluetoothAdapter().getName() + " ["
-							+ globalVars.connectorBluetooth.getBluetoothAdapter().getAddress() + "]");
+					globalVars.logger.sysLog(TAG, "Me  : " + globalVars.incommingConnector.getPeerName() + " ["
+							+ globalVars.incommingConnector.getPeerAddress() + "]");
 					globalVars.logger.sysLog(TAG, "Peer: " + selectedDev.getName() + " [" + selectedDev.getAddress()
 							+ "]");
 
-					globalVars.connectorBluetooth.openConnection(selectedDev.getAddress());
+					globalVars.incommingConnector.openConnection(selectedDev.getAddress());
 					globalVars.mMavLinkCollector.startMavLinkParserThread();
 
 					btDevList.setDevState(position, PEER_DEV_STATE.DEV_STATE_CONNECTED);
@@ -188,9 +187,9 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 				break;
 
 			case DEV_STATE_CONNECTED:
-				if (globalVars.connectorBluetooth.isConnected()) {
+				if (globalVars.incommingConnector.isConnected()) {
 					globalVars.logger.sysLog(TAG, "Closing Connection ...");
-					globalVars.connectorBluetooth.closeConnection();
+					globalVars.incommingConnector.closeConnection();
 					globalVars.mMavLinkCollector.stopMavLinkParserThread();
 					btDevList.setDevState(position, PEER_DEV_STATE.DEV_STATE_DISCONNECTED);
 				}

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 import com.paku.mavlinkhub.HUBGlobals;
-import com.paku.mavlinkhub.communication.connector.ConnectorBluetooth;
+import com.paku.mavlinkhub.communication.connector.IncommingConnectorBluetooth;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -17,9 +17,9 @@ public class ThreadConnectBluetooth extends Thread {
 	private final BluetoothAdapter mmBluetoothAdapter;
 	private final BluetoothSocket mmSocket;
 	private final BluetoothDevice mmDevice;
-	private ConnectorBluetooth parentConnector;
+	private IncommingConnectorBluetooth parentConnector;
 
-	public ThreadConnectBluetooth(ConnectorBluetooth parent, BluetoothAdapter adapter, BluetoothDevice device) {
+	public ThreadConnectBluetooth(IncommingConnectorBluetooth parent, BluetoothAdapter adapter, BluetoothDevice device) {
 
 		BluetoothSocket tmp = null;
 		mmBluetoothAdapter = adapter;

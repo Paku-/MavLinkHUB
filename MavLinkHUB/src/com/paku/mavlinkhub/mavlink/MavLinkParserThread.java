@@ -35,14 +35,14 @@ public class MavLinkParserThread extends Thread {
 
 		while (running) {
 
-			if (globalVars.connectorBluetooth.mConnectorStream.size() > globalVars.minStreamReadSize) {
+			if (globalVars.incommingConnector.mConnectorStream.size() > globalVars.minStreamReadSize) {
 
 				// lock, read and clear input stream
-				globalVars.connectorBluetooth.waitForStreamLock(3);
-				buffer = globalVars.connectorBluetooth.mConnectorStream.toByteArray();
-				bufferLen = globalVars.connectorBluetooth.mConnectorStream.size();
-				globalVars.connectorBluetooth.mConnectorStream.reset();
-				globalVars.connectorBluetooth.releaseStream();
+				globalVars.incommingConnector.waitForStreamLock(3);
+				buffer = globalVars.incommingConnector.mConnectorStream.toByteArray();
+				bufferLen = globalVars.incommingConnector.mConnectorStream.size();
+				globalVars.incommingConnector.mConnectorStream.reset();
+				globalVars.incommingConnector.releaseStream();
 
 				// globalVars.logger.sysLog(TAG, "[bytes]: " + bufferLen);
 

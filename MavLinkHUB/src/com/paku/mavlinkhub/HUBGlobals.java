@@ -1,6 +1,7 @@
 package com.paku.mavlinkhub;
 
-import com.paku.mavlinkhub.communication.connector.ConnectorBluetooth;
+import com.paku.mavlinkhub.communication.connector.IncommingConnector;
+import com.paku.mavlinkhub.communication.connector.IncommingConnectorBluetooth;
 import com.paku.mavlinkhub.enums.UI_MODE;
 import com.paku.mavlinkhub.fragments.FragmentsAdapter;
 import com.paku.mavlinkhub.mavlink.MavLinkCollector;
@@ -29,7 +30,7 @@ public class HUBGlobals extends Application {
 	public HUBMessenger messanger;
 
 	// main BT connector
-	public ConnectorBluetooth connectorBluetooth;
+	public IncommingConnector incommingConnector;
 
 	// MAVLink class holder/object
 	public MavLinkCollector mMavLinkCollector;
@@ -56,7 +57,7 @@ public class HUBGlobals extends Application {
 
 		// !!! connector has to exist before the MavLink as there is interface
 		// to it.
-		connectorBluetooth = new ConnectorBluetooth(messanger.appMsgHandler);
+		incommingConnector = new IncommingConnectorBluetooth(messanger.appMsgHandler);
 		mMavLinkCollector = new MavLinkCollector(this);
 
 	}
