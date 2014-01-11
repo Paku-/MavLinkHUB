@@ -37,6 +37,9 @@ public class HUBMessenger extends HUBInterfaceManager {
 				case HUBGlobals.MSG_DATA_UPDATE_BYTELOG:
 					processOnDataUpdateByteLog();
 					break;
+				case HUBGlobals.MSG_DATA_UPDATE_STATS:
+					processOnDataUpdateStats();
+					break;
 
 				case HUBGlobals.MSG_CONNECTOR_DATA_READY:
 					break;

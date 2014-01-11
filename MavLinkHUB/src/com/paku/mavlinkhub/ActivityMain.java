@@ -16,6 +16,9 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class ActivityMain extends FragmentActivity implements IDataUpdateStats {
@@ -24,9 +27,13 @@ public class ActivityMain extends FragmentActivity implements IDataUpdateStats {
 
 	private HUBGlobals globalVars; // global vars and constants object.
 
+	public ProgressBar progressBarConnected;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
 
 		globalVars = (HUBGlobals) this.getApplication();
@@ -41,6 +48,8 @@ public class ActivityMain extends FragmentActivity implements IDataUpdateStats {
 		globalVars.mViewPager = (ViewPager) findViewById(R.id.pager);
 		globalVars.mViewPager.setAdapter(globalVars.mFragmentsPagerAdapter);
 
+		progressBarConnected = (ProgressBar) findViewById(R.id.progressBarConnected);
+
 	}
 
 	@Override
@@ -54,6 +63,8 @@ public class ActivityMain extends FragmentActivity implements IDataUpdateStats {
 		final TextView mTextViewLogStats = (TextView) (findViewById(R.id.textView_system_status_bar));
 		mTextViewLogStats.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
 
+		progressBarConnected.getIndeterminateDrawable().setColorFilter(0xFFFF0000,
+				android.graphics.PorterDuff.Mode.MULTIPLY);
 		refreshStats();
 
 	}
@@ -64,12 +75,6 @@ public class ActivityMain extends FragmentActivity implements IDataUpdateStats {
 
 		// unregister from call interface;
 		globalVars.messanger.mainActivity = null;
-	}
-
-	@Override
-	protected void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
 	}
 
 	@Override
@@ -144,7 +149,6 @@ public class ActivityMain extends FragmentActivity implements IDataUpdateStats {
 
 	@Override
 	protected void onStop() {
-		// TODO Auto-generated method stub
 		super.onStop();
 		Log.d(TAG, "** App onStop call ...**"); // 2nd
 
@@ -160,6 +164,16 @@ public class ActivityMain extends FragmentActivity implements IDataUpdateStats {
 	private void refreshStats() {
 		final TextView mTextViewLogStats = (TextView) findViewById(R.id.textView_system_status_bar);
 		mTextViewLogStats.setText(globalVars.mMavLinkCollector.getLastParserStats());
+	}
+
+	public void enableProgressBar(boolean on) {
+		if (on) {
+			progressBarConnected.setVisibility(View.VISIBLE);
+		}
+		else {
+			progressBarConnected.setVisibility(View.INVISIBLE);
+		}
+
 	}
 
 	@Override

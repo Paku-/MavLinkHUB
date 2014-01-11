@@ -19,7 +19,7 @@ public class HUBInterfaceManager {
 	ArrayList<IDataUpdateByteLog> listenersIDataUpdateByteLog = new ArrayList<IDataUpdateByteLog>();
 	ArrayList<IDataUpdateStats> listenersIDataUpdateStats = new ArrayList<IDataUpdateStats>();
 
-	FragmentActivity mainActivity = null;
+	public FragmentActivity mainActivity;
 
 	public HUBInterfaceManager() {
 
@@ -55,6 +55,8 @@ public class HUBInterfaceManager {
 		for (IDataUpdateStats listener : listenersIDataUpdateStats) {
 			if (listener != null) listener.onDataUpdateStats();
 		}
+		// call main activity as well.
+		((IDataUpdateStats) mainActivity).onDataUpdateStats();
 	}
 
 	// IDataUpdateSysLog

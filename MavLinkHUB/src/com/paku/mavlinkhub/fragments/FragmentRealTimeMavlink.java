@@ -6,8 +6,6 @@ import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.fragments.viewadapters.ViewAdapterMavlinkMsgList;
 import com.paku.mavlinkhub.fragments.viewadapters.items.ItemMavLinkMsg;
 import com.paku.mavlinkhub.interfaces.IDataUpdateByteLog;
-import com.paku.mavlinkhub.interfaces.IDataUpdateStats;
-
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;

@@ -1,7 +1,6 @@
 package com.paku.mavlinkhub.fragments;
 
 import com.paku.mavlinkhub.R;
-import com.paku.mavlinkhub.interfaces.IDataUpdateStats;
 import com.paku.mavlinkhub.interfaces.IDataUpdateSysLog;
 
 import android.graphics.Typeface;
@@ -12,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class FragmentSysLog extends HUBFragment implements IDataUpdateSysLog, IDataUpdateStats {
+public class FragmentSysLog extends HUBFragment implements IDataUpdateSysLog {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "FragmentSysLog";
@@ -83,10 +82,6 @@ public class FragmentSysLog extends HUBFragment implements IDataUpdateSysLog, ID
 	public void onDataUpdateSysLog() {
 
 		refreshUI();
-	}
-
-	@Override
-	public void onDataUpdateStats() {
 	}
 
 }

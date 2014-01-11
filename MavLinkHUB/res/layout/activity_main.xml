@@ -24,10 +24,6 @@
         </android.support.v4.view.PagerTitleStrip>
     </android.support.v4.view.ViewPager>
 
-    <TextView
-        android:id="@+id/textView_system_status_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/textview_status_bar" />
+    <include layout="@layout/status_bar"  android:layout_width="match_parent" android:layout_height="wrap_content"/>
 
 </LinearLayout>

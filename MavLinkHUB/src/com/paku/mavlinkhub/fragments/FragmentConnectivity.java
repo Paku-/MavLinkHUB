@@ -2,6 +2,7 @@ package com.paku.mavlinkhub.fragments;
 
 import java.util.ArrayList;
 
+import com.paku.mavlinkhub.ActivityMain;
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.communication.devicelist.ListPeerDevicesBluetooth;
@@ -14,6 +15,7 @@ import com.paku.mavlinkhub.interfaces.IUiModeChanged;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +33,7 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 	ListView btDevListView;
 	ViewAdapterPeerDevsList devListAdapter;
 
-	ProgressBar connProgressBar;
+	View progressBarConnectingBIG;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -77,7 +79,7 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 		super.onViewCreated(view, savedInstanceState);
 
 		btDevListView = (ListView) getView().findViewById(R.id.list_bt_bonded);
-		connProgressBar = (ProgressBar) getView().findViewById(R.id.progressBar1);
+		progressBarConnectingBIG = (View) getView().findViewById(R.id.RelativeLayoutProgressBarBig);
 
 		refreshUI();
 
@@ -85,32 +87,32 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 
 	public void refreshUI() {
 
+		// mostly used states
+		((ActivityMain) getActivity()).enableProgressBar(false);
+		progressBarConnectingBIG.setVisibility(View.INVISIBLE);
+		btDevListView.setVisibility(View.VISIBLE);
+
 		switch (globalVars.uiMode) {
 		case UI_MODE_CREATED:
-			connProgressBar.setVisibility(View.INVISIBLE);
 			break;
-
 		case UI_MODE_TURNING_ON:
-			connProgressBar.setVisibility(View.VISIBLE);
+			progressBarConnectingBIG.setVisibility(View.VISIBLE);
 			break;
 		case UI_MODE_STATE_ON:
-			connProgressBar.setVisibility(View.INVISIBLE);
-			btDevListView.setVisibility(View.VISIBLE);
 			refreshBtDevList();
 			break;
 		case UI_MODE_TURNING_OFF:
-			connProgressBar.setVisibility(View.VISIBLE);
+			progressBarConnectingBIG.setVisibility(View.VISIBLE);
+			btDevListView.setVisibility(View.INVISIBLE);
 			break;
 		case UI_MODE_STATE_OFF:
-			connProgressBar.setVisibility(View.INVISIBLE);
 			btDevListView.setVisibility(View.INVISIBLE);
 			break;
 		case UI_MODE_CONNECTED:
-			connProgressBar.setVisibility(View.INVISIBLE);
+			((ActivityMain) getActivity()).enableProgressBar(true);
 			refreshBtDevListView();
 			break;
 		case UI_MODE_DISCONNECTED:
-			connProgressBar.setVisibility(View.INVISIBLE);
 			refreshBtDevListView();
 			break;
 		default:
