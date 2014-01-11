@@ -31,11 +31,11 @@ public class HUBMessenger extends HUBInterfaceManager {
 					// ItemMavLinkMsg mavlinkMsg = (ItemMavLinkMsg) msg.obj;
 					break;
 				// all data logged in
-				case HUBGlobals.MSG_DATA_READY_SYSLOG:
-					processOnSysLogDataLoggedIn();
+				case HUBGlobals.MSG_DATA_UPDATE_SYSLOG:
+					processOnDataUpdateSysLog();
 					break;
-				case HUBGlobals.MSG_DATA_READY_BYTELOG:
-					processOnByteLogDataLoggedIn();
+				case HUBGlobals.MSG_DATA_UPDATE_BYTELOG:
+					processOnDataUpdateByteLog();
 					break;
 
 				case HUBGlobals.MSG_CONNECTOR_DATA_READY:

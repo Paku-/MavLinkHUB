@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.fragments.viewadapters.ViewAdapterMavlinkMsgList;
 import com.paku.mavlinkhub.fragments.viewadapters.items.ItemMavLinkMsg;
-import com.paku.mavlinkhub.interfaces.IByteLogDataLoggedIn;
+import com.paku.mavlinkhub.interfaces.IDataUpdateByteLog;
+import com.paku.mavlinkhub.interfaces.IDataUpdateStats;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -16,13 +17,13 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class FragmentRealTimeMavlink extends HUBFragment implements IByteLogDataLoggedIn {
+public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateByteLog, IDataUpdateStats {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "FragmentRealTimeMavlink";
 
-	ViewAdapterMavlinkMsgList mavlinkListAdapter;
-	ListView mavlinkMsgListView;
+	ViewAdapterMavlinkMsgList listAdapterMavLink;
+	ListView listViewMavLinkMsg;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,24 +42,27 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IByteLogData
 		final TextView mTextViewBytesLog = (TextView) (getView().findViewById(R.id.textView_logByte));
 		mTextViewBytesLog.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
 
-		mavlinkListAdapter = new ViewAdapterMavlinkMsgList(this.getActivity(), generateMavlinkListData());
+		listAdapterMavLink = new ViewAdapterMavlinkMsgList(this.getActivity(), generateMavlinkListData());
 
-		mavlinkMsgListView = (ListView) (getView().findViewById(R.id.listView_mavlinkMsgs));
-		mavlinkMsgListView.setAdapter(mavlinkListAdapter);
+		listViewMavLinkMsg = (ListView) (getView().findViewById(R.id.listView_mavlinkMsgs));
+		listViewMavLinkMsg.setAdapter(listAdapterMavLink);
 	}
 
 	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		globalVars.messanger.registerForOnByteLogDataLoggedIn(this);
+		globalVars.messanger.registerForOnDataUpdateByteLog(this);
+		globalVars.messanger.registerForOnDataUpdateStats(this);
+		refreshStats();
 		refreshUI();
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
-		globalVars.messanger.unregisterFromOnByteLogDataLoggedIn(this);
+		globalVars.messanger.unregisterFromOnDataUpdateByteLog(this);
+		globalVars.messanger.unregisterFromOnDataUpdateStats(this);
 	}
 
 	public void refreshUI() {
@@ -94,14 +98,17 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IByteLogData
 
 		}
 
+		listAdapterMavLink.clear();
+		listAdapterMavLink.addAll(generateMavlinkListData());
+		listViewMavLinkMsg.setSelection(listAdapterMavLink.getCount());
+
+	}
+
+	private void refreshStats() {
+
 		// stats bar
 		final TextView mTextViewLogStats = (TextView) (getView().findViewById(R.id.textView_logStatsbar));
-
 		mTextViewLogStats.setText(globalVars.mMavLinkCollector.getLastParserStats());
-
-		mavlinkListAdapter.clear();
-		mavlinkListAdapter.addAll(generateMavlinkListData());
-		mavlinkMsgListView.setSelection(mavlinkListAdapter.getCount());
 
 	}
 
@@ -124,8 +131,14 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IByteLogData
 	}
 
 	@Override
-	public void onByteLogDataLoggedIn() {
+	public void onDataUpdateByteLog() {
+		refreshStats();
 		refreshUI();
+	}
+
+	@Override
+	public void onDataUpdateStats() {
+		refreshStats();
 	}
 
 }

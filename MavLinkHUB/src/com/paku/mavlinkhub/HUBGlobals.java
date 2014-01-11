@@ -1,7 +1,7 @@
 package com.paku.mavlinkhub;
 
-import com.paku.mavlinkhub.communication.connector.IncommingConnector;
-import com.paku.mavlinkhub.communication.connector.IncommingConnectorBluetooth;
+import com.paku.mavlinkhub.communication.connectors.IncommingConnector;
+import com.paku.mavlinkhub.communication.connectors.IncommingConnectorBluetooth;
 import com.paku.mavlinkhub.enums.UI_MODE;
 import com.paku.mavlinkhub.fragments.FragmentsAdapter;
 import com.paku.mavlinkhub.mavlink.MavLinkCollector;
@@ -19,8 +19,9 @@ public class HUBGlobals extends Application {
 	public static final int MSG_CONNECTOR_DATA_READY = 101;
 	public static final int MSG_CONNECTOR_CONNECTION_FAILED = 1001;
 	public static final int MSG_MAVLINK_MSG_READY = 102;
-	public static final int MSG_DATA_READY_SYSLOG = 103;
-	public static final int MSG_DATA_READY_BYTELOG = 104;
+	public static final int MSG_DATA_UPDATE_SYSLOG = 103;
+	public static final int MSG_DATA_UPDATE_BYTELOG = 104;
+	public static final int MSG_DATA_UPDATE_STATS = 105;
 	public static final int REQUEST_ENABLE_BT = 111;
 
 	public FragmentsAdapter mFragmentsPagerAdapter;

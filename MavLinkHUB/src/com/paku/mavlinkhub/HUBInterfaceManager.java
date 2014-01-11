@@ -4,23 +4,25 @@ import java.util.ArrayList;
 
 import android.support.v4.app.Fragment;
 
-import com.paku.mavlinkhub.interfaces.IByteLogDataLoggedIn;
+import com.paku.mavlinkhub.interfaces.IDataUpdateByteLog;
 import com.paku.mavlinkhub.interfaces.IConnectionFailed;
-import com.paku.mavlinkhub.interfaces.ISysLogDataLoggedIn;
+import com.paku.mavlinkhub.interfaces.IDataUpdateStats;
+import com.paku.mavlinkhub.interfaces.IDataUpdateSysLog;
 import com.paku.mavlinkhub.interfaces.IUiModeChanged;
 
 public class HUBInterfaceManager {
 
-	ArrayList<IUiModeChanged> listenersIUiModeChanged = new ArrayList<IUiModeChanged>();
-	ArrayList<ISysLogDataLoggedIn> listenersISysLogDataLoggedIn = new ArrayList<ISysLogDataLoggedIn>();
-	ArrayList<IByteLogDataLoggedIn> listenersIByteLogDataLoggedIn = new ArrayList<IByteLogDataLoggedIn>();
 	ArrayList<IConnectionFailed> listenersIConnectionFailed = new ArrayList<IConnectionFailed>();
+	ArrayList<IUiModeChanged> listenersIUiModeChanged = new ArrayList<IUiModeChanged>();
+	ArrayList<IDataUpdateSysLog> listenersIDataUpdateSysLog = new ArrayList<IDataUpdateSysLog>();
+	ArrayList<IDataUpdateByteLog> listenersIDataUpdateByteLog = new ArrayList<IDataUpdateByteLog>();
+	ArrayList<IDataUpdateStats> listenersIDataUpdateStats = new ArrayList<IDataUpdateStats>();
 
 	public HUBInterfaceManager() {
 
 	}
 
-	// OnUiModeChanged
+	// IUiModeChanged
 	// *********************************************************
 	public void registerForOnUiModeChanged(Fragment fragment) {
 		listenersIUiModeChanged.add((IUiModeChanged) fragment);
@@ -36,39 +38,55 @@ public class HUBInterfaceManager {
 		}
 	}
 
-	// OnSysLogDataLoggedIn
+	// IDataUpdateStats
 	// *********************************************************
-	public void registerForOnSysLogDataLoggedIn(Fragment fragment) {
-		listenersISysLogDataLoggedIn.add((ISysLogDataLoggedIn) fragment);
+	public void registerForOnDataUpdateStats(Fragment fragment) {
+		listenersIDataUpdateStats.add((IDataUpdateStats) fragment);
 	}
 
-	public void unregisterFromOnSysLogDataLoggedIn(Fragment fragment) {
-		listenersISysLogDataLoggedIn.remove((ISysLogDataLoggedIn) fragment);
+	public void unregisterFromOnDataUpdateStats(Fragment fragment) {
+		listenersIDataUpdateStats.remove((IDataUpdateStats) fragment);
 	}
 
-	public void processOnSysLogDataLoggedIn() {
-		for (ISysLogDataLoggedIn listener : listenersISysLogDataLoggedIn) {
-			if (listener != null) listener.onSysLogDataLoggedIn();
+	public void processOnDataUpdateStats() {
+		for (IDataUpdateStats listener : listenersIDataUpdateStats) {
+			if (listener != null) listener.onDataUpdateStats();
 		}
 	}
 
-	// OnByteLogDataLoggedIn
+	// IDataUpdateSysLog
 	// *********************************************************
-	public void registerForOnByteLogDataLoggedIn(Fragment fragment) {
-		listenersIByteLogDataLoggedIn.add((IByteLogDataLoggedIn) fragment);
+	public void registerForOnDataUpdateSysLog(Fragment fragment) {
+		listenersIDataUpdateSysLog.add((IDataUpdateSysLog) fragment);
 	}
 
-	public void unregisterFromOnByteLogDataLoggedIn(Fragment fragment) {
-		listenersIByteLogDataLoggedIn.remove((IByteLogDataLoggedIn) fragment);
+	public void unregisterFromOnDataUpdateSysLog(Fragment fragment) {
+		listenersIDataUpdateSysLog.remove((IDataUpdateSysLog) fragment);
 	}
 
-	public void processOnByteLogDataLoggedIn() {
-		for (IByteLogDataLoggedIn listener : listenersIByteLogDataLoggedIn) {
-			if (listener != null) listener.onByteLogDataLoggedIn();
+	public void processOnDataUpdateSysLog() {
+		for (IDataUpdateSysLog listener : listenersIDataUpdateSysLog) {
+			if (listener != null) listener.onDataUpdateSysLog();
 		}
 	}
 
-	// OnConnectionFailed
+	// IDataUpdateByteLog
+	// *********************************************************
+	public void registerForOnDataUpdateByteLog(Fragment fragment) {
+		listenersIDataUpdateByteLog.add((IDataUpdateByteLog) fragment);
+	}
+
+	public void unregisterFromOnDataUpdateByteLog(Fragment fragment) {
+		listenersIDataUpdateByteLog.remove((IDataUpdateByteLog) fragment);
+	}
+
+	public void processOnDataUpdateByteLog() {
+		for (IDataUpdateByteLog listener : listenersIDataUpdateByteLog) {
+			if (listener != null) listener.onDataUpdateByteLog();
+		}
+	}
+
+	// IConnectionFailed
 	// *********************************************************
 	public void registerForOnConnectionFailed(Fragment fragment) {
 		listenersIConnectionFailed.add((IConnectionFailed) fragment);

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 import com.paku.mavlinkhub.HUBGlobals;
-import com.paku.mavlinkhub.communication.connector.IncommingConnectorBluetooth;
+import com.paku.mavlinkhub.communication.connectors.IncommingConnectorBluetooth;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;

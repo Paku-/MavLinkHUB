@@ -1,7 +1,8 @@
 package com.paku.mavlinkhub.fragments;
 
 import com.paku.mavlinkhub.R;
-import com.paku.mavlinkhub.interfaces.ISysLogDataLoggedIn;
+import com.paku.mavlinkhub.interfaces.IDataUpdateStats;
+import com.paku.mavlinkhub.interfaces.IDataUpdateSysLog;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -11,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class FragmentSysLog extends HUBFragment implements ISysLogDataLoggedIn {
+public class FragmentSysLog extends HUBFragment implements IDataUpdateSysLog, IDataUpdateStats {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "FragmentSysLog";
@@ -43,14 +44,17 @@ public class FragmentSysLog extends HUBFragment implements ISysLogDataLoggedIn {
 	@Override
 	public void onResume() {
 		super.onResume();
-		globalVars.messanger.registerForOnSysLogDataLoggedIn(this);
+		globalVars.messanger.registerForOnDataUpdateSysLog(this);
+		globalVars.messanger.registerForOnDataUpdateStats(this);
+		refreshStats();
 		refreshUI();
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
-		globalVars.messanger.unregisterFromOnSysLogDataLoggedIn(this);
+		globalVars.messanger.unregisterFromOnDataUpdateSysLog(this);
+		globalVars.messanger.unregisterFromOnDataUpdateStats(this);
 	}
 
 	public void refreshUI() {
@@ -81,15 +85,22 @@ public class FragmentSysLog extends HUBFragment implements ISysLogDataLoggedIn {
 			}
 		});
 
+	}
+
+	private void refreshStats() {
 		final TextView mTextViewLogStats = (TextView) (getView().findViewById(R.id.textView_logSysLogStatsbar));
-
 		mTextViewLogStats.setText(globalVars.mMavLinkCollector.getLastParserStats());
-
 	}
 
 	@Override
-	public void onSysLogDataLoggedIn() {
+	public void onDataUpdateSysLog() {
+		refreshStats();
 		refreshUI();
+	}
+
+	@Override
+	public void onDataUpdateStats() {
+		refreshStats();
 	}
 
 }

@@ -15,6 +15,8 @@ public class ThreadSocketBluetooth extends Thread {
 
 	private static final String TAG = "ThreadSocketBluetooth";
 
+	private static final int bufferSize = 1024;
+
 	private final BluetoothSocket mmSocket;
 	private final BufferedInputStream mmInStream;
 	private final OutputStream mmOutStream;
@@ -44,7 +46,8 @@ public class ThreadSocketBluetooth extends Thread {
 	}
 
 	public void run() {
-		byte[] buffer = new byte[2048]; // mConnectorStream store for the stream
+		byte[] buffer = new byte[bufferSize]; // mConnectorStream store for the
+												// stream
 		int bytes; // bytes received
 
 		while (running) {
