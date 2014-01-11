@@ -2,11 +2,13 @@ package com.paku.mavlinkhub;
 
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.fragments.FragmentsAdapter;
+import com.paku.mavlinkhub.interfaces.IDataUpdateStats;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
@@ -14,8 +16,9 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
-public class ActivityMain extends FragmentActivity {
+public class ActivityMain extends FragmentActivity implements IDataUpdateStats {
 
 	private static final String TAG = "ActivityMain";
 
@@ -44,6 +47,23 @@ public class ActivityMain extends FragmentActivity {
 	protected void onResume() {
 		super.onResume();
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
+		// register for call interface;
+		globalVars.messanger.mainActivity = this;
+
+		final TextView mTextViewLogStats = (TextView) (findViewById(R.id.textView_system_status_bar));
+		mTextViewLogStats.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
+
+		refreshStats();
+
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		// unregister from call interface;
+		globalVars.messanger.mainActivity = null;
 	}
 
 	@Override
@@ -135,6 +155,16 @@ public class ActivityMain extends FragmentActivity {
 		globalVars.incommingConnector.closeConnection();
 		globalVars.mMavLinkCollector.stopMavLinkParserThread();
 		globalVars.logger.stopAllLogs();
+	}
+
+	private void refreshStats() {
+		final TextView mTextViewLogStats = (TextView) findViewById(R.id.textView_system_status_bar);
+		mTextViewLogStats.setText(globalVars.mMavLinkCollector.getLastParserStats());
+	}
+
+	@Override
+	public void onDataUpdateStats() {
+		refreshStats();
 	}
 
 }

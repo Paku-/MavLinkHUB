@@ -17,7 +17,7 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateByteLog, IDataUpdateStats {
+public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateByteLog {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "FragmentRealTimeMavlink";
@@ -36,9 +36,6 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		final TextView mTextViewLogStats = (TextView) (getView().findViewById(R.id.textView_logStatsbar));
-		mTextViewLogStats.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
-
 		final TextView mTextViewBytesLog = (TextView) (getView().findViewById(R.id.textView_logByte));
 		mTextViewBytesLog.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
 
@@ -53,8 +50,6 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 		// TODO Auto-generated method stub
 		super.onResume();
 		globalVars.messanger.registerForOnDataUpdateByteLog(this);
-		globalVars.messanger.registerForOnDataUpdateStats(this);
-		refreshStats();
 		refreshUI();
 	}
 
@@ -62,7 +57,6 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 	public void onPause() {
 		super.onPause();
 		globalVars.messanger.unregisterFromOnDataUpdateByteLog(this);
-		globalVars.messanger.unregisterFromOnDataUpdateStats(this);
 	}
 
 	public void refreshUI() {
@@ -104,14 +98,6 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 
 	}
 
-	private void refreshStats() {
-
-		// stats bar
-		final TextView mTextViewLogStats = (TextView) (getView().findViewById(R.id.textView_logStatsbar));
-		mTextViewLogStats.setText(globalVars.mMavLinkCollector.getLastParserStats());
-
-	}
-
 	// get data to fill the list view
 	private ArrayList<ItemMavLinkMsg> generateMavlinkListData() {
 
@@ -132,13 +118,7 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 
 	@Override
 	public void onDataUpdateByteLog() {
-		refreshStats();
 		refreshUI();
-	}
-
-	@Override
-	public void onDataUpdateStats() {
-		refreshStats();
 	}
 
 }

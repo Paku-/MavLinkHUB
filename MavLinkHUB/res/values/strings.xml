@@ -44,5 +44,6 @@
     <string name="txt_no_data">No Data</string>    
     <string name="no_bluetooth_adapter_found">No Bluetooth Adapter found.</string>    
     <string name="disconnect_first">Disconnect first ...</string>    
-    <string name="connection_failure">"Connection Failure: "</string>
+    <string name="connection_failure">"Connection Failure: "</string>    
+    <string name="textview_status_bar">Status Bar</string>
 </resources>

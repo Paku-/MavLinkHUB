@@ -1,48 +1,30 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/RelativeLayout1"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="wrap_content"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentTop="true"
+    android:baselineAligned="false"
+    android:orientation="horizontal" >
 
-    <LinearLayout
+    <ListView
+        android:id="@+id/listView_mavlinkMsgs"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/textView_logStatsbar"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:baselineAligned="false"
-        android:orientation="horizontal" >
+        android:layout_height="match_parent"
+        android:layout_weight="1" >
+    </ListView>
 
-        <ListView
-            android:id="@+id/listView_mavlinkMsgs"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1" >
-        </ListView>
-
-        <ScrollView
-            android:id="@+id/scrollView_logByte"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="2" >
-
-            <TextView
-                android:id="@+id/textView_logByte"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/ml_byte_log_empty" />
-
-        </ScrollView>
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/textView_logStatsbar"
+    <ScrollView
+        android:id="@+id/scrollView_logByte"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:text="@string/log_ml_stats" />
+        android:layout_height="match_parent"
+        android:layout_weight="2" >
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/textView_logByte"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ml_byte_log_empty" />
+    </ScrollView>
+
+</LinearLayout>

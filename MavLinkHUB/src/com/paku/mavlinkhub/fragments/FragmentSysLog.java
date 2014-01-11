@@ -34,19 +34,12 @@ public class FragmentSysLog extends HUBFragment implements IDataUpdateSysLog, ID
 		// txtView.setTypeface(externalFont);
 		txtView.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
 
-		final TextView mTextViewLogStats = (TextView) (getView().findViewById(R.id.textView_logSysLogStatsbar));
-		// Typeface externalFontStats = Typeface.createFromAsset(
-		// globalVars.getAssets(), "fonts/Roboto-Regular.ttf");
-		mTextViewLogStats.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
-
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
 		globalVars.messanger.registerForOnDataUpdateSysLog(this);
-		globalVars.messanger.registerForOnDataUpdateStats(this);
-		refreshStats();
 		refreshUI();
 	}
 
@@ -54,7 +47,6 @@ public class FragmentSysLog extends HUBFragment implements IDataUpdateSysLog, ID
 	public void onPause() {
 		super.onPause();
 		globalVars.messanger.unregisterFromOnDataUpdateSysLog(this);
-		globalVars.messanger.unregisterFromOnDataUpdateStats(this);
 	}
 
 	public void refreshUI() {
@@ -87,20 +79,14 @@ public class FragmentSysLog extends HUBFragment implements IDataUpdateSysLog, ID
 
 	}
 
-	private void refreshStats() {
-		final TextView mTextViewLogStats = (TextView) (getView().findViewById(R.id.textView_logSysLogStatsbar));
-		mTextViewLogStats.setText(globalVars.mMavLinkCollector.getLastParserStats());
-	}
-
 	@Override
 	public void onDataUpdateSysLog() {
-		refreshStats();
+
 		refreshUI();
 	}
 
 	@Override
 	public void onDataUpdateStats() {
-		refreshStats();
 	}
 
 }

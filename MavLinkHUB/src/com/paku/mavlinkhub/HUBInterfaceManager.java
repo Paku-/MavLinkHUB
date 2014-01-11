@@ -3,6 +3,7 @@ package com.paku.mavlinkhub;
 import java.util.ArrayList;
 
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 
 import com.paku.mavlinkhub.interfaces.IDataUpdateByteLog;
 import com.paku.mavlinkhub.interfaces.IConnectionFailed;
@@ -17,6 +18,8 @@ public class HUBInterfaceManager {
 	ArrayList<IDataUpdateSysLog> listenersIDataUpdateSysLog = new ArrayList<IDataUpdateSysLog>();
 	ArrayList<IDataUpdateByteLog> listenersIDataUpdateByteLog = new ArrayList<IDataUpdateByteLog>();
 	ArrayList<IDataUpdateStats> listenersIDataUpdateStats = new ArrayList<IDataUpdateStats>();
+
+	FragmentActivity mainActivity = null;
 
 	public HUBInterfaceManager() {
 
