@@ -4,7 +4,11 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import android.util.Log;
+
 public class ThreadServerTCP extends Thread {
+
+	private static final String TAG = "ThreadServerTCP";
 
 	Socket socket;
 	ServerSocket serverSocket;
@@ -24,9 +28,11 @@ public class ThreadServerTCP extends Thread {
 	public void run() {
 		while (running) {
 			try {
+				Log.d(TAG, "Accept wait");
 				socket = serverSocket.accept();
-				ThreadSocketTCP socketServiceTCP = new ThreadSocketTCP(socket);
+				ThreadSocket socketServiceTCP = new ThreadSocket(socket, null);
 				socketServiceTCP.start();
+				Log.d(TAG, "Socket Started");
 			}
 			catch (IOException e) {
 				e.printStackTrace();

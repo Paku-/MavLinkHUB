@@ -41,9 +41,12 @@ public class HUBMessenger extends HUBInterfaceManager {
 					processOnDataUpdateStats();
 					break;
 
-				case HUBGlobals.MSG_CONNECTOR_DATA_READY:
+				case HUBGlobals.MSG_SOCKET_BT_DATA_READY: // not here
 					break;
-				case HUBGlobals.MSG_CONNECTOR_CONNECTION_FAILED:
+				case HUBGlobals.MSG_SOCKET_TCP_DATA_READY: // not here
+					break;
+
+				case HUBGlobals.MSG_DRONE_CONNECTION_FAILED:
 					String msgTxt = new String((byte[]) msg.obj);
 					processOnConnectionFailed(globalVars.getString(R.string.connection_failure) + msgTxt);
 					break;

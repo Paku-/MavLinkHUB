@@ -3,8 +3,8 @@ package com.paku.mavlinkhub.communication.connectors;
 import java.nio.ByteBuffer;
 
 import com.paku.mavlinkhub.HUBGlobals;
-import com.paku.mavlinkhub.threads.ThreadConnectBluetooth;
-import com.paku.mavlinkhub.threads.ThreadSocketBluetooth;
+import com.paku.mavlinkhub.threads.ThreadClientBluetooth;
+import com.paku.mavlinkhub.threads.ThreadSocket;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -25,8 +25,8 @@ public class DroneConnectorBluetooth extends DroneConnector {
 
 	public Handler msgWriterHandler;
 
-	private ThreadConnectBluetooth threadConnectBluetooth;
-	private ThreadSocketBluetooth threadSocketBluetooth;
+	private ThreadClientBluetooth threadClientBluetooth;
+	private ThreadSocket socketServiceBT;
 
 	public DroneConnectorBluetooth(Handler messenger) {
 		super(messenger, sizeBuff);
@@ -43,8 +43,8 @@ public class DroneConnectorBluetooth extends DroneConnector {
 		}
 		try {
 			mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(address);
-			threadConnectBluetooth = new ThreadConnectBluetooth(this, mBluetoothAdapter, mBluetoothDevice);
-			threadConnectBluetooth.start();
+			threadClientBluetooth = new ThreadClientBluetooth(this, mBluetoothAdapter, mBluetoothDevice);
+			threadClientBluetooth.start();
 			return;
 		}
 		catch (Exception e) {
@@ -54,16 +54,17 @@ public class DroneConnectorBluetooth extends DroneConnector {
 
 	}
 
-	public void startConnectorReceiver(BluetoothSocket socket) {
+	public void startTransmission(BluetoothSocket socket) {
 
 		mBluetoothSocket = socket;
 
+		// start received bytes handler
 		msgWriterHandler = new Handler(Looper.getMainLooper()) {
 			public void handleMessage(Message msg) {
 
 				switch (msg.what) {
 				// Received data
-				case HUBGlobals.MSG_CONNECTOR_DATA_READY:
+				case HUBGlobals.MSG_SOCKET_BT_DATA_READY:
 					try {
 						fromDroneConnectorQueue.put(ByteBuffer.wrap((byte[]) msg.obj, 0, msg.arg1));
 					}
@@ -72,16 +73,17 @@ public class DroneConnectorBluetooth extends DroneConnector {
 						e.printStackTrace();
 					}
 					break;
-				case HUBGlobals.MSG_CONNECTOR_STOP_HANDLER:
-					removeMessages(HUBGlobals.MSG_CONNECTOR_DATA_READY);
+				case HUBGlobals.MSG_SOCKET_BT_CLOSED:
+					removeMessages(0);
 				default:
 					super.handleMessage(msg);
 				}
 			}
 		};
 
-		threadSocketBluetooth = new ThreadSocketBluetooth(mBluetoothSocket, msgWriterHandler);
-		threadSocketBluetooth.start();
+		// start receiver thread
+		socketServiceBT = new ThreadSocket(mBluetoothSocket, msgWriterHandler);
+		socketServiceBT.start();
 
 	}
 
@@ -93,10 +95,10 @@ public class DroneConnectorBluetooth extends DroneConnector {
 			// stop handler
 			msgWriterHandler.removeMessages(0);
 			// strop socket thread
-			threadSocketBluetooth.stopRunning();
+			socketServiceBT.stopRunning();
 		}
 		catch (Exception e) {
-			Log.d(TAG, "Exception [threadSocketBluetooth.cancel]: " + e.getMessage());
+			Log.d(TAG, "Exception [socketServiceBT.cancel]: " + e.getMessage());
 		}
 	}
 

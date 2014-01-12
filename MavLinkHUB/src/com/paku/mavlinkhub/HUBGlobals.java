@@ -2,6 +2,7 @@ package com.paku.mavlinkhub;
 
 import com.paku.mavlinkhub.communication.connectors.DroneConnector;
 import com.paku.mavlinkhub.communication.connectors.DroneConnectorBluetooth;
+import com.paku.mavlinkhub.communication.connectors.ProxyServerTCP;
 import com.paku.mavlinkhub.enums.UI_MODE;
 import com.paku.mavlinkhub.fragments.FragmentsAdapter;
 import com.paku.mavlinkhub.mavlink.MavLinkCollector;
@@ -16,14 +17,18 @@ public class HUBGlobals extends Application {
 	private static final String TAG = "HUBGlobals";
 
 	// other constants
-	public static final int MSG_CONNECTOR_DATA_READY = 101;
-	public static final int MSG_CONNECTOR_CONNECTION_FAILED = 1001;
-	public static final int MSG_MAVLINK_MSGITEM_READY = 102;
-	public static final int MSG_DATA_UPDATE_SYSLOG = 103;
-	public static final int MSG_DATA_UPDATE_BYTELOG = 104;
-	public static final int MSG_DATA_UPDATE_STATS = 105;
-	public static final int MSG_CONNECTOR_STOP_HANDLER = 106;
-	public static final int REQUEST_ENABLE_BT = 111;
+	public static final int MSG_SOCKET_BT_DATA_READY = 101;
+	public static final int MSG_SOCKET_BT_CLOSED = 103;
+	public static final int MSG_SOCKET_TCP_DATA_READY = 105;
+	public static final int MSG_SOCKET_TCP_CLOSED = 107;
+
+	public static final int MSG_DRONE_CONNECTION_FAILED = 109;
+	public static final int MSG_MAVLINK_MSGITEM_READY = 111;
+	public static final int MSG_DATA_UPDATE_SYSLOG = 113;
+	public static final int MSG_DATA_UPDATE_BYTELOG = 115;
+	public static final int MSG_DATA_UPDATE_STATS = 117;
+	public static final int MSG_CONNECTOR_STOP_HANDLER = 119;
+	public static final int REQUEST_ENABLE_BT = 120;
 
 	public FragmentsAdapter mFragmentsPagerAdapter;
 	public ViewPager mViewPager;
@@ -31,8 +36,11 @@ public class HUBGlobals extends Application {
 	// messages handler
 	public HUBMessenger messanger;
 
-	// main BT connector
+	// main Drone connector
 	public DroneConnector droneConnector;
+
+	// main BT connector
+	public ProxyServerTCP proxyServer;
 
 	// MAVLink class holder/object
 	public MavLinkCollector mMavLinkCollector;
@@ -62,6 +70,8 @@ public class HUBGlobals extends Application {
 		droneConnector = new DroneConnectorBluetooth(messanger.appMsgHandler);
 		mMavLinkCollector = new MavLinkCollector(this);
 
+		proxyServer = new ProxyServerTCP(messanger.appMsgHandler);
+		proxyServer.startServer(35000);
 	}
 
 }
