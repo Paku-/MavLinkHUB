@@ -1,5 +1,7 @@
 package com.paku.mavlinkhub.communication.connectors;
 
+import java.nio.ByteBuffer;
+
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.threads.ThreadConnectBluetooth;
 import com.paku.mavlinkhub.threads.ThreadSocketBluetooth;
@@ -62,9 +64,13 @@ public class DroneConnectorBluetooth extends DroneConnector {
 				switch (msg.what) {
 				// Received data
 				case HUBGlobals.MSG_CONNECTOR_DATA_READY:
-					lockStream(3);
-					fromDroneConnectorStream.write((byte[]) msg.obj, 0, msg.arg1);
-					releaseStream();
+					try {
+						fromDroneConnectorQueue.put(ByteBuffer.wrap((byte[]) msg.obj, 0, msg.arg1));
+					}
+					catch (InterruptedException e) {
+						Log.d(TAG, "fromDroneConnectorQueue add failure");
+						e.printStackTrace();
+					}
 					break;
 				case HUBGlobals.MSG_CONNECTOR_STOP_HANDLER:
 					removeMessages(HUBGlobals.MSG_CONNECTOR_DATA_READY);

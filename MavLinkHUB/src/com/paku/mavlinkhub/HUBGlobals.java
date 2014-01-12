@@ -18,7 +18,7 @@ public class HUBGlobals extends Application {
 	// other constants
 	public static final int MSG_CONNECTOR_DATA_READY = 101;
 	public static final int MSG_CONNECTOR_CONNECTION_FAILED = 1001;
-	public static final int MSG_MAVLINK_MSG_READY = 102;
+	public static final int MSG_MAVLINK_MSGITEM_READY = 102;
 	public static final int MSG_DATA_UPDATE_SYSLOG = 103;
 	public static final int MSG_DATA_UPDATE_BYTELOG = 104;
 	public static final int MSG_DATA_UPDATE_STATS = 105;

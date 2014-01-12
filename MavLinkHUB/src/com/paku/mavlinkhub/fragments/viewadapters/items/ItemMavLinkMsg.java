@@ -13,16 +13,18 @@ public class ItemMavLinkMsg implements Serializable {
 	 */
 	private static final long serialVersionUID = -2616788128278070587L;
 
-	private MAVLinkMessage msg;
 	private int count; // how many times the the same msg was repeated
 	private int seqNo;
+	private MAVLinkMessage msg;
+	private long timestamp;
 
 	public ItemMavLinkMsg(MAVLinkPacket pkt, int count) {
 		super();
 		this.count = count;
-		this.setMsg(pkt.unpack());
-		this.setSeqNo(pkt.seq);
-		this.setSysId(pkt.sysid);
+		setMsg(pkt.unpack());
+		setSeqNo(pkt.seq);
+		setSysId(pkt.sysid);
+		setTimestamp(System.currentTimeMillis());
 	}
 
 	public String getCount() {
@@ -56,6 +58,14 @@ public class ItemMavLinkMsg implements Serializable {
 
 	public void setSeqNo(int seqNo) {
 		this.seqNo = seqNo;
+	}
+
+	public long getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(long timestamp) {
+		this.timestamp = timestamp;
 	}
 
 }

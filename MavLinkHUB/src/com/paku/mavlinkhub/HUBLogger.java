@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -86,15 +87,15 @@ public class HUBLogger {
 
 	}
 
-	public void byteLog(byte[] buffer, int pos, int bufferLen) {
+	public void byteLog(ByteBuffer buffer) {
 
 		try {
 
 			waitForLock();
-			mFileIncomingByteLogStream.write(buffer, 0, bufferLen);
-			mInMemIncomingBytesStream.write(buffer, 0, bufferLen);
+			mFileIncomingByteLogStream.write(buffer.array(), 0, buffer.limit());
+			mInMemIncomingBytesStream.write(buffer.array(), 0, buffer.limit());
 			releaseLock();
-			statsReadByteCount += bufferLen;
+			statsReadByteCount += buffer.limit();
 			globalVars.messanger.appMsgHandler.obtainMessage(HUBGlobals.MSG_DATA_UPDATE_STATS).sendToTarget();
 			globalVars.messanger.appMsgHandler.obtainMessage(HUBGlobals.MSG_DATA_UPDATE_BYTELOG).sendToTarget();
 		}
@@ -107,7 +108,7 @@ public class HUBLogger {
 		// fill msgs stream with new arrival
 
 		mavlinkMsgItemsArray.add(msgItem);
-		globalVars.messanger.appMsgHandler.obtainMessage(HUBGlobals.MSG_MAVLINK_MSG_READY, -1, -1, msgItem)
+		globalVars.messanger.appMsgHandler.obtainMessage(HUBGlobals.MSG_MAVLINK_MSGITEM_READY, -1, -1, msgItem)
 				.sendToTarget();
 
 	}

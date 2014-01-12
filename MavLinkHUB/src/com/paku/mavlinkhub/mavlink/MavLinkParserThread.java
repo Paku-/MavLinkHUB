@@ -1,5 +1,7 @@
 package com.paku.mavlinkhub.mavlink;
 
+import java.nio.ByteBuffer;
+
 import com.MAVLink.Parser;
 import com.MAVLink.Messages.MAVLinkPacket;
 import com.paku.mavlinkhub.HUBGlobals;
@@ -11,8 +13,7 @@ public class MavLinkParserThread extends Thread {
 
 	private Parser parser;
 
-	private byte[] buffer;
-	private int bufferLen;
+	private ByteBuffer buffer;
 
 	private boolean running = true;
 	private MAVLinkPacket lastMavLinkPacket = null;
@@ -31,51 +32,39 @@ public class MavLinkParserThread extends Thread {
 
 	public void run() {
 
-		globalVars.logger.sysLog(TAG, "[Start]");
-		int tmpStreamSize = 0;
+		globalVars.logger.sysLog(TAG, "Start...");
 
 		while (running) {
-			tmpStreamSize = globalVars.droneConnector.getStreamSize();
-			if (tmpStreamSize > globalVars.minStreamReadSize) {
 
-				// lock, read and clear input stream
-				globalVars.droneConnector.lockStream(3);
-				buffer = globalVars.droneConnector.getStreamArray();
-				bufferLen = tmpStreamSize;
-				globalVars.droneConnector.resetStream(false);
-				globalVars.droneConnector.releaseStream();
+			buffer = globalVars.droneConnector.getQueueItem();
 
-				// globalVars.logger.sysLog(TAG, "[bytes]: " + bufferLen);
+			// globalVars.logger.sysLog(TAG, "[bytes]: " + bufferLen);
 
-				lastMavLinkPacket = null;
+			lastMavLinkPacket = null;
 
-				for (int i = 0; i < bufferLen; i++) {
+			for (int i = 0; i < buffer.limit(); i++) {
 
-					lastMavLinkPacket = parser.mavlink_parse_char(buffer[i] & 0x00ff);
-					if (lastMavLinkPacket != null) {
-						// MAVLinkMessage lastMavLinkMsg = lastMavLinkPacket
-						// .unpack();
+				lastMavLinkPacket = parser.mavlink_parse_char(buffer.get(i) & 0x00ff);
+				if (lastMavLinkPacket != null) {
+					// MAVLinkMessage lastMavLinkMsg = lastMavLinkPacket
+					// .unpack();
 
-						ItemMavLinkMsg lastMavLinkMsgItem = new ItemMavLinkMsg(lastMavLinkPacket, 1);
+					ItemMavLinkMsg lastMavLinkMsgItem = new ItemMavLinkMsg(lastMavLinkPacket, 1);
 
-						// stream msg for UI
-						globalVars.logger.storeMavLinkMsgItem(lastMavLinkMsgItem);
-						// stream for syslog
-						globalVars.logger.sysLog("MavlinkMsg",
-								globalVars.mMavLinkCollector.decodeMavlinkMsgItem(lastMavLinkMsgItem));
-						// store parser stats
-						globalVars.mMavLinkCollector.storeLastParserStats(parser.stats);
-					}
+					// stream msg for UI
+					globalVars.logger.storeMavLinkMsgItem(lastMavLinkMsgItem);
+					// stream for syslog
+					globalVars.logger.sysLog("MavlinkMsg",
+							globalVars.mMavLinkCollector.decodeMavlinkMsgItem(lastMavLinkMsgItem));
+					// store parser stats
+					globalVars.mMavLinkCollector.storeLastParserStats(parser.stats);
 				}
-				// store bytes stream
-				globalVars.logger.byteLog(buffer, 0, bufferLen);
-
-				bufferLen = 0;
-
 			}
+			globalVars.logger.byteLog(buffer);
+
 		}
 
-		globalVars.logger.sysLog(TAG, "[Stop]");
+		globalVars.logger.sysLog(TAG, "...Stop");
 	}
 
 	public void stopRunning() {

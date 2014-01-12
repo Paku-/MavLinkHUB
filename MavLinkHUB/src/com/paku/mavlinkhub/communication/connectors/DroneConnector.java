@@ -1,17 +1,17 @@
 package com.paku.mavlinkhub.communication.connectors;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.nio.ByteBuffer;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+
 import android.os.Handler;
+import android.util.Log;
 
 public abstract class DroneConnector {
 
-	@SuppressWarnings("unused")
 	private static final String TAG = "DroneConnector";
 
-	protected ByteArrayOutputStream fromDroneConnectorStream;
-	public boolean lockStream = false;
+	protected final BlockingQueue<ByteBuffer> fromDroneConnectorQueue;
 
 	// application handler used to report connection states
 	public Handler appMsgHandler;
@@ -32,50 +32,24 @@ public abstract class DroneConnector {
 
 	public DroneConnector(Handler handler, int capacity) {
 
-		fromDroneConnectorStream = new ByteArrayOutputStream(capacity);
+		fromDroneConnectorQueue = new ArrayBlockingQueue<ByteBuffer>(capacity);
 
 		appMsgHandler = handler;
 
 	}
 
-	public void lockStream(int milis) {
-		while (lockStream) {
-			// Log.d(TAG, "Stream Locked..");
-			try {
-				Thread.sleep(milis);
-			}
-			catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+	public ByteBuffer getQueueItem() {
+
+		ByteBuffer buffer = ByteBuffer.allocate(0);
+
+		try {
+			buffer = fromDroneConnectorQueue.take();
+			// buffer.flip();
 		}
-		lockStream = true;
+		catch (InterruptedException e) {
+			Log.d(TAG, "[getQueueElement]" + e.getMessage());
+			e.printStackTrace();
+		}
+		return buffer;
 	}
-
-	public void releaseStream() {
-		lockStream = false;
-	}
-
-	public void resetStream(boolean withLock) {
-		if (withLock) lockStream(2);
-		fromDroneConnectorStream.reset();
-		if (withLock) releaseStream();
-	}
-
-	public void cloneConnectorStream(OutputStream targetStream, boolean doReset) throws IOException {
-		fromDroneConnectorStream.writeTo(targetStream);
-		if (doReset) resetStream(false);
-	}
-
-	public ByteArrayOutputStream getConnectorStream() {
-		return fromDroneConnectorStream;
-	}
-
-	public int getStreamSize() {
-		return fromDroneConnectorStream.size();
-	}
-
-	public byte[] getStreamArray() {
-		return fromDroneConnectorStream.toByteArray();
-	}
-
 }

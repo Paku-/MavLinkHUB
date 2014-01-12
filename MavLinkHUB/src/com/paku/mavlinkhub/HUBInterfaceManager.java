@@ -56,7 +56,7 @@ public class HUBInterfaceManager {
 			if (listener != null) listener.onDataUpdateStats();
 		}
 		// call main activity as well.
-		((IDataUpdateStats) mainActivity).onDataUpdateStats();
+		if ((IDataUpdateStats) mainActivity != null) ((IDataUpdateStats) mainActivity).onDataUpdateStats();
 	}
 
 	// IDataUpdateSysLog

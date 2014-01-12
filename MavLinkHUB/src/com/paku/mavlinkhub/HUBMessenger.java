@@ -27,7 +27,7 @@ public class HUBMessenger extends HUBInterfaceManager {
 
 				switch (msg.what) {
 				// Received MLmsg
-				case HUBGlobals.MSG_MAVLINK_MSG_READY:
+				case HUBGlobals.MSG_MAVLINK_MSGITEM_READY:
 					// ItemMavLinkMsg mavlinkMsg = (ItemMavLinkMsg) msg.obj;
 					break;
 				// all data logged in
