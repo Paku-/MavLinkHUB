@@ -15,14 +15,12 @@ import com.paku.mavlinkhub.interfaces.IUiModeChanged;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public class FragmentConnectivity extends HUBFragment implements IUiModeChanged, IConnectionFailed {
@@ -171,8 +169,8 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 			case DEV_STATE_DISCONNECTED:
 				if (!globalVars.incommingConnector.isConnected()) {
 					globalVars.logger.sysLog(TAG, "Connecting...");
-					globalVars.logger.sysLog(TAG, "Me  : " + globalVars.incommingConnector.getPeerName() + " ["
-							+ globalVars.incommingConnector.getPeerAddress() + "]");
+					globalVars.logger.sysLog(TAG, "Me  : " + globalVars.incommingConnector.getMyName() + " ["
+							+ globalVars.incommingConnector.getMyAddress() + "]");
 					globalVars.logger.sysLog(TAG, "Peer: " + selectedDev.getName() + " [" + selectedDev.getAddress()
 							+ "]");
 
@@ -212,11 +210,15 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 	// interfaces
 	@Override
 	public void onConnectionFailed(String errorMsg) {
-		Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_SHORT).show();
+
 		globalVars.logger.sysLog(TAG, errorMsg);
+		globalVars.mMavLinkCollector.stopMavLinkParserThread();
+
+		Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_SHORT).show();
 
 		btDevList.setAllDevState(PEER_DEV_STATE.DEV_STATE_DISCONNECTED);
 		refreshBtDevListView();
+
 	}
 
 	@Override

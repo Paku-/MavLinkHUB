@@ -22,6 +22,7 @@ public class HUBGlobals extends Application {
 	public static final int MSG_DATA_UPDATE_SYSLOG = 103;
 	public static final int MSG_DATA_UPDATE_BYTELOG = 104;
 	public static final int MSG_DATA_UPDATE_STATS = 105;
+	public static final int MSG_CONNECTOR_STOP_HANDLER = 106;
 	public static final int REQUEST_ENABLE_BT = 111;
 
 	public FragmentsAdapter mFragmentsPagerAdapter;

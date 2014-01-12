@@ -6,7 +6,6 @@ import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.fragments.viewadapters.ViewAdapterMavlinkMsgList;
 import com.paku.mavlinkhub.fragments.viewadapters.items.ItemMavLinkMsg;
 import com.paku.mavlinkhub.interfaces.IDataUpdateByteLog;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,9 +32,6 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-
-		final TextView mTextViewBytesLog = (TextView) (getView().findViewById(R.id.textView_logByte));
-		mTextViewBytesLog.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
 
 		listAdapterMavLink = new ViewAdapterMavlinkMsgList(this.getActivity(), generateMavlinkListData());
 

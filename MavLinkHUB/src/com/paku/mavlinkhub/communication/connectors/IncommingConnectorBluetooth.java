@@ -31,21 +31,22 @@ public class IncommingConnectorBluetooth extends IncommingConnector {
 	}
 
 	@Override
-	public boolean openConnection(String address) {
+	// return value makes no-sense here - status is unknown.
+	public void openConnection(String address) {
 
 		// start connection threat
 		if (mBluetoothAdapter == null) {
-			return false;
+			return;
 		}
 		try {
 			mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(address);
 			threadConnectBluetooth = new ThreadConnectBluetooth(this, mBluetoothAdapter, mBluetoothDevice);
 			threadConnectBluetooth.start();
-			return true;
+			return;
 		}
 		catch (Exception e) {
 			Log.d(TAG, "ConnectBT: " + e.getMessage());
-			return false;
+			return;
 		}
 
 	}
@@ -65,13 +66,15 @@ public class IncommingConnectorBluetooth extends IncommingConnector {
 					mConnectorStream.write((byte[]) msg.obj, 0, msg.arg1);
 					releaseStream();
 					break;
+				case HUBGlobals.MSG_CONNECTOR_STOP_HANDLER:
+					removeMessages(HUBGlobals.MSG_CONNECTOR_DATA_READY);
 				default:
 					super.handleMessage(msg);
 				}
 			}
 		};
 
-		threadSocketBluetooth = new ThreadSocketBluetooth(socket, btConnectorMsgHandler);
+		threadSocketBluetooth = new ThreadSocketBluetooth(mBluetoothSocket, btConnectorMsgHandler);
 		threadSocketBluetooth.start();
 
 	}
@@ -114,8 +117,14 @@ public class IncommingConnectorBluetooth extends IncommingConnector {
 		return mBluetoothAdapter;
 	}
 
-	public void setBluetoothAdapter(BluetoothAdapter mBluetoothAdapter) {
-		this.mBluetoothAdapter = mBluetoothAdapter;
+	@Override
+	public String getMyName() {
+		return mBluetoothAdapter.getName();
+	}
+
+	@Override
+	public String getMyAddress() {
+		return mBluetoothAdapter.getAddress();
 	}
 
 }

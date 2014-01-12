@@ -5,20 +5,20 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <ListView
-        android:id="@+id/list_bt_bonded"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="60dp"
-        android:layout_weight="1" >
-
-    </ListView>
-
     <include
         android:id="@+id/LinearLayoutProgress_ref"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="4"
-        layout="@layout/bottom_progress" />
+        layout="@layout/progress_big" />
+
+    <ListView
+        android:id="@+id/list_bt_bonded"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="40dp"
+        android:layout_weight="1" >
+
+    </ListView>
 
 </LinearLayout>

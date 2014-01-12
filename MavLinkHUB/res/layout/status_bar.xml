@@ -16,8 +16,7 @@
 
     <TextView
         android:id="@+id/textView_system_status_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/StatusBarFont"
         android:layout_centerVertical="true"
         android:text="@string/textview_status_bar" />
 

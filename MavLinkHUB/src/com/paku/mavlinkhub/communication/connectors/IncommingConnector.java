@@ -16,11 +16,15 @@ public abstract class IncommingConnector {
 	public boolean lockConnStream = false;
 	public Handler appMsgHandler;
 
-	public abstract boolean openConnection(String address);
+	public abstract void openConnection(String address);
 
 	public abstract void closeConnection();
 
 	public abstract boolean isConnected();
+
+	public abstract String getMyName();
+
+	public abstract String getMyAddress();
 
 	public abstract String getPeerName();
 
@@ -68,4 +72,5 @@ public abstract class IncommingConnector {
 	public ByteArrayOutputStream getConnectorStream() {
 		return mConnectorStream;
 	}
+
 }

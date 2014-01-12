@@ -63,8 +63,4 @@ public class ThreadConnectBluetooth extends Thread {
 		// start Receiver on socket
 		parentConnector.startConnectorReceiver(mmSocket);
 	}
-	/*
-	 * public void disconnect() { try { mmSocket.close(); } catch (IOException
-	 * e) { Log.d(TAG, "Exception [disconnect]: " + e.getMessage()); } }
-	 */
 }

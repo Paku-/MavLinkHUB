@@ -96,6 +96,8 @@ public class ThreadSocketBluetooth extends Thread {
 	}
 
 	public void stopRunning() {
+		// stop handler as well
+		mConnectorReceiverHandler.obtainMessage(HUBGlobals.MSG_CONNECTOR_STOP_HANDLER).sendToTarget();
 		running = false;
 	}
 }

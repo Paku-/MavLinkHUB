@@ -3,7 +3,6 @@ package com.paku.mavlinkhub.fragments;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.interfaces.IDataUpdateSysLog;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,11 +26,12 @@ public class FragmentSysLog extends HUBFragment implements IDataUpdateSysLog {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		final TextView txtView = (TextView) (getView().findViewById(R.id.TextView_logSysLog));
+		// final TextView txtView = (TextView)
+		// (getView().findViewById(R.id.TextView_logSysLog));
 		// Typeface externalFont = Typeface.createFromAsset(
 		// globalVars.getAssets(), "fonts/Roboto-Condensed.ttf");
 		// txtView.setTypeface(externalFont);
-		txtView.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
+		// txtView.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
 
 	}
 
