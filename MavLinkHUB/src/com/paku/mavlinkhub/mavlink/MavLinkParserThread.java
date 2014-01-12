@@ -31,18 +31,19 @@ public class MavLinkParserThread extends Thread {
 
 	public void run() {
 
-		globalVars.logger.sysLog(TAG, "MavLink Parser Started");
+		globalVars.logger.sysLog(TAG, "[Start]");
+		int tmpStreamSize = 0;
 
 		while (running) {
-
-			if (globalVars.incommingConnector.mConnectorStream.size() > globalVars.minStreamReadSize) {
+			tmpStreamSize = globalVars.droneConnector.getStreamSize();
+			if (tmpStreamSize > globalVars.minStreamReadSize) {
 
 				// lock, read and clear input stream
-				globalVars.incommingConnector.waitForStreamLock(3);
-				buffer = globalVars.incommingConnector.mConnectorStream.toByteArray();
-				bufferLen = globalVars.incommingConnector.mConnectorStream.size();
-				globalVars.incommingConnector.mConnectorStream.reset();
-				globalVars.incommingConnector.releaseStream();
+				globalVars.droneConnector.lockStream(3);
+				buffer = globalVars.droneConnector.getStreamArray();
+				bufferLen = tmpStreamSize;
+				globalVars.droneConnector.resetStream(false);
+				globalVars.droneConnector.releaseStream();
 
 				// globalVars.logger.sysLog(TAG, "[bytes]: " + bufferLen);
 
@@ -74,7 +75,7 @@ public class MavLinkParserThread extends Thread {
 			}
 		}
 
-		globalVars.logger.sysLog(TAG, "MavLink Parser Stopped");
+		globalVars.logger.sysLog(TAG, "[Stop]");
 	}
 
 	public void stopRunning() {

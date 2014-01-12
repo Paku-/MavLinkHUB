@@ -85,7 +85,7 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 
 	public void refreshUI() {
 
-		// mostly used states
+		// mostly used states set as defaults
 		((ActivityMain) getActivity()).enableProgressBar(false);
 		progressBarConnectingBIG.setVisibility(View.INVISIBLE);
 		btDevListView.setVisibility(View.VISIBLE);
@@ -167,14 +167,14 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 			switch (selectedDev.getState()) {
 			case DEV_STATE_UNKNOWN:
 			case DEV_STATE_DISCONNECTED:
-				if (!globalVars.incommingConnector.isConnected()) {
+				if (!globalVars.droneConnector.isConnected()) {
 					globalVars.logger.sysLog(TAG, "Connecting...");
-					globalVars.logger.sysLog(TAG, "Me  : " + globalVars.incommingConnector.getMyName() + " ["
-							+ globalVars.incommingConnector.getMyAddress() + "]");
+					globalVars.logger.sysLog(TAG, "Me  : " + globalVars.droneConnector.getMyName() + " ["
+							+ globalVars.droneConnector.getMyAddress() + "]");
 					globalVars.logger.sysLog(TAG, "Peer: " + selectedDev.getName() + " [" + selectedDev.getAddress()
 							+ "]");
 
-					globalVars.incommingConnector.openConnection(selectedDev.getAddress());
+					globalVars.droneConnector.startConnection(selectedDev.getAddress());
 					globalVars.mMavLinkCollector.startMavLinkParserThread();
 
 					btDevList.setDevState(position, PEER_DEV_STATE.DEV_STATE_CONNECTED);
@@ -187,9 +187,9 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 				break;
 
 			case DEV_STATE_CONNECTED:
-				if (globalVars.incommingConnector.isConnected()) {
+				if (globalVars.droneConnector.isConnected()) {
 					globalVars.logger.sysLog(TAG, "Closing Connection ...");
-					globalVars.incommingConnector.closeConnection();
+					globalVars.droneConnector.stopConnection();
 					globalVars.mMavLinkCollector.stopMavLinkParserThread();
 					btDevList.setDevState(position, PEER_DEV_STATE.DEV_STATE_DISCONNECTED);
 				}
@@ -212,6 +212,7 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 	public void onConnectionFailed(String errorMsg) {
 
 		globalVars.logger.sysLog(TAG, errorMsg);
+		globalVars.droneConnector.stopConnection();
 		globalVars.mMavLinkCollector.stopMavLinkParserThread();
 
 		Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_SHORT).show();

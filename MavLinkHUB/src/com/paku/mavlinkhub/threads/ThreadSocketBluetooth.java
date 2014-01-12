@@ -46,8 +46,7 @@ public class ThreadSocketBluetooth extends Thread {
 	}
 
 	public void run() {
-		byte[] buffer = new byte[bufferSize]; // mConnectorStream store for the
-												// stream
+		byte[] buffer = new byte[bufferSize];
 		int bytes; // bytes received
 
 		while (running) {

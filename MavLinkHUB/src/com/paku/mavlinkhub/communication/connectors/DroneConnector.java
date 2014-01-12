@@ -3,22 +3,22 @@ package com.paku.mavlinkhub.communication.connectors;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-
-import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
 
-public abstract class IncommingConnector {
+public abstract class DroneConnector {
 
 	@SuppressWarnings("unused")
-	private static final String TAG = "IncommingConnector";
+	private static final String TAG = "DroneConnector";
 
-	public ByteArrayOutputStream mConnectorStream;
-	public boolean lockConnStream = false;
+	protected ByteArrayOutputStream fromDroneConnectorStream;
+	public boolean lockStream = false;
+
+	// application handler used to report connection states
 	public Handler appMsgHandler;
 
-	public abstract void openConnection(String address);
+	public abstract void startConnection(String address);
 
-	public abstract void closeConnection();
+	public abstract void stopConnection();
 
 	public abstract boolean isConnected();
 
@@ -30,19 +30,16 @@ public abstract class IncommingConnector {
 
 	public abstract String getPeerAddress();
 
-	protected abstract void startConnectorReceiver(BluetoothSocket socket);
+	public DroneConnector(Handler handler, int capacity) {
 
-	public IncommingConnector(Handler handler, int capacity) {
-
-		mConnectorStream = new ByteArrayOutputStream(capacity);
-		mConnectorStream.reset();
+		fromDroneConnectorStream = new ByteArrayOutputStream(capacity);
 
 		appMsgHandler = handler;
 
 	}
 
-	public void waitForStreamLock(int milis) {
-		while (lockConnStream) {
+	public void lockStream(int milis) {
+		while (lockStream) {
 			// Log.d(TAG, "Stream Locked..");
 			try {
 				Thread.sleep(milis);
@@ -51,26 +48,34 @@ public abstract class IncommingConnector {
 				e.printStackTrace();
 			}
 		}
-		lockConnStream = true;
+		lockStream = true;
 	}
 
 	public void releaseStream() {
-		lockConnStream = false;
+		lockStream = false;
 	}
 
-	private void resetStream(boolean withLock) {
-		if (withLock) waitForStreamLock(2);
-		mConnectorStream.reset();
+	public void resetStream(boolean withLock) {
+		if (withLock) lockStream(2);
+		fromDroneConnectorStream.reset();
 		if (withLock) releaseStream();
 	}
 
 	public void cloneConnectorStream(OutputStream targetStream, boolean doReset) throws IOException {
-		mConnectorStream.writeTo(targetStream);
+		fromDroneConnectorStream.writeTo(targetStream);
 		if (doReset) resetStream(false);
 	}
 
 	public ByteArrayOutputStream getConnectorStream() {
-		return mConnectorStream;
+		return fromDroneConnectorStream;
+	}
+
+	public int getStreamSize() {
+		return fromDroneConnectorStream.size();
+	}
+
+	public byte[] getStreamArray() {
+		return fromDroneConnectorStream.toByteArray();
 	}
 
 }

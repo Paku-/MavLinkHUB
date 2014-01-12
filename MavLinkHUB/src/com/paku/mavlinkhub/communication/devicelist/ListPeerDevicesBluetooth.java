@@ -37,8 +37,8 @@ public class ListPeerDevicesBluetooth extends ListPeerDevices {
 		if (pairedDevList.size() > 0) {
 			for (BluetoothDevice device : pairedDevList) {
 				ItemPeerDevice tmpItemPeerDevice = new ItemPeerDevice(device.getName(), device.getAddress());
-				if (globalVars.incommingConnector.isConnected()
-						& (globalVars.incommingConnector.getPeerAddress().equals(device.getAddress()))) {
+				if (globalVars.droneConnector.isConnected()
+						& (globalVars.droneConnector.getPeerAddress().equals(device.getAddress()))) {
 					tmpItemPeerDevice.setState(PEER_DEV_STATE.DEV_STATE_CONNECTED);
 				}
 				devList.add(tmpItemPeerDevice);

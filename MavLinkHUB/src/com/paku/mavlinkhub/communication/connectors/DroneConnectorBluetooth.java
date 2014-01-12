@@ -12,27 +12,28 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
-public class IncommingConnectorBluetooth extends IncommingConnector {
+public class DroneConnectorBluetooth extends DroneConnector {
 
-	private static final String TAG = "IncommingConnectorBluetooth";
+	private static final String TAG = "DroneConnectorBluetooth";
 	private static final int sizeBuff = 1024;
 
-	private BluetoothAdapter mBluetoothAdapter;
-	BluetoothDevice mBluetoothDevice;
-	BluetoothSocket mBluetoothSocket;
+	private final BluetoothAdapter mBluetoothAdapter;
+	private BluetoothDevice mBluetoothDevice;
+	private BluetoothSocket mBluetoothSocket;
 
-	ThreadConnectBluetooth threadConnectBluetooth;
-	ThreadSocketBluetooth threadSocketBluetooth;
-	Handler btConnectorMsgHandler;
+	public Handler msgWriterHandler;
 
-	public IncommingConnectorBluetooth(Handler messanger) {
-		super(messanger, sizeBuff);
+	private ThreadConnectBluetooth threadConnectBluetooth;
+	private ThreadSocketBluetooth threadSocketBluetooth;
+
+	public DroneConnectorBluetooth(Handler messenger) {
+		super(messenger, sizeBuff);
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 	}
 
 	@Override
 	// return value makes no-sense here - status is unknown.
-	public void openConnection(String address) {
+	public void startConnection(String address) {
 
 		// start connection threat
 		if (mBluetoothAdapter == null) {
@@ -51,19 +52,18 @@ public class IncommingConnectorBluetooth extends IncommingConnector {
 
 	}
 
-	@Override
 	public void startConnectorReceiver(BluetoothSocket socket) {
 
 		mBluetoothSocket = socket;
 
-		btConnectorMsgHandler = new Handler(Looper.getMainLooper()) {
+		msgWriterHandler = new Handler(Looper.getMainLooper()) {
 			public void handleMessage(Message msg) {
 
 				switch (msg.what) {
 				// Received data
 				case HUBGlobals.MSG_CONNECTOR_DATA_READY:
-					waitForStreamLock(3);
-					mConnectorStream.write((byte[]) msg.obj, 0, msg.arg1);
+					lockStream(3);
+					fromDroneConnectorStream.write((byte[]) msg.obj, 0, msg.arg1);
 					releaseStream();
 					break;
 				case HUBGlobals.MSG_CONNECTOR_STOP_HANDLER:
@@ -74,16 +74,19 @@ public class IncommingConnectorBluetooth extends IncommingConnector {
 			}
 		};
 
-		threadSocketBluetooth = new ThreadSocketBluetooth(mBluetoothSocket, btConnectorMsgHandler);
+		threadSocketBluetooth = new ThreadSocketBluetooth(mBluetoothSocket, msgWriterHandler);
 		threadSocketBluetooth.start();
 
 	}
 
 	@Override
-	public void closeConnection() {
+	public void stopConnection() {
 		Log.d(TAG, "Closing connection..");
 
 		try {
+			// stop handler
+			msgWriterHandler.removeMessages(0);
+			// strop socket thread
 			threadSocketBluetooth.stopRunning();
 		}
 		catch (Exception e) {

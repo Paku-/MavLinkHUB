@@ -115,11 +115,11 @@ public class ActivityMain extends FragmentActivity implements IDataUpdateStats {
 			}
 		};
 
-		if (globalVars.incommingConnector.isConnected()) {
+		if (globalVars.droneConnector.isConnected()) {
 
 			final AlertDialog.Builder dlg = new AlertDialog.Builder(this);
 			dlg.setTitle(getString(R.string.close_dlg_title_mavlink_closing) + "["
-					+ globalVars.incommingConnector.getPeerName() + "]");
+					+ globalVars.droneConnector.getPeerName() + "]");
 			dlg.setMessage(R.string.close_dlg_msg_current_connection_will_be_lost);
 			dlg.setCancelable(false);
 			dlg.setPositiveButton(R.string.close_dlg_positive, positiveButtonClickListener);
@@ -152,7 +152,7 @@ public class ActivityMain extends FragmentActivity implements IDataUpdateStats {
 
 	private void closeHUB() {
 		globalVars.logger.sysLog(TAG, "MavLinkHUB closing ...");
-		globalVars.incommingConnector.closeConnection();
+		globalVars.droneConnector.stopConnection();
 		globalVars.mMavLinkCollector.stopMavLinkParserThread();
 		globalVars.logger.stopAllLogs();
 	}
