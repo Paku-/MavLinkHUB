@@ -5,7 +5,6 @@ import java.nio.ByteBuffer;
 import com.MAVLink.Parser;
 import com.MAVLink.Messages.MAVLinkPacket;
 import com.paku.mavlinkhub.HUBGlobals;
-import com.paku.mavlinkhub.HubQueue;
 import com.paku.mavlinkhub.enums.ITEM_DIRECTION;
 import com.paku.mavlinkhub.fragments.viewadapters.items.ItemMavLinkMsg;
 
@@ -48,12 +47,11 @@ public class ThreadDroneMavLinkParser extends Thread {
 
 				lastMavLinkPacket = parser.mavlink_parse_char(buffer.get(i) & 0x00ff);
 				if (lastMavLinkPacket != null) {
-					// MAVLinkMessage lastMavLinkMsg = lastMavLinkPacket
-					// .unpack();
 
 					ItemMavLinkMsg lastMavLinkMsgItem = new ItemMavLinkMsg(lastMavLinkPacket,
 							ITEM_DIRECTION.FROM_DRONE, 1);
 
+					// store item for distribution and UI update
 					try {
 						globalVars.hubQueue.putHubQueueItem(lastMavLinkMsgItem);
 					}
@@ -62,8 +60,7 @@ public class ThreadDroneMavLinkParser extends Thread {
 					}
 
 					// stream for syslog
-					globalVars.logger.sysLog("MavlinkMsg",
-							globalVars.mMavLinkCollector.decodeMavlinkMsgItem(lastMavLinkMsgItem));
+					globalVars.logger.sysLog("MavlinkMsg", lastMavLinkMsgItem.humanDecode());
 					// store parser stats
 					globalVars.mMavLinkCollector.storeLastParserStats(parser.stats);
 				}

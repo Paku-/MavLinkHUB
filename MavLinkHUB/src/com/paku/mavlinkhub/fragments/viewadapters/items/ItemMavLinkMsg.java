@@ -39,6 +39,10 @@ public class ItemMavLinkMsg implements Serializable {
 		return "SysId:" + getSysId() + " SeqNo:" + getSeqNo() + " " + getMsg().toString();
 	}
 
+	public String humanDecode() {
+		return toString();
+	}
+
 	public MAVLinkMessage getMsg() {
 		return msg;
 	}

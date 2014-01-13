@@ -63,7 +63,7 @@ public class HUBGlobals extends Application {
 		// has to be first !!!
 		messanger = new HUBMessenger(this);
 
-		hubQueue = new HubQueue(1000);
+		hubQueue = new HubQueue(this, 1000);
 
 		logger = new HUBLogger(this);
 

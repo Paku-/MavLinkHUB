@@ -95,17 +95,9 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 	// get data to fill the list view
 	private ArrayList<ItemMavLinkMsg> generateMavlinkListData() {
 
-		// limit size
-		// / failing pku
-		while (globalVars.logger.mavlinkMsgItemsArray.size() > globalVars.visibleMsgList)
-			globalVars.logger.mavlinkMsgItemsArray.remove(0);
-
-		// flush mem
-		globalVars.logger.mavlinkMsgItemsArray.trimToSize();
-
 		// we need a clone for adapter.
 		ArrayList<ItemMavLinkMsg> clone = new ArrayList<ItemMavLinkMsg>();
-		clone.addAll(globalVars.logger.mavlinkMsgItemsArray);
+		clone.addAll(globalVars.hubQueue.getMsgItemsForUI());
 
 		return clone;
 	}

@@ -8,13 +8,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
-
-import com.paku.mavlinkhub.fragments.viewadapters.items.ItemMavLinkMsg;
 
 public class HUBLogger {
 
@@ -29,10 +26,7 @@ public class HUBLogger {
 	// sys wide in memory logging streams
 	// incoming bytes
 	public ByteArrayOutputStream mInMemIncomingBytesStream;
-
-	// in mem msgItems storage
-	public ArrayList<ItemMavLinkMsg> mavlinkMsgItemsArray;
-
+	// sys log sotrage
 	public ByteArrayOutputStream mInMemSysLogStream;
 
 	// stats vars
@@ -52,9 +46,6 @@ public class HUBLogger {
 		// set the system wide byte storage stream ready for data collecting..
 		mInMemIncomingBytesStream = new ByteArrayOutputStream();
 		mInMemIncomingBytesStream.reset();
-
-		// set the decoded msgItems array ready.
-		mavlinkMsgItemsArray = new ArrayList<ItemMavLinkMsg>();
 
 		restartSysLog();
 		restartByteLog();
@@ -102,15 +93,6 @@ public class HUBLogger {
 		catch (IOException e1) {
 			Log.d(TAG, "[byteLog] " + e1.getMessage());
 		}
-	}
-
-	public void storeMavLinkMsgItem(ItemMavLinkMsg msgItem) {
-		// fill msgs stream with new arrival
-
-		mavlinkMsgItemsArray.add(msgItem);
-		globalVars.messanger.appMsgHandler.obtainMessage(HUBGlobals.MSG_MAVLINK_MSGITEM_READY, -1, -1, msgItem)
-				.sendToTarget();
-
 	}
 
 	public void restartByteLog() {

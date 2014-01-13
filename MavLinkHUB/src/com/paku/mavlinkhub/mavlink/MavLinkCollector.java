@@ -34,10 +34,6 @@ public class MavLinkCollector {
 		if (parserThread != null) parserThread.stopRunning();
 	}
 
-	public String decodeMavlinkMsgItem(ItemMavLinkMsg lastMavLinkMsgItem) {
-		return lastMavLinkMsgItem.toString();
-	}
-
 	public String decodeMavlinkPkg(MAVLinkPacket pkg) {
 
 		return "sysId: " + pkg.sysid + " seqNo: " + pkg.seq;
