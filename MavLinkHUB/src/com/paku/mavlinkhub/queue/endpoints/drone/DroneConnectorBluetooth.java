@@ -1,9 +1,10 @@
-package com.paku.mavlinkhub.communication.connectors;
+package com.paku.mavlinkhub.queue.endpoints.drone;
 
 import java.nio.ByteBuffer;
 
 import com.paku.mavlinkhub.HUBGlobals;
-import com.paku.mavlinkhub.threads.ThreadClientBluetooth;
+import com.paku.mavlinkhub.queue.endpoints.DroneConnector;
+import com.paku.mavlinkhub.threads.ThreadClientConnectBluetooth;
 import com.paku.mavlinkhub.threads.ThreadSocket;
 
 import android.bluetooth.BluetoothAdapter;
@@ -23,9 +24,9 @@ public class DroneConnectorBluetooth extends DroneConnector {
 	private BluetoothDevice mBluetoothDevice;
 	private BluetoothSocket mBluetoothSocket;
 
-	public Handler msgWriterHandler;
+	public Handler handlerDroneReadMsg;
 
-	private ThreadClientBluetooth threadClientBluetooth;
+	private ThreadClientConnectBluetooth threadClientBluetooth;
 	private ThreadSocket socketServiceBT;
 
 	public DroneConnectorBluetooth(Handler messenger) {
@@ -43,7 +44,7 @@ public class DroneConnectorBluetooth extends DroneConnector {
 		}
 		try {
 			mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(address);
-			threadClientBluetooth = new ThreadClientBluetooth(this, mBluetoothAdapter, mBluetoothDevice);
+			threadClientBluetooth = new ThreadClientConnectBluetooth(this, mBluetoothAdapter, mBluetoothDevice);
 			threadClientBluetooth.start();
 			return;
 		}
@@ -59,17 +60,18 @@ public class DroneConnectorBluetooth extends DroneConnector {
 		mBluetoothSocket = socket;
 
 		// start received bytes handler
-		msgWriterHandler = new Handler(Looper.getMainLooper()) {
+		handlerDroneReadMsg = new Handler(Looper.getMainLooper()) {
 			public void handleMessage(Message msg) {
 
 				switch (msg.what) {
 				// Received data
 				case HUBGlobals.MSG_SOCKET_BT_DATA_READY:
 					try {
-						fromDroneConnectorQueue.put(ByteBuffer.wrap((byte[]) msg.obj, 0, msg.arg1));
+						// read bytes from drone
+						inputByteQueue.put(ByteBuffer.wrap((byte[]) msg.obj, 0, msg.arg1));
 					}
 					catch (InterruptedException e) {
-						Log.d(TAG, "fromDroneConnectorQueue add failure");
+						Log.d(TAG, "connectorQueue add failure");
 						e.printStackTrace();
 					}
 					break;
@@ -82,7 +84,7 @@ public class DroneConnectorBluetooth extends DroneConnector {
 		};
 
 		// start receiver thread
-		socketServiceBT = new ThreadSocket(mBluetoothSocket, msgWriterHandler);
+		socketServiceBT = new ThreadSocket(mBluetoothSocket, handlerDroneReadMsg);
 		socketServiceBT.start();
 
 	}
@@ -93,7 +95,7 @@ public class DroneConnectorBluetooth extends DroneConnector {
 
 		try {
 			// stop handler
-			msgWriterHandler.removeMessages(0);
+			handlerDroneReadMsg.removeMessages(0);
 			// strop socket thread
 			socketServiceBT.stopRunning();
 		}

@@ -25,21 +25,21 @@ public class ThreadSocket extends Thread {
 	private final BufferedInputStream input;
 	private final BufferedOutputStream output;
 
-	private final Handler socketMsgReceiverHandler;
-	// msgs depends on our ervice type /BT,TCP etc/
+	private final Handler handlerSocketReadDataReady;
+	// msgs depend on our service type /BT,TCP etc/
 	private final int msgDataReady;
-	private final int msgConnClosed;
+	private final int msgSocketClosed;
 
 	private boolean running = true;
 
 	// BT constructor
-	public ThreadSocket(BluetoothSocket socket, Handler connectorReceiverHandler) {
+	public ThreadSocket(BluetoothSocket socket, Handler handlerReceiver) {
 
 		socketBT = socket;
 		socketTCP = null;
-		socketMsgReceiverHandler = connectorReceiverHandler;
+		handlerSocketReadDataReady = handlerReceiver;
 		msgDataReady = HUBGlobals.MSG_SOCKET_BT_DATA_READY;
-		msgConnClosed = HUBGlobals.MSG_SOCKET_BT_CLOSED;
+		msgSocketClosed = HUBGlobals.MSG_SOCKET_BT_CLOSED;
 
 		InputStream tmpIn = null;
 		OutputStream tmpOut = null;
@@ -62,9 +62,9 @@ public class ThreadSocket extends Thread {
 	public ThreadSocket(Socket socket, Handler connectorReceiverHandler) {
 		this.socketTCP = socket;
 		socketBT = null;
-		socketMsgReceiverHandler = connectorReceiverHandler;
+		handlerSocketReadDataReady = connectorReceiverHandler;
 		msgDataReady = HUBGlobals.MSG_SOCKET_TCP_DATA_READY;
-		msgConnClosed = HUBGlobals.MSG_SOCKET_TCP_CLOSED;
+		msgSocketClosed = HUBGlobals.MSG_SOCKET_TCP_CLOSED;
 
 		InputStream tmpIn = null;
 		OutputStream tmpOut = null;
@@ -88,7 +88,7 @@ public class ThreadSocket extends Thread {
 
 		while (running) {
 			try {
-				// sleep as we are to fast for BT serial :)
+				// BT: sleep as we are to fast for BT serial :)
 				if (socketBT != null) sleep(50);
 			}
 			catch (InterruptedException e1) {
@@ -98,8 +98,8 @@ public class ThreadSocket extends Thread {
 
 				bytes = input.read(buffer, 0, buffer.length);
 				if (bytes > 0) {
-					if (socketMsgReceiverHandler != null)
-						socketMsgReceiverHandler.obtainMessage(msgDataReady, bytes, -1, buffer).sendToTarget();
+					if (handlerSocketReadDataReady != null)
+						handlerSocketReadDataReady.obtainMessage(msgDataReady, bytes, -1, buffer).sendToTarget();
 				}
 				else {
 					Log.d(TAG, "** Empty socket buffer - Connection Error quiting...**");
@@ -136,7 +136,7 @@ public class ThreadSocket extends Thread {
 
 	public void stopRunning() {
 		// stop handler as well
-		socketMsgReceiverHandler.obtainMessage(msgConnClosed).sendToTarget();
+		handlerSocketReadDataReady.obtainMessage(msgSocketClosed).sendToTarget();
 		running = false;
 	}
 }

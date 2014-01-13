@@ -5,9 +5,11 @@ import java.nio.ByteBuffer;
 import com.MAVLink.Parser;
 import com.MAVLink.Messages.MAVLinkPacket;
 import com.paku.mavlinkhub.HUBGlobals;
+import com.paku.mavlinkhub.HubQueue;
+import com.paku.mavlinkhub.enums.ITEM_DIRECTION;
 import com.paku.mavlinkhub.fragments.viewadapters.items.ItemMavLinkMsg;
 
-public class MavLinkParserThread extends Thread {
+public class ThreadDroneMavLinkParser extends Thread {
 
 	private static final String TAG = "MavLinkParser";
 
@@ -20,7 +22,7 @@ public class MavLinkParserThread extends Thread {
 
 	private HUBGlobals globalVars;
 
-	public MavLinkParserThread(HUBGlobals context) {
+	public ThreadDroneMavLinkParser(HUBGlobals context) {
 
 		globalVars = context;
 
@@ -36,7 +38,7 @@ public class MavLinkParserThread extends Thread {
 
 		while (running) {
 
-			buffer = globalVars.droneConnector.getQueueItem();
+			buffer = globalVars.droneConnector.getInputQueueItem();
 
 			// globalVars.logger.sysLog(TAG, "[bytes]: " + bufferLen);
 
@@ -49,10 +51,16 @@ public class MavLinkParserThread extends Thread {
 					// MAVLinkMessage lastMavLinkMsg = lastMavLinkPacket
 					// .unpack();
 
-					ItemMavLinkMsg lastMavLinkMsgItem = new ItemMavLinkMsg(lastMavLinkPacket, 1);
+					ItemMavLinkMsg lastMavLinkMsgItem = new ItemMavLinkMsg(lastMavLinkPacket,
+							ITEM_DIRECTION.FROM_DRONE, 1);
 
-					// stream msg for UI
-					globalVars.logger.storeMavLinkMsgItem(lastMavLinkMsgItem);
+					try {
+						globalVars.hubQueue.putHubQueueItem(lastMavLinkMsgItem);
+					}
+					catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+
 					// stream for syslog
 					globalVars.logger.sysLog("MavlinkMsg",
 							globalVars.mMavLinkCollector.decodeMavlinkMsgItem(lastMavLinkMsgItem));

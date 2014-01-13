@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import com.MAVLink.Messages.MAVLinkMessage;
 import com.MAVLink.Messages.MAVLinkPacket;
+import com.paku.mavlinkhub.enums.ITEM_DIRECTION;
 
 public class ItemMavLinkMsg implements Serializable {
 
@@ -17,14 +18,16 @@ public class ItemMavLinkMsg implements Serializable {
 	private int seqNo;
 	private MAVLinkMessage msg;
 	private long timestamp;
+	private ITEM_DIRECTION direction;
 
-	public ItemMavLinkMsg(MAVLinkPacket pkt, int count) {
+	public ItemMavLinkMsg(MAVLinkPacket pkt, ITEM_DIRECTION direction, int count) {
 		super();
 		this.count = count;
 		setMsg(pkt.unpack());
 		setSeqNo(pkt.seq);
 		setSysId(pkt.sysid);
 		setTimestamp(System.currentTimeMillis());
+		setDirection(direction);
 	}
 
 	public String getCount() {
@@ -66,6 +69,14 @@ public class ItemMavLinkMsg implements Serializable {
 
 	public void setTimestamp(long timestamp) {
 		this.timestamp = timestamp;
+	}
+
+	public ITEM_DIRECTION getDirection() {
+		return direction;
+	}
+
+	public void setDirection(ITEM_DIRECTION direction) {
+		this.direction = direction;
 	}
 
 }

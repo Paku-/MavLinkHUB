@@ -16,7 +16,7 @@ public class MavLinkCollector {
 
 	private MAVLinkStats mMavlinkParserStats;
 
-	private MavLinkParserThread parserThread;
+	private ThreadDroneMavLinkParser parserThread;
 
 	public MavLinkCollector(Context mContext) {
 
@@ -26,7 +26,7 @@ public class MavLinkCollector {
 
 	public void startMavLinkParserThread() {
 
-		parserThread = new MavLinkParserThread(globalVars);
+		parserThread = new ThreadDroneMavLinkParser(globalVars);
 		parserThread.start();
 	}
 
