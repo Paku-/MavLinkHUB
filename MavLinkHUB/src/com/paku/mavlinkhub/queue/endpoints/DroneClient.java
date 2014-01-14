@@ -4,10 +4,10 @@ import com.paku.mavlinkhub.queue.QueueBytes;
 
 import android.os.Handler;
 
-public abstract class DroneConnector extends QueueBytes {
+public abstract class DroneClient extends QueueBytes {
 
 	@SuppressWarnings("unused")
-	private static final String TAG = "DroneConnector";
+	private static final String TAG = "DroneClient";
 
 	// application handler used to report connection states
 	public Handler appMsgHandler;
@@ -26,7 +26,7 @@ public abstract class DroneConnector extends QueueBytes {
 
 	public abstract String getPeerAddress();
 
-	public DroneConnector(Handler handler, int capacity) {
+	public DroneClient(Handler handler, int capacity) {
 		super(capacity);
 		appMsgHandler = handler;
 

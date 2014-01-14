@@ -1,25 +1,25 @@
-package com.paku.mavlinkhub.threads;
+package com.paku.mavlinkhub.queue.endpoints.drone;
 
 import java.io.IOException;
 import java.util.UUID;
 
 import com.paku.mavlinkhub.HUBGlobals;
-import com.paku.mavlinkhub.queue.endpoints.drone.DroneConnectorBluetooth;
+import com.paku.mavlinkhub.enums.APP_STATE;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
-public class ThreadClientConnectBluetooth extends Thread {
+class DroneConnectingBluetoothThread extends Thread {
 	private static final String UUID_SPP = "00001101-0000-1000-8000-00805F9B34FB";
-	private static final String TAG = "ThreadClientConnectBluetooth";
+	private static final String TAG = "DroneConnectingBluetoothThread";
 	private final BluetoothAdapter mmBluetoothAdapter;
 	private final BluetoothSocket mmSocket;
 	private final BluetoothDevice mmDevice;
-	private DroneConnectorBluetooth parentConnector;
+	private DroneClientBluetooth parentConnector;
 
-	public ThreadClientConnectBluetooth(DroneConnectorBluetooth parent, BluetoothAdapter adapter, BluetoothDevice device) {
+	DroneConnectingBluetoothThread(DroneClientBluetooth parent, BluetoothAdapter adapter, BluetoothDevice device) {
 
 		BluetoothSocket tmp = null;
 		mmBluetoothAdapter = adapter;
@@ -49,8 +49,8 @@ public class ThreadClientConnectBluetooth extends Thread {
 			try {
 				mmSocket.close();
 				String msgTxt = connectException.getMessage();
-				parentConnector.appMsgHandler.obtainMessage(HUBGlobals.MSG_DRONE_CONNECTION_FAILED, msgTxt.length(),
-						-1, msgTxt.getBytes()).sendToTarget();
+				parentConnector.appMsgHandler.obtainMessage(APP_STATE.MSG_DRONE_CONNECTION_FAILED.ordinal(),
+						msgTxt.length(), -1, msgTxt.getBytes()).sendToTarget();
 			}
 			catch (IOException closeException) {
 				Log.d(TAG, "Exception: [Failed Connection Attempt: close failed as well]" + closeException.getMessage());

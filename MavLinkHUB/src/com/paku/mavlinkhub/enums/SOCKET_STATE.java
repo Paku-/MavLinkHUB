@@ -1,0 +1,7 @@
+package com.paku.mavlinkhub.enums;
+
+public enum SOCKET_STATE {
+
+	MSG_SOCKET_TCP_SERVER_CLIENT_CONNECTION, MSG_SOCKET_DATA_READY, MSG_SOCKET_CLOSED
+
+}

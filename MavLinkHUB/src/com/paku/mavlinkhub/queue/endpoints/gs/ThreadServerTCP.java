@@ -1,9 +1,15 @@
-package com.paku.mavlinkhub.threads;
+package com.paku.mavlinkhub.queue.endpoints.gs;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import com.paku.mavlinkhub.HUBGlobals;
+import com.paku.mavlinkhub.enums.DEV_LIST_STATE;
+import com.paku.mavlinkhub.enums.SOCKET_STATE;
+import com.paku.mavlinkhub.threads.ThreadSocket;
+
+import android.os.Handler;
 import android.util.Log;
 
 public class ThreadServerTCP extends Thread {
@@ -12,9 +18,10 @@ public class ThreadServerTCP extends Thread {
 
 	Socket socket;
 	ServerSocket serverSocket;
+	Handler handlerServerReadMsg;
 	public boolean running = true;
 
-	public ThreadServerTCP(int port) {
+	public ThreadServerTCP(Handler handler, int port) {
 		try {
 
 			serverSocket = new ServerSocket(port);
@@ -23,6 +30,8 @@ public class ThreadServerTCP extends Thread {
 			e.printStackTrace();
 		}
 
+		handlerServerReadMsg = handler;
+
 	}
 
 	public void run() {
@@ -30,9 +39,11 @@ public class ThreadServerTCP extends Thread {
 			try {
 				Log.d(TAG, "Accept wait");
 				socket = serverSocket.accept();
-				ThreadSocket socketServiceTCP = new ThreadSocket(socket, null);
+				ThreadSocket socketServiceTCP = new ThreadSocket(socket, handlerServerReadMsg);
 				socketServiceTCP.start();
-				Log.d(TAG, "Socket Started");
+				handlerServerReadMsg.obtainMessage(SOCKET_STATE.MSG_SOCKET_TCP_SERVER_CLIENT_CONNECTION.ordinal())
+						.sendToTarget();
+				Log.d(TAG, "New Connection: TCP Socket Started");
 			}
 			catch (IOException e) {
 				e.printStackTrace();

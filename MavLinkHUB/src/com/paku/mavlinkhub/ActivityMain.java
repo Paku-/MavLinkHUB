@@ -57,7 +57,7 @@ public class ActivityMain extends FragmentActivity implements IDataUpdateStats {
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
 		// register for call interface;
-		globalVars.messanger.mainActivity = this;
+		globalVars.messenger.mainActivity = this;
 
 		progressBarConnected.getIndeterminateDrawable().setColorFilter(0xFFFF0000,
 				android.graphics.PorterDuff.Mode.MULTIPLY);
@@ -70,7 +70,7 @@ public class ActivityMain extends FragmentActivity implements IDataUpdateStats {
 		super.onPause();
 
 		// unregister from call interface;
-		globalVars.messanger.mainActivity = null;
+		globalVars.messenger.mainActivity = null;
 	}
 
 	@Override
@@ -115,11 +115,11 @@ public class ActivityMain extends FragmentActivity implements IDataUpdateStats {
 			}
 		};
 
-		if (globalVars.droneConnector.isConnected()) {
+		if (globalVars.droneClient.isConnected()) {
 
 			final AlertDialog.Builder dlg = new AlertDialog.Builder(this);
 			dlg.setTitle(getString(R.string.close_dlg_title_mavlink_closing) + "["
-					+ globalVars.droneConnector.getPeerName() + "]");
+					+ globalVars.droneClient.getPeerName() + "]");
 			dlg.setMessage(R.string.close_dlg_msg_current_connection_will_be_lost);
 			dlg.setCancelable(false);
 			dlg.setPositiveButton(R.string.close_dlg_positive, positiveButtonClickListener);
@@ -152,7 +152,7 @@ public class ActivityMain extends FragmentActivity implements IDataUpdateStats {
 
 	private void closeHUB() {
 		globalVars.logger.sysLog(TAG, "MavLinkHUB closing ...");
-		globalVars.droneConnector.stopConnection();
+		globalVars.droneClient.stopConnection();
 		globalVars.mMavLinkCollector.stopMavLinkParserThread();
 		globalVars.logger.stopAllLogs();
 	}

@@ -1,5 +1,6 @@
 package com.paku.mavlinkhub;
 
+import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.enums.UI_MODE;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -25,28 +26,23 @@ public class HUBMessenger extends HUBInterfaceManager {
 		appMsgHandler = new Handler(Looper.getMainLooper()) {
 			public void handleMessage(Message msg) {
 
-				switch (msg.what) {
+				APP_STATE[] appStates = APP_STATE.values();
+				switch (appStates[msg.what]) {
 				// Received MLmsg
-				case HUBGlobals.MSG_MAVLINK_MSGITEM_READY:
-					// ItemMavLinkMsg mavlinkMsg = (ItemMavLinkMsg) msg.obj;
+				case MSG_MAVLINK_MSGITEM_READY:
+					// no action yet
 					break;
 				// all data logged in
-				case HUBGlobals.MSG_DATA_UPDATE_SYSLOG:
+				case MSG_DATA_UPDATE_SYSLOG:
 					processOnDataUpdateSysLog();
 					break;
-				case HUBGlobals.MSG_DATA_UPDATE_BYTELOG:
+				case MSG_DATA_UPDATE_BYTELOG:
 					processOnDataUpdateByteLog();
 					break;
-				case HUBGlobals.MSG_DATA_UPDATE_STATS:
+				case MSG_DATA_UPDATE_STATS:
 					processOnDataUpdateStats();
 					break;
-
-				case HUBGlobals.MSG_SOCKET_BT_DATA_READY: // not here
-					break;
-				case HUBGlobals.MSG_SOCKET_TCP_DATA_READY: // not here
-					break;
-
-				case HUBGlobals.MSG_DRONE_CONNECTION_FAILED:
+				case MSG_DRONE_CONNECTION_FAILED:
 					String msgTxt = new String((byte[]) msg.obj);
 					processOnConnectionFailed(globalVars.getString(R.string.connection_failure) + msgTxt);
 					break;

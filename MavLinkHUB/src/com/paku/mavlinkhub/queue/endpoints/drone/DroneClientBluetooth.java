@@ -3,8 +3,8 @@ package com.paku.mavlinkhub.queue.endpoints.drone;
 import java.nio.ByteBuffer;
 
 import com.paku.mavlinkhub.HUBGlobals;
-import com.paku.mavlinkhub.queue.endpoints.DroneConnector;
-import com.paku.mavlinkhub.threads.ThreadClientConnectBluetooth;
+import com.paku.mavlinkhub.enums.SOCKET_STATE;
+import com.paku.mavlinkhub.queue.endpoints.DroneClient;
 import com.paku.mavlinkhub.threads.ThreadSocket;
 
 import android.bluetooth.BluetoothAdapter;
@@ -15,27 +15,26 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
-public class DroneConnectorBluetooth extends DroneConnector {
+public class DroneClientBluetooth extends DroneClient {
 
-	private static final String TAG = "DroneConnectorBluetooth";
+	private static final String TAG = "DroneClientBluetooth";
 	private static final int sizeBuff = 1024;
 
 	private final BluetoothAdapter mBluetoothAdapter;
 	private BluetoothDevice mBluetoothDevice;
 	private BluetoothSocket mBluetoothSocket;
 
-	public Handler handlerDroneReadMsg;
+	private Handler handlerDroneMsgRead;
 
-	private ThreadClientConnectBluetooth threadClientBluetooth;
+	private DroneConnectingBluetoothThread droneConnectingBluetoothThread;
 	private ThreadSocket socketServiceBT;
 
-	public DroneConnectorBluetooth(Handler messenger) {
+	public DroneClientBluetooth(Handler messenger) {
 		super(messenger, sizeBuff);
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 	}
 
 	@Override
-	// return value makes no-sense here - status is unknown.
 	public void startConnection(String address) {
 
 		// start connection threat
@@ -44,8 +43,10 @@ public class DroneConnectorBluetooth extends DroneConnector {
 		}
 		try {
 			mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(address);
-			threadClientBluetooth = new ThreadClientConnectBluetooth(this, mBluetoothAdapter, mBluetoothDevice);
-			threadClientBluetooth.start();
+			// create and start BT specific connection thread
+			droneConnectingBluetoothThread = new DroneConnectingBluetoothThread(this, mBluetoothAdapter,
+					mBluetoothDevice);
+			droneConnectingBluetoothThread.start();
 			return;
 		}
 		catch (Exception e) {
@@ -60,22 +61,18 @@ public class DroneConnectorBluetooth extends DroneConnector {
 		mBluetoothSocket = socket;
 
 		// start received bytes handler
-		handlerDroneReadMsg = new Handler(Looper.getMainLooper()) {
+		handlerDroneMsgRead = new Handler(Looper.getMainLooper()) {
 			public void handleMessage(Message msg) {
 
-				switch (msg.what) {
+				SOCKET_STATE[] socketStates = SOCKET_STATE.values();
+				switch (socketStates[msg.what]) {
 				// Received data
-				case HUBGlobals.MSG_SOCKET_BT_DATA_READY:
-					try {
-						// read bytes from drone
-						inputByteQueue.put(ByteBuffer.wrap((byte[]) msg.obj, 0, msg.arg1));
-					}
-					catch (InterruptedException e) {
-						Log.d(TAG, "connectorQueue add failure");
-						e.printStackTrace();
-					}
+				case MSG_SOCKET_DATA_READY:
+					// read bytes from drone
+					putInputQueueItem(ByteBuffer.wrap((byte[]) msg.obj, 0, msg.arg1));
 					break;
-				case HUBGlobals.MSG_SOCKET_BT_CLOSED:
+				// closing so kill itself
+				case MSG_SOCKET_CLOSED:
 					removeMessages(0);
 				default:
 					super.handleMessage(msg);
@@ -84,7 +81,7 @@ public class DroneConnectorBluetooth extends DroneConnector {
 		};
 
 		// start receiver thread
-		socketServiceBT = new ThreadSocket(mBluetoothSocket, handlerDroneReadMsg);
+		socketServiceBT = new ThreadSocket(mBluetoothSocket, handlerDroneMsgRead);
 		socketServiceBT.start();
 
 	}
@@ -95,7 +92,7 @@ public class DroneConnectorBluetooth extends DroneConnector {
 
 		try {
 			// stop handler
-			handlerDroneReadMsg.removeMessages(0);
+			handlerDroneMsgRead.removeMessages(0);
 			// strop socket thread
 			socketServiceBT.stopRunning();
 		}

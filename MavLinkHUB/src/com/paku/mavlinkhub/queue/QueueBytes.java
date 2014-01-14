@@ -10,8 +10,8 @@ public abstract class QueueBytes {
 
 	private static final String TAG = "QueueBytes";
 
-	protected final BlockingQueue<ByteBuffer> inputByteQueue;
-	protected final BlockingQueue<ByteBuffer> outputByteQueue;
+	private final BlockingQueue<ByteBuffer> inputByteQueue;
+	private final BlockingQueue<ByteBuffer> outputByteQueue;
 
 	public QueueBytes(int capacity) {
 

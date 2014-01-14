@@ -43,14 +43,14 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		globalVars.messanger.registerForOnDataUpdateByteLog(this);
+		globalVars.messenger.registerForOnDataUpdateByteLog(this);
 		refreshUI();
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
-		globalVars.messanger.unregisterFromOnDataUpdateByteLog(this);
+		globalVars.messenger.unregisterFromOnDataUpdateByteLog(this);
 	}
 
 	public void refreshUI() {

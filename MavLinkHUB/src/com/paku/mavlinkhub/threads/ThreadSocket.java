@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 import com.paku.mavlinkhub.HUBGlobals;
+import com.paku.mavlinkhub.enums.SOCKET_STATE;
 
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
@@ -25,10 +26,7 @@ public class ThreadSocket extends Thread {
 	private final BufferedInputStream input;
 	private final BufferedOutputStream output;
 
-	private final Handler handlerSocketReadDataReady;
-	// msgs depend on our service type /BT,TCP etc/
-	private final int msgDataReady;
-	private final int msgSocketClosed;
+	private final Handler handlerSocketMsgReceiver;
 
 	private boolean running = true;
 
@@ -37,9 +35,7 @@ public class ThreadSocket extends Thread {
 
 		socketBT = socket;
 		socketTCP = null;
-		handlerSocketReadDataReady = handlerReceiver;
-		msgDataReady = HUBGlobals.MSG_SOCKET_BT_DATA_READY;
-		msgSocketClosed = HUBGlobals.MSG_SOCKET_BT_CLOSED;
+		handlerSocketMsgReceiver = handlerReceiver;
 
 		InputStream tmpIn = null;
 		OutputStream tmpOut = null;
@@ -59,12 +55,10 @@ public class ThreadSocket extends Thread {
 	}
 
 	// TCP constructor
-	public ThreadSocket(Socket socket, Handler connectorReceiverHandler) {
+	public ThreadSocket(Socket socket, Handler handlerReceiver) {
 		this.socketTCP = socket;
 		socketBT = null;
-		handlerSocketReadDataReady = connectorReceiverHandler;
-		msgDataReady = HUBGlobals.MSG_SOCKET_TCP_DATA_READY;
-		msgSocketClosed = HUBGlobals.MSG_SOCKET_TCP_CLOSED;
+		handlerSocketMsgReceiver = handlerReceiver;
 
 		InputStream tmpIn = null;
 		OutputStream tmpOut = null;
@@ -98,8 +92,8 @@ public class ThreadSocket extends Thread {
 
 				bytes = input.read(buffer, 0, buffer.length);
 				if (bytes > 0) {
-					if (handlerSocketReadDataReady != null)
-						handlerSocketReadDataReady.obtainMessage(msgDataReady, bytes, -1, buffer).sendToTarget();
+					handlerSocketMsgReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_DATA_READY.ordinal(), bytes, -1,
+							buffer).sendToTarget();
 				}
 				else {
 					Log.d(TAG, "** Empty socket buffer - Connection Error quiting...**");
@@ -136,7 +130,7 @@ public class ThreadSocket extends Thread {
 
 	public void stopRunning() {
 		// stop handler as well
-		handlerSocketReadDataReady.obtainMessage(msgSocketClosed).sendToTarget();
+		handlerSocketMsgReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_CLOSED.ordinal()).sendToTarget();
 		running = false;
 	}
 }

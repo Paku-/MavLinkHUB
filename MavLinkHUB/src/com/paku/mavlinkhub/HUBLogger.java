@@ -10,6 +10,8 @@ import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.paku.mavlinkhub.enums.APP_STATE;
+
 import android.annotation.SuppressLint;
 import android.util.Log;
 
@@ -64,7 +66,7 @@ public class HUBLogger {
 			mFileSysLogStream.write(tempStr.getBytes(), 0, tempStr.length());
 			mInMemSysLogStream.write(tempStr.getBytes(), 0, tempStr.length());
 			releaseLock();
-			globalVars.messanger.appMsgHandler.obtainMessage(HUBGlobals.MSG_DATA_UPDATE_SYSLOG).sendToTarget();
+			globalVars.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_SYSLOG.ordinal()).sendToTarget();
 		}
 		catch (IOException e1) {
 			Log.d(TAG, "[sysLog] " + e1.getMessage());
@@ -87,8 +89,9 @@ public class HUBLogger {
 			mInMemIncomingBytesStream.write(buffer.array(), 0, buffer.limit());
 			releaseLock();
 			statsReadByteCount += buffer.limit();
-			globalVars.messanger.appMsgHandler.obtainMessage(HUBGlobals.MSG_DATA_UPDATE_STATS).sendToTarget();
-			globalVars.messanger.appMsgHandler.obtainMessage(HUBGlobals.MSG_DATA_UPDATE_BYTELOG).sendToTarget();
+			globalVars.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_STATS.ordinal()).sendToTarget();
+			globalVars.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_BYTELOG.ordinal())
+					.sendToTarget();
 		}
 		catch (IOException e1) {
 			Log.d(TAG, "[byteLog] " + e1.getMessage());

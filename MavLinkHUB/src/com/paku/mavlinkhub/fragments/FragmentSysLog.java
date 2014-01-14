@@ -38,14 +38,14 @@ public class FragmentSysLog extends HUBFragment implements IDataUpdateSysLog {
 	@Override
 	public void onResume() {
 		super.onResume();
-		globalVars.messanger.registerForOnDataUpdateSysLog(this);
+		globalVars.messenger.registerForOnDataUpdateSysLog(this);
 		refreshUI();
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
-		globalVars.messanger.unregisterFromOnDataUpdateSysLog(this);
+		globalVars.messenger.unregisterFromOnDataUpdateSysLog(this);
 	}
 
 	public void refreshUI() {

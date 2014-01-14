@@ -2,10 +2,8 @@ package com.paku.mavlinkhub.mavlink;
 
 import android.content.Context;
 
-import com.MAVLink.Messages.MAVLinkPacket;
 import com.MAVLink.Messages.MAVLinkStats;
 import com.paku.mavlinkhub.HUBGlobals;
-import com.paku.mavlinkhub.fragments.viewadapters.items.ItemMavLinkMsg;
 
 public class MavLinkCollector {
 
@@ -16,7 +14,7 @@ public class MavLinkCollector {
 
 	private MAVLinkStats mMavlinkParserStats;
 
-	private ThreadDroneMavLinkParser parserThread;
+	private ThreadMavLinkParser parserThread;
 
 	public MavLinkCollector(Context mContext) {
 
@@ -26,18 +24,12 @@ public class MavLinkCollector {
 
 	public void startMavLinkParserThread() {
 
-		parserThread = new ThreadDroneMavLinkParser(globalVars);
+		parserThread = new ThreadMavLinkParser(globalVars);
 		parserThread.start();
 	}
 
 	public void stopMavLinkParserThread() {
 		if (parserThread != null) parserThread.stopRunning();
-	}
-
-	public String decodeMavlinkPkg(MAVLinkPacket pkg) {
-
-		return "sysId: " + pkg.sysid + " seqNo: " + pkg.seq;
-
 	}
 
 	public String getLastParserStats() {

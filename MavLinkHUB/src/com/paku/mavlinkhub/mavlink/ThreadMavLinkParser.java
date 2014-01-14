@@ -8,7 +8,7 @@ import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.enums.ITEM_DIRECTION;
 import com.paku.mavlinkhub.fragments.viewadapters.items.ItemMavLinkMsg;
 
-public class ThreadDroneMavLinkParser extends Thread {
+public class ThreadMavLinkParser extends Thread {
 
 	private static final String TAG = "MavLinkParser";
 
@@ -21,7 +21,7 @@ public class ThreadDroneMavLinkParser extends Thread {
 
 	private HUBGlobals globalVars;
 
-	public ThreadDroneMavLinkParser(HUBGlobals context) {
+	public ThreadMavLinkParser(HUBGlobals context) {
 
 		globalVars = context;
 
@@ -37,7 +37,7 @@ public class ThreadDroneMavLinkParser extends Thread {
 
 		while (running) {
 
-			buffer = globalVars.droneConnector.getInputQueueItem();
+			buffer = globalVars.droneClient.getInputQueueItem();
 
 			// globalVars.logger.sysLog(TAG, "[bytes]: " + bufferLen);
 
@@ -52,13 +52,7 @@ public class ThreadDroneMavLinkParser extends Thread {
 							ITEM_DIRECTION.FROM_DRONE, 1);
 
 					// store item for distribution and UI update
-					try {
-						globalVars.hubQueue.putHubQueueItem(lastMavLinkMsgItem);
-					}
-					catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-
+					globalVars.hubQueue.putHubQueueItem(lastMavLinkMsgItem);
 					// stream for syslog
 					globalVars.logger.sysLog("MavlinkMsg", lastMavLinkMsgItem.humanDecode());
 					// store parser stats

@@ -7,6 +7,7 @@ import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.communication.devicelist.ListPeerDevicesBluetooth;
 import com.paku.mavlinkhub.communication.devicelist.ItemPeerDevice;
+import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.enums.PEER_DEV_STATE;
 import com.paku.mavlinkhub.fragments.viewadapters.ViewAdapterPeerDevsList;
 import com.paku.mavlinkhub.interfaces.IConnectionFailed;
@@ -58,8 +59,8 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 	@Override
 	public void onResume() {
 		super.onResume();
-		globalVars.messanger.registerForOnUiModeChanged(this);
-		globalVars.messanger.registerForOnConnectionFailed(this);
+		globalVars.messenger.registerForOnUiModeChanged(this);
+		globalVars.messenger.registerForOnConnectionFailed(this);
 		refreshUI();
 
 	}
@@ -138,7 +139,9 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 			return;
 		case ERROR_ADAPTER_OFF:
 			Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-			this.startActivityForResult(enableBtIntent, HUBGlobals.REQUEST_ENABLE_BT);
+			// this.startActivityForResult(enableBtIntent,
+			// APP_STATE.REQUEST_ENABLE_BT);
+			this.startActivity(enableBtIntent);
 			return;
 		case ERROR_NO_BONDED_DEV:
 			Toast.makeText(getActivity().getApplicationContext(),
@@ -167,14 +170,14 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 			switch (selectedDev.getState()) {
 			case DEV_STATE_UNKNOWN:
 			case DEV_STATE_DISCONNECTED:
-				if (!globalVars.droneConnector.isConnected()) {
+				if (!globalVars.droneClient.isConnected()) {
 					globalVars.logger.sysLog(TAG, "Connecting...");
-					globalVars.logger.sysLog(TAG, "Me  : " + globalVars.droneConnector.getMyName() + " ["
-							+ globalVars.droneConnector.getMyAddress() + "]");
+					globalVars.logger.sysLog(TAG, "Me  : " + globalVars.droneClient.getMyName() + " ["
+							+ globalVars.droneClient.getMyAddress() + "]");
 					globalVars.logger.sysLog(TAG, "Peer: " + selectedDev.getName() + " [" + selectedDev.getAddress()
 							+ "]");
 
-					globalVars.droneConnector.startConnection(selectedDev.getAddress());
+					globalVars.droneClient.startConnection(selectedDev.getAddress());
 					globalVars.mMavLinkCollector.startMavLinkParserThread();
 
 					btDevList.setDevState(position, PEER_DEV_STATE.DEV_STATE_CONNECTED);
@@ -187,9 +190,9 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 				break;
 
 			case DEV_STATE_CONNECTED:
-				if (globalVars.droneConnector.isConnected()) {
+				if (globalVars.droneClient.isConnected()) {
 					globalVars.logger.sysLog(TAG, "Closing Connection ...");
-					globalVars.droneConnector.stopConnection();
+					globalVars.droneClient.stopConnection();
 					globalVars.mMavLinkCollector.stopMavLinkParserThread();
 					btDevList.setDevState(position, PEER_DEV_STATE.DEV_STATE_DISCONNECTED);
 				}
@@ -212,7 +215,7 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 	public void onConnectionFailed(String errorMsg) {
 
 		globalVars.logger.sysLog(TAG, errorMsg);
-		globalVars.droneConnector.stopConnection();
+		globalVars.droneClient.stopConnection();
 		globalVars.mMavLinkCollector.stopMavLinkParserThread();
 
 		Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_SHORT).show();
