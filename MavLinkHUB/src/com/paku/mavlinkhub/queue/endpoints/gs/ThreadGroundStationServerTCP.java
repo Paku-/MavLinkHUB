@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.net.SocketException;
 
 import com.paku.mavlinkhub.enums.SOCKET_STATE;
-import com.paku.mavlinkhub.threads.ThreadSocket;
+import com.paku.mavlinkhub.utils.ThreadSocket;
 
 import android.os.Handler;
 import android.util.Log;

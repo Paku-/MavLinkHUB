@@ -8,7 +8,7 @@ import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.enums.MSG_SOURCE;
 import com.paku.mavlinkhub.fragments.viewadapters.items.ItemMavLinkMsg;
 
-public class ThreadMavLinkMsgParser extends Thread {
+public class ThreadMAVLinkParser extends Thread {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "MavLinkParser";
@@ -16,13 +16,13 @@ public class ThreadMavLinkMsgParser extends Thread {
 	private final Parser parserDrone, parserGS;
 	MAVLinkPacket tmpPacket = null;
 
-	private ByteBuffer buffer = null;
+	private ByteBuffer tmpBuffer = null;
 
 	private boolean running = true;
 
 	private final HUBGlobals globalVars;
 
-	public ThreadMavLinkMsgParser(HUBGlobals context) {
+	public ThreadMAVLinkParser(HUBGlobals context) {
 
 		globalVars = context;
 
@@ -35,45 +35,48 @@ public class ThreadMavLinkMsgParser extends Thread {
 
 	public void run() {
 
-		globalVars.logger.sysLog("[MavLink Parser]", "Start...");
+		globalVars.logger.sysLog("MavLink Parser", "Start...");
 
 		while (running) {
 
 			parse(MSG_SOURCE.FROM_DRONE);
 			// save transmission from drone
-			globalVars.logger.byteLog(buffer);
+			globalVars.logger.byteLog(MSG_SOURCE.FROM_DRONE, tmpBuffer);
 			parse(MSG_SOURCE.FROM_GS);
 
 		}
 
-		globalVars.logger.sysLog("[MavLink Parser]", "...Stop");
+		globalVars.logger.sysLog("MavLink Parser", "...Stop");
 	}
 
-	private void parse(MSG_SOURCE source) {
+	private void parse(MSG_SOURCE direction) {
 
-		switch (source) {
+		switch (direction) {
 		case FROM_DRONE:
-			buffer = globalVars.droneClient.getInputQueueItem();
+			tmpBuffer = globalVars.droneClient.getInputQueueItem();
 			break;
 		case FROM_GS:
-			buffer = globalVars.gsServer.getInputQueueItem();
+			tmpBuffer = globalVars.gsServer.getInputQueueItem();
 			break;
 		default:
 			break;
 		}
 
-		if (buffer != null) {
+		if (tmpBuffer != null) {
 
 			tmpPacket = null;
 
-			for (int i = 0; i < buffer.limit(); i++) {
+			// add bytes count to the stats
+			globalVars.logger.hubStats.addByteStats(direction, tmpBuffer.limit());
 
-				switch (source) {
+			for (int i = 0; i < tmpBuffer.limit(); i++) {
+
+				switch (direction) {
 				case FROM_DRONE:
-					tmpPacket = parserDrone.mavlink_parse_char(buffer.get(i) & 0x00ff);
+					tmpPacket = parserDrone.mavlink_parse_char(tmpBuffer.get(i) & 0x00ff);
 					break;
 				case FROM_GS:
-					tmpPacket = parserGS.mavlink_parse_char(buffer.get(i) & 0x00ff);
+					tmpPacket = parserGS.mavlink_parse_char(tmpBuffer.get(i) & 0x00ff);
 					break;
 				default:
 					break;
@@ -81,22 +84,23 @@ public class ThreadMavLinkMsgParser extends Thread {
 
 				if (tmpPacket != null) {
 
-					// 1 here is for msg repetition count as we do not support
-					// packet multiplication yes :(
-					ItemMavLinkMsg tmpMsgItem = new ItemMavLinkMsg(tmpPacket, source, 1);
+					// 1 is here for msg repetition count; it's 1 as we do not
+					// support
+					// packet multiplication yet :(
+					ItemMavLinkMsg tmpMsgItem = new ItemMavLinkMsg(tmpPacket, direction, 1);
 
 					// store item for distribution and UI update
-					globalVars.msgCenter.putHubQueueItem(tmpMsgItem);
+					globalVars.mavlinkQueue.putHubQueueItem(tmpMsgItem);
 					// stream for syslog
 					globalVars.logger.sysLog("MavlinkMsg", tmpMsgItem.humanDecode());
 
 					// store parser stats
-					switch (source) {
+					switch (direction) {
 					case FROM_DRONE:
-						globalVars.msgCenter.mavlinkCollector.storeLastParserStats(source, parserDrone.stats);
+						globalVars.logger.hubStats.setParserStats(direction, parserDrone.stats);
 						break;
 					case FROM_GS:
-						globalVars.msgCenter.mavlinkCollector.storeLastParserStats(source, parserGS.stats);
+						globalVars.logger.hubStats.setParserStats(direction, parserGS.stats);
 						break;
 					default:
 						break;

@@ -23,8 +23,9 @@ public abstract class QueueBytes {
 	public Handler appMsgHandler;
 
 	protected QueueBytes(Handler msgCenter, int capacity) {
-
+		// to the device
 		outputByteQueue = new ArrayBlockingQueue<ByteBuffer>(capacity);
+		// from the device
 		inputByteQueue = new ArrayBlockingQueue<ByteBuffer>(capacity);
 
 		this.appMsgHandler = msgCenter;

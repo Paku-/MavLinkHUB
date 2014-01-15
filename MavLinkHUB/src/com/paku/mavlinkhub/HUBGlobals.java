@@ -7,7 +7,7 @@ import com.paku.mavlinkhub.queue.endpoints.DroneClient;
 import com.paku.mavlinkhub.queue.endpoints.GroundStationServer;
 import com.paku.mavlinkhub.queue.endpoints.drone.DroneClientBluetooth;
 import com.paku.mavlinkhub.queue.endpoints.gs.GroundStationServerTCP;
-import com.paku.mavlinkhub.queue.msgcenter.MavlinkMsgCenter;
+import com.paku.mavlinkhub.queue.msgcenter.MAVLinkQueue;
 
 import android.app.Application;
 import android.content.Context;
@@ -34,7 +34,7 @@ public class HUBGlobals extends Application {
 	public GroundStationServer gsServer;
 
 	// main ItemMavLinkMsg objects queue
-	public MavlinkMsgCenter msgCenter;
+	public MAVLinkQueue mavlinkQueue;
 
 	// sys log stats holder object
 	public HUBLogger logger;
@@ -55,13 +55,15 @@ public class HUBGlobals extends Application {
 
 		logger = new HUBLogger(this);
 
-		msgCenter = new MavlinkMsgCenter(this, 200);
-
 		droneClient = new DroneClientBluetooth(messenger.appMsgHandler);
 
 		// server started from the beginning
 		gsServer = new GroundStationServerTCP(messenger.appMsgHandler);
 		gsServer.startServer(5760);
+
+		// finally start parsers
+		mavlinkQueue = new MAVLinkQueue(this, 200);
+		mavlinkQueue.msgCollector.startMAVLinkParserThread();
 
 	}
 

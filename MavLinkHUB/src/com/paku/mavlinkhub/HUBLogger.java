@@ -11,6 +11,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.paku.mavlinkhub.enums.APP_STATE;
+import com.paku.mavlinkhub.enums.MSG_SOURCE;
+import com.paku.mavlinkhub.utils.HUBStats;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
@@ -32,12 +34,16 @@ public class HUBLogger {
 	public ByteArrayOutputStream mInMemSysLogStream;
 
 	// stats vars
-	public int statsReadByteCount = 0;
 	private boolean lock = false;
+
+	// system stats holding object
+	public HUBStats hubStats;
 
 	public HUBLogger(HUBGlobals context) {
 
 		globalVars = context;
+
+		hubStats = new HUBStats();
 
 		// **** memory logging/store
 
@@ -80,16 +86,16 @@ public class HUBLogger {
 
 	}
 
-	public void byteLog(ByteBuffer buffer) {
+	public void byteLog(MSG_SOURCE direction, ByteBuffer buffer) {
 
-		if (buffer != null) {
+		// log only Drone data to the bytelog file
+		if (buffer != null && direction == MSG_SOURCE.FROM_DRONE) {
 			try {
 
 				waitForLock();
 				mFileByteLogStream.write(buffer.array(), 0, buffer.limit());
 				mInMemIncomingBytesStream.write(buffer.array(), 0, buffer.limit());
 				releaseLock();
-				statsReadByteCount += buffer.limit();
 				globalVars.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_STATS.ordinal())
 						.sendToTarget();
 				globalVars.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_BYTELOG.ordinal())

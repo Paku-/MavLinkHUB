@@ -1,7 +1,7 @@
 package com.paku.mavlinkhub.queue.endpoints.drone;
 
 import com.paku.mavlinkhub.queue.endpoints.DroneClient;
-import com.paku.mavlinkhub.threads.ThreadSocket;
+import com.paku.mavlinkhub.utils.ThreadSocket;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;

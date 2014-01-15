@@ -1,4 +1,4 @@
-package com.paku.mavlinkhub.threads;
+package com.paku.mavlinkhub.utils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -81,7 +81,7 @@ public class ThreadSocket extends Thread {
 
 		while (running) {
 			try {
-				// BT: sleep as we are to fast for BT serial :)
+				// for BT: sleep as we are to fast for BT serial :)
 				if (socketBT != null) sleep(50);
 			}
 			catch (InterruptedException e1) {
@@ -97,8 +97,7 @@ public class ThreadSocket extends Thread {
 				else {
 					Log.d(TAG, "** Empty socket buffer - Connection Error...**");
 					handlerSocketMsgReceiver.obtainMessage(
-							SOCKET_STATE.MSG_SOCKET_TCP_SERVER_CLIENT_DISCONNECTED.ordinal())
-							.sendToTarget();
+							SOCKET_STATE.MSG_SOCKET_TCP_SERVER_CLIENT_DISCONNECTED.ordinal()).sendToTarget();
 					running = false;
 				}
 			}

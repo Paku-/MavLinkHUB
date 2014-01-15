@@ -115,7 +115,7 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 	// to be called on possible peer BT device state change (connect disconnect
 	// etc)
 	private void refreshBtDevListView() {
-		final ArrayList<ItemPeerDevice> clone = new ArrayList<ItemPeerDevice>();
+		ArrayList<ItemPeerDevice> clone = new ArrayList<ItemPeerDevice>();
 		clone.addAll(btDevList.getDeviceList());
 		devListAdapter.clear();
 		devListAdapter.addAll(clone);
@@ -171,7 +171,7 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 							+ "]");
 
 					globalVars.droneClient.startConnection(selectedDev.getAddress());
-					globalVars.msgCenter.mavlinkCollector.startMavLinkParserThread();
+					// globalVars.mavlinkQueue.msgCollector.startMAVLinkParserThread();
 
 					btDevList.setDevState(position, PEER_DEV_STATE.DEV_STATE_CONNECTED);
 				}
@@ -186,7 +186,7 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 				if (globalVars.droneClient.isConnected()) {
 					globalVars.logger.sysLog(TAG, "Closing Connection ...");
 					globalVars.droneClient.stopClient();
-					globalVars.msgCenter.mavlinkCollector.stopMavLinkParserThread();
+					// globalVars.mavlinkQueue.msgCollector.stopMAVLinkParserThread();
 					btDevList.setDevState(position, PEER_DEV_STATE.DEV_STATE_DISCONNECTED);
 				}
 				else {
@@ -208,7 +208,7 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 
 		globalVars.logger.sysLog(TAG, errorMsg);
 		globalVars.droneClient.stopClient();
-		globalVars.msgCenter.mavlinkCollector.stopMavLinkParserThread();
+		// globalVars.mavlinkQueue.msgCollector.stopMAVLinkParserThread();
 
 		Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_SHORT).show();
 

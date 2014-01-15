@@ -152,13 +152,13 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 		globalVars.logger.sysLog(TAG, "MavLinkHUB closing ...");
 		globalVars.droneClient.stopClient();
 		globalVars.gsServer.stopServer();
-		globalVars.msgCenter.mavlinkCollector.stopMavLinkParserThread();
+		globalVars.mavlinkQueue.msgCollector.stopMAVLinkParserThread();
 		globalVars.logger.stopAllLogs();
 	}
 
 	private void refreshStats() {
 		final TextView mTextViewLogStats = (TextView) findViewById(R.id.textView_system_status_bar);
-		mTextViewLogStats.setText(globalVars.msgCenter.mavlinkCollector.getLastParserStats(MSG_SOURCE.FROM_DRONE));
+		mTextViewLogStats.setText(globalVars.logger.hubStats.toString(MSG_SOURCE.FROM_ALL));
 	}
 
 	public void enableProgressBar(boolean on) {

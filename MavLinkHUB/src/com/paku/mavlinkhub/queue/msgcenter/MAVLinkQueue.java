@@ -3,15 +3,14 @@ package com.paku.mavlinkhub.queue.msgcenter;
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.queue.QueueMsgItems;
 
-public class MavlinkMsgCenter extends QueueMsgItems {
+public class MAVLinkQueue extends QueueMsgItems {
 
 	// MAVLink class fields names holder/object
-	public MavLinkMsgCollector mavlinkCollector;
+	public MAVLinkCollector msgCollector;
 
-	public MavlinkMsgCenter(HUBGlobals appContext, int capacity) {
+	public MAVLinkQueue(HUBGlobals appContext, int capacity) {
 		super(appContext, capacity);
-
-		mavlinkCollector = new MavLinkMsgCollector(appContext);
+		msgCollector = new MAVLinkCollector(appContext);
 
 	}
 
