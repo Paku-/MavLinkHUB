@@ -2,7 +2,6 @@ package com.paku.mavlinkhub;
 
 import com.paku.mavlinkhub.enums.MSG_SOURCE;
 import com.paku.mavlinkhub.fragments.FragmentsAdapter;
-import com.paku.mavlinkhub.hubapp.HUBGlobals;
 import com.paku.mavlinkhub.interfaces.IDataUpdateStats;
 
 import android.app.AlertDialog;
@@ -38,10 +37,8 @@ public class ActivityMain extends FragmentActivity implements IDataUpdateStats {
 
 		globalVars = (HUBGlobals) this.getApplication();
 
-		if (savedInstanceState == null) {
-			// init only if we are just borned ...
+		if (savedInstanceState == null) { // init only if we are just borned
 			globalVars.Init(this);
-
 		}
 
 		globalVars.mFragmentsPagerAdapter = new FragmentsAdapter(this, getSupportFragmentManager());

@@ -1,6 +1,6 @@
 package com.paku.mavlinkhub.fragments;
 
-import com.paku.mavlinkhub.hubapp.HUBGlobals;
+import com.paku.mavlinkhub.HUBGlobals;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

@@ -1,6 +1,5 @@
-package com.paku.mavlinkhub.hubapp;
+package com.paku.mavlinkhub;
 
-import com.paku.mavlinkhub.HUBLogger;
 import com.paku.mavlinkhub.enums.UI_MODE;
 import com.paku.mavlinkhub.fragments.FragmentsAdapter;
 import com.paku.mavlinkhub.messenger.HUBMessenger;
@@ -63,8 +62,8 @@ public class HUBGlobals extends Application {
 		droneClient = new DroneClientBluetooth(messenger.appMsgHandler);
 
 		// server started from the beginning
-		gsServer = new GroundStationServerTCP(messenger.appMsgHandler);
-		gsServer.startServer(5760);
+		// gsServer = new GroundStationServerTCP(messenger.appMsgHandler);
+		// gsServer.startServer(5760);
 
 	}
 

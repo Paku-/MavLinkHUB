@@ -3,8 +3,8 @@ package com.paku.mavlinkhub.queue.msgcenter;
 import android.content.Context;
 
 import com.MAVLink.Messages.MAVLinkStats;
+import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.enums.MSG_SOURCE;
-import com.paku.mavlinkhub.hubapp.HUBGlobals;
 
 public class MavLinkMsgCollector {
 

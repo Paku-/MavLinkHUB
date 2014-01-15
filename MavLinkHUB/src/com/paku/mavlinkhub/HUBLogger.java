@@ -11,7 +11,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.paku.mavlinkhub.enums.APP_STATE;
-import com.paku.mavlinkhub.hubapp.HUBGlobals;
 
 import android.annotation.SuppressLint;
 import android.util.Log;

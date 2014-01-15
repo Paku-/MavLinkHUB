@@ -6,9 +6,9 @@ import java.util.concurrent.BlockingQueue;
 
 import android.util.Log;
 
+import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.fragments.viewadapters.items.ItemMavLinkMsg;
-import com.paku.mavlinkhub.hubapp.HUBGlobals;
 
 public class QueueMsgItems {
 

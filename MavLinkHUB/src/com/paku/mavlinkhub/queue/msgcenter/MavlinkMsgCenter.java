@@ -1,6 +1,6 @@
 package com.paku.mavlinkhub.queue.msgcenter;
 
-import com.paku.mavlinkhub.hubapp.HUBGlobals;
+import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.queue.QueueMsgItems;
 
 public class MavlinkMsgCenter extends QueueMsgItems {

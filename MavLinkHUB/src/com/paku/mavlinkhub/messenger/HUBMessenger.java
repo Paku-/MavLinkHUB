@@ -1,9 +1,9 @@
 package com.paku.mavlinkhub.messenger;
 
+import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.enums.UI_MODE;
-import com.paku.mavlinkhub.hubapp.HUBGlobals;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;

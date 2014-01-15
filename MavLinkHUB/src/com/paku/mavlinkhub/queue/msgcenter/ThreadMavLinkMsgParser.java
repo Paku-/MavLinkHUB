@@ -4,9 +4,9 @@ import java.nio.ByteBuffer;
 
 import com.MAVLink.Parser;
 import com.MAVLink.Messages.MAVLinkPacket;
+import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.enums.MSG_SOURCE;
 import com.paku.mavlinkhub.fragments.viewadapters.items.ItemMavLinkMsg;
-import com.paku.mavlinkhub.hubapp.HUBGlobals;
 
 public class ThreadMavLinkMsgParser extends Thread {
 
