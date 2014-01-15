@@ -29,7 +29,7 @@ public class GroundStationServerTCP extends GroundStationServer {
 		serverTCP = new ThreadGroundStationServerTCP(handlerServerMsgRead, port);
 		serverTCP.start();
 		// send app wide server_started msg
-		appMsgHandler.obtainMessage(APP_STATE.MSG_SERVER_STARTED.ordinal()).sendToTarget();
+		appMsgHandler.obtainMessage(APP_STATE.MSG_SERVER_STARTED.ordinal(), 0, 0, port).sendToTarget();
 	}
 
 	@Override

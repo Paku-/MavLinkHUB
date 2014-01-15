@@ -14,6 +14,7 @@ import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 
 public class HUBMessenger extends HUBInterfaceMenager {
 
@@ -32,14 +33,24 @@ public class HUBMessenger extends HUBInterfaceMenager {
 				APP_STATE[] appStates = APP_STATE.values();
 				switch (appStates[msg.what]) {
 				case MSG_SERVER_STARTED:
-					globalVars.logger.sysLog(TAG, "Server Started");
+					globalVars.logger.sysLog(TAG, "Server Started on port: " + msg.obj.toString());
 					// no action yet
 					break;
 				case MSG_SERVER_STOPPED:
 					globalVars.logger.sysLog(TAG, "Server Stopped");
 					// no action yet
 					break;
-				// Received MLmsg
+				case MSG_SERVER_CLIENT_CONNECTED:
+					String tmpTxt = new String((byte[]) msg.obj);
+					globalVars.logger.sysLog(TAG, "Client Connected: " + tmpTxt);
+					// no action yet
+					// Received MLmsg
+					break;
+				case MSG_SERVER_CLIENT_DISCONNECTED:
+					globalVars.logger.sysLog(TAG, "Client Disconnected...");
+					// no action yet
+					// Received MLmsg
+					break;
 				case MSG_MAVLINK_MSGITEM_READY:
 					// no action yet
 					break;

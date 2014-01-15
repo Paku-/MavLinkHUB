@@ -3,6 +3,7 @@ package com.paku.mavlinkhub.queue.endpoints.gs;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 
 import com.paku.mavlinkhub.enums.SOCKET_STATE;
 import com.paku.mavlinkhub.threads.ThreadSocket;
@@ -34,17 +35,28 @@ public class ThreadGroundStationServerTCP extends Thread {
 	}
 
 	public void run() {
+		String clientIP = new String();
 		while (running) {
+			Log.d(TAG, "Accept wait");
 			try {
-				Log.d(TAG, "Accept wait");
 				socket = serverSocket.accept();
+
 				socketServiceTCP = new ThreadSocket(socket, handlerServerReadMsg);
 				socketServiceTCP.start();
-				handlerServerReadMsg.obtainMessage(SOCKET_STATE.MSG_SOCKET_TCP_SERVER_CLIENT_CONNECTION.ordinal())
-						.sendToTarget();
+
+				clientIP = socket.getInetAddress().toString() + ":" + socket.getPort();
+				clientIP.replace("/", " ");
+
+				handlerServerReadMsg.obtainMessage(SOCKET_STATE.MSG_SOCKET_TCP_SERVER_CLIENT_CONNECTED.ordinal(),
+						clientIP.length(), -1, clientIP.getBytes()).sendToTarget();
+
 				Log.d(TAG, "New Connection: TCP Socket Started");
 			}
+			catch (SocketException e) {
+				running = false;
+			}
 			catch (IOException e) {
+				// ?? should never happen if permissions set
 				e.printStackTrace();
 			}
 		}
@@ -54,6 +66,15 @@ public class ThreadGroundStationServerTCP extends Thread {
 		if (socketServiceTCP != null) {
 			socketServiceTCP.stopMe();
 		}
-		running = false;
+		running = false; // just in case
+		try {
+			serverSocket.close();
+		}
+		catch (IOException e) {
+			// not possible on close ??
+			e.printStackTrace();
+		}
+
 	}
+
 }

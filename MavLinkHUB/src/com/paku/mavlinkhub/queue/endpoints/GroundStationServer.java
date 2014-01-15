@@ -9,8 +9,6 @@ public abstract class GroundStationServer extends QueueBytes {
 	@SuppressWarnings("unused")
 	private static final String TAG = "GroundStationServer";
 
-	protected Handler appMsgHandler;
-
 	public abstract void startServer(int port);
 
 	public abstract void stopServer();
@@ -18,9 +16,7 @@ public abstract class GroundStationServer extends QueueBytes {
 	public abstract boolean isRunning();
 
 	protected GroundStationServer(Handler handler, int capacity) {
-		super(capacity);
-		appMsgHandler = handler;
-
+		super(handler, capacity);
 	}
 
 }

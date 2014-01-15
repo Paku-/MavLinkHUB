@@ -4,8 +4,10 @@ import java.nio.ByteBuffer;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
+import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.enums.SOCKET_STATE;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -17,11 +19,15 @@ public abstract class QueueBytes {
 
 	private final BlockingQueue<ByteBuffer> inputByteQueue;
 	private final BlockingQueue<ByteBuffer> outputByteQueue;
+	// app wide msg center
+	public Handler appMsgHandler;
 
-	protected QueueBytes(int capacity) {
+	protected QueueBytes(Handler msgCenter, int capacity) {
 
 		outputByteQueue = new ArrayBlockingQueue<ByteBuffer>(capacity);
 		inputByteQueue = new ArrayBlockingQueue<ByteBuffer>(capacity);
+
+		this.appMsgHandler = msgCenter;
 
 	}
 
@@ -81,14 +87,24 @@ public abstract class QueueBytes {
 
 				final SOCKET_STATE[] socketStates = SOCKET_STATE.values();
 				switch (socketStates[msg.what]) {
-				case MSG_SOCKET_TCP_SERVER_CLIENT_CONNECTION:
-					// new client connected
+
+				// new client connected
+				case MSG_SOCKET_TCP_SERVER_CLIENT_CONNECTED:
+					appMsgHandler.obtainMessage(APP_STATE.MSG_SERVER_CLIENT_CONNECTED.ordinal(), msg.arg1, msg.arg2,
+							msg.obj).sendToTarget();
 					break;
+
+				// Client lost;
+				case MSG_SOCKET_TCP_SERVER_CLIENT_DISCONNECTED:
+					appMsgHandler.obtainMessage(APP_STATE.MSG_SERVER_CLIENT_DISCONNECTED.ordinal()).sendToTarget();
+					break;
+
 				// Received data
 				case MSG_SOCKET_DATA_READY:
 					// read bytes from drone
 					putInputQueueItem(ByteBuffer.wrap((byte[]) msg.obj, 0, msg.arg1));
 					break;
+
 				// closing so kill itself
 				case MSG_SOCKET_CLOSED:
 					removeMessages(0);
@@ -100,5 +116,4 @@ public abstract class QueueBytes {
 		};
 
 	}
-
 }

@@ -95,7 +95,10 @@ public class ThreadSocket extends Thread {
 							buffer).sendToTarget();
 				}
 				else {
-					Log.d(TAG, "** Empty socket buffer - Connection Error quiting...**");
+					Log.d(TAG, "** Empty socket buffer - Connection Error...**");
+					handlerSocketMsgReceiver.obtainMessage(
+							SOCKET_STATE.MSG_SOCKET_TCP_SERVER_CLIENT_DISCONNECTED.ordinal())
+							.sendToTarget();
 					running = false;
 				}
 			}

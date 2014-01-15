@@ -10,7 +10,6 @@ public abstract class DroneClient extends QueueBytes {
 	private static final String TAG = "DroneClient";
 
 	// application handler used to report connection states
-	public Handler appMsgHandler;
 
 	public abstract void startConnection(String address);
 
@@ -27,8 +26,7 @@ public abstract class DroneClient extends QueueBytes {
 	public abstract String getPeerAddress();
 
 	protected DroneClient(Handler handler, int capacity) {
-		super(capacity);
-		appMsgHandler = handler;
+		super(handler, capacity);
 
 	}
 
