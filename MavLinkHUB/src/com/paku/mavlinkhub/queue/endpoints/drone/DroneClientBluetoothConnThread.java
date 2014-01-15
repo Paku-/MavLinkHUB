@@ -3,7 +3,6 @@ package com.paku.mavlinkhub.queue.endpoints.drone;
 import java.io.IOException;
 import java.util.UUID;
 
-import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.enums.APP_STATE;
 
 import android.bluetooth.BluetoothAdapter;
@@ -11,15 +10,15 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
-class DroneConnectingBluetoothThread extends Thread {
+class DroneClientBluetoothConnThread extends Thread {
 	private static final String UUID_SPP = "00001101-0000-1000-8000-00805F9B34FB";
-	private static final String TAG = "DroneConnectingBluetoothThread";
+	private static final String TAG = "DroneClientBluetoothConnThread";
 	private final BluetoothAdapter mmBluetoothAdapter;
 	private final BluetoothSocket mmSocket;
 	private final BluetoothDevice mmDevice;
-	private DroneClientBluetooth parentConnector;
+	private final DroneClientBluetooth parentConnector;
 
-	DroneConnectingBluetoothThread(DroneClientBluetooth parent, BluetoothAdapter adapter, BluetoothDevice device) {
+	DroneClientBluetoothConnThread(DroneClientBluetooth parent, BluetoothAdapter adapter, BluetoothDevice device) {
 
 		BluetoothSocket tmp = null;
 		mmBluetoothAdapter = adapter;
@@ -30,6 +29,8 @@ class DroneConnectingBluetoothThread extends Thread {
 			tmp = mmDevice.createInsecureRfcommSocketToServiceRecord(UUID.fromString(UUID_SPP));
 		}
 		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		mmSocket = tmp;
 	}

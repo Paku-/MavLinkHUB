@@ -1,6 +1,6 @@
 package com.paku.mavlinkhub.enums;
 
-public enum ITEM_DIRECTION {
+public enum MSG_SOURCE {
 
 	FROM_DRONE, FROM_GS
 

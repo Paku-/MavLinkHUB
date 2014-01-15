@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.enums.SOCKET_STATE;
 
 import android.bluetooth.BluetoothSocket;
@@ -18,7 +17,7 @@ public class ThreadSocket extends Thread {
 
 	private static final String TAG = "ThreadSocket";
 
-	private static final int bufferSize = 1024;
+	private static final int BUFFSIZE = 1024;
 
 	private final BluetoothSocket socketBT;
 	private final Socket socketTCP;
@@ -77,7 +76,7 @@ public class ThreadSocket extends Thread {
 	}
 
 	public void run() {
-		byte[] buffer = new byte[bufferSize];
+		byte[] buffer = new byte[BUFFSIZE];
 		int bytes; // bytes received
 
 		while (running) {

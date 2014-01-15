@@ -1,7 +1,10 @@
-package com.paku.mavlinkhub;
+package com.paku.mavlinkhub.messenger;
 
+import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.enums.UI_MODE;
+import com.paku.mavlinkhub.hubapp.HUBGlobals;
+
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -12,12 +15,12 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
-public class HUBMessenger extends HUBInterfaceManager {
+public class HUBMessenger extends HUBInterfaceMenager {
 
 	private static final String TAG = "HUBMessenger";
 
 	public Handler appMsgHandler;
-	private HUBGlobals globalVars;
+	private final HUBGlobals globalVars;
 
 	public HUBMessenger(Context mContext) {
 
@@ -94,6 +97,8 @@ public class HUBMessenger extends HUBInterfaceManager {
 						break;
 					case BluetoothAdapter.STATE_DISCONNECTED:
 						globalVars.logger.sysLog(TAG, "[BT_ADAPTER_CONNECTION_STATE_CHANGED]: STATE_DISCONNECTED");
+						break;
+					default:
 						break;
 					}
 

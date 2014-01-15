@@ -2,9 +2,9 @@ package com.paku.mavlinkhub.communication.devicelist;
 
 import java.util.Set;
 
-import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.enums.DEV_LIST_STATE;
 import com.paku.mavlinkhub.enums.PEER_DEV_STATE;
+import com.paku.mavlinkhub.hubapp.HUBGlobals;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -29,8 +29,8 @@ public class ListPeerDevicesBluetooth extends ListPeerDevices {
 		}
 
 		// get local adapter and paired dev list
-		BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-		Set<BluetoothDevice> pairedDevList = mBluetoothAdapter.getBondedDevices();
+		final BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+		final Set<BluetoothDevice> pairedDevList = mBluetoothAdapter.getBondedDevices();
 
 		devList.clear();
 		// If there are paired devices
@@ -46,8 +46,9 @@ public class ListPeerDevicesBluetooth extends ListPeerDevices {
 			sort();
 			return DEV_LIST_STATE.LIST_OK;
 		}
-		else
+		else {
 			return DEV_LIST_STATE.ERROR_NO_BONDED_DEV;
+		}
 	}
 
 }

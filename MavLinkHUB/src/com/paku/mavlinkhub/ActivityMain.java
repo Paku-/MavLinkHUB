@@ -1,7 +1,8 @@
 package com.paku.mavlinkhub;
 
-import com.paku.mavlinkhub.R;
+import com.paku.mavlinkhub.enums.MSG_SOURCE;
 import com.paku.mavlinkhub.fragments.FragmentsAdapter;
+import com.paku.mavlinkhub.hubapp.HUBGlobals;
 import com.paku.mavlinkhub.interfaces.IDataUpdateStats;
 
 import android.app.AlertDialog;
@@ -24,9 +25,9 @@ public class ActivityMain extends FragmentActivity implements IDataUpdateStats {
 
 	private static final String TAG = "ActivityMain";
 
-	private HUBGlobals globalVars; // global vars and constants object.
+	public HUBGlobals globalVars;
 
-	public ProgressBar progressBarConnected;
+	private ProgressBar progressBarConnected;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +86,7 @@ public class ActivityMain extends FragmentActivity implements IDataUpdateStats {
 		switch (item.getItemId()) {
 		case R.id.menu_settings:
 
-			Intent intent = new Intent();
+			final Intent intent = new Intent();
 			intent.setClass(ActivityMain.this, ActivitySettings.class);
 			startActivityForResult(intent, 0);
 
@@ -101,7 +102,7 @@ public class ActivityMain extends FragmentActivity implements IDataUpdateStats {
 	// Close app respecting connection state
 	public void CloseMe() {
 
-		OnClickListener positiveButtonClickListener = new AlertDialog.OnClickListener() {
+		final OnClickListener positiveButtonClickListener = new AlertDialog.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
 				closeHUB();
@@ -109,7 +110,7 @@ public class ActivityMain extends FragmentActivity implements IDataUpdateStats {
 			}
 		};
 
-		OnClickListener negativeButtonClickListener = new AlertDialog.OnClickListener() {
+		final OnClickListener negativeButtonClickListener = new AlertDialog.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
 			}
@@ -153,13 +154,13 @@ public class ActivityMain extends FragmentActivity implements IDataUpdateStats {
 	private void closeHUB() {
 		globalVars.logger.sysLog(TAG, "MavLinkHUB closing ...");
 		globalVars.droneClient.stopConnection();
-		globalVars.mMavLinkCollector.stopMavLinkParserThread();
+		globalVars.msgCenter.mavlinkCollector.stopMavLinkParserThread();
 		globalVars.logger.stopAllLogs();
 	}
 
 	private void refreshStats() {
 		final TextView mTextViewLogStats = (TextView) findViewById(R.id.textView_system_status_bar);
-		mTextViewLogStats.setText(globalVars.mMavLinkCollector.getLastParserStats());
+		mTextViewLogStats.setText(globalVars.msgCenter.mavlinkCollector.getLastParserStats(MSG_SOURCE.FROM_DRONE));
 	}
 
 	public void enableProgressBar(boolean on) {

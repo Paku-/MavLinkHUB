@@ -96,8 +96,8 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 	private ArrayList<ItemMavLinkMsg> generateMavlinkListData() {
 
 		// we need a clone for adapter.
-		ArrayList<ItemMavLinkMsg> clone = new ArrayList<ItemMavLinkMsg>();
-		clone.addAll(globalVars.hubQueue.getMsgItemsForUI());
+		final ArrayList<ItemMavLinkMsg> clone = new ArrayList<ItemMavLinkMsg>();
+		clone.addAll(globalVars.msgCenter.getMsgItemsForUI());
 
 		return clone;
 	}

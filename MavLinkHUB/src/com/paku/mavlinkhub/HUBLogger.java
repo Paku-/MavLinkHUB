@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.paku.mavlinkhub.enums.APP_STATE;
+import com.paku.mavlinkhub.hubapp.HUBGlobals;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
@@ -19,11 +20,11 @@ public class HUBLogger {
 
 	private static final String TAG = "HUBLogger";
 
-	private HUBGlobals globalVars;
+	private final HUBGlobals globalVars;
 
 	// log files & files writing streams
 	private File byteLogFile, sysLogFile;
-	private BufferedOutputStream mFileIncomingByteLogStream, mFileSysLogStream;
+	private BufferedOutputStream mFileByteLogStream, mFileSysLogStream;
 
 	// sys wide in memory logging streams
 	// incoming bytes
@@ -82,30 +83,30 @@ public class HUBLogger {
 
 	public void byteLog(ByteBuffer buffer) {
 
-		try {
+		if (buffer != null) {
+			try {
 
-			waitForLock();
-			mFileIncomingByteLogStream.write(buffer.array(), 0, buffer.limit());
-			mInMemIncomingBytesStream.write(buffer.array(), 0, buffer.limit());
-			releaseLock();
-			statsReadByteCount += buffer.limit();
-			globalVars.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_STATS.ordinal()).sendToTarget();
-			globalVars.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_BYTELOG.ordinal())
-					.sendToTarget();
-		}
-		catch (IOException e1) {
-			Log.d(TAG, "[byteLog] " + e1.getMessage());
+				waitForLock();
+				mFileByteLogStream.write(buffer.array(), 0, buffer.limit());
+				mInMemIncomingBytesStream.write(buffer.array(), 0, buffer.limit());
+				releaseLock();
+				statsReadByteCount += buffer.limit();
+				globalVars.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_STATS.ordinal())
+						.sendToTarget();
+				globalVars.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_BYTELOG.ordinal())
+						.sendToTarget();
+			}
+			catch (IOException e1) {
+				Log.d(TAG, "[byteLog] " + e1.getMessage());
+			}
 		}
 	}
 
 	public void restartByteLog() {
 
 		byteLogFile = new File(globalVars.getExternalFilesDir(null), "bytes.txt");
-
-		// **** file logging
-		// byte log stream
 		try {
-			mFileIncomingByteLogStream = new BufferedOutputStream(new FileOutputStream(byteLogFile, false), 1024);
+			mFileByteLogStream = new BufferedOutputStream(new FileOutputStream(byteLogFile, false), 1024);
 		}
 		catch (FileNotFoundException e) {
 			Log.d(TAG, e.getMessage());
@@ -116,8 +117,6 @@ public class HUBLogger {
 	public void restartSysLog() {
 
 		sysLogFile = new File(globalVars.getExternalFilesDir(null), "syslog.txt");
-
-		// syslog stream
 		try {
 			mFileSysLogStream = new BufferedOutputStream(new FileOutputStream(sysLogFile, false), 1024);
 		}
@@ -128,25 +127,22 @@ public class HUBLogger {
 	}
 
 	public void stopByteLog() {
-
-		try {
-			mFileIncomingByteLogStream.flush(); // working ??
-			mFileIncomingByteLogStream.close();
-		}
-		catch (IOException e) {
-			Log.d(TAG, e.getMessage());
-		}
+		stopLog(mFileByteLogStream);
 	}
 
 	public void stopSysLog() {
+		stopLog(mFileSysLogStream);
+	}
 
+	private void stopLog(BufferedOutputStream stream) {
 		try {
-			mFileSysLogStream.flush(); // working ??
-			mFileSysLogStream.close();
+			stream.flush(); // working ??
+			stream.close();
 		}
 		catch (IOException e) {
 			Log.d(TAG, e.getMessage());
 		}
+
 	}
 
 	public void stopAllLogs() {
@@ -156,9 +152,7 @@ public class HUBLogger {
 
 	public void waitForLock() {
 		while (lock) {
-			;
 		}
-
 		lock = true;
 	}
 

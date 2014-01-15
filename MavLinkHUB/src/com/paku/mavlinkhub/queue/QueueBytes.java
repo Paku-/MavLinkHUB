@@ -4,6 +4,11 @@ import java.nio.ByteBuffer;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
+import com.paku.mavlinkhub.enums.SOCKET_STATE;
+
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 
 public abstract class QueueBytes {
@@ -13,7 +18,7 @@ public abstract class QueueBytes {
 	private final BlockingQueue<ByteBuffer> inputByteQueue;
 	private final BlockingQueue<ByteBuffer> outputByteQueue;
 
-	public QueueBytes(int capacity) {
+	protected QueueBytes(int capacity) {
 
 		outputByteQueue = new ArrayBlockingQueue<ByteBuffer>(capacity);
 		inputByteQueue = new ArrayBlockingQueue<ByteBuffer>(capacity);
@@ -50,16 +55,7 @@ public abstract class QueueBytes {
 
 	// input queue
 	public ByteBuffer getInputQueueItem() {
-		ByteBuffer buffer = ByteBuffer.allocate(0);
-
-		try {
-			buffer = inputByteQueue.take();
-		}
-		catch (InterruptedException e) {
-			Log.d(TAG, "[getInputQueue]" + e.getMessage());
-			e.printStackTrace();
-		}
-		return buffer;
+		return inputByteQueue.poll();
 	}
 
 	public void putInputQueueItem(ByteBuffer buffer) {
@@ -74,6 +70,29 @@ public abstract class QueueBytes {
 
 	public BlockingQueue<ByteBuffer> getInputQueue() {
 		return inputByteQueue;
+	}
+
+	protected Handler startInputQueueMsgHandler() {
+		return new Handler(Looper.getMainLooper()) {
+			public void handleMessage(Message msg) {
+
+				final SOCKET_STATE[] socketStates = SOCKET_STATE.values();
+				switch (socketStates[msg.what]) {
+				// Received data
+				case MSG_SOCKET_DATA_READY:
+					// read bytes from drone
+					putInputQueueItem(ByteBuffer.wrap((byte[]) msg.obj, 0, msg.arg1));
+					break;
+				// closing so kill itself
+				case MSG_SOCKET_CLOSED:
+					removeMessages(0);
+					break;
+				default:
+					super.handleMessage(msg);
+				}
+			}
+		};
+
 	}
 
 }

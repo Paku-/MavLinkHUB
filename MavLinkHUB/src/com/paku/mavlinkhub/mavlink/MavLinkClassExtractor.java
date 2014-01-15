@@ -16,7 +16,7 @@ public class MavLinkClassExtractor {
 	private ArrayList<ClassItem> mavState;
 
 	// helper class
-	public class ClassItem {
+	public static class ClassItem {
 
 		private String name;
 		private int id;
@@ -45,7 +45,7 @@ public class MavLinkClassExtractor {
 	}
 
 	// sorting comparator
-	private class ClassIdComparator implements Comparator<ClassItem> {
+	private static class ClassIdComparator implements Comparator<ClassItem> {
 		public int compare(ClassItem left, ClassItem right) {
 			if (left.getId() > right.getId()) return 1;
 			if (left.getId() < right.getId()) return -1;

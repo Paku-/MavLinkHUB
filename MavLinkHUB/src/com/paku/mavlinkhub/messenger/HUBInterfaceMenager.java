@@ -1,4 +1,4 @@
-package com.paku.mavlinkhub;
+package com.paku.mavlinkhub.messenger;
 
 import java.util.ArrayList;
 
@@ -11,7 +11,7 @@ import com.paku.mavlinkhub.interfaces.IDataUpdateStats;
 import com.paku.mavlinkhub.interfaces.IDataUpdateSysLog;
 import com.paku.mavlinkhub.interfaces.IUiModeChanged;
 
-public class HUBInterfaceManager {
+public class HUBInterfaceMenager {
 
 	ArrayList<IConnectionFailed> listenersIConnectionFailed = new ArrayList<IConnectionFailed>();
 	ArrayList<IUiModeChanged> listenersIUiModeChanged = new ArrayList<IUiModeChanged>();
@@ -21,7 +21,7 @@ public class HUBInterfaceManager {
 
 	public FragmentActivity mainActivity;
 
-	public HUBInterfaceManager() {
+	public HUBInterfaceMenager() {
 
 	}
 

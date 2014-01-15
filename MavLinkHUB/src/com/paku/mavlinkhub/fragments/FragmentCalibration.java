@@ -11,7 +11,7 @@ public class FragmentCalibration extends HUBFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_calibration, container, false);
+		final View rootView = inflater.inflate(R.layout.fragment_calibration, container, false);
 		return rootView;
 	}
 

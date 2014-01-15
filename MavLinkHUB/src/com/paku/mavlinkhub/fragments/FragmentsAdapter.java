@@ -21,7 +21,7 @@ public class FragmentsAdapter extends FragmentPagerAdapter {
 	@Override
 	public Fragment getItem(int position) {
 
-		Fragment fragment;
+		final Fragment fragment;
 
 		switch (position) {
 		case 0:
@@ -51,16 +51,18 @@ public class FragmentsAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public CharSequence getPageTitle(int position) {
-		Locale l = Locale.getDefault();
+		final Locale locale = Locale.getDefault();
 		switch (position) {
 		case 0:
-			return this.mainActivity.getString(R.string.title_connectivity).toUpperCase(l);
+			return this.mainActivity.getString(R.string.title_connectivity).toUpperCase(locale);
 		case 1:
-			return this.mainActivity.getString(R.string.title_realtime_mavlink).toUpperCase(l);
+			return this.mainActivity.getString(R.string.title_realtime_mavlink).toUpperCase(locale);
 		case 2:
-			return this.mainActivity.getString(R.string.title_syslog).toUpperCase(l);
+			return this.mainActivity.getString(R.string.title_syslog).toUpperCase(locale);
 		case 3:
-			return this.mainActivity.getString(R.string.title_calibration).toUpperCase(l);
+			return this.mainActivity.getString(R.string.title_calibration).toUpperCase(locale);
+		default:
+			break;
 
 		}
 		return null;

@@ -17,7 +17,7 @@ public abstract class GroundStationServer extends QueueBytes {
 
 	public abstract boolean isRunning();
 
-	public GroundStationServer(Handler handler, int capacity) {
+	protected GroundStationServer(Handler handler, int capacity) {
 		super(capacity);
 		appMsgHandler = handler;
 

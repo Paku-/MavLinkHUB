@@ -3,11 +3,9 @@ package com.paku.mavlinkhub.fragments;
 import java.util.ArrayList;
 
 import com.paku.mavlinkhub.ActivityMain;
-import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.communication.devicelist.ListPeerDevicesBluetooth;
 import com.paku.mavlinkhub.communication.devicelist.ItemPeerDevice;
-import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.enums.PEER_DEV_STATE;
 import com.paku.mavlinkhub.fragments.viewadapters.ViewAdapterPeerDevsList;
 import com.paku.mavlinkhub.interfaces.IConnectionFailed;
@@ -43,12 +41,6 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 	}
 
 	@Override
-	public void onDestroy() {
-		super.onDestroy();
-
-	}
-
-	@Override
 	public void onStart() {
 		super.onStart();
 
@@ -68,7 +60,7 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		View connView = inflater.inflate(R.layout.fragment_connectivity, container, false);
+		final View connView = inflater.inflate(R.layout.fragment_connectivity, container, false);
 
 		return connView;
 	}
@@ -78,7 +70,7 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 		super.onViewCreated(view, savedInstanceState);
 
 		btDevListView = (ListView) getView().findViewById(R.id.list_bt_bonded);
-		progressBarConnectingBIG = (View) getView().findViewById(R.id.RelativeLayoutProgressBarBig);
+		progressBarConnectingBIG = getView().findViewById(R.id.RelativeLayoutProgressBarBig);
 
 		refreshUI();
 
@@ -123,7 +115,7 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 	// to be called on possible peer BT device state change (connect disconnect
 	// etc)
 	private void refreshBtDevListView() {
-		ArrayList<ItemPeerDevice> clone = new ArrayList<ItemPeerDevice>();
+		final ArrayList<ItemPeerDevice> clone = new ArrayList<ItemPeerDevice>();
 		clone.addAll(btDevList.getDeviceList());
 		devListAdapter.clear();
 		devListAdapter.addAll(clone);
@@ -138,7 +130,7 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 					Toast.LENGTH_LONG).show();
 			return;
 		case ERROR_ADAPTER_OFF:
-			Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+			final Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 			// this.startActivityForResult(enableBtIntent,
 			// APP_STATE.REQUEST_ENABLE_BT);
 			this.startActivity(enableBtIntent);
@@ -152,8 +144,9 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 			devListAdapter = new ViewAdapterPeerDevsList(this.getActivity(), btDevList.getDeviceList());
 			btDevListView.setAdapter(devListAdapter);
 			btDevListView.setOnItemClickListener(btListClickListener);
-
 			return;
+		default:
+			break;
 
 		}
 
@@ -163,7 +156,7 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-			ItemPeerDevice selectedDev = btDevList.getItem(position);
+			final ItemPeerDevice selectedDev = btDevList.getItem(position);
 			// TextView txtView = (TextView)
 			// view.findViewById(R.id.listViewItemTxt_dev_name);
 
@@ -178,7 +171,7 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 							+ "]");
 
 					globalVars.droneClient.startConnection(selectedDev.getAddress());
-					globalVars.mMavLinkCollector.startMavLinkParserThread();
+					globalVars.msgCenter.mavlinkCollector.startMavLinkParserThread();
 
 					btDevList.setDevState(position, PEER_DEV_STATE.DEV_STATE_CONNECTED);
 				}
@@ -193,7 +186,7 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 				if (globalVars.droneClient.isConnected()) {
 					globalVars.logger.sysLog(TAG, "Closing Connection ...");
 					globalVars.droneClient.stopConnection();
-					globalVars.mMavLinkCollector.stopMavLinkParserThread();
+					globalVars.msgCenter.mavlinkCollector.stopMavLinkParserThread();
 					btDevList.setDevState(position, PEER_DEV_STATE.DEV_STATE_DISCONNECTED);
 				}
 				else {
@@ -205,7 +198,6 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 			default:
 				break;
 			}
-			;
 
 		}
 	};
@@ -216,7 +208,7 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 
 		globalVars.logger.sysLog(TAG, errorMsg);
 		globalVars.droneClient.stopConnection();
-		globalVars.mMavLinkCollector.stopMavLinkParserThread();
+		globalVars.msgCenter.mavlinkCollector.stopMavLinkParserThread();
 
 		Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_SHORT).show();
 

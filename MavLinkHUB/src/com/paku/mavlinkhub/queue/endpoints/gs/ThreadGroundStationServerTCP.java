@@ -4,24 +4,22 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import com.paku.mavlinkhub.HUBGlobals;
-import com.paku.mavlinkhub.enums.DEV_LIST_STATE;
 import com.paku.mavlinkhub.enums.SOCKET_STATE;
 import com.paku.mavlinkhub.threads.ThreadSocket;
 
 import android.os.Handler;
 import android.util.Log;
 
-public class ThreadServerTCP extends Thread {
+public class ThreadGroundStationServerTCP extends Thread {
 
-	private static final String TAG = "ThreadServerTCP";
+	private static final String TAG = "ThreadGroundStationServerTCP";
 
 	Socket socket;
 	ServerSocket serverSocket;
 	Handler handlerServerReadMsg;
 	public boolean running = true;
 
-	public ThreadServerTCP(Handler handler, int port) {
+	public ThreadGroundStationServerTCP(Handler handler, int port) {
 		try {
 
 			serverSocket = new ServerSocket(port);

@@ -26,7 +26,7 @@ public abstract class DroneClient extends QueueBytes {
 
 	public abstract String getPeerAddress();
 
-	public DroneClient(Handler handler, int capacity) {
+	protected DroneClient(Handler handler, int capacity) {
 		super(capacity);
 		appMsgHandler = handler;
 

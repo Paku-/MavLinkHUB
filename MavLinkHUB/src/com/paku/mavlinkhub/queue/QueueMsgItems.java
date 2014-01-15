@@ -1,4 +1,4 @@
-package com.paku.mavlinkhub;
+package com.paku.mavlinkhub.queue;
 
 import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -8,10 +8,11 @@ import android.util.Log;
 
 import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.fragments.viewadapters.items.ItemMavLinkMsg;
+import com.paku.mavlinkhub.hubapp.HUBGlobals;
 
-public class HubQueue {
+public class QueueMsgItems {
 
-	private static final String TAG = "HubQueue";
+	private static final String TAG = "QueueMsgItems";
 
 	private final BlockingQueue<ItemMavLinkMsg> hubQueue;
 
@@ -20,7 +21,7 @@ public class HubQueue {
 
 	HUBGlobals globalVars;
 
-	public HubQueue(HUBGlobals appContext, int capacity) {
+	public QueueMsgItems(HUBGlobals appContext, int capacity) {
 
 		hubQueue = new ArrayBlockingQueue<ItemMavLinkMsg>(capacity);
 		arrayMavLinkMsgItemsForUI = new ArrayList<ItemMavLinkMsg>();
@@ -54,8 +55,9 @@ public class HubQueue {
 		globalVars.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_MAVLINK_MSGITEM_READY.ordinal(), -1, -1, item)
 				.sendToTarget();
 		// limit the Array size
-		while (arrayMavLinkMsgItemsForUI.size() > globalVars.visibleMsgList)
+		while (arrayMavLinkMsgItemsForUI.size() > globalVars.visibleMsgList) {
 			arrayMavLinkMsgItemsForUI.remove(0);
+		}
 		// flush mem
 		arrayMavLinkMsgItemsForUI.trimToSize();
 

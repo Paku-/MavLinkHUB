@@ -23,13 +23,13 @@ public class ItemMavLinkMsgTxt {
 
 		switch (msgItem.getMsg().msgid) {
 		case msg_heartbeat.MAVLINK_MSG_ID_HEARTBEAT:
-			msg_heartbeat msg_heartbeat_ = (msg_heartbeat) msgItem.getMsg();
+			final msg_heartbeat msg_heartbeat_ = (msg_heartbeat) msgItem.getMsg();
 			// setMsgName(msg_heartbeat_.toString().substring(0,msg_heartbeat_.toString().indexOf("-",
 			// 0)-1));
 			setMsgName(msg_heartbeat_.getClass().getSimpleName());
 
 			// operation mode + state
-			ApmModes mode;
+			final ApmModes mode;
 			mode = ApmModes.getMode(msg_heartbeat_.custom_mode, msg_heartbeat_.type);
 			setMainTxt(mode.name() + " " + mavClasses.getMavState().get(msg_heartbeat_.system_status).getName());
 
@@ -41,7 +41,7 @@ public class ItemMavLinkMsgTxt {
 
 		case msg_statustext.MAVLINK_MSG_ID_STATUSTEXT:
 
-			msg_statustext msg_statustext_ = (msg_statustext) msgItem.getMsg();
+			final msg_statustext msg_statustext_ = (msg_statustext) msgItem.getMsg();
 			// setMsgName(msg_statustext_.toString().substring(0,msg_statustext_.toString().indexOf("-",
 			// 0)-1));
 			setMsgName(msg_statustext_.getClass().getSimpleName());

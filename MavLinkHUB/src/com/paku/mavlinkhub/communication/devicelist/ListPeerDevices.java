@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.enums.DEV_LIST_STATE;
 import com.paku.mavlinkhub.enums.PEER_DEV_STATE;
+import com.paku.mavlinkhub.hubapp.HUBGlobals;
 
 public abstract class ListPeerDevices {
 
@@ -14,9 +14,9 @@ public abstract class ListPeerDevices {
 	private static final String TAG = "ListPeerDevices";
 
 	ArrayList<ItemPeerDevice> devList = new ArrayList<ItemPeerDevice>();
-	HUBGlobals globalVars;
+	protected final HUBGlobals globalVars;
 
-	public ListPeerDevices(HUBGlobals hubGlobals) {
+	protected ListPeerDevices(HUBGlobals hubGlobals) {
 		globalVars = hubGlobals;
 	}
 
@@ -43,7 +43,7 @@ public abstract class ListPeerDevices {
 	}
 
 	// sorting comparator
-	private class DevNameComparator implements Comparator<ItemPeerDevice> {
+	private static class DevNameComparator implements Comparator<ItemPeerDevice> {
 		public int compare(ItemPeerDevice left, ItemPeerDevice right) {
 			// if (left.getId() > right.getId()) return 1;
 			// if (left.getId() < right.getId()) return -1;

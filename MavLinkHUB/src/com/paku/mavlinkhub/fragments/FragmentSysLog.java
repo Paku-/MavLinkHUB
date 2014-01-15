@@ -20,11 +20,6 @@ public class FragmentSysLog extends HUBFragment implements IDataUpdateSysLog {
 		final View rootView = inflater.inflate(R.layout.fragment_sys_log, container, false);
 
 		return rootView;
-	}
-
-	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
 
 		// final TextView txtView = (TextView)
 		// (getView().findViewById(R.id.TextView_logSysLog));
@@ -32,7 +27,6 @@ public class FragmentSysLog extends HUBFragment implements IDataUpdateSysLog {
 		// globalVars.getAssets(), "fonts/Roboto-Condensed.ttf");
 		// txtView.setTypeface(externalFont);
 		// txtView.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
-
 	}
 
 	@Override
@@ -52,7 +46,7 @@ public class FragmentSysLog extends HUBFragment implements IDataUpdateSysLog {
 
 		final TextView mTextViewBytesLog = (TextView) (getView().findViewById(R.id.TextView_logSysLog));
 
-		String buff;
+		final String buff;
 
 		if (globalVars.logger.mInMemSysLogStream.size() > globalVars.visibleBuffersSize) {
 			buff = new String(globalVars.logger.mInMemSysLogStream.toByteArray(),

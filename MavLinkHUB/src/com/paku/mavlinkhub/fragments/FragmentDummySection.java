@@ -16,7 +16,7 @@ public class FragmentDummySection extends HUBFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_main_dummy, container, false);
+		final View rootView = inflater.inflate(R.layout.fragment_main_dummy, container, false);
 		return rootView;
 	}
 }

@@ -20,7 +20,7 @@ public class ViewAdapterMavlinkMsgList extends ArrayAdapter<ItemMavLinkMsg> {
 	private final ArrayList<ItemMavLinkMsg> itemsArrayList;
 
 	// mavlink classes' string names helper class
-	public MavLinkClassExtractor mavClasses;
+	private MavLinkClassExtractor mavClasses;
 
 	public ViewAdapterMavlinkMsgList(Context context, ArrayList<ItemMavLinkMsg> itemsArrayList) {
 

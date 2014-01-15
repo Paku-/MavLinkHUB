@@ -1,12 +1,14 @@
-package com.paku.mavlinkhub;
+package com.paku.mavlinkhub.hubapp;
 
+import com.paku.mavlinkhub.HUBLogger;
 import com.paku.mavlinkhub.enums.UI_MODE;
 import com.paku.mavlinkhub.fragments.FragmentsAdapter;
-import com.paku.mavlinkhub.mavlink.MavLinkCollector;
+import com.paku.mavlinkhub.messenger.HUBMessenger;
 import com.paku.mavlinkhub.queue.endpoints.DroneClient;
 import com.paku.mavlinkhub.queue.endpoints.GroundStationServer;
 import com.paku.mavlinkhub.queue.endpoints.drone.DroneClientBluetooth;
 import com.paku.mavlinkhub.queue.endpoints.gs.GroundStationServerTCP;
+import com.paku.mavlinkhub.queue.msgcenter.MavlinkMsgCenter;
 
 import android.app.Application;
 import android.content.Context;
@@ -17,7 +19,11 @@ public class HUBGlobals extends Application {
 	@SuppressWarnings("unused")
 	private static final String TAG = "HUBGlobals";
 
-	// other constants
+	// constants
+	// buffer, stream sizes
+	public int visibleBuffersSize = 1024 * 10;
+	// public int minStreamReadSize = 2 ^ 4; // ^6 = 64 ^5=32 ^4=16
+	public int visibleMsgList = 20;
 
 	// messages handler
 	public HUBMessenger messenger;
@@ -29,33 +35,28 @@ public class HUBGlobals extends Application {
 	public GroundStationServer gsServer;
 
 	// main ItemMavLinkMsg objects queue
-	public HubQueue hubQueue;
-
-	// MAVLink class fields names holder/object
-	public MavLinkCollector mMavLinkCollector;
+	public MavlinkMsgCenter msgCenter;
 
 	// sys log stats holder object
 	public HUBLogger logger;
 
+	// we are a Fragment Application
 	public FragmentsAdapter mFragmentsPagerAdapter;
 	public ViewPager mViewPager;
-	public UI_MODE uiMode = UI_MODE.UI_MODE_CREATED;
 
-	// buffer, stream sizes
-	public int visibleBuffersSize = 1024 * 10;
-	// public int minStreamReadSize = 2 ^ 4; // ^6 = 64 ^5=32 ^4=16
-	public int visibleMsgList = 20;
+	// with initial state as "created"
+	public UI_MODE uiMode;
 
 	public void Init(Context mContext) {
+
+		uiMode = UI_MODE.UI_MODE_CREATED;
 
 		// start application asynchronous messaging - has to be first !!!
 		messenger = new HUBMessenger(this);
 
-		hubQueue = new HubQueue(this, 10);
-
 		logger = new HUBLogger(this);
 
-		uiMode = UI_MODE.UI_MODE_CREATED;
+		msgCenter = new MavlinkMsgCenter(this, 200);
 
 		// !!! connector has to exist before the MavLink as there is interface
 		// to it.
@@ -63,9 +64,8 @@ public class HUBGlobals extends Application {
 
 		// server started from the beginning
 		gsServer = new GroundStationServerTCP(messenger.appMsgHandler);
-		gsServer.startServer(35000);
+		gsServer.startServer(5760);
 
-		mMavLinkCollector = new MavLinkCollector(this);
 	}
 
 }
