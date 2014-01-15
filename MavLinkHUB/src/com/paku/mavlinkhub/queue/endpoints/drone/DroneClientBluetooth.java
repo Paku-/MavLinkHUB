@@ -58,13 +58,18 @@ public class DroneClientBluetooth extends DroneClient {
 	}
 
 	@Override
-	public void stopConnection() {
+	public void stopClient() {
 		Log.d(TAG, "Closing connection..");
 
 		// stop handler
-		handlerDroneMsgRead.removeMessages(0);
-		// strop socket thread
-		socketServiceBT.stopRunning();
+		if (handlerDroneMsgRead != null) {
+			handlerDroneMsgRead.removeMessages(0);
+		}
+
+		// stop socket thread
+		if (isConnected()) {
+			socketServiceBT.stopMe();
+		}
 	}
 
 	@Override

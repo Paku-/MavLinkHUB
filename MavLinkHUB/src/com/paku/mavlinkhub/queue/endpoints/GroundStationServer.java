@@ -9,7 +9,7 @@ public abstract class GroundStationServer extends QueueBytes {
 	@SuppressWarnings("unused")
 	private static final String TAG = "GroundStationServer";
 
-	Handler appMsgHandler;
+	protected Handler appMsgHandler;
 
 	public abstract void startServer(int port);
 

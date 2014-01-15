@@ -2,7 +2,7 @@ package com.paku.mavlinkhub.fragments;
 
 import java.util.ArrayList;
 
-import com.paku.mavlinkhub.ActivityMain;
+import com.paku.mavlinkhub.HUBActivityMain;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.communication.devicelist.ListPeerDevicesBluetooth;
 import com.paku.mavlinkhub.communication.devicelist.ItemPeerDevice;
@@ -79,7 +79,7 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 	public void refreshUI() {
 
 		// mostly used states set as defaults
-		((ActivityMain) getActivity()).enableProgressBar(false);
+		((HUBActivityMain) getActivity()).enableProgressBar(false);
 		progressBarConnectingBIG.setVisibility(View.INVISIBLE);
 		btDevListView.setVisibility(View.VISIBLE);
 
@@ -100,7 +100,7 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 			btDevListView.setVisibility(View.INVISIBLE);
 			break;
 		case UI_MODE_CONNECTED:
-			((ActivityMain) getActivity()).enableProgressBar(true);
+			((HUBActivityMain) getActivity()).enableProgressBar(true);
 			refreshBtDevListView();
 			break;
 		case UI_MODE_DISCONNECTED:
@@ -185,7 +185,7 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 			case DEV_STATE_CONNECTED:
 				if (globalVars.droneClient.isConnected()) {
 					globalVars.logger.sysLog(TAG, "Closing Connection ...");
-					globalVars.droneClient.stopConnection();
+					globalVars.droneClient.stopClient();
 					globalVars.msgCenter.mavlinkCollector.stopMavLinkParserThread();
 					btDevList.setDevState(position, PEER_DEV_STATE.DEV_STATE_DISCONNECTED);
 				}
@@ -207,7 +207,7 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 	public void onConnectionFailed(String errorMsg) {
 
 		globalVars.logger.sysLog(TAG, errorMsg);
-		globalVars.droneClient.stopConnection();
+		globalVars.droneClient.stopClient();
 		globalVars.msgCenter.mavlinkCollector.stopMavLinkParserThread();
 
 		Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_SHORT).show();

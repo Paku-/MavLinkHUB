@@ -20,9 +20,9 @@ import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class ActivityMain extends FragmentActivity implements IDataUpdateStats {
+public class HUBActivityMain extends FragmentActivity implements IDataUpdateStats {
 
-	private static final String TAG = "ActivityMain";
+	private static final String TAG = "HUBActivityMain";
 
 	public HUBGlobals globalVars;
 
@@ -84,7 +84,7 @@ public class ActivityMain extends FragmentActivity implements IDataUpdateStats {
 		case R.id.menu_settings:
 
 			final Intent intent = new Intent();
-			intent.setClass(ActivityMain.this, ActivitySettings.class);
+			intent.setClass(HUBActivityMain.this, ActivitySettings.class);
 			startActivityForResult(intent, 0);
 
 			return true;
@@ -99,7 +99,7 @@ public class ActivityMain extends FragmentActivity implements IDataUpdateStats {
 	// Close app respecting connection state
 	public void CloseMe() {
 
-		final OnClickListener positiveButtonClickListener = new AlertDialog.OnClickListener() {
+		OnClickListener positiveButtonClickListener = new AlertDialog.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
 				closeHUB();
@@ -107,7 +107,7 @@ public class ActivityMain extends FragmentActivity implements IDataUpdateStats {
 			}
 		};
 
-		final OnClickListener negativeButtonClickListener = new AlertDialog.OnClickListener() {
+		OnClickListener negativeButtonClickListener = new AlertDialog.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
 			}
@@ -150,7 +150,8 @@ public class ActivityMain extends FragmentActivity implements IDataUpdateStats {
 
 	private void closeHUB() {
 		globalVars.logger.sysLog(TAG, "MavLinkHUB closing ...");
-		globalVars.droneClient.stopConnection();
+		globalVars.droneClient.stopClient();
+		globalVars.gsServer.stopServer();
 		globalVars.msgCenter.mavlinkCollector.stopMavLinkParserThread();
 		globalVars.logger.stopAllLogs();
 	}

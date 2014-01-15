@@ -1,5 +1,6 @@
 package com.paku.mavlinkhub.queue.endpoints.gs;
 
+import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.queue.endpoints.GroundStationServer;
 
 import android.os.Handler;
@@ -25,14 +26,22 @@ public class GroundStationServerTCP extends GroundStationServer {
 
 		// start received bytes handler
 		handlerServerMsgRead = startInputQueueMsgHandler();
-		final ThreadGroundStationServerTCP serverTCP = new ThreadGroundStationServerTCP(handlerServerMsgRead, port);
+		serverTCP = new ThreadGroundStationServerTCP(handlerServerMsgRead, port);
 		serverTCP.start();
-		Log.d(TAG, "Start");
+		// send app wide server_started msg
+		appMsgHandler.obtainMessage(APP_STATE.MSG_SERVER_STARTED.ordinal()).sendToTarget();
 	}
 
 	@Override
 	public void stopServer() {
+
+		// stop handler
+		if (handlerServerMsgRead != null) {
+			handlerServerMsgRead.removeMessages(0);
+		}
+
 		serverTCP.stopMe();
+		appMsgHandler.obtainMessage(APP_STATE.MSG_SERVER_STOPPED.ordinal()).sendToTarget();
 	}
 
 	@Override

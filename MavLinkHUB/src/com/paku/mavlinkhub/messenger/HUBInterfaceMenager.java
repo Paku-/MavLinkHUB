@@ -106,4 +106,8 @@ public class HUBInterfaceMenager {
 			if (listener != null) listener.onConnectionFailed(msg);
 		}
 	}
+
+	public void processOnServerStarted() {
+
+	}
 }

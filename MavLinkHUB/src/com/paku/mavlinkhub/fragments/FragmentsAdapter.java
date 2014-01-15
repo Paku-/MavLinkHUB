@@ -2,7 +2,7 @@ package com.paku.mavlinkhub.fragments;
 
 import java.util.Locale;
 
-import com.paku.mavlinkhub.ActivityMain;
+import com.paku.mavlinkhub.HUBActivityMain;
 import com.paku.mavlinkhub.R;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,9 +11,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 /** DO NOT change to the FragmentStatePagerAdapter or take care for GUI!!! **/
 public class FragmentsAdapter extends FragmentPagerAdapter {
 
-	private final ActivityMain mainActivity;
+	private final HUBActivityMain mainActivity;
 
-	public FragmentsAdapter(ActivityMain mainActivity, FragmentManager fm) {
+	public FragmentsAdapter(HUBActivityMain mainActivity, FragmentManager fm) {
 		super(fm);
 		this.mainActivity = mainActivity;
 	}
@@ -21,7 +21,7 @@ public class FragmentsAdapter extends FragmentPagerAdapter {
 	@Override
 	public Fragment getItem(int position) {
 
-		final Fragment fragment;
+		Fragment fragment;
 
 		switch (position) {
 		case 0:

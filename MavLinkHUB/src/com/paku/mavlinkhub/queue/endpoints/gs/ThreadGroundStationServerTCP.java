@@ -16,6 +16,7 @@ public class ThreadGroundStationServerTCP extends Thread {
 
 	Socket socket;
 	ServerSocket serverSocket;
+	ThreadSocket socketServiceTCP;
 	Handler handlerServerReadMsg;
 	public boolean running = true;
 
@@ -37,7 +38,7 @@ public class ThreadGroundStationServerTCP extends Thread {
 			try {
 				Log.d(TAG, "Accept wait");
 				socket = serverSocket.accept();
-				ThreadSocket socketServiceTCP = new ThreadSocket(socket, handlerServerReadMsg);
+				socketServiceTCP = new ThreadSocket(socket, handlerServerReadMsg);
 				socketServiceTCP.start();
 				handlerServerReadMsg.obtainMessage(SOCKET_STATE.MSG_SOCKET_TCP_SERVER_CLIENT_CONNECTION.ordinal())
 						.sendToTarget();
@@ -50,6 +51,9 @@ public class ThreadGroundStationServerTCP extends Thread {
 	}
 
 	public void stopMe() {
+		if (socketServiceTCP != null) {
+			socketServiceTCP.stopMe();
+		}
 		running = false;
 	}
 }

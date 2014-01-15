@@ -14,7 +14,7 @@ public abstract class DroneClient extends QueueBytes {
 
 	public abstract void startConnection(String address);
 
-	public abstract void stopConnection();
+	public abstract void stopClient();
 
 	public abstract boolean isConnected();
 

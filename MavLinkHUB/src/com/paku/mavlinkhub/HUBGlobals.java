@@ -57,13 +57,11 @@ public class HUBGlobals extends Application {
 
 		msgCenter = new MavlinkMsgCenter(this, 200);
 
-		// !!! connector has to exist before the MavLink as there is interface
-		// to it.
 		droneClient = new DroneClientBluetooth(messenger.appMsgHandler);
 
 		// server started from the beginning
-		// gsServer = new GroundStationServerTCP(messenger.appMsgHandler);
-		// gsServer.startServer(5760);
+		gsServer = new GroundStationServerTCP(messenger.appMsgHandler);
+		gsServer.startServer(5760);
 
 	}
 

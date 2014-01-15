@@ -127,7 +127,7 @@ public class ThreadSocket extends Thread {
 		}
 	}
 
-	public void stopRunning() {
+	public void stopMe() {
 		// stop handler as well
 		handlerSocketMsgReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_CLOSED.ordinal()).sendToTarget();
 		running = false;

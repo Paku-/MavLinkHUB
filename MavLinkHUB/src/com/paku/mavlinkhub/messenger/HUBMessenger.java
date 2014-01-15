@@ -31,6 +31,14 @@ public class HUBMessenger extends HUBInterfaceMenager {
 
 				APP_STATE[] appStates = APP_STATE.values();
 				switch (appStates[msg.what]) {
+				case MSG_SERVER_STARTED:
+					globalVars.logger.sysLog(TAG, "Server Started");
+					// no action yet
+					break;
+				case MSG_SERVER_STOPPED:
+					globalVars.logger.sysLog(TAG, "Server Stopped");
+					// no action yet
+					break;
 				// Received MLmsg
 				case MSG_MAVLINK_MSGITEM_READY:
 					// no action yet

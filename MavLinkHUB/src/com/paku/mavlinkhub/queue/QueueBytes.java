@@ -72,12 +72,18 @@ public abstract class QueueBytes {
 		return inputByteQueue;
 	}
 
+	// this handler is called by the messages coming from any other class build
+	// over the QueueBytes. Any bytes receiving thread sends a msg with the
+	// buffer here to be stored in the underlying queue.
 	protected Handler startInputQueueMsgHandler() {
 		return new Handler(Looper.getMainLooper()) {
 			public void handleMessage(Message msg) {
 
 				final SOCKET_STATE[] socketStates = SOCKET_STATE.values();
 				switch (socketStates[msg.what]) {
+				case MSG_SOCKET_TCP_SERVER_CLIENT_CONNECTION:
+					// new client connected
+					break;
 				// Received data
 				case MSG_SOCKET_DATA_READY:
 					// read bytes from drone
