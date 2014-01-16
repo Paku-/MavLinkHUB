@@ -96,8 +96,6 @@ public class HUBLogger {
 				mFileByteLogStream.write(buffer.array(), 0, buffer.limit());
 				mInMemIncomingBytesStream.write(buffer.array(), 0, buffer.limit());
 				releaseLock();
-				globalVars.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_STATS.ordinal())
-						.sendToTarget();
 				globalVars.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_BYTELOG.ordinal())
 						.sendToTarget();
 			}

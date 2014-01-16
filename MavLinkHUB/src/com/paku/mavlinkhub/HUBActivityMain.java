@@ -141,6 +141,14 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 
 	}
 
+	/*
+	 * public void onBackPressed() { if(backButtonCount >= 1) { Intent intent =
+	 * new Intent(Intent.ACTION_MAIN); intent.addCategory(Intent.CATEGORY_HOME);
+	 * intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); startActivity(intent); }
+	 * else { Toast.makeText(this,
+	 * "Press the back button once again to close the application.",
+	 * Toast.LENGTH_SHORT).show(); backButtonCount++; } }
+	 */
 	@Override
 	protected void onStop() {
 		super.onStop();
@@ -158,7 +166,7 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 
 	private void refreshStats() {
 		final TextView mTextViewLogStats = (TextView) findViewById(R.id.textView_system_status_bar);
-		mTextViewLogStats.setText(globalVars.logger.hubStats.toString(MSG_SOURCE.FROM_ALL));
+		mTextViewLogStats.setText(globalVars.logger.hubStats.toString_(MSG_SOURCE.FROM_ALL));
 	}
 
 	public void enableProgressBar(boolean on) {

@@ -7,7 +7,7 @@ import com.paku.mavlinkhub.queue.endpoints.DroneClient;
 import com.paku.mavlinkhub.queue.endpoints.GroundStationServer;
 import com.paku.mavlinkhub.queue.endpoints.drone.DroneClientBluetooth;
 import com.paku.mavlinkhub.queue.endpoints.gs.GroundStationServerTCP;
-import com.paku.mavlinkhub.queue.msgcenter.MAVLinkQueue;
+import com.paku.mavlinkhub.queue.mavlinkqueue.MAVLinkQueue;
 
 import android.app.Application;
 import android.content.Context;

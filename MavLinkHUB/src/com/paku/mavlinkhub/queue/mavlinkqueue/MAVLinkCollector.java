@@ -1,4 +1,4 @@
-package com.paku.mavlinkhub.queue.msgcenter;
+package com.paku.mavlinkhub.queue.mavlinkqueue;
 
 import android.content.Context;
 

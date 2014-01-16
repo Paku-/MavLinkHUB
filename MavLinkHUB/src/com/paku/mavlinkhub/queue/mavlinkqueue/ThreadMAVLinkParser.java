@@ -1,10 +1,11 @@
-package com.paku.mavlinkhub.queue.msgcenter;
+package com.paku.mavlinkhub.queue.mavlinkqueue;
 
 import java.nio.ByteBuffer;
 
 import com.MAVLink.Parser;
 import com.MAVLink.Messages.MAVLinkPacket;
 import com.paku.mavlinkhub.HUBGlobals;
+import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.enums.MSG_SOURCE;
 import com.paku.mavlinkhub.fragments.viewadapters.items.ItemMavLinkMsg;
 
@@ -42,7 +43,20 @@ public class ThreadMAVLinkParser extends Thread {
 			parse(MSG_SOURCE.FROM_DRONE);
 			// save transmission from drone
 			globalVars.logger.byteLog(MSG_SOURCE.FROM_DRONE, tmpBuffer);
+
 			parse(MSG_SOURCE.FROM_GS);
+
+			// that's rolling to fast, we need GUI update timer to preserve
+			// resources or we can sleep a little (as below)
+			globalVars.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_STATS.ordinal()).sendToTarget();
+
+			// we do not need so much speed
+			try {
+				sleep(100);
+			}
+			catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 
 		}
 
