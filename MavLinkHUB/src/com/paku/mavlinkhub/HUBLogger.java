@@ -9,12 +9,14 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.enums.MSG_SOURCE;
 import com.paku.mavlinkhub.utils.HUBStats;
 
 import android.annotation.SuppressLint;
+import android.text.format.Time;
 import android.util.Log;
 
 public class HUBLogger {
@@ -29,7 +31,7 @@ public class HUBLogger {
 
 	// sys wide in memory logging streams
 	// incoming bytes
-	public ByteArrayOutputStream mInMemIncomingBytesStream;
+	public ByteArrayOutputStream mInMemBytesStream;
 	// sys log sotrage
 	public ByteArrayOutputStream mInMemSysLogStream;
 
@@ -52,8 +54,8 @@ public class HUBLogger {
 		mInMemSysLogStream.reset();
 
 		// set the system wide byte storage stream ready for data collecting..
-		mInMemIncomingBytesStream = new ByteArrayOutputStream();
-		mInMemIncomingBytesStream.reset();
+		mInMemBytesStream = new ByteArrayOutputStream();
+		mInMemBytesStream.reset();
 
 		restartSysLog();
 		restartByteLog();
@@ -94,10 +96,9 @@ public class HUBLogger {
 
 				waitForLock();
 				mFileByteLogStream.write(buffer.array(), 0, buffer.limit());
-				mInMemIncomingBytesStream.write(buffer.array(), 0, buffer.limit());
+				mInMemBytesStream.write(buffer.array(), 0, buffer.limit());
 				releaseLock();
-				hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_BYTELOG.ordinal())
-						.sendToTarget();
+				hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_BYTELOG.ordinal()).sendToTarget();
 			}
 			catch (IOException e1) {
 				Log.d(TAG, "[byteLog] " + e1.getMessage());
@@ -166,11 +167,14 @@ public class HUBLogger {
 	@SuppressLint("SimpleDateFormat")
 	public String timeStamp() {
 
-		SimpleDateFormat s = new SimpleDateFormat("[hh:mm:ss.SSS]");
-		return s.format(new Date());
+		SimpleDateFormat s = new SimpleDateFormat("[HH:mm:ss.SSS]");
+		// s.setTimeZone(TimeZone.getTimeZone("UTC"));
+		s.setTimeZone(TimeZone.getDefault());
+		return s.format((new Date()));
 
-		// Time dtNow = new Time();
+		// Time dtNow = new Time(Time.getCurrentTimezone());
 		// dtNow.setToNow();
+		// return dtNow.format("[%H:%M:%S]");
 		// return dtNow.format("[%Y.%m.%d %H:%M]");
 
 		// SimpleDateFormat s = new SimpleDateFormat("ddMMyyyyhhmmss.SSS");

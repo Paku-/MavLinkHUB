@@ -13,8 +13,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout.LayoutParams;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateByteLog, IQueueMsgItemReady {
@@ -28,7 +31,6 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		final View rootView = inflater.inflate(R.layout.fragment_realtime_mavlink_msglist, container, false);
-
 		return rootView;
 	}
 
@@ -37,7 +39,6 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 		super.onViewCreated(view, savedInstanceState);
 
 		listAdapterMavLink = new ViewAdapterMavlinkMsgList(this.getActivity(), generateMavlinkListData());
-
 		listViewMavLinkMsg = (ListView) (getView().findViewById(R.id.listView_mavlinkMsgs));
 		listViewMavLinkMsg.setAdapter(listAdapterMavLink);
 	}
@@ -69,12 +70,11 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 		String buff;
 
 		// get last n kb of data
-		if (hub.logger.mInMemIncomingBytesStream.size() > hub.visibleBuffersSize) {
-			buff = new String(hub.logger.mInMemIncomingBytesStream.toByteArray(),
-					hub.logger.mInMemIncomingBytesStream.size() - hub.visibleBuffersSize, hub.visibleBuffersSize);
+		if (hub.logger.mInMemBytesStream.size() > hub.visBuffSize) {
+			buff = new String(hub.logger.mInMemBytesStream.toByteArray(), hub.logger.mInMemBytesStream.size() - hub.visBuffSize, hub.visBuffSize);
 		}
 		else {
-			buff = new String(hub.logger.mInMemIncomingBytesStream.toByteArray());
+			buff = new String(hub.logger.mInMemBytesStream.toByteArray());
 
 		}
 
@@ -82,6 +82,10 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 
 		// scroll down
 		final ScrollView mScrollView = (ScrollView) (getView().findViewById(R.id.scrollView_logByte));
+
+		// mScrollView.setLayoutParams(new
+		// LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,
+		// LayoutParams.MATCH_PARENT, 4f));
 
 		if (mScrollView != null) {
 

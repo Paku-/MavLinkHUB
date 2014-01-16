@@ -49,9 +49,9 @@ public class FragmentSysLog extends HUBFragment implements IDataUpdateSysLog {
 
 		final String buff;
 
-		if (hub.logger.mInMemSysLogStream.size() > hub.visibleBuffersSize) {
+		if (hub.logger.mInMemSysLogStream.size() > hub.visBuffSize) {
 			buff = new String(hub.logger.mInMemSysLogStream.toByteArray(), hub.logger.mInMemSysLogStream.size()
-					- hub.visibleBuffersSize, hub.visibleBuffersSize);
+					- hub.visBuffSize, hub.visBuffSize);
 		}
 		else {
 			buff = new String(hub.logger.mInMemSysLogStream.toByteArray());

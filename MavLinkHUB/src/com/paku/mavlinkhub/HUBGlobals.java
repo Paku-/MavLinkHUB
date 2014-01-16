@@ -20,7 +20,7 @@ public class HUBGlobals extends Application {
 
 	// constants
 	// buffer, stream sizes
-	public int visibleBuffersSize = 1024 * 10;
+	public int visBuffSize = 1024 * 10;
 	// public int minStreamReadSize = 2 ^ 4; // ^6 = 64 ^5=32 ^4=16
 	public int visibleMsgList = 20;
 

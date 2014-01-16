@@ -66,7 +66,8 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		killApp(true);
+		// Log.d(TAG, " === Main Activity on Destroy ===");
+		// killApp(true);
 	}
 
 	@Override
