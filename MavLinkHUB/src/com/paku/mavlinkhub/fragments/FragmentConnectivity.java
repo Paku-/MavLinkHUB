@@ -54,8 +54,8 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 	public void onResume() {
 		super.onResume();
 		hub.messenger.registerForOnUiModeChanged(this);
-		hub.messenger.registerForOnConnectionFailed(this);
-		hub.messenger.registerForOnConnected(this);
+		hub.messenger.registerForOnDroneConnectionFailed(this);
+		hub.messenger.registerForOnDroneConnected(this);
 		refreshUI();
 
 	}

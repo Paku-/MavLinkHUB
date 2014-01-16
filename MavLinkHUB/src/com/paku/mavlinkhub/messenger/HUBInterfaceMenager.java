@@ -2,7 +2,6 @@ package com.paku.mavlinkhub.messenger;
 
 import java.util.ArrayList;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
@@ -14,11 +13,15 @@ import com.paku.mavlinkhub.interfaces.IDataUpdateStats;
 import com.paku.mavlinkhub.interfaces.IDataUpdateSysLog;
 import com.paku.mavlinkhub.interfaces.IQueueMsgItemReady;
 import com.paku.mavlinkhub.interfaces.IQueueMsgItemSent;
+import com.paku.mavlinkhub.interfaces.IServerStarted;
 import com.paku.mavlinkhub.interfaces.IUiModeChanged;
 
 public class HUBInterfaceMenager {
 
 	protected HUBGlobals app;
+
+	// lists holding fragments registered for particular interface
+	ArrayList<IServerStarted> listenersIServerStarted = new ArrayList<IServerStarted>();
 
 	ArrayList<IDroneConnected> listenersIDroneConnected = new ArrayList<IDroneConnected>();
 	ArrayList<IDroneConnectionFailed> listenersIDroneConnectionFailed = new ArrayList<IDroneConnectionFailed>();
@@ -138,11 +141,11 @@ public class HUBInterfaceMenager {
 
 	// IDroneConnectionFailed
 	// *********************************************************
-	public void registerForOnConnectionFailed(Fragment fragment) {
+	public void registerForOnDroneConnectionFailed(Fragment fragment) {
 		listenersIDroneConnectionFailed.add((IDroneConnectionFailed) fragment);
 	}
 
-	public void unregisterFromOnConnectionFailed(Fragment fragment) {
+	public void unregisterFromOnDroneConnectionFailed(Fragment fragment) {
 		listenersIDroneConnectionFailed.remove((IDroneConnectionFailed) fragment);
 	}
 
@@ -154,11 +157,11 @@ public class HUBInterfaceMenager {
 
 	// IDroneConnected
 	// *********************************************************
-	public void registerForOnConnected(Fragment fragment) {
+	public void registerForOnDroneConnected(Fragment fragment) {
 		listenersIDroneConnected.add((IDroneConnected) fragment);
 	}
 
-	public void unregisterFromOnConnected(Fragment fragment) {
+	public void unregisterFromOnDroneConnected(Fragment fragment) {
 		listenersIDroneConnected.remove((IDroneConnected) fragment);
 	}
 
@@ -168,9 +171,20 @@ public class HUBInterfaceMenager {
 		}
 	}
 
-	// server started
-	protected void processOnServerStarted() {
+	// IServerStarted
+	// *********************************************************
+	public void registerForOnServerStarted(Fragment fragment) {
+		listenersIServerStarted.add((IServerStarted) fragment);
+	}
 
+	public void unregisterFromOnServerStarted(Fragment fragment) {
+		listenersIServerStarted.remove((IServerStarted) fragment);
+	}
+
+	public void processOnServerStarted() {
+		for (IServerStarted listener : listenersIServerStarted) {
+			if (listener != null) listener.onServerStarted();
+		}
 	}
 
 }

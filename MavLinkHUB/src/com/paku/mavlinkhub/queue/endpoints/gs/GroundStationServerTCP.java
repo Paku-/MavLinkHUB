@@ -4,10 +4,10 @@ import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.queue.endpoints.GroundStationServer;
 
 import android.os.Handler;
-import android.util.Log;
 
 public class GroundStationServerTCP extends GroundStationServer {
 
+	@SuppressWarnings("unused")
 	private static final String TAG = "GroundStationServerTCP";
 
 	private static final int SIZEBUFF = 1024;

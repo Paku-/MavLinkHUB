@@ -7,7 +7,6 @@ import java.util.concurrent.BlockingQueue;
 import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.enums.SOCKET_STATE;
 
-import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;

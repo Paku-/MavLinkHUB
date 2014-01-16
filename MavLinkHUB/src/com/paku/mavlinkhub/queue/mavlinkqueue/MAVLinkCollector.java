@@ -1,10 +1,6 @@
 package com.paku.mavlinkhub.queue.mavlinkqueue;
 
-import android.content.Context;
-
-import com.MAVLink.Messages.MAVLinkStats;
 import com.paku.mavlinkhub.HUBGlobals;
-import com.paku.mavlinkhub.enums.MSG_SOURCE;
 
 public class MAVLinkCollector {
 
