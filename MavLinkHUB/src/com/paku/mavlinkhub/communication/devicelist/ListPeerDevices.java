@@ -14,10 +14,10 @@ public abstract class ListPeerDevices {
 	private static final String TAG = "ListPeerDevices";
 
 	ArrayList<ItemPeerDevice> devList = new ArrayList<ItemPeerDevice>();
-	protected final HUBGlobals globalVars;
+	protected final HUBGlobals hub;
 
-	protected ListPeerDevices(HUBGlobals hubGlobals) {
-		globalVars = hubGlobals;
+	protected ListPeerDevices(HUBGlobals hubContext) {
+		hub = hubContext;
 	}
 
 	// fill the list with your devices

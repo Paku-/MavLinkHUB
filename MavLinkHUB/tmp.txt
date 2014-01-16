@@ -8,6 +8,9 @@ Empty socket
 
 stats
 
+
+HUBGlobals
+
 ...
 
 font

@@ -24,7 +24,7 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 
 	private static final String TAG = "HUBActivityMain";
 
-	public HUBGlobals globalVars;
+	public HUBGlobals hub;
 
 	private ProgressBar progressBarConnected;
 
@@ -35,15 +35,15 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
 
-		globalVars = (HUBGlobals) this.getApplication();
+		hub = (HUBGlobals) this.getApplication();
 
 		if (savedInstanceState == null) { // init only if we are just borned
-			globalVars.Init(this);
+			hub.Init(this);
 		}
 
-		globalVars.mFragmentsPagerAdapter = new FragmentsAdapter(this, getSupportFragmentManager());
-		globalVars.mViewPager = (ViewPager) findViewById(R.id.pager);
-		globalVars.mViewPager.setAdapter(globalVars.mFragmentsPagerAdapter);
+		hub.mFragmentsPagerAdapter = new FragmentsAdapter(this, getSupportFragmentManager());
+		hub.mViewPager = (ViewPager) findViewById(R.id.pager);
+		hub.mViewPager.setAdapter(hub.mFragmentsPagerAdapter);
 
 		progressBarConnected = (ProgressBar) findViewById(R.id.progressBarConnected);
 
@@ -55,7 +55,7 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
 		// register for call interface;
-		globalVars.messenger.mainActivity = this;
+		hub.messenger.mainActivity = this;
 
 		progressBarConnected.getIndeterminateDrawable().setColorFilter(0xFFFF0000,
 				android.graphics.PorterDuff.Mode.MULTIPLY);
@@ -68,7 +68,7 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 		super.onPause();
 
 		// unregister from call interface;
-		globalVars.messenger.mainActivity = null;
+		hub.messenger.mainActivity = null;
 	}
 
 	@Override
@@ -96,7 +96,7 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 		}
 	}
 
-	// Close app respecting connection state
+	// Close hub respecting connection state
 	public void CloseMe() {
 
 		OnClickListener positiveButtonClickListener = new AlertDialog.OnClickListener() {
@@ -113,11 +113,11 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 			}
 		};
 
-		if (globalVars.droneClient.isConnected()) {
+		if (hub.droneClient.isConnected()) {
 
 			final AlertDialog.Builder dlg = new AlertDialog.Builder(this);
 			dlg.setTitle(getString(R.string.close_dlg_title_mavlink_closing) + "["
-					+ globalVars.droneClient.getPeerName() + "]");
+					+ hub.droneClient.getPeerName() + "]");
 			dlg.setMessage(R.string.close_dlg_msg_current_connection_will_be_lost);
 			dlg.setCancelable(false);
 			dlg.setPositiveButton(R.string.close_dlg_positive, positiveButtonClickListener);
@@ -157,16 +157,16 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 	}
 
 	private void closeHUB() {
-		globalVars.logger.sysLog(TAG, "MavLinkHUB closing ...");
-		globalVars.droneClient.stopClient();
-		globalVars.gsServer.stopServer();
-		globalVars.mavlinkQueue.msgCollector.stopMAVLinkParserThread();
-		globalVars.logger.stopAllLogs();
+		hub.logger.sysLog(TAG, "MavLinkHUB closing ...");
+		hub.droneClient.stopClient();
+		hub.gsServer.stopServer();
+		hub.mavlinkQueue.msgCollector.stopMAVLinkParserThread();
+		hub.logger.stopAllLogs();
 	}
 
 	private void refreshStats() {
 		final TextView mTextViewLogStats = (TextView) findViewById(R.id.textView_system_status_bar);
-		mTextViewLogStats.setText(globalVars.logger.hubStats.toString_(MSG_SOURCE.FROM_ALL));
+		mTextViewLogStats.setText(hub.logger.hubStats.toString_(MSG_SOURCE.FROM_ALL));
 	}
 
 	public void enableProgressBar(boolean on) {

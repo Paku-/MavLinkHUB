@@ -6,6 +6,8 @@ import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.fragments.viewadapters.ViewAdapterMavlinkMsgList;
 import com.paku.mavlinkhub.fragments.viewadapters.items.ItemMavLinkMsg;
 import com.paku.mavlinkhub.interfaces.IDataUpdateByteLog;
+import com.paku.mavlinkhub.interfaces.IQueueMsgItemReady;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +16,7 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateByteLog {
+public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateByteLog, IQueueMsgItemReady {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "FragmentRealTimeMavlink";
@@ -43,30 +45,36 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		globalVars.messenger.registerForOnDataUpdateByteLog(this);
-		refreshUI();
+		hub.messenger.registerForOnDataUpdateByteLog(this);
+		hub.messenger.registerForOnQueueMsgItemReady(this);
+
+		// GUI update
+		onDataUpdateByteLog();
+		onQueueMsgItemReady();
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
-		globalVars.messenger.unregisterFromOnDataUpdateByteLog(this);
+		hub.messenger.unregisterFromOnDataUpdateByteLog(this);
+		hub.messenger.unregisterFromOnQueueMsgItemReady(this);
 	}
 
-	public void refreshUI() {
+	@Override
+	public void onDataUpdateByteLog() {
 
 		final TextView mTextViewBytesLog = (TextView) (getView().findViewById(R.id.textView_logByte));
 
 		String buff;
 
 		// get last n kb of data
-		if (globalVars.logger.mInMemIncomingBytesStream.size() > globalVars.visibleBuffersSize) {
-			buff = new String(globalVars.logger.mInMemIncomingBytesStream.toByteArray(),
-					globalVars.logger.mInMemIncomingBytesStream.size() - globalVars.visibleBuffersSize,
-					globalVars.visibleBuffersSize);
+		if (hub.logger.mInMemIncomingBytesStream.size() > hub.visibleBuffersSize) {
+			buff = new String(hub.logger.mInMemIncomingBytesStream.toByteArray(),
+					hub.logger.mInMemIncomingBytesStream.size() - hub.visibleBuffersSize,
+					hub.visibleBuffersSize);
 		}
 		else {
-			buff = new String(globalVars.logger.mInMemIncomingBytesStream.toByteArray());
+			buff = new String(hub.logger.mInMemIncomingBytesStream.toByteArray());
 
 		}
 
@@ -86,6 +94,11 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 
 		}
 
+	}
+
+	@Override
+	public void onQueueMsgItemReady() {
+
 		listAdapterMavLink.clear();
 		listAdapterMavLink.addAll(generateMavlinkListData());
 		listViewMavLinkMsg.setSelection(listAdapterMavLink.getCount());
@@ -97,14 +110,9 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 
 		// we need a clone for adapter.
 		final ArrayList<ItemMavLinkMsg> clone = new ArrayList<ItemMavLinkMsg>();
-		clone.addAll(globalVars.mavlinkQueue.getMsgItemsForUI());
+		clone.addAll(hub.mavlinkQueue.getMsgItemsForUI());
 
 		return clone;
-	}
-
-	@Override
-	public void onDataUpdateByteLog() {
-		refreshUI();
 	}
 
 }

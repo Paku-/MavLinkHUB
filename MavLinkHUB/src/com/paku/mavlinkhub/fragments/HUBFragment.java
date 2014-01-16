@@ -7,7 +7,7 @@ import android.support.v4.app.Fragment;
 
 public class HUBFragment extends Fragment {
 
-	protected HUBGlobals globalVars;
+	protected HUBGlobals hub;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -15,7 +15,7 @@ public class HUBFragment extends Fragment {
 
 		setRetainInstance(true); // keep HUBFragments in the memory
 
-		globalVars = (HUBGlobals) getActivity().getApplication();
+		hub = (HUBGlobals) getActivity().getApplication();
 
 	}
 

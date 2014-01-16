@@ -21,7 +21,7 @@ public class HUBLogger {
 
 	private static final String TAG = "HUBLogger";
 
-	private final HUBGlobals globalVars;
+	private final HUBGlobals hub;
 
 	// log files & files writing streams
 	private File byteLogFile, sysLogFile;
@@ -39,9 +39,9 @@ public class HUBLogger {
 	// system stats holding object
 	public HUBStats hubStats;
 
-	public HUBLogger(HUBGlobals context) {
+	public HUBLogger(HUBGlobals hubContext) {
 
-		globalVars = context;
+		hub = hubContext;
 
 		hubStats = new HUBStats();
 
@@ -72,7 +72,7 @@ public class HUBLogger {
 			mFileSysLogStream.write(tempStr.getBytes(), 0, tempStr.length());
 			mInMemSysLogStream.write(tempStr.getBytes(), 0, tempStr.length());
 			releaseLock();
-			globalVars.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_SYSLOG.ordinal()).sendToTarget();
+			hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_SYSLOG.ordinal()).sendToTarget();
 		}
 		catch (IOException e1) {
 			Log.d(TAG, "[sysLog] " + e1.getMessage());
@@ -96,7 +96,7 @@ public class HUBLogger {
 				mFileByteLogStream.write(buffer.array(), 0, buffer.limit());
 				mInMemIncomingBytesStream.write(buffer.array(), 0, buffer.limit());
 				releaseLock();
-				globalVars.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_BYTELOG.ordinal())
+				hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_BYTELOG.ordinal())
 						.sendToTarget();
 			}
 			catch (IOException e1) {
@@ -107,7 +107,7 @@ public class HUBLogger {
 
 	public void restartByteLog() {
 
-		byteLogFile = new File(globalVars.getExternalFilesDir(null), "bytes.txt");
+		byteLogFile = new File(hub.getExternalFilesDir(null), "bytes.txt");
 		try {
 			mFileByteLogStream = new BufferedOutputStream(new FileOutputStream(byteLogFile, false), 1024);
 		}
@@ -119,7 +119,7 @@ public class HUBLogger {
 
 	public void restartSysLog() {
 
-		sysLogFile = new File(globalVars.getExternalFilesDir(null), "syslog.txt");
+		sysLogFile = new File(hub.getExternalFilesDir(null), "syslog.txt");
 		try {
 			mFileSysLogStream = new BufferedOutputStream(new FileOutputStream(sysLogFile, false), 1024);
 		}

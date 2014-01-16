@@ -2,27 +2,72 @@ package com.paku.mavlinkhub.messenger;
 
 import java.util.ArrayList;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
+import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.interfaces.IDataUpdateByteLog;
-import com.paku.mavlinkhub.interfaces.IConnectionFailed;
+import com.paku.mavlinkhub.interfaces.IDroneConnected;
+import com.paku.mavlinkhub.interfaces.IDroneConnectionFailed;
 import com.paku.mavlinkhub.interfaces.IDataUpdateStats;
 import com.paku.mavlinkhub.interfaces.IDataUpdateSysLog;
+import com.paku.mavlinkhub.interfaces.IQueueMsgItemReady;
+import com.paku.mavlinkhub.interfaces.IQueueMsgItemSent;
 import com.paku.mavlinkhub.interfaces.IUiModeChanged;
 
 public class HUBInterfaceMenager {
 
-	ArrayList<IConnectionFailed> listenersIConnectionFailed = new ArrayList<IConnectionFailed>();
+	protected HUBGlobals app;
+
+	ArrayList<IDroneConnected> listenersIDroneConnected = new ArrayList<IDroneConnected>();
+	ArrayList<IDroneConnectionFailed> listenersIDroneConnectionFailed = new ArrayList<IDroneConnectionFailed>();
+
 	ArrayList<IUiModeChanged> listenersIUiModeChanged = new ArrayList<IUiModeChanged>();
+
 	ArrayList<IDataUpdateSysLog> listenersIDataUpdateSysLog = new ArrayList<IDataUpdateSysLog>();
 	ArrayList<IDataUpdateByteLog> listenersIDataUpdateByteLog = new ArrayList<IDataUpdateByteLog>();
 	ArrayList<IDataUpdateStats> listenersIDataUpdateStats = new ArrayList<IDataUpdateStats>();
 
+	ArrayList<IQueueMsgItemReady> listenersIQueueMsgItemReady = new ArrayList<IQueueMsgItemReady>();
+	ArrayList<IQueueMsgItemSent> listenersIQueueMsgItemSent = new ArrayList<IQueueMsgItemSent>();
+
 	public FragmentActivity mainActivity;
 
-	public HUBInterfaceMenager() {
+	public HUBInterfaceMenager(HUBGlobals hubContext) {
+		app = ((HUBGlobals) hubContext.getApplicationContext());
+	}
 
+	// IQueueMsgItemReady();
+	// *********************************************************
+	public void registerForOnQueueMsgItemReady(Fragment fragment) {
+		listenersIQueueMsgItemReady.add((IQueueMsgItemReady) fragment);
+	}
+
+	public void unregisterFromOnQueueMsgItemReady(Fragment fragment) {
+		listenersIQueueMsgItemReady.remove((IQueueMsgItemReady) fragment);
+	}
+
+	public void processOnQueueMsgItemReady() {
+		for (IQueueMsgItemReady listener : listenersIQueueMsgItemReady) {
+			if (listener != null) listener.onQueueMsgItemReady();
+		}
+	}
+
+	// IQueueMsgItemSent();
+	// *********************************************************
+	public void registerForOnQueueMsgItemSent(Fragment fragment) {
+		listenersIQueueMsgItemSent.add((IQueueMsgItemSent) fragment);
+	}
+
+	public void unregisterFromOnQueueMsgItemSent(Fragment fragment) {
+		listenersIQueueMsgItemSent.remove((IQueueMsgItemSent) fragment);
+	}
+
+	public void processOnQueueMsgItemSent() {
+		for (IQueueMsgItemSent listener : listenersIQueueMsgItemSent) {
+			if (listener != null) listener.onQueueMsgItemSent();
+		}
 	}
 
 	// IUiModeChanged
@@ -91,23 +136,41 @@ public class HUBInterfaceMenager {
 		}
 	}
 
-	// IConnectionFailed
+	// IDroneConnectionFailed
 	// *********************************************************
 	public void registerForOnConnectionFailed(Fragment fragment) {
-		listenersIConnectionFailed.add((IConnectionFailed) fragment);
+		listenersIDroneConnectionFailed.add((IDroneConnectionFailed) fragment);
 	}
 
 	public void unregisterFromOnConnectionFailed(Fragment fragment) {
-		listenersIConnectionFailed.remove((IConnectionFailed) fragment);
+		listenersIDroneConnectionFailed.remove((IDroneConnectionFailed) fragment);
 	}
 
-	public void processOnConnectionFailed(String msg) {
-		for (IConnectionFailed listener : listenersIConnectionFailed) {
-			if (listener != null) listener.onConnectionFailed(msg);
+	public void processOnDroneConnectionFailed(String msg) {
+		for (IDroneConnectionFailed listener : listenersIDroneConnectionFailed) {
+			if (listener != null) listener.onDroneConnectionFailed(msg);
 		}
 	}
 
-	public void processOnServerStarted() {
+	// IDroneConnected
+	// *********************************************************
+	public void registerForOnConnected(Fragment fragment) {
+		listenersIDroneConnected.add((IDroneConnected) fragment);
+	}
+
+	public void unregisterFromOnConnected(Fragment fragment) {
+		listenersIDroneConnected.remove((IDroneConnected) fragment);
+	}
+
+	public void processOnDroneConnected() {
+		for (IDroneConnected listener : listenersIDroneConnected) {
+			if (listener != null) listener.onDroneConnected();
+		}
+	}
+
+	// server started
+	protected void processOnServerStarted() {
 
 	}
+
 }

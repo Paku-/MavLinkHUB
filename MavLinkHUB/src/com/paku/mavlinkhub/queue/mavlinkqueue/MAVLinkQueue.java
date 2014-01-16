@@ -8,9 +8,9 @@ public class MAVLinkQueue extends QueueMsgItems {
 	// MAVLink class fields names holder/object
 	public MAVLinkCollector msgCollector;
 
-	public MAVLinkQueue(HUBGlobals appContext, int capacity) {
-		super(appContext, capacity);
-		msgCollector = new MAVLinkCollector(appContext);
+	public MAVLinkQueue(HUBGlobals hubContext, int capacity) {
+		super(hubContext, capacity);
+		msgCollector = new MAVLinkCollector(hubContext);
 
 	}
 

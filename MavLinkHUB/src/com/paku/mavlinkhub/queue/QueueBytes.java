@@ -19,7 +19,7 @@ public abstract class QueueBytes {
 
 	private final BlockingQueue<ByteBuffer> inputByteQueue;
 	private final BlockingQueue<ByteBuffer> outputByteQueue;
-	// app wide msg center
+	// hub wide msg center
 	public Handler appMsgHandler;
 
 	protected QueueBytes(Handler msgCenter, int capacity) {

@@ -19,14 +19,14 @@ public class QueueMsgItems {
 	// in mem msgItems storage for UI /global var size limited/
 	private final ArrayList<ItemMavLinkMsg> arrayMavLinkMsgItemsForUI;
 
-	HUBGlobals globalVars;
+	HUBGlobals hub;
 
-	public QueueMsgItems(HUBGlobals appContext, int capacity) {
+	public QueueMsgItems(HUBGlobals hubContext, int capacity) {
 
 		hubQueue = new ArrayBlockingQueue<ItemMavLinkMsg>(capacity);
 		arrayMavLinkMsgItemsForUI = new ArrayList<ItemMavLinkMsg>();
 
-		globalVars = appContext;
+		hub = hubContext;
 
 	}
 
@@ -52,14 +52,15 @@ public class QueueMsgItems {
 		// store item for UI
 		arrayMavLinkMsgItemsForUI.add(item);
 		// and call for UI update
-		globalVars.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_MAVLINK_MSGITEM_READY.ordinal(), -1, -1, item)
-				.sendToTarget();
 		// limit the Array size
-		while (arrayMavLinkMsgItemsForUI.size() > globalVars.visibleMsgList) {
+		while (arrayMavLinkMsgItemsForUI.size() > hub.visibleMsgList) {
 			arrayMavLinkMsgItemsForUI.remove(0);
 		}
 		// flush mem
 		arrayMavLinkMsgItemsForUI.trimToSize();
+
+		hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_QUEUE_MSGITEM_READY.ordinal(), -1, -1, item)
+				.sendToTarget();
 
 	}
 

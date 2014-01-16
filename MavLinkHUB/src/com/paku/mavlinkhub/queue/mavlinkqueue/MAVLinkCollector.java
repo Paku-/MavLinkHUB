@@ -11,19 +11,19 @@ public class MAVLinkCollector {
 	@SuppressWarnings("unused")
 	private static final String TAG = "MAVLinkCollector";
 
-	private final HUBGlobals globalVars;
+	private final HUBGlobals hub;
 
 	private ThreadMAVLinkParser parserThread;
 
-	public MAVLinkCollector(Context mContext) {
+	public MAVLinkCollector(HUBGlobals hubContext) {
 
-		globalVars = ((HUBGlobals) mContext.getApplicationContext());
+		hub = ((HUBGlobals) hubContext.getApplicationContext());
 
 	}
 
 	public void startMAVLinkParserThread() {
 
-		parserThread = new ThreadMAVLinkParser(globalVars);
+		parserThread = new ThreadMAVLinkParser(hub);
 		parserThread.start();
 	}
 

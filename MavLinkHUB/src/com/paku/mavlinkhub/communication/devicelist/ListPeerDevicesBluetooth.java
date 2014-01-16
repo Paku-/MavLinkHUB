@@ -14,8 +14,8 @@ public class ListPeerDevicesBluetooth extends ListPeerDevices {
 	@SuppressWarnings("unused")
 	private static final String TAG = "ListPeerDevicesBluetooth";
 
-	public ListPeerDevicesBluetooth(HUBGlobals hubGlobals) {
-		super(hubGlobals);
+	public ListPeerDevicesBluetooth(HUBGlobals hubContext) {
+		super(hubContext);
 	}
 
 	public DEV_LIST_STATE refresh() {
@@ -37,8 +37,8 @@ public class ListPeerDevicesBluetooth extends ListPeerDevices {
 		if (pairedDevList.size() > 0) {
 			for (BluetoothDevice device : pairedDevList) {
 				ItemPeerDevice tmpItemPeerDevice = new ItemPeerDevice(device.getName(), device.getAddress());
-				if (globalVars.droneClient.isConnected()
-						& (globalVars.droneClient.getPeerAddress().equals(device.getAddress()))) {
+				if (hub.droneClient.isConnected()
+						& (hub.droneClient.getPeerAddress().equals(device.getAddress()))) {
 					tmpItemPeerDevice.setState(PEER_DEV_STATE.DEV_STATE_CONNECTED);
 				}
 				devList.add(tmpItemPeerDevice);

@@ -24,7 +24,7 @@ public class FragmentSysLog extends HUBFragment implements IDataUpdateSysLog {
 		// final TextView txtView = (TextView)
 		// (getView().findViewById(R.id.TextView_logSysLog));
 		// Typeface externalFont = Typeface.createFromAsset(
-		// globalVars.getAssets(), "fonts/Roboto-Condensed.ttf");
+		// hub.getAssets(), "fonts/Roboto-Condensed.ttf");
 		// txtView.setTypeface(externalFont);
 		// txtView.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
 	}
@@ -32,14 +32,14 @@ public class FragmentSysLog extends HUBFragment implements IDataUpdateSysLog {
 	@Override
 	public void onResume() {
 		super.onResume();
-		globalVars.messenger.registerForOnDataUpdateSysLog(this);
+		hub.messenger.registerForOnDataUpdateSysLog(this);
 		refreshUI();
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
-		globalVars.messenger.unregisterFromOnDataUpdateSysLog(this);
+		hub.messenger.unregisterFromOnDataUpdateSysLog(this);
 	}
 
 	public void refreshUI() {
@@ -48,13 +48,13 @@ public class FragmentSysLog extends HUBFragment implements IDataUpdateSysLog {
 
 		final String buff;
 
-		if (globalVars.logger.mInMemSysLogStream.size() > globalVars.visibleBuffersSize) {
-			buff = new String(globalVars.logger.mInMemSysLogStream.toByteArray(),
-					globalVars.logger.mInMemSysLogStream.size() - globalVars.visibleBuffersSize,
-					globalVars.visibleBuffersSize);
+		if (hub.logger.mInMemSysLogStream.size() > hub.visibleBuffersSize) {
+			buff = new String(hub.logger.mInMemSysLogStream.toByteArray(),
+					hub.logger.mInMemSysLogStream.size() - hub.visibleBuffersSize,
+					hub.visibleBuffersSize);
 		}
 		else {
-			buff = new String(globalVars.logger.mInMemSysLogStream.toByteArray());
+			buff = new String(hub.logger.mInMemSysLogStream.toByteArray());
 
 		}
 

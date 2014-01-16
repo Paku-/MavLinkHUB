@@ -8,7 +8,8 @@ import com.paku.mavlinkhub.communication.devicelist.ListPeerDevicesBluetooth;
 import com.paku.mavlinkhub.communication.devicelist.ItemPeerDevice;
 import com.paku.mavlinkhub.enums.PEER_DEV_STATE;
 import com.paku.mavlinkhub.fragments.viewadapters.ViewAdapterPeerDevsList;
-import com.paku.mavlinkhub.interfaces.IConnectionFailed;
+import com.paku.mavlinkhub.interfaces.IDroneConnected;
+import com.paku.mavlinkhub.interfaces.IDroneConnectionFailed;
 import com.paku.mavlinkhub.interfaces.IUiModeChanged;
 
 import android.bluetooth.BluetoothAdapter;
@@ -22,7 +23,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class FragmentConnectivity extends HUBFragment implements IUiModeChanged, IConnectionFailed {
+public class FragmentConnectivity extends HUBFragment implements IUiModeChanged, IDroneConnectionFailed,
+		IDroneConnected {
 
 	private static final String TAG = "FragmentConnectivity";
 
@@ -36,7 +38,7 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		btDevList = new ListPeerDevicesBluetooth(globalVars);
+		btDevList = new ListPeerDevicesBluetooth(hub);
 
 	}
 
@@ -51,8 +53,9 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 	@Override
 	public void onResume() {
 		super.onResume();
-		globalVars.messenger.registerForOnUiModeChanged(this);
-		globalVars.messenger.registerForOnConnectionFailed(this);
+		hub.messenger.registerForOnUiModeChanged(this);
+		hub.messenger.registerForOnConnectionFailed(this);
+		hub.messenger.registerForOnConnected(this);
 		refreshUI();
 
 	}
@@ -83,7 +86,7 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 		progressBarConnectingBIG.setVisibility(View.INVISIBLE);
 		btDevListView.setVisibility(View.VISIBLE);
 
-		switch (globalVars.uiMode) {
+		switch (hub.uiMode) {
 		case UI_MODE_CREATED:
 			break;
 		case UI_MODE_TURNING_ON:
@@ -163,15 +166,14 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 			switch (selectedDev.getState()) {
 			case DEV_STATE_UNKNOWN:
 			case DEV_STATE_DISCONNECTED:
-				if (!globalVars.droneClient.isConnected()) {
-					globalVars.logger.sysLog(TAG, "Connecting...");
-					globalVars.logger.sysLog(TAG, "Me  : " + globalVars.droneClient.getMyName() + " ["
-							+ globalVars.droneClient.getMyAddress() + "]");
-					globalVars.logger.sysLog(TAG, "Peer: " + selectedDev.getName() + " [" + selectedDev.getAddress()
-							+ "]");
+				if (!hub.droneClient.isConnected()) {
+					hub.logger.sysLog(TAG, "Connecting...");
+					hub.logger.sysLog(TAG,
+							"Me  : " + hub.droneClient.getMyName() + " [" + hub.droneClient.getMyAddress() + "]");
+					hub.logger.sysLog(TAG, "Peer: " + selectedDev.getName() + " [" + selectedDev.getAddress() + "]");
 
-					globalVars.droneClient.startConnection(selectedDev.getAddress());
-					// globalVars.mavlinkQueue.msgCollector.startMAVLinkParserThread();
+					hub.droneClient.startConnection(selectedDev.getAddress());
+					// hub.mavlinkQueue.msgCollector.startMAVLinkParserThread();
 
 					btDevList.setDevState(position, PEER_DEV_STATE.DEV_STATE_CONNECTED);
 				}
@@ -183,10 +185,10 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 				break;
 
 			case DEV_STATE_CONNECTED:
-				if (globalVars.droneClient.isConnected()) {
-					globalVars.logger.sysLog(TAG, "Closing Connection ...");
-					globalVars.droneClient.stopClient();
-					// globalVars.mavlinkQueue.msgCollector.stopMAVLinkParserThread();
+				if (hub.droneClient.isConnected()) {
+					hub.logger.sysLog(TAG, "Closing Connection ...");
+					hub.droneClient.stopClient();
+					// hub.mavlinkQueue.msgCollector.stopMAVLinkParserThread();
 					btDevList.setDevState(position, PEER_DEV_STATE.DEV_STATE_DISCONNECTED);
 				}
 				else {
@@ -204,16 +206,21 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 
 	// interfaces
 	@Override
-	public void onConnectionFailed(String errorMsg) {
+	public void onDroneConnectionFailed(String errorMsg) {
 
-		globalVars.logger.sysLog(TAG, errorMsg);
-		globalVars.droneClient.stopClient();
-		// globalVars.mavlinkQueue.msgCollector.stopMAVLinkParserThread();
+		hub.logger.sysLog(TAG, errorMsg);
+		hub.droneClient.stopClient();
+		// hub.mavlinkQueue.msgCollector.stopMAVLinkParserThread();
 
 		Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_SHORT).show();
 
 		btDevList.setAllDevState(PEER_DEV_STATE.DEV_STATE_DISCONNECTED);
 		refreshBtDevListView();
+
+	}
+
+	@Override
+	public void onDroneConnected() {
 
 	}
 
