@@ -6,6 +6,7 @@ import com.paku.mavlinkhub.HUBActivityMain;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.communication.devicelist.ListPeerDevicesBluetooth;
 import com.paku.mavlinkhub.communication.devicelist.ItemPeerDevice;
+import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.enums.PEER_DEV_STATE;
 import com.paku.mavlinkhub.fragments.viewadapters.ViewAdapterPeerDevsList;
 import com.paku.mavlinkhub.interfaces.IDroneConnected;
@@ -25,6 +26,16 @@ import android.widget.Toast;
 
 public class FragmentConnectivity extends HUBFragment implements IUiModeChanged, IDroneConnectionFailed,
 		IDroneConnected {
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		hub.messenger.unregister(this, APP_STATE.MSG_UI_MODE_CHANGED);
+		hub.messenger.unregister(this, APP_STATE.MSG_DRONE_CONNECTION_FAILED);
+		hub.messenger.unregister(this, APP_STATE.MSG_DRONE_CONNECTED);
+
+	}
 
 	private static final String TAG = "FragmentConnectivity";
 
@@ -53,10 +64,10 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 	@Override
 	public void onResume() {
 		super.onResume();
-		hub.messenger.registerForOnUiModeChanged(this);
-		hub.messenger.registerForOnDroneConnectionFailed(this);
-		hub.messenger.registerForOnDroneConnected(this);
-		refreshUI();
+		hub.messenger.register(this, APP_STATE.MSG_UI_MODE_CHANGED);
+		hub.messenger.register(this, APP_STATE.MSG_DRONE_CONNECTION_FAILED);
+		hub.messenger.register(this, APP_STATE.MSG_DRONE_CONNECTED);
+		onUiModeChanged();
 
 	}
 
@@ -75,43 +86,8 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 		btDevListView = (ListView) getView().findViewById(R.id.list_bt_bonded);
 		progressBarConnectingBIG = getView().findViewById(R.id.RelativeLayoutProgressBarBig);
 
-		refreshUI();
-
-	}
-
-	public void refreshUI() {
-
-		// mostly used states set as defaults
-		((HUBActivityMain) getActivity()).enableProgressBar(false);
-		progressBarConnectingBIG.setVisibility(View.INVISIBLE);
-		btDevListView.setVisibility(View.VISIBLE);
-
-		switch (hub.uiMode) {
-		case UI_MODE_CREATED:
-			break;
-		case UI_MODE_TURNING_ON:
-			progressBarConnectingBIG.setVisibility(View.VISIBLE);
-			break;
-		case UI_MODE_STATE_ON:
-			refreshBtDevList();
-			break;
-		case UI_MODE_TURNING_OFF:
-			progressBarConnectingBIG.setVisibility(View.VISIBLE);
-			btDevListView.setVisibility(View.INVISIBLE);
-			break;
-		case UI_MODE_STATE_OFF:
-			btDevListView.setVisibility(View.INVISIBLE);
-			break;
-		case UI_MODE_CONNECTED:
-			((HUBActivityMain) getActivity()).enableProgressBar(true);
-			refreshBtDevListView();
-			break;
-		case UI_MODE_DISCONNECTED:
-			refreshBtDevListView();
-			break;
-		default:
-			break;
-		}
+		// could be we do not need it here :)
+		onUiModeChanged();
 
 	}
 
@@ -226,7 +202,39 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 
 	@Override
 	public void onUiModeChanged() {
-		refreshUI();
+
+		// mostly used states set as defaults
+		((HUBActivityMain) getActivity()).enableProgressBar(false);
+		progressBarConnectingBIG.setVisibility(View.INVISIBLE);
+		btDevListView.setVisibility(View.VISIBLE);
+
+		switch (hub.uiMode) {
+		case UI_MODE_CREATED:
+			break;
+		case UI_MODE_TURNING_ON:
+			progressBarConnectingBIG.setVisibility(View.VISIBLE);
+			break;
+		case UI_MODE_STATE_ON:
+			refreshBtDevList();
+			break;
+		case UI_MODE_TURNING_OFF:
+			progressBarConnectingBIG.setVisibility(View.VISIBLE);
+			btDevListView.setVisibility(View.INVISIBLE);
+			break;
+		case UI_MODE_STATE_OFF:
+			btDevListView.setVisibility(View.INVISIBLE);
+			break;
+		case UI_MODE_CONNECTED:
+			((HUBActivityMain) getActivity()).enableProgressBar(true);
+			refreshBtDevListView();
+			break;
+		case UI_MODE_DISCONNECTED:
+			refreshBtDevListView();
+			break;
+		default:
+			break;
+		}
+
 	}
 
 }

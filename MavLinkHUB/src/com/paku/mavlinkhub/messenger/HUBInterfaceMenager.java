@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
 import com.paku.mavlinkhub.HUBGlobals;
+import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.interfaces.IDataUpdateByteLog;
 import com.paku.mavlinkhub.interfaces.IDroneConnected;
 import com.paku.mavlinkhub.interfaces.IDroneConnectionFailed;
@@ -19,6 +20,16 @@ import com.paku.mavlinkhub.interfaces.IUiModeChanged;
 public class HUBInterfaceMenager {
 
 	protected HUBGlobals app;
+
+	class Frags {
+		ArrayList<Fragment> fragsArray;
+
+		public Frags() {
+			fragsArray = new ArrayList<Fragment>(0);
+		}
+	}
+
+	ArrayList<Frags> listeners = new ArrayList<Frags>(0);
 
 	// lists holding fragments registered for particular interface
 	ArrayList<IServerStarted> listenersIServerStarted = new ArrayList<IServerStarted>();
@@ -39,151 +50,85 @@ public class HUBInterfaceMenager {
 
 	public HUBInterfaceMenager(HUBGlobals hubContext) {
 		app = ((HUBGlobals) hubContext.getApplicationContext());
-	}
 
-	// IQueueMsgItemReady();
-	// *********************************************************
-	public void registerForOnQueueMsgItemReady(Fragment fragment) {
-		listenersIQueueMsgItemReady.add((IQueueMsgItemReady) fragment);
-	}
+		// create empty fragments lists
+		for (@SuppressWarnings("unused")
+		APP_STATE msg : APP_STATE.values()) {
+			Frags frags = new Frags();
+			frags.fragsArray.clear();
+			frags.fragsArray.trimToSize();
+			listeners.add(frags);
 
-	public void unregisterFromOnQueueMsgItemReady(Fragment fragment) {
-		listenersIQueueMsgItemReady.remove((IQueueMsgItemReady) fragment);
-	}
-
-	public void processOnQueueMsgItemReady() {
-		for (IQueueMsgItemReady listener : listenersIQueueMsgItemReady) {
-			if (listener != null) listener.onQueueMsgItemReady();
 		}
 	}
 
-	// IQueueMsgItemSent();
-	// *********************************************************
-	public void registerForOnQueueMsgItemSent(Fragment fragment) {
-		listenersIQueueMsgItemSent.add((IQueueMsgItemSent) fragment);
+	public void register(Fragment fragment, APP_STATE msg) {
+		Frags frags = listeners.get(msg.ordinal());
+		frags.fragsArray.add(fragment);
+		frags.fragsArray.trimToSize();
 	}
 
-	public void unregisterFromOnQueueMsgItemSent(Fragment fragment) {
-		listenersIQueueMsgItemSent.remove((IQueueMsgItemSent) fragment);
+	public void unregister(Fragment fragment, APP_STATE msg) {
+		Frags frags = listeners.get(msg.ordinal());
+		frags.fragsArray.remove(fragment);
+		frags.fragsArray.trimToSize();
 	}
 
-	public void processOnQueueMsgItemSent() {
-		for (IQueueMsgItemSent listener : listenersIQueueMsgItemSent) {
-			if (listener != null) listener.onQueueMsgItemSent();
+	public void call(APP_STATE msg) {
+
+		// main activity is not a fragment :(
+		if ((msg == APP_STATE.MSG_DATA_UPDATE_STATS) && (IDataUpdateStats) mainActivity != null)
+			((IDataUpdateStats) mainActivity).onDataUpdateStats();
+
+		for (Fragment fragment : listeners.get(msg.ordinal()).fragsArray) {
+			if (fragment != null) {
+				APP_STATE[] msgs = APP_STATE.values();
+				switch (msgs[msg.ordinal()]) {
+				case MSG_QUEUE_MSGITEM_READY:
+					((IQueueMsgItemReady) fragment).onQueueMsgItemReady();
+					break;
+				case MSG_QUEUE_MSGITEM_SENT:
+					((IQueueMsgItemSent) fragment).onQueueMsgItemSent();
+					break;
+				case MSG_UI_MODE_CHANGED:
+					((IUiModeChanged) fragment).onUiModeChanged();
+					break;
+				case MSG_DATA_UPDATE_STATS:
+					((IDataUpdateStats) fragment).onDataUpdateStats();
+					break;
+				case MSG_DATA_UPDATE_SYSLOG:
+					((IDataUpdateSysLog) fragment).onDataUpdateSysLog();
+					break;
+				case MSG_DATA_UPDATE_BYTELOG:
+					((IDataUpdateByteLog) fragment).onDataUpdateByteLog();
+					break;
+				case MSG_DRONE_CONNECTED:
+					((IDroneConnected) fragment).onDroneConnected();
+					break;
+				case MSG_SERVER_STARTED:
+					((IServerStarted) fragment).onServerStarted();
+					break;
+
+				default:
+					break;
+				}
+			}
 		}
 	}
 
-	// IUiModeChanged
-	// *********************************************************
-	public void registerForOnUiModeChanged(Fragment fragment) {
-		listenersIUiModeChanged.add((IUiModeChanged) fragment);
-	}
-
-	public void unregisterFromOnUiModeChanged(Fragment fragment) {
-		listenersIUiModeChanged.remove((IUiModeChanged) fragment);
-	}
-
-	public void processOnUiModeChanged() {
-		for (IUiModeChanged listener : listenersIUiModeChanged) {
-			if (listener != null) listener.onUiModeChanged();
-		}
-	}
-
-	// IDataUpdateStats
-	// *********************************************************
-	public void registerForOnDataUpdateStats(Fragment fragment) {
-		listenersIDataUpdateStats.add((IDataUpdateStats) fragment);
-	}
-
-	public void unregisterFromOnDataUpdateStats(Fragment fragment) {
-		listenersIDataUpdateStats.remove((IDataUpdateStats) fragment);
-	}
-
-	public void processOnDataUpdateStats() {
-		for (IDataUpdateStats listener : listenersIDataUpdateStats) {
-			if (listener != null) listener.onDataUpdateStats();
-		}
-		// call main activity as well.
-		if ((IDataUpdateStats) mainActivity != null) ((IDataUpdateStats) mainActivity).onDataUpdateStats();
-	}
-
-	// IDataUpdateSysLog
-	// *********************************************************
-	public void registerForOnDataUpdateSysLog(Fragment fragment) {
-		listenersIDataUpdateSysLog.add((IDataUpdateSysLog) fragment);
-	}
-
-	public void unregisterFromOnDataUpdateSysLog(Fragment fragment) {
-		listenersIDataUpdateSysLog.remove((IDataUpdateSysLog) fragment);
-	}
-
-	public void processOnDataUpdateSysLog() {
-		for (IDataUpdateSysLog listener : listenersIDataUpdateSysLog) {
-			if (listener != null) listener.onDataUpdateSysLog();
-		}
-	}
-
-	// IDataUpdateByteLog
-	// *********************************************************
-	public void registerForOnDataUpdateByteLog(Fragment fragment) {
-		listenersIDataUpdateByteLog.add((IDataUpdateByteLog) fragment);
-	}
-
-	public void unregisterFromOnDataUpdateByteLog(Fragment fragment) {
-		listenersIDataUpdateByteLog.remove((IDataUpdateByteLog) fragment);
-	}
-
-	public void processOnDataUpdateByteLog() {
-		for (IDataUpdateByteLog listener : listenersIDataUpdateByteLog) {
-			if (listener != null) listener.onDataUpdateByteLog();
-		}
-	}
-
-	// IDroneConnectionFailed
-	// *********************************************************
-	public void registerForOnDroneConnectionFailed(Fragment fragment) {
-		listenersIDroneConnectionFailed.add((IDroneConnectionFailed) fragment);
-	}
-
-	public void unregisterFromOnDroneConnectionFailed(Fragment fragment) {
-		listenersIDroneConnectionFailed.remove((IDroneConnectionFailed) fragment);
-	}
-
-	public void processOnDroneConnectionFailed(String msg) {
-		for (IDroneConnectionFailed listener : listenersIDroneConnectionFailed) {
-			if (listener != null) listener.onDroneConnectionFailed(msg);
-		}
-	}
-
-	// IDroneConnected
-	// *********************************************************
-	public void registerForOnDroneConnected(Fragment fragment) {
-		listenersIDroneConnected.add((IDroneConnected) fragment);
-	}
-
-	public void unregisterFromOnDroneConnected(Fragment fragment) {
-		listenersIDroneConnected.remove((IDroneConnected) fragment);
-	}
-
-	public void processOnDroneConnected() {
-		for (IDroneConnected listener : listenersIDroneConnected) {
-			if (listener != null) listener.onDroneConnected();
-		}
-	}
-
-	// IServerStarted
-	// *********************************************************
-	public void registerForOnServerStarted(Fragment fragment) {
-		listenersIServerStarted.add((IServerStarted) fragment);
-	}
-
-	public void unregisterFromOnServerStarted(Fragment fragment) {
-		listenersIServerStarted.remove((IServerStarted) fragment);
-	}
-
-	public void processOnServerStarted() {
-		for (IServerStarted listener : listenersIServerStarted) {
-			if (listener != null) listener.onServerStarted();
+	// string parameterized msg only here ...
+	public void call(APP_STATE msg, String txt) {
+		for (Fragment fragment : listeners.get(msg.ordinal()).fragsArray) {
+			if (fragment != null) {
+				APP_STATE[] msgs = APP_STATE.values();
+				switch (msgs[msg.ordinal()]) {
+				case MSG_DRONE_CONNECTION_FAILED:
+					((IDroneConnectionFailed) fragment).onDroneConnectionFailed(txt);
+					break;
+				default:
+					break;
+				}
+			}
 		}
 	}
 

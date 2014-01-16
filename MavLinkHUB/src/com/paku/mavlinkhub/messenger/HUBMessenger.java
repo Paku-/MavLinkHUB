@@ -49,23 +49,24 @@ public class HUBMessenger extends HUBInterfaceMenager {
 					// Received MLmsg
 					break;
 				case MSG_QUEUE_MSGITEM_READY:
-					processOnQueueMsgItemReady();
+					call(APP_STATE.MSG_QUEUE_MSGITEM_READY);
+					// processOnQueueMsgItemReady();
 					break;
 				case MSG_DATA_UPDATE_SYSLOG:
-					processOnDataUpdateSysLog();
+					call(APP_STATE.MSG_DATA_UPDATE_SYSLOG);
 					break;
 				case MSG_DATA_UPDATE_BYTELOG:
-					processOnDataUpdateByteLog();
+					call(APP_STATE.MSG_DATA_UPDATE_BYTELOG);
 					break;
 				case MSG_DATA_UPDATE_STATS:
-					processOnDataUpdateStats();
+					call(APP_STATE.MSG_DATA_UPDATE_STATS);
 					break;
 				case MSG_DRONE_CONNECTED:
-					processOnDroneConnected();
+					call(APP_STATE.MSG_DRONE_CONNECTED);
 					break;
 				case MSG_DRONE_CONNECTION_FAILED:
 					String msgTxt = new String((byte[]) msg.obj);
-					processOnDroneConnectionFailed(app.getString(R.string.connection_failure) + msgTxt);
+					call(APP_STATE.MSG_DRONE_CONNECTION_FAILED, app.getString(R.string.connection_failure) + msgTxt);
 					break;
 				default:
 					super.handleMessage(msg);
@@ -169,7 +170,7 @@ public class HUBMessenger extends HUBInterfaceMenager {
 					app.uiMode = UI_MODE.UI_MODE_DISCONNECTED;
 				}
 
-				processOnUiModeChanged();
+				call(APP_STATE.MSG_UI_MODE_CHANGED);
 
 			}
 		};

@@ -1,6 +1,7 @@
 package com.paku.mavlinkhub.fragments;
 
 import com.paku.mavlinkhub.R;
+import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.interfaces.IDataUpdateSysLog;
 
 import android.os.Bundle;
@@ -32,26 +33,25 @@ public class FragmentSysLog extends HUBFragment implements IDataUpdateSysLog {
 	@Override
 	public void onResume() {
 		super.onResume();
-		hub.messenger.registerForOnDataUpdateSysLog(this);
-		refreshUI();
+		hub.messenger.register(this, APP_STATE.MSG_DATA_UPDATE_SYSLOG);
+		onDataUpdateSysLog();
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
-		hub.messenger.unregisterFromOnDataUpdateSysLog(this);
+		hub.messenger.unregister(this, APP_STATE.MSG_DATA_UPDATE_SYSLOG);
 	}
 
-	public void refreshUI() {
-
+	@Override
+	public void onDataUpdateSysLog() {
 		final TextView mTextViewBytesLog = (TextView) (getView().findViewById(R.id.TextView_logSysLog));
 
 		final String buff;
 
 		if (hub.logger.mInMemSysLogStream.size() > hub.visibleBuffersSize) {
-			buff = new String(hub.logger.mInMemSysLogStream.toByteArray(),
-					hub.logger.mInMemSysLogStream.size() - hub.visibleBuffersSize,
-					hub.visibleBuffersSize);
+			buff = new String(hub.logger.mInMemSysLogStream.toByteArray(), hub.logger.mInMemSysLogStream.size()
+					- hub.visibleBuffersSize, hub.visibleBuffersSize);
 		}
 		else {
 			buff = new String(hub.logger.mInMemSysLogStream.toByteArray());
@@ -69,13 +69,6 @@ public class FragmentSysLog extends HUBFragment implements IDataUpdateSysLog {
 				mScrollView.fullScroll(View.FOCUS_DOWN);
 			}
 		});
-
-	}
-
-	@Override
-	public void onDataUpdateSysLog() {
-
-		refreshUI();
 	}
 
 }

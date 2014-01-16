@@ -62,7 +62,7 @@ public class HUBGlobals extends Application {
 		gsServer.startServer(5760);
 
 		// finally start parsers
-		mavlinkQueue = new MAVLinkQueue(this, 200);
+		mavlinkQueue = new MAVLinkQueue(this, 1000);
 		mavlinkQueue.msgCollector.startMAVLinkParserThread();
 
 	}

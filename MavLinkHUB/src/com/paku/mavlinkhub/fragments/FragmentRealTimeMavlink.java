@@ -3,6 +3,7 @@ package com.paku.mavlinkhub.fragments;
 import java.util.ArrayList;
 
 import com.paku.mavlinkhub.R;
+import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.fragments.viewadapters.ViewAdapterMavlinkMsgList;
 import com.paku.mavlinkhub.fragments.viewadapters.items.ItemMavLinkMsg;
 import com.paku.mavlinkhub.interfaces.IDataUpdateByteLog;
@@ -45,8 +46,8 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		hub.messenger.registerForOnDataUpdateByteLog(this);
-		hub.messenger.registerForOnQueueMsgItemReady(this);
+		hub.messenger.register(this, APP_STATE.MSG_DATA_UPDATE_BYTELOG);
+		hub.messenger.register(this, APP_STATE.MSG_QUEUE_MSGITEM_READY);
 
 		// GUI update
 		onDataUpdateByteLog();
@@ -56,8 +57,8 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 	@Override
 	public void onPause() {
 		super.onPause();
-		hub.messenger.unregisterFromOnDataUpdateByteLog(this);
-		hub.messenger.unregisterFromOnQueueMsgItemReady(this);
+		hub.messenger.unregister(this, APP_STATE.MSG_DATA_UPDATE_BYTELOG);
+		hub.messenger.unregister(this, APP_STATE.MSG_QUEUE_MSGITEM_READY);
 	}
 
 	@Override
@@ -70,8 +71,7 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 		// get last n kb of data
 		if (hub.logger.mInMemIncomingBytesStream.size() > hub.visibleBuffersSize) {
 			buff = new String(hub.logger.mInMemIncomingBytesStream.toByteArray(),
-					hub.logger.mInMemIncomingBytesStream.size() - hub.visibleBuffersSize,
-					hub.visibleBuffersSize);
+					hub.logger.mInMemIncomingBytesStream.size() - hub.visibleBuffersSize, hub.visibleBuffersSize);
 		}
 		else {
 			buff = new String(hub.logger.mInMemIncomingBytesStream.toByteArray());
