@@ -16,7 +16,6 @@ import com.paku.mavlinkhub.enums.MSG_SOURCE;
 import com.paku.mavlinkhub.utils.HUBStats;
 
 import android.annotation.SuppressLint;
-import android.text.format.Time;
 import android.util.Log;
 
 public class HUBLogger {
