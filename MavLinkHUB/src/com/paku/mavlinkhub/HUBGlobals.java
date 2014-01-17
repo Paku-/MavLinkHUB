@@ -46,7 +46,7 @@ public class HUBGlobals extends Application {
 	// with initial state as "created"
 	public UI_MODE uiMode;
 
-	public void Init(Context mContext) {
+	public void hubInit(Context mContext) {
 
 		uiMode = UI_MODE.UI_MODE_CREATED;
 
@@ -61,9 +61,9 @@ public class HUBGlobals extends Application {
 		gsServer = new GroundStationServerTCP(messenger.appMsgHandler);
 		gsServer.startServer(5760);
 
-		// finally start parsers
+		// finally start parsers and distributors
 		mavlinkQueue = new MAVLinkQueue(this, 1000);
-		mavlinkQueue.msgCollector.startMAVLinkParserThread();
+		mavlinkQueue.startQueue();
 
 	}
 

@@ -24,8 +24,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class FragmentConnectivity extends HUBFragment implements IUiModeChanged, IDroneConnectionFailed,
-		IDroneConnected {
+public class FragmentConnectivity extends HUBFragment implements IUiModeChanged, IDroneConnectionFailed, IDroneConnected {
 
 	@Override
 	public void onPause() {
@@ -105,8 +104,7 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 
 		switch (btDevList.refresh()) {
 		case ERROR_NO_ADAPTER:
-			Toast.makeText(getActivity().getApplicationContext(), R.string.no_bluetooth_adapter_found,
-					Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity().getApplicationContext(), R.string.no_bluetooth_adapter_found, Toast.LENGTH_LONG).show();
 			return;
 		case ERROR_ADAPTER_OFF:
 			final Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -115,8 +113,7 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 			this.startActivity(enableBtIntent);
 			return;
 		case ERROR_NO_BONDED_DEV:
-			Toast.makeText(getActivity().getApplicationContext(),
-					R.string.error_no_paired_bt_devices_found_pair_device_first, Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity().getApplicationContext(), R.string.error_no_paired_bt_devices_found_pair_device_first, Toast.LENGTH_LONG).show();
 			return;
 
 		case LIST_OK:
@@ -144,12 +141,10 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 			case DEV_STATE_DISCONNECTED:
 				if (!hub.droneClient.isConnected()) {
 					hub.logger.sysLog(TAG, "Connecting...");
-					hub.logger.sysLog(TAG,
-							"Me  : " + hub.droneClient.getMyName() + " [" + hub.droneClient.getMyAddress() + "]");
+					hub.logger.sysLog(TAG, "Me  : " + hub.droneClient.getMyName() + " [" + hub.droneClient.getMyAddress() + "]");
 					hub.logger.sysLog(TAG, "Peer: " + selectedDev.getName() + " [" + selectedDev.getAddress() + "]");
 
 					hub.droneClient.startConnection(selectedDev.getAddress());
-					// hub.mavlinkQueue.msgCollector.startMAVLinkParserThread();
 
 					btDevList.setDevState(position, PEER_DEV_STATE.DEV_STATE_CONNECTED);
 				}
@@ -164,7 +159,6 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 				if (hub.droneClient.isConnected()) {
 					hub.logger.sysLog(TAG, "Closing Connection ...");
 					hub.droneClient.stopClient();
-					// hub.mavlinkQueue.msgCollector.stopMAVLinkParserThread();
 					btDevList.setDevState(position, PEER_DEV_STATE.DEV_STATE_DISCONNECTED);
 				}
 				else {
@@ -186,7 +180,6 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 
 		hub.logger.sysLog(TAG, errorMsg);
 		hub.droneClient.stopClient();
-		// hub.mavlinkQueue.msgCollector.stopMAVLinkParserThread();
 
 		Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_SHORT).show();
 

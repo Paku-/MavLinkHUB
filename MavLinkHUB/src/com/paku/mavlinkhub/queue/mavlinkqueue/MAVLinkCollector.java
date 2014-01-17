@@ -24,7 +24,7 @@ public class MAVLinkCollector {
 	}
 
 	public void stopMAVLinkParserThread() {
-		if (parserThread != null) parserThread.stopRunning();
+		if (parserThread != null) parserThread.stopMe();
 	}
 
 }

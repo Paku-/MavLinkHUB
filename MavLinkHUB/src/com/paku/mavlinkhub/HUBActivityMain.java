@@ -38,7 +38,7 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 		hub = (HUBGlobals) this.getApplication();
 
 		if (savedInstanceState == null) { // init only if we are just borned
-			hub.Init(this);
+			hub.hubInit(this);
 		}
 
 		hub.mFragmentsPagerAdapter = new FragmentsAdapter(this, getSupportFragmentManager());
@@ -57,8 +57,7 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 		// register for call interface;
 		hub.messenger.mainActivity = this;
 
-		progressBarConnected.getIndeterminateDrawable().setColorFilter(0xFFFF0000,
-				android.graphics.PorterDuff.Mode.MULTIPLY);
+		progressBarConnected.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
 		refreshStats();
 
 	}
@@ -123,8 +122,7 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 		if (hub.droneClient.isConnected()) {
 
 			final AlertDialog.Builder dlg = new AlertDialog.Builder(this);
-			dlg.setTitle(getString(R.string.close_dlg_title_mavlink_closing) + "[" + hub.droneClient.getPeerName()
-					+ "]");
+			dlg.setTitle(getString(R.string.close_dlg_title_mavlink_closing) + "[" + hub.droneClient.getPeerName() + "]");
 			dlg.setMessage(R.string.close_dlg_msg_current_connection_will_be_lost);
 			dlg.setCancelable(false);
 			dlg.setPositiveButton(R.string.close_dlg_positive, positiveButtonClickListener);
@@ -167,7 +165,7 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 		hub.logger.sysLog(TAG, "MavLinkHUB closing ...");
 		hub.droneClient.stopClient();
 		hub.gsServer.stopServer();
-		hub.mavlinkQueue.msgCollector.stopMAVLinkParserThread();
+		hub.mavlinkQueue.stopQueue();
 		hub.logger.stopAllLogs();
 	}
 

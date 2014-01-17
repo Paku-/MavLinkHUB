@@ -126,7 +126,7 @@ public class ThreadMAVLinkParser extends Thread {
 
 	}
 
-	public void stopRunning() {
+	public void stopMe() {
 		running = false;
 
 	}
