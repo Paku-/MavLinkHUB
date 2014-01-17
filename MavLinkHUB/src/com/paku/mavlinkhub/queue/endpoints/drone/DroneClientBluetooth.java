@@ -1,5 +1,7 @@
 package com.paku.mavlinkhub.queue.endpoints.drone;
 
+import java.io.IOException;
+
 import com.paku.mavlinkhub.queue.endpoints.DroneClient;
 import com.paku.mavlinkhub.utils.ThreadSocket;
 
@@ -21,7 +23,7 @@ public class DroneClientBluetooth extends DroneClient {
 	private Handler handlerDroneMsgRead;
 
 	private DroneClientBluetoothConnThread droneConnectingBluetoothThread;
-	private ThreadSocket socketServiceBT;
+	private ThreadSocket socketWorkerThreadBT;
 
 	public DroneClientBluetooth(Handler messenger) {
 		super(messenger, SIZEBUFF);
@@ -52,9 +54,8 @@ public class DroneClientBluetooth extends DroneClient {
 		handlerDroneMsgRead = startInputQueueMsgHandler();
 
 		// start receiver thread
-		socketServiceBT = new ThreadSocket(mBluetoothSocket, handlerDroneMsgRead);
-		socketServiceBT.start();
-
+		socketWorkerThreadBT = new ThreadSocket(mBluetoothSocket, handlerDroneMsgRead);
+		socketWorkerThreadBT.start();
 	}
 
 	@Override
@@ -68,7 +69,7 @@ public class DroneClientBluetooth extends DroneClient {
 
 		// stop socket thread
 		if (isConnected()) {
-			socketServiceBT.stopMe();
+			socketWorkerThreadBT.stopMe();
 		}
 	}
 
@@ -108,6 +109,14 @@ public class DroneClientBluetooth extends DroneClient {
 	@Override
 	public String getMyAddress() {
 		return mBluetoothAdapter.getAddress();
+	}
+
+	@Override
+	public void writeByte(byte[] bytes) throws IOException {
+
+		socketWorkerThreadBT.write(bytes);
+
+		return;
 	}
 
 }

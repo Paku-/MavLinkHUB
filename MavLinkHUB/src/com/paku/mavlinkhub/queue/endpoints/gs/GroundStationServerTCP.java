@@ -1,5 +1,7 @@
 package com.paku.mavlinkhub.queue.endpoints.gs;
 
+import java.io.IOException;
+
 import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.queue.endpoints.GroundStationServer;
 
@@ -49,4 +51,9 @@ public class GroundStationServerTCP extends GroundStationServer {
 		return serverTCP.running;
 	}
 
+	@Override
+	public void writeByte(byte[] bytes) throws IOException {
+		serverTCP.write(bytes);
+		return;
+	}
 }

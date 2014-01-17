@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.fragments.viewadapters.ViewAdapterMavlinkMsgList;
-import com.paku.mavlinkhub.fragments.viewadapters.items.ItemMavLinkMsg;
 import com.paku.mavlinkhub.interfaces.IDataUpdateByteLog;
 import com.paku.mavlinkhub.interfaces.IQueueMsgItemReady;
+import com.paku.mavlinkhub.queue.items.ItemMavLinkMsg;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

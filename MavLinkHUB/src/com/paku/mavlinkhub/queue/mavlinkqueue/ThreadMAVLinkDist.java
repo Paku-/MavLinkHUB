@@ -2,8 +2,7 @@ package com.paku.mavlinkhub.queue.mavlinkqueue;
 
 import com.MAVLink.Messages.MAVLinkPacket;
 import com.paku.mavlinkhub.HUBGlobals;
-import com.paku.mavlinkhub.enums.MSG_SOURCE;
-import com.paku.mavlinkhub.fragments.viewadapters.items.ItemMavLinkMsg;
+import com.paku.mavlinkhub.queue.items.ItemMavLinkMsg;
 
 public class ThreadMAVLinkDist extends Thread {
 
@@ -31,44 +30,29 @@ public class ThreadMAVLinkDist extends Thread {
 		hub.logger.sysLog("MavLink Distributor", "Start...");
 
 		while (running) {
-			// send to the GS
-			send(MSG_SOURCE.FROM_DRONE);
-			// send to the Drone
-			send(MSG_SOURCE.FROM_GS);
-		}
 
-		hub.logger.sysLog("MavLink Distributor", "...Stop");
-	}
+			try {
+				tmpItem = hub.mavlinkQueue.getHubQueueItem();
+			}
+			catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 
-	private void send(MSG_SOURCE direction) {
+			if (tmpItem != null) {
+				switch (tmpItem.getDirection()) {
+				case FROM_DRONE:
+					tmpItem = null;
+					break;
+				case FROM_GS:
+					tmpItem = null;
+					break;
+				default:
+					break;
 
-		switch (direction) {
-		case FROM_DRONE:
-			tmpItem = null;
-			// hub.droneClient.getInputQueueItem();
-			break;
-		case FROM_GS:
-			tmpItem = null;
-			// hub.gsServer.getInputQueueItem();
-			break;
-		default:
-			break;
-		}
-
-		if (tmpItem != null) {
-
-			tmpPacket = null;
-
-			switch (direction) {
-			case FROM_DRONE:
-				break;
-			case FROM_GS:
-				break;
-			default:
-				break;
+				}
 			}
 		}
-
+		hub.logger.sysLog("MavLink Distributor", "...Stop");
 	}
 
 	public void stopMe() {

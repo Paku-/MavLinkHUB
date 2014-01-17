@@ -91,13 +91,11 @@ public class ThreadSocket extends Thread {
 
 				bytes = input.read(buffer, 0, buffer.length);
 				if (bytes > 0) {
-					handlerSocketMsgReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_DATA_READY.ordinal(), bytes, -1,
-							buffer).sendToTarget();
+					handlerSocketMsgReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_DATA_READY.ordinal(), bytes, -1, buffer).sendToTarget();
 				}
 				else {
 					Log.d(TAG, "** Empty socket buffer - Connection Error...**");
-					handlerSocketMsgReceiver.obtainMessage(
-							SOCKET_STATE.MSG_SOCKET_TCP_SERVER_CLIENT_DISCONNECTED.ordinal()).sendToTarget();
+					handlerSocketMsgReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_TCP_SERVER_CLIENT_DISCONNECTED.ordinal()).sendToTarget();
 					running = false;
 				}
 			}
@@ -120,13 +118,9 @@ public class ThreadSocket extends Thread {
 
 	}
 
-	public void write(byte[] bytes) {
-		try {
-			output.write(bytes);
-		}
-		catch (IOException e) {
-			Log.d(TAG, "Exception [write]:" + e.getMessage());
-		}
+	public void write(byte[] bytes) throws IOException {
+		output.write(bytes);
+
 	}
 
 	public void stopMe() {

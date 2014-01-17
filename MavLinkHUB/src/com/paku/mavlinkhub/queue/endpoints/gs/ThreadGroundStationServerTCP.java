@@ -17,7 +17,7 @@ public class ThreadGroundStationServerTCP extends Thread {
 
 	Socket socket;
 	ServerSocket serverSocket;
-	ThreadSocket socketServiceTCP;
+	ThreadSocket socketWorkerThreadTCP;
 	Handler handlerServerReadMsg;
 	public boolean running = true;
 
@@ -41,14 +41,13 @@ public class ThreadGroundStationServerTCP extends Thread {
 			try {
 				socket = serverSocket.accept();
 
-				socketServiceTCP = new ThreadSocket(socket, handlerServerReadMsg);
-				socketServiceTCP.start();
+				socketWorkerThreadTCP = new ThreadSocket(socket, handlerServerReadMsg);
+				socketWorkerThreadTCP.start();
 
 				clientIP = socket.getInetAddress().toString() + ":" + socket.getPort();
 				clientIP.replace("/", " ");
 
-				handlerServerReadMsg.obtainMessage(SOCKET_STATE.MSG_SOCKET_TCP_SERVER_CLIENT_CONNECTED.ordinal(),
-						clientIP.length(), -1, clientIP.getBytes()).sendToTarget();
+				handlerServerReadMsg.obtainMessage(SOCKET_STATE.MSG_SOCKET_TCP_SERVER_CLIENT_CONNECTED.ordinal(), clientIP.length(), -1, clientIP.getBytes()).sendToTarget();
 
 				Log.d(TAG, "New Connection: TCP Socket Started");
 			}
@@ -63,8 +62,8 @@ public class ThreadGroundStationServerTCP extends Thread {
 	}
 
 	public void stopMe() {
-		if (socketServiceTCP != null) {
-			socketServiceTCP.stopMe();
+		if (socketWorkerThreadTCP != null) {
+			socketWorkerThreadTCP.stopMe();
 		}
 		running = false; // just in case
 		try {
@@ -74,6 +73,11 @@ public class ThreadGroundStationServerTCP extends Thread {
 			// not possible on close ??
 			e.printStackTrace();
 		}
+
+	}
+
+	public void write(byte[] bytes) throws IOException {
+		socketWorkerThreadTCP.write(bytes);
 
 	}
 

@@ -7,7 +7,7 @@ import com.MAVLink.Messages.MAVLinkPacket;
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.enums.MSG_SOURCE;
-import com.paku.mavlinkhub.fragments.viewadapters.items.ItemMavLinkMsg;
+import com.paku.mavlinkhub.queue.items.ItemMavLinkMsg;
 
 public class ThreadMAVLinkParser extends Thread {
 

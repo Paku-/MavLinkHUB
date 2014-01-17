@@ -8,7 +8,7 @@ import android.util.Log;
 
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.enums.APP_STATE;
-import com.paku.mavlinkhub.fragments.viewadapters.items.ItemMavLinkMsg;
+import com.paku.mavlinkhub.queue.items.ItemMavLinkMsg;
 
 public class QueueMsgItems {
 
@@ -16,7 +16,7 @@ public class QueueMsgItems {
 
 	private final BlockingQueue<ItemMavLinkMsg> hubQueue;
 
-	// in mem msgItems storage for UI /global var size limited/
+	// in mem msgItems storage for UI shorter display /global var size limited/
 	private final ArrayList<ItemMavLinkMsg> arrayMavLinkMsgItemsForUI;
 
 	HUBGlobals hub;
@@ -59,8 +59,7 @@ public class QueueMsgItems {
 		// flush mem
 		arrayMavLinkMsgItemsForUI.trimToSize();
 
-		hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_QUEUE_MSGITEM_READY.ordinal(), -1, -1, item)
-				.sendToTarget();
+		hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_QUEUE_MSGITEM_READY.ordinal(), -1, -1, item).sendToTarget();
 
 	}
 
