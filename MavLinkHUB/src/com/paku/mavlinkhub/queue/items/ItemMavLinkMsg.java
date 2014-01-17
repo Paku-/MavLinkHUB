@@ -83,4 +83,10 @@ public class ItemMavLinkMsg implements Serializable {
 		this.direction = direction;
 	}
 
+	public byte[] getPacketBytes() {
+		MAVLinkPacket pkt = msg.pack();
+		pkt.seq = getSeqNo();
+		pkt.sysid = getSysId();
+		return pkt.encodePacket();
+	}
 }

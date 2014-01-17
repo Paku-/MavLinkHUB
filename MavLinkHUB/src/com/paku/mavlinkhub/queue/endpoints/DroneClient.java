@@ -27,7 +27,7 @@ public abstract class DroneClient extends QueueBytes {
 
 	public abstract String getPeerAddress();
 
-	public abstract void writeByte(byte[] bytes) throws IOException;
+	public abstract boolean writeBytes(byte[] bytes) throws IOException;
 
 	protected DroneClient(Handler handler, int capacity) {
 		super(handler, capacity);

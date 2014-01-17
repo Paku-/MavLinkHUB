@@ -11,8 +11,14 @@ public class HUBStats {
 	private int statsClientByteCount = 0;
 	private int statsServerByteCount = 0;
 
+	private int statsQueueItemsCnt = 0;
+
 	public HUBStats() {
 
+	}
+
+	public void setQueueItemsCnt(int cnt) {
+		statsQueueItemsCnt = cnt;
 	}
 
 	public void setParserStats(MSG_SOURCE direction, MAVLinkStats stats) {
@@ -26,20 +32,33 @@ public class HUBStats {
 	}
 
 	public String toString_(MSG_SOURCE direction) {
-		final String byteStats = "Client: " + statsClientByteCount + "[B] Server: " + statsServerByteCount + "[B]";
 
-		if (((direction == MSG_SOURCE.FROM_DRONE) || (direction == MSG_SOURCE.FROM_ALL)) && (parserStatsDrone != null)) {
-			return byteStats + "    MavLink Parser Stats [Pkg] - " + parserStatsDrone.receivedPacketCount
-					+ " [CRC errors] - " + parserStatsDrone.crcErrorCount;
-		}
-		else if (((direction == MSG_SOURCE.FROM_GS) || (direction == MSG_SOURCE.FROM_ALL)) && (parserStatsGS != null)) {
-			return byteStats + "    MavLink Parser Stats [Pkg] - " + parserStatsGS.receivedPacketCount
-					+ " [CRC errors] - " + parserStatsGS.crcErrorCount;
-		}
-		else {
-			return byteStats;
+		final String byteStats = "[DB]: " + statsClientByteCount + " [GB]: " + statsServerByteCount + " [Q]: " + statsQueueItemsCnt;
+
+		String droneStats = " ";
+		if (parserStatsDrone != null) {
+			droneStats = "  [DPkt]: " + parserStatsDrone.receivedPacketCount + " [DCRC]: " + parserStatsDrone.crcErrorCount;
 		}
 
+		String gsStats = " ";
+		if (parserStatsGS != null) {
+			gsStats = "  [GPkt]: " + parserStatsGS.receivedPacketCount + " [GCRC]: " + parserStatsGS.crcErrorCount;
+			;
+		}
+
+		return byteStats + droneStats + gsStats;
+		/*
+		 * if (((direction == MSG_SOURCE.FROM_DRONE) || (direction ==
+		 * MSG_SOURCE.FROM_ALL)) && (parserStatsDrone != null)) { return
+		 * byteStats + "    MavLink Parsers [Pkg]:" +
+		 * parserStatsDrone.receivedPacketCount + " [Q]:" + statsQueueItemsCnt +
+		 * " [CRCe]:" + parserStatsDrone.crcErrorCount; } else if (((direction
+		 * == MSG_SOURCE.FROM_GS) || (direction == MSG_SOURCE.FROM_ALL)) &&
+		 * (parserStatsGS != null)) { return byteStats +
+		 * "    MavLink Parsers[Pkg]: " + parserStatsGS.receivedPacketCount +
+		 * " [Q]:" + statsQueueItemsCnt + " [CRCe]:" +
+		 * parserStatsGS.crcErrorCount; } else { return byteStats; }
+		 */
 	}
 
 	private void clientAddBytes(int len) {

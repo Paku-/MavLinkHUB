@@ -12,7 +12,7 @@ import com.paku.mavlinkhub.queue.items.ItemMavLinkMsg;
 public class ThreadMAVLinkParser extends Thread {
 
 	@SuppressWarnings("unused")
-	private static final String TAG = "MavLinkParser";
+	private static final String TAG = "ThreadMAVLinkParser";
 
 	private final Parser parserDrone, parserGS;
 	MAVLinkPacket tmpPacket = null;
@@ -49,15 +49,10 @@ public class ThreadMAVLinkParser extends Thread {
 			// that's rolling to fast, we need GUI update timer to preserve
 			// resources or we can sleep a little (as below)
 			hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_STATS.ordinal()).sendToTarget();
-
-			// we do not need so much speed
-			try {
-				sleep(100);
-			}
-			catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-
+			/*
+			 * // we do not need so much speed try { sleep(2); } catch
+			 * (InterruptedException e) { e.printStackTrace(); }
+			 */
 		}
 
 		hub.logger.sysLog("MavLink Parser", "...Stop");
@@ -104,9 +99,10 @@ public class ThreadMAVLinkParser extends Thread {
 					ItemMavLinkMsg tmpMsgItem = new ItemMavLinkMsg(tmpPacket, direction, 1);
 
 					// store item for distribution and UI update
-					hub.mavlinkQueue.putHubQueueItem(tmpMsgItem);
+					hub.hubQueue.putHubQueueItem(tmpMsgItem);
 					// stream for syslog
-					hub.logger.sysLog("MavlinkMsg", tmpMsgItem.humanDecode());
+					// /hub.logger.sysLog("MavlinkMsg",
+					// tmpMsgItem.humanDecode());
 
 					// store parser stats
 					switch (direction) {

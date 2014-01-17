@@ -17,7 +17,9 @@ public abstract class GroundStationServer extends QueueBytes {
 
 	public abstract boolean isRunning();
 
-	public abstract void writeByte(byte[] bytes) throws IOException;
+	public abstract boolean isClientConnected();
+
+	public abstract boolean writeBytes(byte[] bytes) throws IOException;
 
 	protected GroundStationServer(Handler handler, int capacity) {
 		super(handler, capacity);

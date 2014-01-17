@@ -165,7 +165,7 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 		hub.logger.sysLog(TAG, "MavLinkHUB closing ...");
 		hub.droneClient.stopClient();
 		hub.gsServer.stopServer();
-		hub.mavlinkQueue.stopQueue();
+		hub.hubQueue.stopQueue();
 		hub.logger.stopAllLogs();
 	}
 

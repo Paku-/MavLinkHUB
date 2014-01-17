@@ -35,7 +35,7 @@ public class QueueMsgItems {
 	}
 
 	public ItemMavLinkMsg getHubQueueItem() throws InterruptedException {
-		return hubQueue.take();
+		return hubQueue.poll();
 	}
 
 	public void putHubQueueItem(ItemMavLinkMsg item) {
@@ -65,6 +65,10 @@ public class QueueMsgItems {
 
 	public ArrayList<ItemMavLinkMsg> getMsgItemsForUI() {
 		return arrayMavLinkMsgItemsForUI;
+	}
+
+	public int getItemCount() {
+		return hubQueue.size();
 	}
 
 }

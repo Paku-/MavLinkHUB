@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.net.SocketException;
 
 import com.paku.mavlinkhub.enums.SOCKET_STATE;
-import com.paku.mavlinkhub.utils.ThreadSocket;
+import com.paku.mavlinkhub.utils.ThreadSocketReader;
 
 import android.os.Handler;
 import android.util.Log;
@@ -17,7 +17,7 @@ public class ThreadGroundStationServerTCP extends Thread {
 
 	Socket socket;
 	ServerSocket serverSocket;
-	ThreadSocket socketWorkerThreadTCP;
+	ThreadSocketReader socketWorkerThreadTCP;
 	Handler handlerServerReadMsg;
 	public boolean running = true;
 
@@ -41,7 +41,7 @@ public class ThreadGroundStationServerTCP extends Thread {
 			try {
 				socket = serverSocket.accept();
 
-				socketWorkerThreadTCP = new ThreadSocket(socket, handlerServerReadMsg);
+				socketWorkerThreadTCP = new ThreadSocketReader(socket, handlerServerReadMsg);
 				socketWorkerThreadTCP.start();
 
 				clientIP = socket.getInetAddress().toString() + ":" + socket.getPort();
@@ -57,6 +57,7 @@ public class ThreadGroundStationServerTCP extends Thread {
 			catch (IOException e) {
 				// ?? should never happen if permissions set
 				e.printStackTrace();
+				running = false;
 			}
 		}
 	}
@@ -76,8 +77,8 @@ public class ThreadGroundStationServerTCP extends Thread {
 
 	}
 
-	public void write(byte[] bytes) throws IOException {
-		socketWorkerThreadTCP.write(bytes);
+	public void writeBytes(byte[] bytes) throws IOException {
+		socketWorkerThreadTCP.writeBytes(bytes);
 
 	}
 

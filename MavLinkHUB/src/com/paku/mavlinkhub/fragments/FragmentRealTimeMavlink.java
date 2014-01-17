@@ -67,6 +67,7 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 		String buff;
 
 		// get last n kb of data
+		// java.lang.indexoutofBoundsExceptions - happens
 		if (hub.logger.mInMemBytesStream.size() > hub.visBuffSize) {
 			buff = new String(hub.logger.mInMemBytesStream.toByteArray(), hub.logger.mInMemBytesStream.size() - hub.visBuffSize, hub.visBuffSize);
 		}
@@ -111,7 +112,7 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 
 		// we need a clone for adapter.
 		final ArrayList<ItemMavLinkMsg> clone = new ArrayList<ItemMavLinkMsg>();
-		clone.addAll(hub.mavlinkQueue.getMsgItemsForUI());
+		clone.addAll(hub.hubQueue.getMsgItemsForUI());
 
 		return clone;
 	}

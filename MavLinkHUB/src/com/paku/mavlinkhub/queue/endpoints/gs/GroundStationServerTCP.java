@@ -52,8 +52,20 @@ public class GroundStationServerTCP extends GroundStationServer {
 	}
 
 	@Override
-	public void writeByte(byte[] bytes) throws IOException {
-		serverTCP.write(bytes);
-		return;
+	public boolean writeBytes(byte[] bytes) throws IOException {
+		if (isClientConnected()) {
+			serverTCP.writeBytes(bytes);
+			return true;
+		}
+		else
+			return false;
+	}
+
+	@Override
+	public boolean isClientConnected() {
+		if (serverTCP.socketWorkerThreadTCP != null)
+			return (serverTCP.socketWorkerThreadTCP.isRunning());
+		else
+			return false;
 	}
 }
