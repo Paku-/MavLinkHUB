@@ -1,31 +1,31 @@
 package com.paku.mavlinkhub.queue;
 
 import java.nio.ByteBuffer;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-
+import java.util.ArrayDeque;
 import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.enums.SOCKET_STATE;
 
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.SystemClock;
 import android.util.Log;
 
 public abstract class QueueIOBytes {
 
+	@SuppressWarnings("unused")
 	private static final String TAG = "QueueIOBytes";
 
-	private final BlockingQueue<ByteBuffer> inputByteQueue;
-	private final BlockingQueue<ByteBuffer> outputByteQueue;
+	private final ArrayDeque<ByteBuffer> inputByteQueue;
+	private final ArrayDeque<ByteBuffer> outputByteQueue;
 	// hub wide msg center
 	public Handler appMsgHandler;
 
 	protected QueueIOBytes(Handler msgCenter, int capacity) {
 		// to the device
-		outputByteQueue = new ArrayBlockingQueue<ByteBuffer>(capacity);
+		outputByteQueue = new ArrayDeque<ByteBuffer>(capacity);
 		// from the device
-		inputByteQueue = new ArrayBlockingQueue<ByteBuffer>(capacity);
+		inputByteQueue = new ArrayDeque<ByteBuffer>(capacity);
 
 		this.appMsgHandler = msgCenter;
 
@@ -33,48 +33,52 @@ public abstract class QueueIOBytes {
 
 	// output queue
 	public ByteBuffer getOutputQueueItem() {
-		ByteBuffer buffer = ByteBuffer.allocate(0);
-
-		try {
-			buffer = outputByteQueue.take();
-		}
-		catch (InterruptedException e) {
-			Log.d(TAG, "[getOutputQueue]" + e.getMessage());
-			e.printStackTrace();
-		}
-		return buffer;
-	}
-
-	public void putOutputQueueItem(ByteBuffer buffer) {
-		try {
-			outputByteQueue.put(buffer);
-		}
-		catch (InterruptedException e) {
-			Log.d(TAG, "[putOutputQueue]" + e.getMessage());
-			e.printStackTrace();
+		synchronized (outputByteQueue) {
+			return outputByteQueue.poll();
 		}
 	}
 
-	public BlockingQueue<ByteBuffer> getOutputQueue() {
+	public void addOutputQueueItem(ByteBuffer buffer) {
+		synchronized (outputByteQueue) {
+			outputByteQueue.addLast(buffer);
+		}
+	}
+
+	public ArrayDeque<ByteBuffer> getOutputQueue() {
 		return outputByteQueue;
 	}
 
 	// input queue
 	public ByteBuffer getInputQueueItem() {
-		return inputByteQueue.poll();
-	}
-
-	public void putInputQueueItem(ByteBuffer buffer) {
-		try {
-			inputByteQueue.put(buffer);
-		}
-		catch (InterruptedException e) {
-			Log.d(TAG, "[putInputQueue]" + e.getMessage());
-			e.printStackTrace();
+		synchronized (inputByteQueue) {
+			return inputByteQueue.poll();
 		}
 	}
 
-	public BlockingQueue<ByteBuffer> getInputQueue() {
+	public void addInputQueueItem(Message msg) {
+		ByteBuffer buffer = ByteBuffer.wrap((byte[]) msg.obj, 0, msg.arg1);
+		/*
+		 * String tmp = new String((byte[]) msg.obj, 0, msg.arg1);
+		 * Log.d("[msg]", SystemClock.currentThreadTimeMillis() + "[" + msg.arg1
+		 * + "]>" + tmp + "<"); tmp = new String(buffer.array(), 0,
+		 * buffer.limit()); Log.d("[buf]", SystemClock.currentThreadTimeMillis()
+		 * + "[" + buffer.limit() + "]>" + tmp + "<");
+		 */
+		synchronized (inputByteQueue) {
+			inputByteQueue.addLast(buffer);
+		}
+		return;
+
+	}
+
+	public void addInputQueueItem(ByteBuffer buffer) {
+		synchronized (inputByteQueue) {
+			inputByteQueue.addLast(buffer);
+		}
+		return;
+	}
+
+	public ArrayDeque<ByteBuffer> getInputQueue() {
 		return inputByteQueue;
 	}
 
@@ -102,8 +106,9 @@ public abstract class QueueIOBytes {
 
 				// Received data
 				case MSG_SOCKET_DATA_READY:
-					// read bytes from drone
-					putInputQueueItem(ByteBuffer.wrap((byte[]) msg.obj, 0, msg.arg1));
+					// addInputQueueItem(ByteBuffer.wrap((byte[]) msg.obj, 0,
+					// msg.arg1));
+					addInputQueueItem(msg);
 					break;
 
 				// closing so kill itself
@@ -114,6 +119,7 @@ public abstract class QueueIOBytes {
 					super.handleMessage(msg);
 				}
 			}
+
 		};
 
 	}

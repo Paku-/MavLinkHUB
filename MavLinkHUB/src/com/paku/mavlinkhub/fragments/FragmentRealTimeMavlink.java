@@ -35,7 +35,7 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		listAdapterMavLink = new ViewAdapterMavlinkMsgList(this.getActivity(), generateMavlinkListData());
+		listAdapterMavLink = new ViewAdapterMavlinkMsgList(this.getActivity(), hub.queue.getListMsgItemsForUI());
 		listViewMavLinkMsg = (ListView) (getView().findViewById(R.id.listView_mavlinkMsgs));
 		listViewMavLinkMsg.setAdapter(listAdapterMavLink);
 	}
@@ -102,19 +102,9 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 	public void onQueueMsgItemReady() {
 
 		listAdapterMavLink.clear();
-		listAdapterMavLink.addAll(generateMavlinkListData());
+		listAdapterMavLink.addAll(hub.queue.getListMsgItemsForUI());
 		listViewMavLinkMsg.setSelection(listAdapterMavLink.getCount());
 
-	}
-
-	// get data to fill the list view
-	private ArrayList<ItemMavLinkMsg> generateMavlinkListData() {
-
-		// we need a clone for adapter.
-		final ArrayList<ItemMavLinkMsg> clone = new ArrayList<ItemMavLinkMsg>();
-		clone.addAll(hub.queue.getMsgItemsForUI());
-
-		return clone;
 	}
 
 }

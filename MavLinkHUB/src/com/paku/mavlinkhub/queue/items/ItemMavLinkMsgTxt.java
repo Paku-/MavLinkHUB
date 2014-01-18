@@ -3,6 +3,7 @@ package com.paku.mavlinkhub.queue.items;
 import com.MAVLink.Messages.ApmModes;
 import com.MAVLink.Messages.ardupilotmega.msg_heartbeat;
 import com.MAVLink.Messages.ardupilotmega.msg_statustext;
+import com.paku.mavlinkhub.enums.MSG_SOURCE;
 import com.paku.mavlinkhub.mavlink.MavLinkClassExtractor;
 
 public class ItemMavLinkMsgTxt {
@@ -14,6 +15,7 @@ public class ItemMavLinkMsgTxt {
 	public String desc_3;
 	public String desc_4;
 	public String desc_5;
+	public MSG_SOURCE direction;
 
 	public ItemMavLinkMsgTxt(ItemMavLinkMsg msgItem, MavLinkClassExtractor mavClasses) {
 		setMe(msgItem, mavClasses);
@@ -22,6 +24,7 @@ public class ItemMavLinkMsgTxt {
 	private void setMe(ItemMavLinkMsg msgItem, MavLinkClassExtractor mavClasses) {
 
 		// MavLink package sender and sequence number
+		direction = msgItem.direction;
 		desc_1 = ("[" + String.valueOf(msgItem.msg.sysid) + "]");
 		desc_2 = ("[" + String.valueOf(msgItem.seqNo) + "]");
 

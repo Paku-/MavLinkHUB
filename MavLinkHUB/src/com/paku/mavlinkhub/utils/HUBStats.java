@@ -35,15 +35,15 @@ public class HUBStats {
 
 		final String byteStats = "Q:" + statsQueueItemsCnt;
 
-		String droneStats = " ";
+		String droneStats = " DR:" + statsClientByteCount + "/0/0";
+
 		if (parserStatsDrone != null) {
 			droneStats = " DR:" + statsClientByteCount + "/" + parserStatsDrone.receivedPacketCount + "/" + parserStatsDrone.crcErrorCount;
 		}
 
-		String gsStats = " ";
+		String gsStats = " GS:" + statsServerByteCount + "/0/0";
 		if (parserStatsGS != null) {
 			gsStats = " GS:" + statsServerByteCount + "/" + parserStatsGS.receivedPacketCount + "/" + parserStatsGS.crcErrorCount;
-			;
 		}
 
 		return byteStats + droneStats + gsStats;

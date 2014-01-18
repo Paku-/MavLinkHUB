@@ -25,6 +25,14 @@ public class HUBGlobals extends Application {
 	public int visibleMsgList = 20;
 	public int serverTCP_port = 5760;
 
+	// colors
+
+	public String colDark = "#008893";
+	public String colDarkMedium = "#7BC1C7";
+	public String colMedium = "#4AAAb2";
+	public String colLightMedium = "#16929C";
+	public String colLight = "#A5D5D8";
+
 	// messages handler
 	public HUBMessenger messenger;
 

@@ -92,7 +92,7 @@ public class ThreadCollectorParser extends Thread {
 					ItemMavLinkMsg tmpMsgItem = new ItemMavLinkMsg(tmpPacket, direction, 1);
 
 					// store item for distribution and UI update
-					hub.queue.putHubQueueItem(tmpMsgItem);
+					hub.queue.addHubQueueItem(tmpMsgItem);
 					// stream for syslog
 					// /hub.logger.sysLog("MavlinkMsg",
 					// tmpMsgItem.humanDecode());

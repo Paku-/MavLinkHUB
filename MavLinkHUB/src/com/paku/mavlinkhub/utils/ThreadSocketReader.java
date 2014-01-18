@@ -77,21 +77,21 @@ public class ThreadSocketReader extends Thread {
 
 	public void run() {
 		byte[] buffer = new byte[BUFFSIZE];
-		int bytes; // bytes received
+		int len; // bytes received
 
 		while (running) {
-			try {
-				// for BT: sleep as we are to fast for BT serial :)
-				if (socketBT != null) sleep(100);
+			if (socketBT != null) try {
+				sleep(333);
 			}
 			catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			try {
 
-				bytes = input.read(buffer, 0, buffer.length);
-				if (bytes > 0) {
-					handlerSocketMsgReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_DATA_READY.ordinal(), bytes, -1, buffer).sendToTarget();
+				len = input.read(buffer, 0, buffer.length);
+				if (len > 0) {
+					handlerSocketMsgReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_DATA_READY.ordinal(), len, -1, buffer).sendToTarget();
 				}
 				else {
 					Log.d(TAG, "** Empty socket buffer - Connection Error...**");

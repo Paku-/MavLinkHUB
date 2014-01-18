@@ -2,10 +2,6 @@ package com.paku.mavlinkhub.queue;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-
-import android.util.Log;
 
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.enums.APP_STATE;
@@ -13,6 +9,7 @@ import com.paku.mavlinkhub.queue.items.ItemMavLinkMsg;
 
 public class QueueMsgItems {
 
+	@SuppressWarnings("unused")
 	private static final String TAG = "QueueMsgItems";
 
 	// private final BlockingQueue<ItemMavLinkMsg> queue;
@@ -33,10 +30,6 @@ public class QueueMsgItems {
 
 	}
 
-	public ArrayDeque<ItemMavLinkMsg> getHubQueue() {
-		return hubQueue;
-	}
-
 	public ItemMavLinkMsg getHubQueueItem() {
 		synchronized (hubQueue) {
 			return hubQueue.poll();
@@ -44,8 +37,7 @@ public class QueueMsgItems {
 
 	}
 
-	public void putHubQueueItem(ItemMavLinkMsg item) {
-		// queue store
+	public void addHubQueueItem(ItemMavLinkMsg item) {
 		synchronized (hubQueue) {
 			hubQueue.addLast(item);
 		}
@@ -64,9 +56,14 @@ public class QueueMsgItems {
 
 	}
 
-	public ArrayDeque<ItemMavLinkMsg> getMsgItemsForUI() {
+	public ArrayList<ItemMavLinkMsg> getListMsgItemsForUI() {
 		synchronized (arrayMavLinkMsgItemsForUI) {
-			return arrayMavLinkMsgItemsForUI;
+
+			// we need a clone for adapter.
+			final ArrayList<ItemMavLinkMsg> clone = new ArrayList<ItemMavLinkMsg>();
+			clone.addAll(arrayMavLinkMsgItemsForUI);
+
+			return clone;
 		}
 	}
 

@@ -14,7 +14,6 @@ import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
 
 public class HUBMessenger extends HUBInterfaceMenager {
 
