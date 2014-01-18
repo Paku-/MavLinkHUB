@@ -14,79 +14,39 @@ public class ItemMavLinkMsg implements Serializable {
 	 */
 	private static final long serialVersionUID = -2616788128278070587L;
 
-	private final int count; // how many times the the same msg was repeated
-	private int seqNo;
-	private MAVLinkMessage msg;
-	private long timestamp;
-	private MSG_SOURCE direction;
+	public final int count; // how many times the the same msg was repeated
+	public int seqNo;
+	public MAVLinkMessage msg;
+	public long timestamp;
+	public MSG_SOURCE direction;
 
 	public ItemMavLinkMsg(MAVLinkPacket pkt, MSG_SOURCE direction, int count) {
 		super();
 		this.count = count;
-		setMsg(pkt.unpack());
-		setSeqNo(pkt.seq);
-		setSysId(pkt.sysid);
-		setTimestamp(System.currentTimeMillis());
-		setDirection(direction);
+		msg = pkt.unpack();
+		seqNo = pkt.seq;
+		msg.sysid = pkt.sysid;
+		timestamp = System.currentTimeMillis();
+		this.direction = direction;
 	}
 
-	public String getCount() {
+	public String countToString() {
 		return String.valueOf(count);
 	}
 
 	@Override
 	public String toString() {
-		return "SysId:" + getSysId() + " SeqNo:" + getSeqNo() + " " + getMsg().toString();
+		return "SysId:" + msg.sysid + " SeqNo:" + seqNo + " " + msg.toString();
 	}
 
 	public String humanDecode() {
 		return toString();
 	}
 
-	public MAVLinkMessage getMsg() {
-		return msg;
-	}
-
-	public void setMsg(MAVLinkMessage msg) {
-		this.msg = msg;
-	}
-
-	public int getSysId() {
-		return msg.sysid;
-	}
-
-	public void setSysId(int sysId) {
-		this.msg.sysid = sysId;
-	}
-
-	public int getSeqNo() {
-		return seqNo;
-	}
-
-	public void setSeqNo(int seqNo) {
-		this.seqNo = seqNo;
-	}
-
-	public long getTimestamp() {
-		return timestamp;
-	}
-
-	public void setTimestamp(long timestamp) {
-		this.timestamp = timestamp;
-	}
-
-	public MSG_SOURCE getDirection() {
-		return direction;
-	}
-
-	public void setDirection(MSG_SOURCE direction) {
-		this.direction = direction;
-	}
-
 	public byte[] getPacketBytes() {
 		MAVLinkPacket pkt = msg.pack();
-		pkt.seq = getSeqNo();
-		pkt.sysid = getSysId();
+		pkt.seq = seqNo;
+		pkt.sysid = msg.sysid;
 		return pkt.encodePacket();
 	}
 }

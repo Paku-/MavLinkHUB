@@ -12,16 +12,16 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
-public abstract class QueueBytes {
+public abstract class QueueIOBytes {
 
-	private static final String TAG = "QueueBytes";
+	private static final String TAG = "QueueIOBytes";
 
 	private final BlockingQueue<ByteBuffer> inputByteQueue;
 	private final BlockingQueue<ByteBuffer> outputByteQueue;
 	// hub wide msg center
 	public Handler appMsgHandler;
 
-	protected QueueBytes(Handler msgCenter, int capacity) {
+	protected QueueIOBytes(Handler msgCenter, int capacity) {
 		// to the device
 		outputByteQueue = new ArrayBlockingQueue<ByteBuffer>(capacity);
 		// from the device
@@ -78,9 +78,11 @@ public abstract class QueueBytes {
 		return inputByteQueue;
 	}
 
+	// that's the true ADD ,method for this class
 	// this handler is called by the messages coming from any other class build
-	// over the QueueBytes. Any bytes receiving thread sends a msg with the
+	// over the QueueIOBytes. Any bytes receiving thread sends a msg with the
 	// buffer here to be stored in the underlying queue.
+	// msg othr then ADD are forwarded to the main app messenger
 	protected Handler startInputQueueMsgHandler() {
 		return new Handler(Looper.getMainLooper()) {
 			public void handleMessage(Message msg) {
@@ -90,8 +92,7 @@ public abstract class QueueBytes {
 
 				// new client connected
 				case MSG_SOCKET_TCP_SERVER_CLIENT_CONNECTED:
-					appMsgHandler.obtainMessage(APP_STATE.MSG_SERVER_CLIENT_CONNECTED.ordinal(), msg.arg1, msg.arg2,
-							msg.obj).sendToTarget();
+					appMsgHandler.obtainMessage(APP_STATE.MSG_SERVER_CLIENT_CONNECTED.ordinal(), msg.arg1, msg.arg2, msg.obj).sendToTarget();
 					break;
 
 				// Client lost;

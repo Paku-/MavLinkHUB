@@ -101,6 +101,7 @@ public class ThreadSocketReader extends Thread {
 			}
 			catch (IOException e) {
 				Log.d(TAG, "Exception [run.read.buffer]:" + e.getMessage());
+				handlerSocketMsgReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_TCP_SERVER_CLIENT_DISCONNECTED.ordinal()).sendToTarget();
 				running = false;
 				break;
 			}

@@ -48,11 +48,11 @@ public class ViewAdapterMavlinkMsgList extends ArrayAdapter<ItemMavLinkMsg> {
 
 		ItemMavLinkMsgTxt msgTxtItem = new ItemMavLinkMsgTxt(itemsArrayList.get(position), mavClasses);
 
-		msgName.setText(msgTxtItem.getName());
-		mainText.setText(msgTxtItem.getMainTxt());
-		desc1.setText(msgTxtItem.getDesc_1());
-		desc2.setText(msgTxtItem.getDesc_2());
-		desc3.setText(msgTxtItem.getDesc_3());
+		msgName.setText(msgTxtItem.msgName);
+		mainText.setText(msgTxtItem.mainTxt);
+		desc1.setText(msgTxtItem.desc_1);
+		desc2.setText(msgTxtItem.desc_2);
+		desc3.setText(msgTxtItem.desc_3);
 
 		return rowView;
 	}

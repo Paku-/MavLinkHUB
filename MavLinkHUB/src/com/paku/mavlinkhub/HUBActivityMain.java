@@ -109,7 +109,6 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
 				closeHUB();
-				finish();
 			}
 		};
 
@@ -133,7 +132,6 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 		}
 		else {
 			closeHUB();
-			finish();
 		}
 
 	}
@@ -165,8 +163,10 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 		hub.logger.sysLog(TAG, "MavLinkHUB closing ...");
 		hub.droneClient.stopClient();
 		hub.gsServer.stopServer();
-		hub.hubQueue.stopQueue();
+		hub.queue.stopQueue();
 		hub.logger.stopAllLogs();
+		finish();
+		killApp(true);
 	}
 
 	private void refreshStats() {

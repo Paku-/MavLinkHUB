@@ -9,7 +9,7 @@ public class MAVLinkDistributor {
 
 	private final HUBGlobals hub;
 
-	private ThreadMAVLinkDist distThread;
+	private ThreadDistSender distThread;
 
 	public MAVLinkDistributor(HUBGlobals hubContext) {
 
@@ -19,7 +19,7 @@ public class MAVLinkDistributor {
 
 	public void startMAVLinkDistThread() {
 
-		distThread = new ThreadMAVLinkDist(hub);
+		distThread = new ThreadDistSender(hub);
 		distThread.start();
 	}
 

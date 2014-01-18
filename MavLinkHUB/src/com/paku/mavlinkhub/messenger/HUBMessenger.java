@@ -14,6 +14,7 @@ import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 
 public class HUBMessenger extends HUBInterfaceMenager {
 
@@ -28,6 +29,9 @@ public class HUBMessenger extends HUBInterfaceMenager {
 			public void handleMessage(Message msg) {
 
 				APP_STATE[] appStates = APP_STATE.values();
+
+				// /Log.d(TAG, appStates[msg.what].toString());
+
 				switch (appStates[msg.what]) {
 				case MSG_SERVER_STARTED:
 					app.logger.sysLog(TAG, "Server Started on port: " + msg.obj.toString());
@@ -102,8 +106,7 @@ public class HUBMessenger extends HUBInterfaceMenager {
 				final String action = intent.getAction();
 
 				if (action.equals(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED)) {
-					final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_CONNECTION_STATE,
-							BluetoothAdapter.ERROR);
+					final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_CONNECTION_STATE, BluetoothAdapter.ERROR);
 
 					switch (state) {
 					case BluetoothAdapter.STATE_CONNECTING:
@@ -157,15 +160,13 @@ public class HUBMessenger extends HUBInterfaceMenager {
 
 				if (action.equals(BluetoothDevice.ACTION_ACL_CONNECTED)) {
 					BluetoothDevice connDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-					app.logger.sysLog(TAG,
-							"[BT_DEVICE_CONNECTED] " + connDevice.getName() + " [" + connDevice.getAddress() + "]");
+					app.logger.sysLog(TAG, "[BT_DEVICE_CONNECTED] " + connDevice.getName() + " [" + connDevice.getAddress() + "]");
 					app.uiMode = UI_MODE.UI_MODE_CONNECTED;
 				}
 
 				if (action.equals(BluetoothDevice.ACTION_ACL_DISCONNECTED)) {
 					BluetoothDevice connDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-					app.logger.sysLog(TAG,
-							"[BT_DEVICE_DISCONNECTED] " + connDevice.getName() + " [" + connDevice.getAddress() + "]");
+					app.logger.sysLog(TAG, "[BT_DEVICE_DISCONNECTED] " + connDevice.getName() + " [" + connDevice.getAddress() + "]");
 
 					app.uiMode = UI_MODE.UI_MODE_DISCONNECTED;
 				}

@@ -6,15 +6,15 @@ import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.queue.items.ItemMavLinkMsg;
 
-public class ThreadMAVLinkDist extends Thread {
+public class ThreadDistSender extends Thread {
 
-	private static final String TAG = "ThreadMAVLinkDist";
+	private static final String TAG = "ThreadDistSender";
 
 	private boolean running = true;
 
 	private final HUBGlobals hub;
 
-	public ThreadMAVLinkDist(HUBGlobals hubContext) {
+	public ThreadDistSender(HUBGlobals hubContext) {
 
 		hub = hubContext;
 
@@ -38,14 +38,11 @@ public class ThreadMAVLinkDist extends Thread {
 			 */
 			try {
 
-				hub.logger.hubStats.setQueueItemsCnt(hub.hubQueue.getItemCount());
-
-				hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_STATS.ordinal()).sendToTarget();
-
-				tmpItem = hub.hubQueue.getHubQueueItem();
+				tmpItem = hub.queue.getHubQueueItem();
 
 				if (tmpItem != null) {
-					switch (tmpItem.getDirection()) {
+
+					switch (tmpItem.direction) {
 					case FROM_DRONE:
 						if (hub.gsServer.isClientConnected()) {
 							if (hub.gsServer.writeBytes(tmpItem.getPacketBytes())) {
@@ -75,15 +72,18 @@ public class ThreadMAVLinkDist extends Thread {
 						break;
 
 					}
+
+					// queue items left adter last read - for UI
+					hub.logger.hubStats.setQueueItemsCnt(hub.queue.getItemCount());
+
+					hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_STATS.ordinal()).sendToTarget();
+
 				}
 			}
 			catch (IOException e) {
 				Log.d(TAG, "gsServer: Socket  write exception:" + e.getMessage());
 				e.printStackTrace();
-			}
-			catch (InterruptedException e) {
-				Log.d(TAG, "gsServer: Queue get waiting interrupted:" + e.getMessage());
-				e.printStackTrace();
+
 			}
 		}
 		hub.logger.sysLog("MavLink Distributor", "...Stop");

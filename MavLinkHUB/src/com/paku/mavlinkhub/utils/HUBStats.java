@@ -33,16 +33,16 @@ public class HUBStats {
 
 	public String toString_(MSG_SOURCE direction) {
 
-		final String byteStats = "[DB]: " + statsClientByteCount + " [GB]: " + statsServerByteCount + " [Q]: " + statsQueueItemsCnt;
+		final String byteStats = "Q:" + statsQueueItemsCnt;
 
 		String droneStats = " ";
 		if (parserStatsDrone != null) {
-			droneStats = "  [DPkt]: " + parserStatsDrone.receivedPacketCount + " [DCRC]: " + parserStatsDrone.crcErrorCount;
+			droneStats = " DR:" + statsClientByteCount + "/" + parserStatsDrone.receivedPacketCount + "/" + parserStatsDrone.crcErrorCount;
 		}
 
 		String gsStats = " ";
 		if (parserStatsGS != null) {
-			gsStats = "  [GPkt]: " + parserStatsGS.receivedPacketCount + " [GCRC]: " + parserStatsGS.crcErrorCount;
+			gsStats = " GS:" + statsServerByteCount + "/" + parserStatsGS.receivedPacketCount + "/" + parserStatsGS.crcErrorCount;
 			;
 		}
 

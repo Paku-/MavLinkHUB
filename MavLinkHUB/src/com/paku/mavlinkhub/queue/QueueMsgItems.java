@@ -1,5 +1,6 @@
 package com.paku.mavlinkhub.queue;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -14,56 +15,56 @@ public class QueueMsgItems {
 
 	private static final String TAG = "QueueMsgItems";
 
-	private final BlockingQueue<ItemMavLinkMsg> hubQueue;
+	// private final BlockingQueue<ItemMavLinkMsg> queue;
+	private final ArrayDeque<ItemMavLinkMsg> hubQueue;
 
 	// in mem msgItems storage for UI shorter display /global var size limited/
-	private final ArrayList<ItemMavLinkMsg> arrayMavLinkMsgItemsForUI;
+	private final ArrayDeque<ItemMavLinkMsg> arrayMavLinkMsgItemsForUI;
 
 	HUBGlobals hub;
 
 	public QueueMsgItems(HUBGlobals hubContext, int capacity) {
 
-		hubQueue = new ArrayBlockingQueue<ItemMavLinkMsg>(capacity);
-		arrayMavLinkMsgItemsForUI = new ArrayList<ItemMavLinkMsg>();
+		// queue = new ArrayBlockingQueue<ItemMavLinkMsg>(capacity);
+		hubQueue = new ArrayDeque<ItemMavLinkMsg>(capacity);
+		arrayMavLinkMsgItemsForUI = new ArrayDeque<ItemMavLinkMsg>();
 
 		hub = hubContext;
 
 	}
 
-	public BlockingQueue<ItemMavLinkMsg> getHubQueue() {
+	public ArrayDeque<ItemMavLinkMsg> getHubQueue() {
 		return hubQueue;
 	}
 
-	public ItemMavLinkMsg getHubQueueItem() throws InterruptedException {
-		return hubQueue.poll();
+	public ItemMavLinkMsg getHubQueueItem() {
+		synchronized (hubQueue) {
+			return hubQueue.poll();
+		}
+
 	}
 
 	public void putHubQueueItem(ItemMavLinkMsg item) {
 		// queue store
-		try {
-			hubQueue.put(item);
+		synchronized (hubQueue) {
+			hubQueue.addLast(item);
 		}
-		catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			Log.d(TAG, "Put item");
-			e.printStackTrace();
-		}
-
-		// store item for UI
-		arrayMavLinkMsgItemsForUI.add(item);
-		// and call for UI update
-		// limit the Array size
-		while (arrayMavLinkMsgItemsForUI.size() > hub.visibleMsgList) {
-			arrayMavLinkMsgItemsForUI.remove(0);
-		}
-		// flush mem
-		arrayMavLinkMsgItemsForUI.trimToSize();
 
 		hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_QUEUE_MSGITEM_READY.ordinal(), -1, -1, item).sendToTarget();
 
+		// store item for UI
+		synchronized (arrayMavLinkMsgItemsForUI) {
+			arrayMavLinkMsgItemsForUI.addLast(item);
+			// and call for UI update
+			// limit the Array size
+			while (arrayMavLinkMsgItemsForUI.size() > hub.visibleMsgList) {
+				arrayMavLinkMsgItemsForUI.removeLast();
+			}
+		}
+
 	}
 
-	public ArrayList<ItemMavLinkMsg> getMsgItemsForUI() {
+	public ArrayDeque<ItemMavLinkMsg> getMsgItemsForUI() {
 		return arrayMavLinkMsgItemsForUI;
 	}
 

@@ -9,7 +9,7 @@ public class MAVLinkCollector {
 
 	private final HUBGlobals hub;
 
-	private ThreadMAVLinkParser parserThread;
+	private ThreadCollectorParser parserThread;
 
 	public MAVLinkCollector(HUBGlobals hubContext) {
 
@@ -19,7 +19,7 @@ public class MAVLinkCollector {
 
 	public void startMAVLinkParserThread() {
 
-		parserThread = new ThreadMAVLinkParser(hub);
+		parserThread = new ThreadCollectorParser(hub);
 		parserThread.start();
 	}
 

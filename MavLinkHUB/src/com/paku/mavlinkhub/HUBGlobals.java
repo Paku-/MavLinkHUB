@@ -34,7 +34,7 @@ public class HUBGlobals extends Application {
 	public GroundStationServer gsServer;
 
 	// main ItemMavLinkMsg objects queue
-	public HUBQueue hubQueue;
+	public HUBQueue queue;
 
 	// sys log stats holder object
 	public HUBLogger logger;
@@ -62,8 +62,8 @@ public class HUBGlobals extends Application {
 		gsServer.startServer(5760);
 
 		// finally start parsers and distributors
-		hubQueue = new HUBQueue(this, 1000);
-		hubQueue.startQueue();
+		queue = new HUBQueue(this, 1000);
+		queue.startQueue();
 
 	}
 

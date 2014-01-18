@@ -2,11 +2,11 @@ package com.paku.mavlinkhub.queue.endpoints;
 
 import java.io.IOException;
 
-import com.paku.mavlinkhub.queue.QueueBytes;
+import com.paku.mavlinkhub.queue.QueueIOBytes;
 
 import android.os.Handler;
 
-public abstract class DroneClient extends QueueBytes {
+public abstract class DroneClient extends QueueIOBytes {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "DroneClient";
