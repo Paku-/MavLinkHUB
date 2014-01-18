@@ -144,7 +144,7 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 					hub.logger.sysLog(TAG, "Me  : " + hub.droneClient.getMyName() + " [" + hub.droneClient.getMyAddress() + "]");
 					hub.logger.sysLog(TAG, "Peer: " + selectedDev.getName() + " [" + selectedDev.getAddress() + "]");
 
-					hub.droneClient.startConnection(selectedDev.getAddress());
+					hub.droneClient.startClient(selectedDev.getAddress());
 
 					btDevList.setDevState(position, PEER_DEV_STATE.DEV_STATE_CONNECTED);
 				}

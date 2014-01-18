@@ -77,8 +77,7 @@ public class HUBInterfaceMenager {
 	public void call(APP_STATE msg) {
 
 		// main activity is not a fragment :(
-		if ((msg == APP_STATE.MSG_DATA_UPDATE_STATS) && (IDataUpdateStats) mainActivity != null)
-			((IDataUpdateStats) mainActivity).onDataUpdateStats();
+		if ((msg == APP_STATE.MSG_DATA_UPDATE_STATS) && (IDataUpdateStats) mainActivity != null) ((IDataUpdateStats) mainActivity).onDataUpdateStats();
 
 		for (Fragment fragment : listeners.get(msg.ordinal()).fragsArray) {
 			if (fragment != null) {
@@ -116,7 +115,7 @@ public class HUBInterfaceMenager {
 		}
 	}
 
-	// string parameterized msg only here ...
+	// string carring msgs only here ...
 	public void call(APP_STATE msg, String txt) {
 		for (Fragment fragment : listeners.get(msg.ordinal()).fragsArray) {
 			if (fragment != null) {

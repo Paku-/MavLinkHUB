@@ -13,7 +13,7 @@ public abstract class DroneClient extends QueueIOBytes {
 
 	// application handler used to report connection states
 
-	public abstract void startConnection(String address);
+	public abstract void startClient(String address);
 
 	public abstract void stopClient();
 

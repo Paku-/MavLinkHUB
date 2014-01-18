@@ -7,7 +7,7 @@ import com.paku.mavlinkhub.queue.endpoints.DroneClient;
 import com.paku.mavlinkhub.queue.endpoints.GroundStationServer;
 import com.paku.mavlinkhub.queue.endpoints.drone.DroneClientBluetooth;
 import com.paku.mavlinkhub.queue.endpoints.gs.GroundStationServerTCP;
-import com.paku.mavlinkhub.queue.mavlinkqueue.HUBQueue;
+import com.paku.mavlinkhub.queue.hubqueue.HUBQueue;
 
 import android.app.Application;
 import android.content.Context;
@@ -23,6 +23,7 @@ public class HUBGlobals extends Application {
 	public int visBuffSize = 1024 * 4;
 	// public int minStreamReadSize = 2 ^ 4; // ^6 = 64 ^5=32 ^4=16
 	public int visibleMsgList = 20;
+	public int serverTCP_port = 5760;
 
 	// messages handler
 	public HUBMessenger messenger;
@@ -59,7 +60,8 @@ public class HUBGlobals extends Application {
 
 		// server started from the beginning
 		gsServer = new GroundStationServerTCP(messenger.appMsgHandler);
-		gsServer.startServer(5760);
+
+		gsServer.startServer(serverTCP_port);
 
 		// finally start parsers and distributors
 		queue = new HUBQueue(this, 1000);

@@ -31,7 +31,7 @@ public class DroneClientBluetooth extends DroneClient {
 	}
 
 	@Override
-	public void startConnection(String address) {
+	public void startClient(String address) {
 
 		// start connection threat
 		if (mBluetoothAdapter == null) {

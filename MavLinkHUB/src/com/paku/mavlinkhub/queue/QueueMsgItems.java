@@ -58,14 +58,16 @@ public class QueueMsgItems {
 			// and call for UI update
 			// limit the Array size
 			while (arrayMavLinkMsgItemsForUI.size() > hub.visibleMsgList) {
-				arrayMavLinkMsgItemsForUI.removeLast();
+				arrayMavLinkMsgItemsForUI.removeFirst();
 			}
 		}
 
 	}
 
 	public ArrayDeque<ItemMavLinkMsg> getMsgItemsForUI() {
-		return arrayMavLinkMsgItemsForUI;
+		synchronized (arrayMavLinkMsgItemsForUI) {
+			return arrayMavLinkMsgItemsForUI;
+		}
 	}
 
 	public int getItemCount() {
