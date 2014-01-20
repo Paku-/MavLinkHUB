@@ -34,9 +34,6 @@ public class HUBLogger {
 	// sys log sotrage
 	public ByteArrayOutputStream mInMemSysLogStream;
 
-	// stats vars
-	private boolean lock = false;
-
 	// system stats holding object
 	public HUBStats hubStats;
 
@@ -69,10 +66,11 @@ public class HUBLogger {
 
 		// syslog write
 		try {
-			waitForLock();
-			mFileSysLogStream.write(tempStr.getBytes(), 0, tempStr.length());
-			mInMemSysLogStream.write(tempStr.getBytes(), 0, tempStr.length());
-			releaseLock();
+			synchronized (mInMemSysLogStream) {
+				mFileSysLogStream.write(tempStr.getBytes(), 0, tempStr.length());
+				mInMemSysLogStream.write(tempStr.getBytes(), 0, tempStr.length());
+
+			}
 			hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_SYSLOG.ordinal()).sendToTarget();
 		}
 		catch (IOException e1) {
@@ -93,10 +91,10 @@ public class HUBLogger {
 		if (buffer != null && direction == MSG_SOURCE.FROM_DRONE) {
 			try {
 
-				waitForLock();
-				mFileByteLogStream.write(buffer.array(), 0, buffer.limit());
-				mInMemBytesStream.write(buffer.array(), 0, buffer.limit());
-				releaseLock();
+				synchronized (mInMemBytesStream) {
+					mFileByteLogStream.write(buffer.array(), 0, buffer.limit());
+					mInMemBytesStream.write(buffer.array(), 0, buffer.limit());
+				}
 				hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_BYTELOG.ordinal()).sendToTarget();
 			}
 			catch (IOException e1) {
@@ -107,7 +105,7 @@ public class HUBLogger {
 
 	public void restartByteLog() {
 
-		byteLogFile = new File(hub.getExternalFilesDir(null), "bytes.txt");
+		byteLogFile = new File(getLoggerStorageLocation(null), getLoggerFileName("byte"));
 		try {
 			mFileByteLogStream = new BufferedOutputStream(new FileOutputStream(byteLogFile, false), 1024);
 		}
@@ -119,7 +117,7 @@ public class HUBLogger {
 
 	public void restartSysLog() {
 
-		sysLogFile = new File(hub.getExternalFilesDir(null), "syslog.txt");
+		sysLogFile = new File(getLoggerStorageLocation(null), getLoggerFileName("sys"));
 		try {
 			mFileSysLogStream = new BufferedOutputStream(new FileOutputStream(sysLogFile, false), 1024);
 		}
@@ -127,6 +125,14 @@ public class HUBLogger {
 			Log.d(TAG, e.getMessage());
 		}
 
+	}
+
+	private File getLoggerStorageLocation(String txt) {
+		return hub.getExternalFilesDir(txt);
+	}
+
+	private String getLoggerFileName(String name) {
+		return System.currentTimeMillis() + "-" + name + ".txt";
 	}
 
 	public void stopByteLog() {
@@ -151,16 +157,6 @@ public class HUBLogger {
 	public void stopAllLogs() {
 		stopByteLog();
 		stopSysLog();
-	}
-
-	public void waitForLock() {
-		while (lock) {
-		}
-		lock = true;
-	}
-
-	public void releaseLock() {
-		lock = false;
 	}
 
 	@SuppressLint("SimpleDateFormat")

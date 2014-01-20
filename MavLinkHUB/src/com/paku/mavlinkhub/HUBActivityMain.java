@@ -181,7 +181,6 @@ public class HUBActivityMain extends ActionBarActivity implements IDataUpdateSta
 		refreshStats();
 	}
 
-	@SuppressWarnings("deprecation")
 	public static void killApp(boolean killSafely) {
 		if (killSafely) {
 			/*
