@@ -75,11 +75,11 @@ public class DroneClientBluetooth extends DroneClient {
 
 	@Override
 	public boolean isConnected() {
-		if (mBluetoothSocket == null) {
+		if (socketWorkerThreadBT == null) {
 			return false;
 		}
 		else {
-			return mBluetoothSocket.isConnected();
+			return socketWorkerThreadBT.isRunning();
 		}
 
 	}
