@@ -8,8 +8,6 @@ import com.paku.mavlinkhub.enums.SOCKET_STATE;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.os.SystemClock;
-import android.util.Log;
 
 public abstract class QueueIOBytes {
 

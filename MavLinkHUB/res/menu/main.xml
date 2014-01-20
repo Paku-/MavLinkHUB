@@ -1,16 +1,15 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto" >    
 
     <item
         android:id="@+id/menu_settings"
         android:orderInCategory="100"
-        android:showAsAction="never"
         android:title="@string/menu_title_settings"/>
     
     <item
-        android:id="@+id/menu_select_bt"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/menu_title_select_bt"/>
+        android:id="@+id/menu_empty"
+        android:orderInCategory="100"       
+        android:title="@string/menu_title_other"/>
     
 
 </menu>

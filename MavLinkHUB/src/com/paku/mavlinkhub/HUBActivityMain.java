@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,7 +21,7 @@ import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class HUBActivityMain extends FragmentActivity implements IDataUpdateStats {
+public class HUBActivityMain extends ActionBarActivity implements IDataUpdateStats {
 
 	private static final String TAG = "HUBActivityMain";
 
@@ -90,11 +91,11 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 		case R.id.menu_settings:
 
 			final Intent intent = new Intent();
-			intent.setClass(HUBActivityMain.this, ActivitySettings.class);
+			intent.setClass(HUBActivityMain.this, HUBActivitySettings.class);
 			startActivityForResult(intent, 0);
 
 			return true;
-		case R.id.menu_select_bt:
+		case R.id.menu_empty:
 
 			return true;
 		default:
@@ -144,14 +145,6 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 
 	}
 
-	/*
-	 * public void onBackPressed() { if(backButtonCount >= 1) { Intent intent =
-	 * new Intent(Intent.ACTION_MAIN); intent.addCategory(Intent.CATEGORY_HOME);
-	 * intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); startActivity(intent); }
-	 * else { Toast.makeText(this,
-	 * "Press the back button once again to close the application.",
-	 * Toast.LENGTH_SHORT).show(); backButtonCount++; } }
-	 */
 	@Override
 	protected void onStop() {
 		super.onStop();

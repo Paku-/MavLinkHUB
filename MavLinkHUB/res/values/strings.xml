@@ -3,7 +3,7 @@
     <string name="app_name">MavLinkHub</string>
 <!-- Menu Section -->    
     <string name="menu_title_settings">Settings</string>
-    <string name="menu_title_select_bt">Select BT</string>
+    <string name="menu_title_other">Empty menu item</string>
     <string name="title_realtime_mavlink">RealTime MavLink</string>
     <string name="title_connectivity">Connectivity</string>
     <string name="title_syslog">System log</string>

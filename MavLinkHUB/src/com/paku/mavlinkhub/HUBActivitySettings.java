@@ -5,7 +5,7 @@ import com.paku.mavlinkhub.fragments.FragmentSettings;
 import android.app.Activity;
 import android.os.Bundle;
 
-public class ActivitySettings extends Activity {
+public class HUBActivitySettings extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
