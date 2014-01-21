@@ -4,6 +4,7 @@ import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.enums.UI_MODE;
+import com.paku.mavlinkhub.queue.items.ItemMavLinkMsg;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -52,8 +53,7 @@ public class HUBMessenger extends HUBInterfaceMenager {
 					// Received MLmsg
 					break;
 				case MSG_QUEUE_MSGITEM_READY:
-					call(APP_STATE.MSG_QUEUE_MSGITEM_READY);
-					// processOnQueueMsgItemReady();
+					call(APP_STATE.MSG_QUEUE_MSGITEM_READY, (ItemMavLinkMsg) msg.obj);
 					break;
 				case MSG_DATA_UPDATE_SYSLOG:
 					call(APP_STATE.MSG_DATA_UPDATE_SYSLOG);

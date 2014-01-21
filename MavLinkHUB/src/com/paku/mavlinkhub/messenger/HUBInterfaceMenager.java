@@ -16,6 +16,7 @@ import com.paku.mavlinkhub.interfaces.IQueueMsgItemReady;
 import com.paku.mavlinkhub.interfaces.IQueueMsgItemSent;
 import com.paku.mavlinkhub.interfaces.IServerStarted;
 import com.paku.mavlinkhub.interfaces.IUiModeChanged;
+import com.paku.mavlinkhub.queue.items.ItemMavLinkMsg;
 
 public class HUBInterfaceMenager {
 
@@ -74,6 +75,7 @@ public class HUBInterfaceMenager {
 		frags.fragsArray.trimToSize();
 	}
 
+	// msgs not having payload.
 	public void call(APP_STATE msg) {
 
 		// main activity is not a fragment :(
@@ -83,9 +85,6 @@ public class HUBInterfaceMenager {
 			if (fragment != null) {
 				APP_STATE[] msgs = APP_STATE.values();
 				switch (msgs[msg.ordinal()]) {
-				case MSG_QUEUE_MSGITEM_READY:
-					((IQueueMsgItemReady) fragment).onQueueMsgItemReady();
-					break;
 				case MSG_QUEUE_MSGITEM_SENT:
 					((IQueueMsgItemSent) fragment).onQueueMsgItemSent();
 					break;
@@ -115,7 +114,23 @@ public class HUBInterfaceMenager {
 		}
 	}
 
-	// string carring msgs only here ...
+	// ItemMavLinkMsg msgs only here ...
+	public void call(APP_STATE msg, ItemMavLinkMsg msgItem) {
+		for (Fragment fragment : listeners.get(msg.ordinal()).fragsArray) {
+			if (fragment != null) {
+				APP_STATE[] msgs = APP_STATE.values();
+				switch (msgs[msg.ordinal()]) {
+				case MSG_QUEUE_MSGITEM_READY:
+					((IQueueMsgItemReady) fragment).onQueueMsgItemReady(msgItem);
+					break;
+				default:
+					break;
+				}
+			}
+		}
+	}
+
+	// string msgs only here ...
 	public void call(APP_STATE msg, String txt) {
 		for (Fragment fragment : listeners.get(msg.ordinal()).fragsArray) {
 			if (fragment != null) {

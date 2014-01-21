@@ -24,6 +24,12 @@
     <PreferenceCategory android:title="@string/pref_section_auto_scroll_title" >
         <CheckBoxPreference
             android:defaultValue="true"
+            android:key="pref_msg_items_autoscroll"
+            android:summary="@string/pref_msg_items_autoscroll_summary"
+            android:title="@string/pref_msg_items_autoscroll_title" />
+        
+        <CheckBoxPreference
+            android:defaultValue="true"
             android:key="pref_byte_log_autoscroll"
             android:summary="@string/pref_byte_log_autoscroll_summary"
             android:title="@string/pref_byte_log_autoscroll_title" />

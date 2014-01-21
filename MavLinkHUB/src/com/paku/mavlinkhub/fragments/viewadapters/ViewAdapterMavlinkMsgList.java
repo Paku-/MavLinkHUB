@@ -20,7 +20,7 @@ import android.widget.TextView;
 public class ViewAdapterMavlinkMsgList extends ArrayAdapter<ItemMavLinkMsg> {
 
 	private final Context context;
-	private final ArrayList<ItemMavLinkMsg> itemsArrayList;
+	private ArrayList<ItemMavLinkMsg> itemsArrayList;
 	private HUBGlobals app;
 
 	// mavlink classes' string names helper class
@@ -32,6 +32,7 @@ public class ViewAdapterMavlinkMsgList extends ArrayAdapter<ItemMavLinkMsg> {
 
 		this.context = context;
 		app = ((HUBGlobals) context.getApplicationContext());
+
 		this.itemsArrayList = itemsArrayList;
 
 		// mavlink msgs fields name reference object
