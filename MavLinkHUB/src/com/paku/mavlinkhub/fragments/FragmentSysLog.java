@@ -47,18 +47,7 @@ public class FragmentSysLog extends HUBFragment implements IDataUpdateSysLog {
 	public void onDataUpdateSysLog() {
 		final TextView mTextViewBytesLog = (TextView) (getView().findViewById(R.id.TextView_logSysLog));
 
-		final String buff;
-
-		if (hub.logger.mInMemSysLogStream.size() > hub.visBuffSize) {
-			buff = new String(hub.logger.mInMemSysLogStream.toByteArray(), hub.logger.mInMemSysLogStream.size()
-					- hub.visBuffSize, hub.visBuffSize);
-		}
-		else {
-			buff = new String(hub.logger.mInMemSysLogStream.toByteArray());
-
-		}
-
-		mTextViewBytesLog.setText(buff);
+		mTextViewBytesLog.setText(hub.logger.inMemSysLogBuffer);
 
 		// scroll down
 		final ScrollView mScrollView = (ScrollView) (getView().findViewById(R.id.scrollView_logSys));

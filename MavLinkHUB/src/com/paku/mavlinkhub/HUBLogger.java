@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
+import java.util.ArrayDeque;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -30,9 +31,11 @@ public class HUBLogger {
 
 	// sys wide in memory logging streams
 	// incoming bytes
-	public ByteArrayOutputStream mInMemBytesStream;
-	// sys log sotrage
-	public ByteArrayOutputStream mInMemSysLogStream;
+
+	public StringBuilder inMemByteLogBuffer;
+	public StringBuilder inMemSysLogBuffer;
+
+	int x = 0;
 
 	// system stats holding object
 	public HUBStats hubStats;
@@ -43,18 +46,12 @@ public class HUBLogger {
 
 		hubStats = new HUBStats();
 
-		// **** memory logging/store
-
-		// set the system wide byte storage stream ready for data collecting..
-		mInMemSysLogStream = new ByteArrayOutputStream();
-		mInMemSysLogStream.reset();
-
-		// set the system wide byte storage stream ready for data collecting..
-		mInMemBytesStream = new ByteArrayOutputStream();
-		mInMemBytesStream.reset();
-
+		inMemSysLogBuffer = new StringBuilder(2 * hub.visibleBuffSize);
 		restartSysLog();
+
+		inMemByteLogBuffer = new StringBuilder(2 * hub.visibleBuffSize);
 		restartByteLog();
+
 		sysLog(TAG, "** MavLinkHUB Syslog Init **");
 
 	}
@@ -66,10 +63,9 @@ public class HUBLogger {
 
 		// syslog write
 		try {
-			synchronized (mInMemSysLogStream) {
+			synchronized (inMemSysLogBuffer) {
 				mFileSysLogStream.write(tempStr.getBytes(), 0, tempStr.length());
-				mInMemSysLogStream.write(tempStr.getBytes(), 0, tempStr.length());
-
+				inMemSysLogBuffer.append(tempStr);
 			}
 			hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_SYSLOG.ordinal()).sendToTarget();
 		}
@@ -89,20 +85,21 @@ public class HUBLogger {
 
 		// log only Drone data to the bytelog file
 		if (buffer != null && direction == MSG_SOURCE.FROM_DRONE) {
-			try {
+			synchronized (inMemByteLogBuffer) {
+				// mFileByteLogStream.write(buffer.array(), 0,
+				// buffer.limit());
 
-				synchronized (mInMemBytesStream) {
-					mFileByteLogStream.write(buffer.array(), 0, buffer.limit());
-					mInMemBytesStream.write(buffer.array(), 0, buffer.limit());
+				inMemByteLogBuffer.append(new String(buffer.array(), 0, buffer.limit()));
+				// trim to the limit
+				if (inMemByteLogBuffer.length() > hub.visibleBuffSize * 1.5) {
+					inMemByteLogBuffer.replace(0, inMemByteLogBuffer.length() - hub.visibleBuffSize, "[***]\r\n");
 				}
-				hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_BYTELOG.ordinal()).sendToTarget();
 			}
-			catch (IOException e1) {
-				Log.d(TAG, "[byteLog] " + e1.getMessage());
-			}
+			hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_BYTELOG.ordinal()).sendToTarget();
 		}
 	}
 
+	// Log.d(TAG, "[byteLog] " + e1.getMessage());
 	public void restartByteLog() {
 
 		byteLogFile = new File(getLoggerStorageLocation(null), getLoggerFileName("byte"));
@@ -112,6 +109,8 @@ public class HUBLogger {
 		catch (FileNotFoundException e) {
 			Log.d(TAG, e.getMessage());
 		}
+
+		inMemSysLogBuffer.delete(0, inMemByteLogBuffer.length());
 
 	}
 
@@ -124,6 +123,8 @@ public class HUBLogger {
 		catch (FileNotFoundException e) {
 			Log.d(TAG, e.getMessage());
 		}
+
+		inMemSysLogBuffer.delete(0, inMemSysLogBuffer.length());
 
 	}
 
@@ -179,6 +180,18 @@ public class HUBLogger {
 
 		// String lsYMD = dtNow.toString(); // YYYYMMDDTHHMMSS
 
+	}
+
+	public String getByteLog() {
+		synchronized (inMemByteLogBuffer) {
+			return inMemByteLogBuffer.toString();
+		}
+	}
+
+	public String getSysLog() {
+		synchronized (inMemSysLogBuffer) {
+			return inMemSysLogBuffer.toString();
+		}
 	}
 
 }

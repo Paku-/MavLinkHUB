@@ -41,6 +41,7 @@ public class ThreadCollectorParser extends Thread {
 		while (running) {
 
 			parse(MSG_SOURCE.FROM_DRONE);
+
 			// save transmission from drone
 			hub.logger.byteLog(MSG_SOURCE.FROM_DRONE, tmpBuffer);
 
@@ -55,10 +56,10 @@ public class ThreadCollectorParser extends Thread {
 
 		switch (direction) {
 		case FROM_DRONE:
-			tmpBuffer = hub.droneClient.getInputQueueItem();
+			tmpBuffer = hub.droneClient.getInputByteQueueItem();
 			break;
 		case FROM_GS:
-			tmpBuffer = hub.gsServer.getInputQueueItem();
+			tmpBuffer = hub.gsServer.getInputByteQueueItem();
 			break;
 		default:
 			break;
@@ -71,6 +72,7 @@ public class ThreadCollectorParser extends Thread {
 			// add bytes count to the stats
 			hub.logger.hubStats.addByteStats(direction, tmpBuffer.limit());
 
+			// parse
 			for (int i = 0; i < tmpBuffer.limit(); i++) {
 
 				switch (direction) {
@@ -93,9 +95,9 @@ public class ThreadCollectorParser extends Thread {
 
 					// store item for distribution and UI update
 					hub.queue.addHubQueueItem(tmpMsgItem);
+
 					// stream for syslog
-					// /hub.logger.sysLog("MavlinkMsg",
-					// tmpMsgItem.humanDecode());
+					// hub.logger.sysLog("MavlinkMsg",tmpMsgItem.humanDecode());
 
 					// store parser stats
 					switch (direction) {
@@ -110,10 +112,11 @@ public class ThreadCollectorParser extends Thread {
 
 					}
 
-					hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_STATS.ordinal()).sendToTarget();
-
 				}
+
 			}
+			// update UI stats display - both byte and parsers stats
+			hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_STATS.ordinal()).sendToTarget();
 		}
 
 	}

@@ -17,7 +17,7 @@ public class ThreadSocketReader extends Thread {
 
 	private static final String TAG = "ThreadSocketReader";
 
-	private static final int BUFFSIZE = 1024;
+	private static final int BUFFSIZE = 1024 * 4;
 
 	private final BluetoothSocket socketBT;
 	private final Socket socketTCP;
@@ -25,7 +25,7 @@ public class ThreadSocketReader extends Thread {
 	private final BufferedInputStream input;
 	private final BufferedOutputStream output;
 
-	private final Handler handlerSocketMsgReceiver;
+	private final Handler handlerQueueIOBytesReceiver;
 
 	private boolean running = true;
 
@@ -34,7 +34,7 @@ public class ThreadSocketReader extends Thread {
 
 		socketBT = socket;
 		socketTCP = null;
-		handlerSocketMsgReceiver = handlerReceiver;
+		handlerQueueIOBytesReceiver = handlerReceiver;
 
 		InputStream tmpIn = null;
 		OutputStream tmpOut = null;
@@ -57,7 +57,7 @@ public class ThreadSocketReader extends Thread {
 	public ThreadSocketReader(Socket socket, Handler handlerReceiver) {
 		this.socketTCP = socket;
 		socketBT = null;
-		handlerSocketMsgReceiver = handlerReceiver;
+		handlerQueueIOBytesReceiver = handlerReceiver;
 
 		InputStream tmpIn = null;
 		OutputStream tmpOut = null;
@@ -81,7 +81,7 @@ public class ThreadSocketReader extends Thread {
 
 		while (running) {
 			if (socketBT != null) try {
-				sleep(333);
+				sleep(50);
 			}
 			catch (InterruptedException e1) {
 				// TODO Auto-generated catch block
@@ -91,17 +91,17 @@ public class ThreadSocketReader extends Thread {
 
 				len = input.read(buffer, 0, buffer.length);
 				if (len > 0) {
-					handlerSocketMsgReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_DATA_READY.ordinal(), len, -1, buffer).sendToTarget();
+					handlerQueueIOBytesReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_DATA_READY.ordinal(), len, -1, buffer).sendToTarget();
 				}
 				else {
 					Log.d(TAG, "** Empty socket buffer - Connection Error...**");
-					handlerSocketMsgReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_TCP_SERVER_CLIENT_DISCONNECTED.ordinal()).sendToTarget();
+					handlerQueueIOBytesReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_TCP_SERVER_CLIENT_DISCONNECTED.ordinal()).sendToTarget();
 					running = false;
 				}
 			}
 			catch (IOException e) {
 				Log.d(TAG, "Exception [run.read.buffer]:" + e.getMessage());
-				handlerSocketMsgReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_TCP_SERVER_CLIENT_DISCONNECTED.ordinal()).sendToTarget();
+				handlerQueueIOBytesReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_TCP_SERVER_CLIENT_DISCONNECTED.ordinal()).sendToTarget();
 				running = false;
 				break;
 			}
@@ -127,7 +127,7 @@ public class ThreadSocketReader extends Thread {
 
 	public void stopMe() {
 		// stop handler as well
-		handlerSocketMsgReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_CLOSED.ordinal()).sendToTarget();
+		handlerQueueIOBytesReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_CLOSED.ordinal()).sendToTarget();
 		running = false;
 	}
 

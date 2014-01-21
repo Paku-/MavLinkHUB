@@ -60,36 +60,17 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 
 		final TextView mTextViewBytesLog = (TextView) (getView().findViewById(R.id.textView_logByte));
 
-		String buff;
-
-		// get last n kb of data
-		// java.lang.indexoutofBoundsExceptions - happens
-		if (hub.logger.mInMemBytesStream.size() > hub.visBuffSize) {
-			buff = new String(hub.logger.mInMemBytesStream.toByteArray(), hub.logger.mInMemBytesStream.size() - hub.visBuffSize, hub.visBuffSize);
-		}
-		else {
-			buff = new String(hub.logger.mInMemBytesStream.toByteArray());
-
-		}
-
-		mTextViewBytesLog.setText(buff);
+		mTextViewBytesLog.setText(hub.logger.getByteLog());
 
 		// scroll down
 		final ScrollView mScrollView = (ScrollView) (getView().findViewById(R.id.scrollView_logByte));
-
-		// mScrollView.setLayoutParams(new
-		// LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,
-		// LayoutParams.MATCH_PARENT, 4f));
-
 		if (mScrollView != null) {
-
 			mScrollView.post(new Runnable() {
 				@Override
 				public void run() {
 					mScrollView.fullScroll(View.FOCUS_DOWN);
 				}
 			});
-
 		}
 
 	}

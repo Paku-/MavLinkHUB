@@ -21,6 +21,10 @@ public class HUBStats {
 		statsQueueItemsCnt = cnt;
 	}
 
+	public int getQueueItemsCnt() {
+		return statsQueueItemsCnt;
+	}
+
 	public void setParserStats(MSG_SOURCE direction, MAVLinkStats stats) {
 		if (direction == MSG_SOURCE.FROM_DRONE) setDroneStats(stats);
 		if (direction == MSG_SOURCE.FROM_GS) setGSStats(stats);
@@ -47,18 +51,6 @@ public class HUBStats {
 		}
 
 		return byteStats + droneStats + gsStats;
-		/*
-		 * if (((direction == MSG_SOURCE.FROM_DRONE) || (direction ==
-		 * MSG_SOURCE.FROM_ALL)) && (parserStatsDrone != null)) { return
-		 * byteStats + "    MavLink Parsers [Pkg]:" +
-		 * parserStatsDrone.receivedPacketCount + " [Q]:" + statsQueueItemsCnt +
-		 * " [CRCe]:" + parserStatsDrone.crcErrorCount; } else if (((direction
-		 * == MSG_SOURCE.FROM_GS) || (direction == MSG_SOURCE.FROM_ALL)) &&
-		 * (parserStatsGS != null)) { return byteStats +
-		 * "    MavLink Parsers[Pkg]: " + parserStatsGS.receivedPacketCount +
-		 * " [Q]:" + statsQueueItemsCnt + " [CRCe]:" +
-		 * parserStatsGS.crcErrorCount; } else { return byteStats; }
-		 */
 	}
 
 	private void clientAddBytes(int len) {

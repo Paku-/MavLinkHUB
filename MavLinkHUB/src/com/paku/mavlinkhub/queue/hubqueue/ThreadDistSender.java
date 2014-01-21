@@ -28,14 +28,8 @@ public class ThreadDistSender extends Thread {
 
 		hub.logger.sysLog("MavLink Distributor", "Start...");
 
-		// String tmp = new String();
-
 		while (running) {
-			// tmp = "#" + Long.toString(System.currentTimeMillis()) + "#\r\n";
-			/*
-			 * try { sleep(2); } catch (InterruptedException e1) { // TODO
-			 * Auto-generated catch block e1.printStackTrace(); }
-			 */
+
 			try {
 
 				tmpItem = hub.queue.getHubQueueItem();
@@ -73,10 +67,12 @@ public class ThreadDistSender extends Thread {
 
 					}
 
-					// queue items left adter last read - for UI
-					hub.logger.hubStats.setQueueItemsCnt(hub.queue.getItemCount());
-
-					hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_STATS.ordinal()).sendToTarget();
+					// queue items left after last read - for UI update - but
+					// only if it changed
+					if (hub.logger.hubStats.getQueueItemsCnt() != hub.queue.getItemCount()) {
+						hub.logger.hubStats.setQueueItemsCnt(hub.queue.getItemCount());
+						hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_STATS.ordinal()).sendToTarget();
+					}
 
 				}
 			}
