@@ -1,6 +1,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <PreferenceCategory android:title="@string/pref_log_section_title" >
+    <PreferenceCategory android:title="@string/pref_section_logs_title" >
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="pref_log_mavlink_byte"
@@ -9,18 +9,33 @@
 
         <EditTextPreference
             android:key="pref_log_mavlink_folder"
-            android:title="@string/pref_log_mavlink_file_folder_title" />
+            android:title="@string/pref_log_mavlink_folder_title" />
 
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="pref_log_system"
             android:summary="@string/pref_log_system_summary"
             android:title="@string/pref_log_system_title" />
-
         <EditTextPreference
             android:key="pref_log_system_folder"
-            android:title="@string/pref_log_system_file_folder_title" />
+            android:title="@string/pref_log_system_folder_title" />
     </PreferenceCategory>
+    
+    <PreferenceCategory android:title="@string/pref_section_auto_scroll_title" >
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_byte_log_autoscroll"
+            android:summary="@string/pref_byte_log_autoscroll_summary"
+            android:title="@string/pref_byte_log_autoscroll_title" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_sys_log_autoscroll"
+            android:summary="@string/pref_sys_log_autoscroll_summary"
+            android:title="@string/pref_sys_log_autoscroll_title" />
+    
+    </PreferenceCategory>    
+    
     <PreferenceCategory android:title="@string/pref_title_section2" >
         <CheckBoxPreference
             android:defaultValue="false"

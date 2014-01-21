@@ -48,14 +48,12 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 		onQueueMsgItemReady();
 
 		final TextView mTextViewBytesLog = (TextView) (getView().findViewById(R.id.textView_logByte));
-		mTextViewBytesLog.setOnLongClickListener(new View.OnLongClickListener() {
+		mTextViewBytesLog.setOnClickListener(new View.OnClickListener() {
 
 			@Override
-			public boolean onLongClick(View v) {
-
-				;
-
-				return false;
+			public void onClick(View v) {
+				// switch autoscroll state
+				hub.prefs.edit().putBoolean("pref_byte_log_autoscroll", !hub.prefs.getBoolean("pref_byte_log_autoscroll", true)).commit();
 			}
 		});
 
@@ -75,15 +73,18 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 
 		mTextViewBytesLog.setText(hub.logger.getByteLog());
 
-		// scroll down
-		final ScrollView mScrollView = (ScrollView) (getView().findViewById(R.id.scrollView_logByte));
-		if (mScrollView != null) {
-			mScrollView.post(new Runnable() {
-				@Override
-				public void run() {
-					mScrollView.fullScroll(View.FOCUS_DOWN);
-				}
-			});
+		if (hub.prefs.getBoolean("pref_byte_log_autoscroll", true)) {
+			// scroll down
+			final ScrollView mScrollView = (ScrollView) (getView().findViewById(R.id.scrollView_logByte));
+			if (mScrollView != null) {
+				mScrollView.post(new Runnable() {
+					@Override
+					public void run() {
+						mScrollView.fullScroll(View.FOCUS_DOWN);
+					}
+				});
+			}
+
 		}
 
 	}

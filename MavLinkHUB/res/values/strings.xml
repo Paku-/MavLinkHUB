@@ -14,12 +14,18 @@
 <!-- Buttons Section -->        
     <string name="bt_calibrate">Calibrate</string>
     <string name="bt_connectivity">Disconnect</string>    
-<!-- Pref Section I  -->
-    <string name="pref_log_section_title">Logging</string>    
-    <string name="pref_log_system_title">File log system activities.</string>
-    <string name="pref_log_system_summary">Log internal MavLinkHUB activities like connection opening, new data arrival or buffers sizes.</string>
-    <string name="pref_log_mavlink_byte_title">File log MavLink data stream</string>
-    <string name="pref_log_mavlink_byte_summary">Log poor MavLink datas stream into the file.</string>    
+<!-- Pref Section Logging  -->
+    <string name="pref_section_logs_title">File logs</string>    
+    <string name="pref_log_system_title">System log</string>
+    <string name="pref_log_system_summary">File log system activities.</string>
+    <string name="pref_log_mavlink_byte_title">Drone log </string>
+    <string name="pref_log_mavlink_byte_summary">File log drone transmission.</string>
+<!-- Pref Section Autoscroll  -->
+    <string name="pref_section_auto_scroll_title">Auto Scroll</string>
+    <string name="pref_byte_log_autoscroll_summary">Enable the Byte Log autoscroll function.</string>    
+    <string name="pref_byte_log_autoscroll_title">Byte Log</string>    
+    <string name="pref_sys_log_autoscroll_summary">Enable the System Log autoscroll function.</string>    
+    <string name="pref_sys_log_autoscroll_title">System Log</string>    
 <!-- Pref Section II  -->
     <string name="pref_title_section2">Section2 Title</string>    
     <string name="pref_title_do_it">Force me to do something</string>
@@ -27,23 +33,29 @@
 <!-- Error Msgs-->    
     <string name="error_no_bt_adapter_or_paired_devices">No BT adapter or Paired Devices.</string>    
     <string name="error_no_paired_bt_devices_found_pair_device_first">No paired BT devices found. Pair device first.</string>
+    <string name="disconnect_first">Disconnect first</string>    
 <!-- Close Dialog Msgs-->            
     <string name="close_dlg_title_mavlink_closing">MavLink Connection Active </string>    
     <string name="close_dlg_msg_current_connection_will_be_lost">Current connection will be lost.</string>    
     <string name="close_dlg_positive">Close me</string>    
-    <string name="close_dlg_negative">Keep running</string>    
+    <string name="close_dlg_negative">Keep running</string>
+    
+    
     <string name="bufferEmpty">Buffer empty</string>    
     <string name="log_ml_msg_log_empty">MavLink messages log empty</string>    
     <string name="ml_byte_log_empty">Transmission log empty</string>    
     <string name="log_ml_stats">Log statistics</string>    
-    <string name="pref_log_mavlink_file_folder_title">MavLink log file location folder</string>    
-    <string name="pref_log_system_file_folder_title">System log file default folder</string>    
+    <string name="pref_log_mavlink_folder_title">MavLink log file location folder</string>    
+    <string name="pref_log_system_folder_title">System log file default folder</string>    
     <string name="log_sys_log_empty">System log empty</string>    
     <string name="connectivity_txt_select_device">Select Device</string>    
     <string name="connectivity_txt_disconnected">Disconnected</string>    
     <string name="txt_no_data">No Data</string>    
-    <string name="no_bluetooth_adapter_found">No Bluetooth Adapter found.</string>    
-    <string name="disconnect_first">Disconnect first ...</string>    
+    <string name="no_bluetooth_adapter_found">No Bluetooth Adapter found.</string>        
     <string name="connection_failure">"Connection Failure: "</string>    
-    <string name="textview_status_bar">Status Bar</string>
+    <string name="textview_status_bar">Status Bar</string>    
+<!-- Fragments Msgs: Connectivity-->
+    <string name="connectivity_txt_select_device">Select Device</string>    
+    <string name="connectivity_txt_disconnected">Disconnected</string>    
+    
 </resources>

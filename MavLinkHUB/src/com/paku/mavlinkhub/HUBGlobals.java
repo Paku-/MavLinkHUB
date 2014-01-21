@@ -11,6 +11,8 @@ import com.paku.mavlinkhub.queue.hubqueue.HUBQueue;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 
 public class HUBGlobals extends Application {
@@ -52,12 +54,16 @@ public class HUBGlobals extends Application {
 	public FragmentsAdapter mFragmentsPagerAdapter;
 	public ViewPager mViewPager;
 
+	public SharedPreferences prefs;
+
 	// with initial state as "created"
 	public UI_MODE uiMode;
 
 	public void hubInit(Context mContext) {
 
 		uiMode = UI_MODE.UI_MODE_CREATED;
+
+		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
 		// start application asynchronous messaging - has to be first !!!
 		messenger = new HUBMessenger(this);
