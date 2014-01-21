@@ -6,15 +6,15 @@ import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.queue.items.ItemMavLinkMsg;
 
-public class ThreadDistSender extends Thread {
+public class ThreadDistibutorSender extends Thread {
 
-	private static final String TAG = "ThreadDistSender";
+	private static final String TAG = "ThreadDistibutorSender";
 
 	private boolean running = true;
 
 	private final HUBGlobals hub;
 
-	public ThreadDistSender(HUBGlobals hubContext) {
+	public ThreadDistibutorSender(HUBGlobals hubContext) {
 
 		hub = hubContext;
 
@@ -33,6 +33,8 @@ public class ThreadDistSender extends Thread {
 			try {
 
 				tmpItem = hub.queue.getHubQueueItem();
+
+				sleep(20);
 
 				if (tmpItem != null) {
 
@@ -67,8 +69,8 @@ public class ThreadDistSender extends Thread {
 
 					}
 
-					// queue items left after last read - for UI update - but
-					// only if it changed
+					// Store queue items count left after last read but
+					// only if it changed - for UI update -
 					if (hub.logger.hubStats.getQueueItemsCnt() != hub.queue.getItemCount()) {
 						hub.logger.hubStats.setQueueItemsCnt(hub.queue.getItemCount());
 						hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_STATS.ordinal()).sendToTarget();
@@ -80,6 +82,10 @@ public class ThreadDistSender extends Thread {
 				Log.d(TAG, "gsServer: Socket  write exception:" + e.getMessage());
 				e.printStackTrace();
 
+			}
+			catch (InterruptedException e) {
+				// cant be, sleep will be interrupted :)
+				e.printStackTrace();
 			}
 		}
 		hub.logger.sysLog("MavLink Distributor", "...Stop");

@@ -24,7 +24,7 @@ public class HUBGlobals extends Application {
 	// buffer, stream sizes
 	public int visibleBuffSize = 256 * 8;
 	// public int minStreamReadSize = 2 ^ 4; // ^6 = 64 ^5=32 ^4=16
-	public int visibleMsgList = 20;
+	public int visibleMsgList = 50;
 	public int serverTCP_port = 5760;
 
 	// colors

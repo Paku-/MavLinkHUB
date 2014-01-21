@@ -111,16 +111,17 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 
 		if (msgItem != null) {
 			listAdapterMavLink.add(msgItem);
-
-			while (listAdapterMavLink.getCount() > hub.visibleMsgList) {
-				listAdapterMavLink.remove(listAdapterMavLink.getItem(0));
-			}
 		}
 		else
 			Log.d(TAG, "Null msgItem");
 
 		// scroll down on pref
 		if (hub.prefs.getBoolean("pref_msg_items_autoscroll", true)) {
+			// trim only if autoscroll enabled
+			while (listAdapterMavLink.getCount() > hub.visibleMsgList) {
+				listAdapterMavLink.remove(listAdapterMavLink.getItem(0));
+			}
+
 			listViewMavLinkMsg.setSelection(listAdapterMavLink.getCount());
 		}
 
