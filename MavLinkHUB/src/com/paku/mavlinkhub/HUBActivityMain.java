@@ -10,8 +10,8 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,7 +20,8 @@ import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class HUBActivityMain extends ActionBarActivity implements IDataUpdateStats {
+//public class HUBActivityMain extends ActionBarActivity implements IDataUpdateStats {
+public class HUBActivityMain extends FragmentActivity implements IDataUpdateStats {
 
 	private static final String TAG = "HUBActivityMain";
 
@@ -32,12 +33,17 @@ public class HUBActivityMain extends ActionBarActivity implements IDataUpdateSta
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		// requestWindowFeature(Window.FEATURE_NO_TITLE);
+		// getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+		// WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+		requestWindowFeature(Window.FEATURE_ACTION_BAR);
+
 		setContentView(R.layout.activity_main);
 
 		hub = (HUBGlobals) this.getApplication();
 
-		if (savedInstanceState == null) { // init only if we are just borned
+		if (savedInstanceState == null) { // init only if we are just created
 			hub.hubInit(this);
 		}
 
@@ -52,21 +58,21 @@ public class HUBActivityMain extends ActionBarActivity implements IDataUpdateSta
 	@Override
 	protected void onResume() {
 		super.onResume();
+
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
 		// register for call interface;
 		hub.messenger.mainActivity = this;
 
 		progressBarConnected.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
-		refreshStats();
+		onDataUpdateStats();
 
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		// Log.d(TAG, " === Main Activity on Destroy ===");
-		// killApp(true);
+		Log.d(TAG, " === Main Activity on Destroy ===");
 	}
 
 	@Override
@@ -79,8 +85,18 @@ public class HUBActivityMain extends ActionBarActivity implements IDataUpdateSta
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+
+		// getMenuInflater().inflate(R.menu.main, menu);
+
+		// final ActionBar actionBar = getSupportActionBar();
+		// final ActionBar actionBar = getActionBar();
+
+		// actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+		// actionBar.setDisplayShowHomeEnabled(true);
+		// actionBar.setDisplayShowTitleEnabled(true);
+
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
@@ -161,11 +177,6 @@ public class HUBActivityMain extends ActionBarActivity implements IDataUpdateSta
 		killApp(true);
 	}
 
-	private void refreshStats() {
-		final TextView mTextViewLogStats = (TextView) findViewById(R.id.textView_system_status_bar);
-		mTextViewLogStats.setText(hub.logger.hubStats.toString_(MSG_SOURCE.FROM_ALL));
-	}
-
 	public void enableProgressBar(boolean on) {
 		if (on) {
 			progressBarConnected.setVisibility(View.VISIBLE);
@@ -178,40 +189,18 @@ public class HUBActivityMain extends ActionBarActivity implements IDataUpdateSta
 
 	@Override
 	public void onDataUpdateStats() {
-		refreshStats();
+
+		final TextView mTextViewLogStats = (TextView) findViewById(R.id.textView_system_status_bar);
+		mTextViewLogStats.setText(hub.logger.hubStats.toString_(MSG_SOURCE.FROM_ALL));
+
 	}
 
 	public static void killApp(boolean killSafely) {
 		if (killSafely) {
-			/*
-			 * Notify the system to finalize and collect all objects of the app
-			 * on exit so that the virtual machine running the app can be killed
-			 * by the system without causing issues. NOTE: If this is set to
-			 * true then the virtual machine will not be killed until all of its
-			 * threads have closed.
-			 */
 			System.runFinalizersOnExit(true);
-
-			/*
-			 * Force the system to close the app down completely instead of
-			 * retaining it in the background. The virtual machine that runs the
-			 * app will be killed. The app will be completely created as a new
-			 * app in a new virtual machine running in a new process if the user
-			 * starts the app again.
-			 */
 			System.exit(0);
 		}
 		else {
-			/*
-			 * Alternatively the process that runs the virtual machine could be
-			 * abruptly killed. This is the quickest way to remove the app from
-			 * the device but it could cause problems since resources will not
-			 * be finalized first. For example, all threads running under the
-			 * process will be abruptly killed when the process is abruptly
-			 * killed. If one of those threads was making multiple related
-			 * changes to the database, then it may have committed some of those
-			 * changes but not all of those changes when it was abruptly killed.
-			 */
 			android.os.Process.killProcess(android.os.Process.myPid());
 		}
 

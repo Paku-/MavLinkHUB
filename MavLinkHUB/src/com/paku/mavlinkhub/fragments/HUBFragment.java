@@ -1,9 +1,14 @@
 package com.paku.mavlinkhub.fragments;
 
 import com.paku.mavlinkhub.HUBGlobals;
+import com.paku.mavlinkhub.R;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
 
 public class HUBFragment extends Fragment {
 
@@ -13,10 +18,37 @@ public class HUBFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setRetainInstance(true); // keep HUBFragments in the memory
-
 		hub = (HUBGlobals) getActivity().getApplication();
 
+		setRetainInstance(true); // keep HUBFragments in the memory
+		setHasOptionsMenu(true);
+
+		// setMenuVisibility(true);
+
+		// final ActionBar
+		// actionBar=((FragmentActivity)getActivity()).getActionBar();
+
+		// actionBar.hide();
+
+		// actionBar.setDisplayShowHomeEnabled(true);
+		// actionBar.setDisplayShowTitleEnabled(true);
+
+		// actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+		menu.clear();
+		inflater.inflate(R.menu.main, menu);
+
+		super.onCreateOptionsMenu(menu, inflater);
+	}
+
+	@Override
+	public void onPrepareOptionsMenu(Menu menu) {
+		super.onPrepareOptionsMenu(menu);
 	}
 
 }

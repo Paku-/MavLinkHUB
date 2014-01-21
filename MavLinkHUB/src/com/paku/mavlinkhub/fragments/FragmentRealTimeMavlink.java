@@ -38,14 +38,27 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 
 	@Override
 	public void onResume() {
-		// TODO Auto-generated method stub
 		super.onResume();
+
 		hub.messenger.register(this, APP_STATE.MSG_DATA_UPDATE_BYTELOG);
 		hub.messenger.register(this, APP_STATE.MSG_QUEUE_MSGITEM_READY);
 
 		// GUI update
 		onDataUpdateByteLog();
 		onQueueMsgItemReady();
+
+		final TextView mTextViewBytesLog = (TextView) (getView().findViewById(R.id.textView_logByte));
+		mTextViewBytesLog.setOnLongClickListener(new View.OnLongClickListener() {
+
+			@Override
+			public boolean onLongClick(View v) {
+
+				;
+
+				return false;
+			}
+		});
+
 	}
 
 	@Override
