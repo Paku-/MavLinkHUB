@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 
 import com.paku.mavlinkhub.enums.SOCKET_STATE;
 
@@ -22,8 +23,8 @@ public class ThreadSocketReader extends Thread {
 	private final BluetoothSocket socketBT;
 	private final Socket socketTCP;
 
-	private final BufferedInputStream input;
-	private final BufferedOutputStream output;
+	private final InputStream input;
+	private final OutputStream output;
 
 	private final Handler handlerQueueIOBytesReceiver;
 
@@ -49,8 +50,12 @@ public class ThreadSocketReader extends Thread {
 			Log.d(TAG, "Exception [get BT streams]:" + e.getMessage());
 		}
 
-		input = new BufferedInputStream(tmpIn);
-		output = new BufferedOutputStream(tmpOut);
+		// input = new BufferedInputStream(tmpIn);
+		// output = new BufferedOutputStream(tmpOut);
+
+		input = tmpIn;
+		output = tmpOut;
+
 	}
 
 	// TCP constructor
@@ -70,8 +75,11 @@ public class ThreadSocketReader extends Thread {
 			Log.d(TAG, "Exception [get TCP streams]:" + e.getMessage());
 		}
 
-		input = new BufferedInputStream(tmpIn);
-		output = new BufferedOutputStream(tmpOut);
+		// input = new BufferedInputStream(tmpIn);
+		// output = new BufferedOutputStream(tmpOut);
+
+		input = tmpIn;
+		output = tmpOut;
 
 	}
 
@@ -80,18 +88,14 @@ public class ThreadSocketReader extends Thread {
 		int len; // bytes received
 
 		while (running) {
-			if (socketBT != null) try {
-				sleep(50);
-			}
-			catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 			try {
 
 				len = input.read(buffer, 0, buffer.length);
 				if (len > 0) {
-					handlerQueueIOBytesReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_DATA_READY.ordinal(), len, -1, buffer).sendToTarget();
+					final ByteBuffer byteMsg = ByteBuffer.wrap(new byte[len]);
+					byteMsg.put(buffer, 0, len);
+					byteMsg.flip();
+					handlerQueueIOBytesReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_DATA_READY.ordinal(), len, -1, byteMsg).sendToTarget();
 				}
 				else {
 					Log.d(TAG, "** Empty socket buffer - Connection Error...**");

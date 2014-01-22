@@ -34,36 +34,36 @@ public class ThreadDistibutorSender extends Thread {
 
 				tmpItem = hub.queue.getHubQueueItem();
 
-				sleep(20);
-
 				if (tmpItem != null) {
 
 					switch (tmpItem.direction) {
 					case FROM_DRONE:
 						if (hub.gsServer.isClientConnected()) {
 							if (hub.gsServer.writeBytes(tmpItem.getPacketBytes())) {
-								Log.d(TAG, "gsServer: Packet sent");
+								// Log.d(TAG, "gsServer: Packet sent");
 							}
 							else {
 								Log.d(TAG, "gsServer: No Client connected failure");
 							}
 						}
 						else
-							Log.d(TAG, "gsServer: Packet Silently discarded");
+							// Log.d(TAG,
+							// "gsServer: Packet Silently discarded");
 
-						break;
+							break;
 					case FROM_GS:
 						if (hub.droneClient.isConnected()) {
 							if (hub.droneClient.writeBytes(tmpItem.getPacketBytes())) {
-								Log.d(TAG, "droneClient: Packet sent.");
+								// Log.d(TAG, "droneClient: Packet sent.");
 							}
 							else {
 								Log.d(TAG, "droneClient: Not connected.");
 							}
 						}
 						else
-							Log.d(TAG, "droneClient: Packet Silently discarded.");
-						break;
+							// Log.d(TAG,
+							// "droneClient: Packet Silently discarded.");
+							break;
 					default:
 						break;
 
@@ -83,10 +83,7 @@ public class ThreadDistibutorSender extends Thread {
 				e.printStackTrace();
 
 			}
-			catch (InterruptedException e) {
-				// cant be, sleep will be interrupted :)
-				e.printStackTrace();
-			}
+
 		}
 		hub.logger.sysLog("MavLink Distributor", "...Stop");
 	}

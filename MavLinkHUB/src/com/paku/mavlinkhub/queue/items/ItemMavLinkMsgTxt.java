@@ -25,8 +25,9 @@ public class ItemMavLinkMsgTxt {
 
 		// MavLink package sender and sequence number
 		direction = msgItem.direction;
-		desc_1 = ("[" + String.valueOf(msgItem.msg.sysid) + "]");
-		desc_2 = ("[" + String.valueOf(msgItem.seqNo) + "]");
+		desc_1 = "[" + String.valueOf(msgItem.msg.sysid) + "]";
+		desc_2 = "[" + String.valueOf(msgItem.seqNo) + "]";
+		desc_4 = "[" + String.valueOf(msgItem.timestamp) + "]";
 
 		switch (msgItem.msg.msgid) {
 		case msg_heartbeat.MAVLINK_MSG_ID_HEARTBEAT:

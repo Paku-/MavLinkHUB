@@ -61,6 +61,16 @@
             android:layout_toRightOf="@+id/listViewMsgItemTxt_desc2"
             android:text="@string/txt_no_data"
             android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/listViewMsgItemTxt_desc4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/txt_no_data"
+            android:textSize="12sp" />
+
     </RelativeLayout>
 
 </LinearLayout>

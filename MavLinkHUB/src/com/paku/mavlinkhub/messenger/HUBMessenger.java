@@ -34,21 +34,21 @@ public class HUBMessenger extends HUBInterfaceMenager {
 
 				switch (appStates[msg.what]) {
 				case MSG_SERVER_STARTED:
-					app.logger.sysLog(TAG, "Server Started on port: " + msg.obj.toString());
+					hub.logger.sysLog(TAG, "Server Started on port: " + msg.obj.toString());
 					// no action yet
 					break;
 				case MSG_SERVER_STOPPED:
-					app.logger.sysLog(TAG, "Server Stopped");
+					hub.logger.sysLog(TAG, "Server Stopped");
 					// no action yet
 					break;
 				case MSG_SERVER_CLIENT_CONNECTED:
 					String tmpTxt = new String((byte[]) msg.obj);
-					app.logger.sysLog(TAG, "Client Connected: " + tmpTxt);
+					hub.logger.sysLog(TAG, "Client Connected: " + tmpTxt);
 					// no action yet
 					// Received MLmsg
 					break;
 				case MSG_SERVER_CLIENT_DISCONNECTED:
-					app.logger.sysLog(TAG, "Client Disconnected...");
+					hub.logger.sysLog(TAG, "Client Disconnected...");
 					// no action yet
 					// Received MLmsg
 					break;
@@ -69,7 +69,7 @@ public class HUBMessenger extends HUBInterfaceMenager {
 					break;
 				case MSG_DRONE_CONNECTION_FAILED:
 					String msgTxt = new String((byte[]) msg.obj);
-					call(APP_STATE.MSG_DRONE_CONNECTION_FAILED, app.getString(R.string.connection_failure) + msgTxt);
+					call(APP_STATE.MSG_DRONE_CONNECTION_FAILED, hub.getString(R.string.connection_failure) + msgTxt);
 					break;
 				default:
 					super.handleMessage(msg);
@@ -109,16 +109,16 @@ public class HUBMessenger extends HUBInterfaceMenager {
 
 					switch (state) {
 					case BluetoothAdapter.STATE_CONNECTING:
-						app.logger.sysLog(TAG, "[BT_ADAPTER_CONNECTION_STATE_CHANGED]: STATE_CONNECTING");
+						hub.logger.sysLog(TAG, "[BT_ADAPTER_CONNECTION_STATE_CHANGED]: STATE_CONNECTING");
 						break;
 					case BluetoothAdapter.STATE_CONNECTED:
-						app.logger.sysLog(TAG, "[BT_ADAPTER_CONNECTION_STATE_CHANGED]: STATE_CONNECTED");
+						hub.logger.sysLog(TAG, "[BT_ADAPTER_CONNECTION_STATE_CHANGED]: STATE_CONNECTED");
 						break;
 					case BluetoothAdapter.STATE_DISCONNECTING:
-						app.logger.sysLog(TAG, "[BT_ADAPTER_CONNECTION_STATE_CHANGED]: STATE_DISCONNECTING");
+						hub.logger.sysLog(TAG, "[BT_ADAPTER_CONNECTION_STATE_CHANGED]: STATE_DISCONNECTING");
 						break;
 					case BluetoothAdapter.STATE_DISCONNECTED:
-						app.logger.sysLog(TAG, "[BT_ADAPTER_CONNECTION_STATE_CHANGED]: STATE_DISCONNECTED");
+						hub.logger.sysLog(TAG, "[BT_ADAPTER_CONNECTION_STATE_CHANGED]: STATE_DISCONNECTED");
 						break;
 					default:
 						break;
@@ -130,28 +130,28 @@ public class HUBMessenger extends HUBInterfaceMenager {
 					final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
 					switch (state) {
 					case BluetoothAdapter.STATE_OFF:
-						app.logger.sysLog(TAG, "[BT_ADAPTER_STATE_CHANGED]: STATE_OFF");
-						app.uiMode = UI_MODE.UI_MODE_STATE_OFF;
+						hub.logger.sysLog(TAG, "[BT_ADAPTER_STATE_CHANGED]: STATE_OFF");
+						hub.uiMode = UI_MODE.UI_MODE_STATE_OFF;
 						break;
 					case BluetoothAdapter.STATE_TURNING_OFF:
-						app.logger.sysLog(TAG, "[BT_ADAPTER_STATE_CHANGED]: TURNING_OFF");
-						app.uiMode = UI_MODE.UI_MODE_TURNING_OFF;
+						hub.logger.sysLog(TAG, "[BT_ADAPTER_STATE_CHANGED]: TURNING_OFF");
+						hub.uiMode = UI_MODE.UI_MODE_TURNING_OFF;
 						break;
 					case BluetoothAdapter.STATE_ON:
-						app.logger.sysLog(TAG, "[BT_ADAPTER_STATE_CHANGED]: STATE_ON"); // 2nd
+						hub.logger.sysLog(TAG, "[BT_ADAPTER_STATE_CHANGED]: STATE_ON"); // 2nd
 						// after
 						// turning_on
-						app.uiMode = UI_MODE.UI_MODE_STATE_ON;
+						hub.uiMode = UI_MODE.UI_MODE_STATE_ON;
 						break;
 					case BluetoothAdapter.STATE_TURNING_ON:
-						app.logger.sysLog(TAG, "[BT_ADAPTER_STATE_CHANGED]: TURNING_ON"); // 1st
+						hub.logger.sysLog(TAG, "[BT_ADAPTER_STATE_CHANGED]: TURNING_ON"); // 1st
 						// on
 						// bt
 						// enable
-						app.uiMode = UI_MODE.UI_MODE_TURNING_ON;
+						hub.uiMode = UI_MODE.UI_MODE_TURNING_ON;
 						break;
 					default:
-						app.logger.sysLog(TAG, "[BT_ADAPTER_STATE_CHANGED]: unknown");
+						hub.logger.sysLog(TAG, "[BT_ADAPTER_STATE_CHANGED]: unknown");
 						break;
 					}
 
@@ -159,15 +159,15 @@ public class HUBMessenger extends HUBInterfaceMenager {
 
 				if (action.equals(BluetoothDevice.ACTION_ACL_CONNECTED)) {
 					BluetoothDevice connDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-					app.logger.sysLog(TAG, "[BT_DEVICE_CONNECTED] " + connDevice.getName() + " [" + connDevice.getAddress() + "]");
-					app.uiMode = UI_MODE.UI_MODE_CONNECTED;
+					hub.logger.sysLog(TAG, "[BT_DEVICE_CONNECTED] " + connDevice.getName() + " [" + connDevice.getAddress() + "]");
+					hub.uiMode = UI_MODE.UI_MODE_CONNECTED;
 				}
 
 				if (action.equals(BluetoothDevice.ACTION_ACL_DISCONNECTED)) {
 					BluetoothDevice connDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-					app.logger.sysLog(TAG, "[BT_DEVICE_DISCONNECTED] " + connDevice.getName() + " [" + connDevice.getAddress() + "]");
+					hub.logger.sysLog(TAG, "[BT_DEVICE_DISCONNECTED] " + connDevice.getName() + " [" + connDevice.getAddress() + "]");
 
-					app.uiMode = UI_MODE.UI_MODE_DISCONNECTED;
+					hub.uiMode = UI_MODE.UI_MODE_DISCONNECTED;
 				}
 
 				call(APP_STATE.MSG_UI_MODE_CHANGED);
@@ -176,7 +176,7 @@ public class HUBMessenger extends HUBInterfaceMenager {
 		};
 
 		// finally register this receiver for intents on BT adapter changes
-		app.registerReceiver(broadcastReceiverBluetooth, intentFilterBluetooth);
+		hub.registerReceiver(broadcastReceiverBluetooth, intentFilterBluetooth);
 
 	}
 

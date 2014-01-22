@@ -20,7 +20,7 @@ import com.paku.mavlinkhub.queue.items.ItemMavLinkMsg;
 
 public class HUBInterfaceMenager {
 
-	protected HUBGlobals app;
+	protected HUBGlobals hub;
 
 	class Frags {
 		ArrayList<Fragment> fragsArray;
@@ -50,7 +50,7 @@ public class HUBInterfaceMenager {
 	public FragmentActivity mainActivity;
 
 	public HUBInterfaceMenager(HUBGlobals hubContext) {
-		app = ((HUBGlobals) hubContext.getApplicationContext());
+		hub = ((HUBGlobals) hubContext.getApplicationContext());
 
 		// create empty fragments lists
 		for (@SuppressWarnings("unused")

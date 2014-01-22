@@ -21,7 +21,7 @@ public class ViewAdapterMavlinkMsgList extends ArrayAdapter<ItemMavLinkMsg> {
 
 	private final Context context;
 	private ArrayList<ItemMavLinkMsg> itemsArrayList;
-	private HUBGlobals app;
+	private HUBGlobals hub;
 
 	// mavlink classes' string names helper class
 	private MavLinkClassExtractor mavClasses;
@@ -31,7 +31,7 @@ public class ViewAdapterMavlinkMsgList extends ArrayAdapter<ItemMavLinkMsg> {
 		super(context, R.layout.listviewitem_mavlinkmsg, itemsArrayList);
 
 		this.context = context;
-		app = ((HUBGlobals) context.getApplicationContext());
+		hub = ((HUBGlobals) context.getApplicationContext());
 
 		this.itemsArrayList = itemsArrayList;
 
@@ -51,6 +51,7 @@ public class ViewAdapterMavlinkMsgList extends ArrayAdapter<ItemMavLinkMsg> {
 		TextView desc1 = (TextView) msgItemView.findViewById(R.id.listViewMsgItemTxt_desc1);
 		TextView desc2 = (TextView) msgItemView.findViewById(R.id.listViewMsgItemTxt_desc2);
 		TextView desc3 = (TextView) msgItemView.findViewById(R.id.listViewMsgItemTxt_desc3);
+		TextView desc4 = (TextView) msgItemView.findViewById(R.id.listViewMsgItemTxt_desc4);
 
 		ItemMavLinkMsgTxt msgTxtItem = new ItemMavLinkMsgTxt(itemsArrayList.get(position), mavClasses);
 
@@ -59,9 +60,10 @@ public class ViewAdapterMavlinkMsgList extends ArrayAdapter<ItemMavLinkMsg> {
 		desc1.setText(msgTxtItem.desc_1);
 		desc2.setText(msgTxtItem.desc_2);
 		desc3.setText(msgTxtItem.desc_3);
+		desc4.setText(msgTxtItem.desc_4);
 
 		if (msgTxtItem.direction == MSG_SOURCE.FROM_GS) {
-			msgItemView.setBackgroundColor(Color.parseColor(app.colLight));
+			msgItemView.setBackgroundColor(Color.parseColor(hub.colLight));
 		}
 
 		return msgItemView;

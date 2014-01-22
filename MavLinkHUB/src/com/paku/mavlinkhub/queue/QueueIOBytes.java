@@ -44,9 +44,9 @@ public abstract class QueueIOBytes {
 
 	// add bytes
 	public void addInputByteQueueItem(Message byteMsg) {
-		ByteBuffer buffer = ByteBuffer.wrap((byte[]) byteMsg.obj, 0, byteMsg.arg1);
+
 		synchronized (inputByteQueue) {
-			inputByteQueue.addLast(buffer);
+			inputByteQueue.addLast((ByteBuffer) byteMsg.obj);
 		}
 		return;
 
@@ -78,7 +78,7 @@ public abstract class QueueIOBytes {
 	// this handler is called by the messages coming from any other class build
 	// over the QueueIOBytes. Any bytes receiving thread sends a msg with the
 	// buffer here to be stored in the underlying queue.
-	// msg other then ADD are forwarded to the main app messenger
+	// msg other then ADD are forwarded to the main hub messenger
 	protected Handler startInputQueueMsgHandler() {
 		return new Handler(Looper.getMainLooper()) {
 			public void handleMessage(Message byteMsg) {
