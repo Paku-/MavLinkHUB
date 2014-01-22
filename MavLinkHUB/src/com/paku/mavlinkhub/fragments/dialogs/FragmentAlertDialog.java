@@ -1,4 +1,4 @@
-package com.paku.mavlinkhub.dialogs;
+package com.paku.mavlinkhub.fragments.dialogs;
 
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
@@ -23,6 +23,20 @@ public class FragmentAlertDialog extends DialogFragment {
 	Parcelable params;
 
 	HUBGlobals hub;
+
+	public static FragmentAlertDialog newInstance(Context context, int viewMode, String title, String msg) {
+
+		FragmentAlertDialog me = new FragmentAlertDialog();
+
+		Bundle args = new Bundle();
+		args.putInt("viewMode", viewMode);
+		args.putString("title", title);
+		args.putString("msg", msg);
+		me.setArguments(args);
+
+		return me;
+
+	}
 
 	public static FragmentAlertDialog newInstance(Context context, int viewMode, String title, String msg, int action, Parcelable params) {
 
