@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout_alert_flagment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="20dp"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/button_positive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/button_negative"
+        android:layout_alignBottom="@+id/button_negative"
+        android:layout_toLeftOf="@+id/textView_alert_message"
+        android:text="@android:string/ok" />
+
+    <TextView
+        android:id="@+id/textView_alert_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="36dp"
+        android:text="@android:string/dialog_alert_title"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/button_negative"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView_alert_message"
+        android:layout_marginTop="62dp"
+        android:layout_toRightOf="@+id/textView_alert_message"
+        android:text="@android:string/no" />
+
+</RelativeLayout>

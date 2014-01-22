@@ -3,10 +3,8 @@ package com.paku.mavlinkhub.fragments;
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
 
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 

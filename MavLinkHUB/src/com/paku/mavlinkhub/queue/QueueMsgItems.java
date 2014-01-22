@@ -1,8 +1,6 @@
 package com.paku.mavlinkhub.queue;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
-
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.queue.items.ItemMavLinkMsg;
