@@ -2,12 +2,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"    >
     <item
         android:id="@+id/menu_settings"
+        android:icon="@drawable/ic_action_settings"        
         android:orderInCategory="100"
-        app:showAsAction="always" 
+        android:showAsAction="always" 
         android:title="@string/menu_title_settings"/>    
     <item
         android:id="@+id/menu_empty"
+        android:icon="@drawable/ic_action_bluetooth_searching"
         android:orderInCategory="100"
-        app:showAsAction="ifRoom"               
+        android:showAsAction="ifRoom"               
         android:title="@string/menu_title_other"/>    
 </menu>

@@ -219,6 +219,7 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 
 	}
 
+	@SuppressWarnings("deprecation")
 	public static void killApp(boolean killSafely) {
 		if (killSafely) {
 			System.runFinalizersOnExit(true);

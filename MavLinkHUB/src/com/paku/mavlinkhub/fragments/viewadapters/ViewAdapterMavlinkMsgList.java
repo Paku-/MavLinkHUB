@@ -10,7 +10,6 @@ import com.paku.mavlinkhub.queue.items.ItemMavLinkMsg;
 import com.paku.mavlinkhub.queue.items.ItemMavLinkMsgTxt;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,10 +62,9 @@ public class ViewAdapterMavlinkMsgList extends ArrayAdapter<ItemMavLinkMsg> {
 		desc4.setText(msgTxtItem.desc_4);
 
 		if (msgTxtItem.direction == MSG_SOURCE.FROM_GS) {
-			msgItemView.setBackgroundColor(Color.parseColor(hub.colLight));
+			msgItemView.setBackgroundColor(hub.getResources().getColor(R.color.hubLight));
 		}
 
 		return msgItemView;
 	}
-
 }

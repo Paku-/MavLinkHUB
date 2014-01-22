@@ -29,12 +29,6 @@ public class HUBGlobals extends Application {
 
 	// colors
 
-	public String colDark = "#008893";
-	public String colDarkMedium = "#7BC1C7";
-	public String colMedium = "#4AAAb2";
-	public String colLightMedium = "#16929C";
-	public String colLight = "#A5D5D8";
-
 	// messages handler
 	public HUBMessenger messenger;
 

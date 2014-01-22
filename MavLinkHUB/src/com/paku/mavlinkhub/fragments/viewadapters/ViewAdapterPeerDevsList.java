@@ -2,6 +2,7 @@ package com.paku.mavlinkhub.fragments.viewadapters;
 
 import java.util.ArrayList;
 
+import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.communication.devicelist.ItemPeerDevice;
 import com.paku.mavlinkhub.enums.PEER_DEV_STATE;
@@ -19,38 +20,26 @@ import android.widget.TextView;
 
 public class ViewAdapterPeerDevsList extends ArrayAdapter<ItemPeerDevice> {
 
-	private final Context context;
+	private final HUBGlobals hub;
 	private final ArrayList<ItemPeerDevice> itemsArrayList;
 
-	public ViewAdapterPeerDevsList(Context context, ArrayList<ItemPeerDevice> itemsArrayList) {
+	public ViewAdapterPeerDevsList(HUBGlobals hub, ArrayList<ItemPeerDevice> itemsArrayList) {
 
-		super(context, R.layout.listviewitem_mavlinkmsg, itemsArrayList);
+		super(hub, R.layout.listviewitem_mavlinkmsg, itemsArrayList);
 
-		this.context = context;
+		this.hub = hub;
 		this.itemsArrayList = itemsArrayList;
-
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater inflater = (LayoutInflater) hub.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View rowView = inflater.inflate(R.layout.listviewitem_bt_devs, parent, false);
 
 		TextView txtViewDevName = (TextView) rowView.findViewById(R.id.listViewItemTxt_dev_name);
 		TextView txtViewDevAddress = (TextView) rowView.findViewById(R.id.listViewItemTxt_dev_address);
 		ImageView imageConnected = (ImageView) rowView.findViewById(R.id.imageView1);
-
-		// TextView devAddress = (TextView)
-		// rowView.findViewById(android.R.id.text1);
-		/*
-		 * TextView mainText = (TextView)
-		 * rowView.findViewById(R.id.listViewItemTxt_mainText); TextView desc1 =
-		 * (TextView) rowView.findViewById(R.id.listViewItemTxt_desc_1);
-		 * TextView desc2 = (TextView)
-		 * rowView.findViewById(R.id.listViewItemTxt_desc_2); TextView desc3 =
-		 * (TextView) rowView.findViewById(R.id.listViewItemTxt_desc_3);
-		 */
 
 		ItemPeerDevice dev = itemsArrayList.get(position);
 
@@ -64,19 +53,16 @@ public class ViewAdapterPeerDevsList extends ArrayAdapter<ItemPeerDevice> {
 		if (dev.getState() == PEER_DEV_STATE.DEV_STATE_CONNECTED) {
 
 			txtViewDevName.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
-			txtViewDevName.setTextColor(Color.RED);
+			txtViewDevName.setTextColor(hub.getResources().getColor(R.color.hubDark));
 			txtViewDevName.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 40);
 			imageConnected.setVisibility(View.VISIBLE);
-			// txtView.setBackgroundColor(0x3064FF);
-			// 3064FF
 
 		}
 		else {
 
 			txtViewDevName.setTypeface(Typeface.MONOSPACE, Typeface.NORMAL);
-			txtViewDevName.setTextColor(Color.BLACK);
+			txtViewDevName.setTextColor(hub.getResources().getColor(R.color.system_icons));
 			txtViewDevName.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
-			// txtView.setBackgroundColor(Color.WHITE);
 			imageConnected.setVisibility(View.INVISIBLE);
 
 		}

@@ -117,7 +117,7 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 			return;
 
 		case LIST_OK:
-			devListAdapter = new ViewAdapterPeerDevsList(this.getActivity(), btDevList.getDeviceList());
+			devListAdapter = new ViewAdapterPeerDevsList(hub, btDevList.getDeviceList());
 			btDevListView.setAdapter(devListAdapter);
 			btDevListView.setOnItemClickListener(btListClickListener);
 			return;
