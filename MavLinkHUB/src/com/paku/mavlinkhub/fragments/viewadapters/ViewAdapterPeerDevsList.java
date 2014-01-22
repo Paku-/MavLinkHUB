@@ -8,7 +8,6 @@ import com.paku.mavlinkhub.communication.devicelist.ItemPeerDevice;
 import com.paku.mavlinkhub.enums.PEER_DEV_STATE;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.TypedValue;
 import android.view.LayoutInflater;

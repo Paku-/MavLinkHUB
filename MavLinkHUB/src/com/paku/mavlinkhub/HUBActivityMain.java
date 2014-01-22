@@ -2,7 +2,7 @@ package com.paku.mavlinkhub;
 
 import com.paku.mavlinkhub.enums.MSG_SOURCE;
 import com.paku.mavlinkhub.fragments.FragmentsAdapter;
-import com.paku.mavlinkhub.fragments.dialogs.FragmentAlertDialog;
+import com.paku.mavlinkhub.fragments.dialogs.FragmentAlertDialogHubActions;
 import com.paku.mavlinkhub.interfaces.IDataUpdateStats;
 
 import android.app.AlertDialog;
@@ -137,7 +137,7 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 		 * fragManager.addToBackStack(null);
 		 */
 
-		DialogFragment closeDialog = FragmentAlertDialog.newInstance(getApplicationContext(), 6, "Sample Title", "Message ...");
+		DialogFragment closeDialog = FragmentAlertDialogHubActions.newInstance(getApplicationContext(), 6, "Sample Title", "Message ...");
 		closeDialog.setCancelable(false);
 		closeDialog.show(fragManager, "closing");
 	}
