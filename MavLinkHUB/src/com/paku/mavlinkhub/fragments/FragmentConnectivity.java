@@ -11,6 +11,7 @@ import com.paku.mavlinkhub.enums.PEER_DEV_STATE;
 import com.paku.mavlinkhub.fragments.viewadapters.ViewAdapterPeerDevsList;
 import com.paku.mavlinkhub.interfaces.IDroneConnected;
 import com.paku.mavlinkhub.interfaces.IDroneConnectionFailed;
+import com.paku.mavlinkhub.interfaces.IDroneConnectionLost;
 import com.paku.mavlinkhub.interfaces.IUiModeChanged;
 
 import android.bluetooth.BluetoothAdapter;
@@ -24,7 +25,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class FragmentConnectivity extends HUBFragment implements IUiModeChanged, IDroneConnectionFailed, IDroneConnected {
+public class FragmentConnectivity extends HUBFragment implements IUiModeChanged, IDroneConnectionFailed, IDroneConnected, IDroneConnectionLost {
 
 	private static final String TAG = FragmentConnectivity.class.getSimpleName();
 
@@ -54,8 +55,9 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 	public void onResume() {
 		super.onResume();
 		hub.messenger.register(this, APP_STATE.MSG_UI_MODE_CHANGED);
-		hub.messenger.register(this, APP_STATE.MSG_DRONE_CONNECTION_FAILED);
+		hub.messenger.register(this, APP_STATE.MSG_DRONE_CONNECTION_ATTEMPT_FAILED);
 		hub.messenger.register(this, APP_STATE.MSG_DRONE_CONNECTED);
+		hub.messenger.register(this, APP_STATE.MSG_DRONE_CONNECTION_LOST);
 		onUiModeChanged();
 
 	}
@@ -65,8 +67,9 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 		super.onPause();
 
 		hub.messenger.unregister(this, APP_STATE.MSG_UI_MODE_CHANGED);
-		hub.messenger.unregister(this, APP_STATE.MSG_DRONE_CONNECTION_FAILED);
+		hub.messenger.unregister(this, APP_STATE.MSG_DRONE_CONNECTION_ATTEMPT_FAILED);
 		hub.messenger.unregister(this, APP_STATE.MSG_DRONE_CONNECTED);
+		hub.messenger.unregister(this, APP_STATE.MSG_DRONE_CONNECTION_LOST);
 
 	}
 
@@ -176,20 +179,10 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 
 	// interfaces
 	@Override
-	public void onDroneConnectionFailed(String errorMsg) {
-
-		hub.logger.sysLog(TAG, errorMsg);
-		hub.droneClient.stopClient();
-
-		Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_SHORT).show();
+	public void onDroneConnectionFailed() {
 
 		btDevList.setAllDevState(PEER_DEV_STATE.DEV_STATE_DISCONNECTED);
 		refreshBtDevListView();
-
-	}
-
-	@Override
-	public void onDroneConnected() {
 
 	}
 
@@ -228,6 +221,15 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 			break;
 		}
 
+	}
+
+	@Override
+	public void onDroneConnected() {
+	}
+
+	@Override
+	public void onDroneConnectionLost() {
+		onDroneConnectionFailed();
 	}
 
 }

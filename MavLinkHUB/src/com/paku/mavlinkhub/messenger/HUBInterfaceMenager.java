@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.interfaces.IDataUpdateByteLog;
@@ -12,6 +11,7 @@ import com.paku.mavlinkhub.interfaces.IDroneConnected;
 import com.paku.mavlinkhub.interfaces.IDroneConnectionFailed;
 import com.paku.mavlinkhub.interfaces.IDataUpdateStats;
 import com.paku.mavlinkhub.interfaces.IDataUpdateSysLog;
+import com.paku.mavlinkhub.interfaces.IDroneConnectionLost;
 import com.paku.mavlinkhub.interfaces.IQueueMsgItemReady;
 import com.paku.mavlinkhub.interfaces.IQueueMsgItemSent;
 import com.paku.mavlinkhub.interfaces.IServerStarted;
@@ -20,42 +20,32 @@ import com.paku.mavlinkhub.queue.items.ItemMavLinkMsg;
 
 public class HUBInterfaceMenager {
 
+	@SuppressWarnings("unused")
+	private static final String TAG = HUBInterfaceMenager.class.getSimpleName();
+
 	protected HUBGlobals hub;
 
 	class Frags {
+		APP_STATE msg_name;
 		ArrayList<Fragment> fragsArray;
 
-		public Frags() {
+		public Frags(APP_STATE name) {
+			msg_name = name;
 			fragsArray = new ArrayList<Fragment>(0);
 		}
 	}
 
 	ArrayList<Frags> listeners = new ArrayList<Frags>(0);
 
-	// lists holding fragments registered for particular interface
-	ArrayList<IServerStarted> listenersIServerStarted = new ArrayList<IServerStarted>();
-
-	ArrayList<IDroneConnected> listenersIDroneConnected = new ArrayList<IDroneConnected>();
-	ArrayList<IDroneConnectionFailed> listenersIDroneConnectionFailed = new ArrayList<IDroneConnectionFailed>();
-
-	ArrayList<IUiModeChanged> listenersIUiModeChanged = new ArrayList<IUiModeChanged>();
-
-	ArrayList<IDataUpdateSysLog> listenersIDataUpdateSysLog = new ArrayList<IDataUpdateSysLog>();
-	ArrayList<IDataUpdateByteLog> listenersIDataUpdateByteLog = new ArrayList<IDataUpdateByteLog>();
-	ArrayList<IDataUpdateStats> listenersIDataUpdateStats = new ArrayList<IDataUpdateStats>();
-
-	ArrayList<IQueueMsgItemReady> listenersIQueueMsgItemReady = new ArrayList<IQueueMsgItemReady>();
-	ArrayList<IQueueMsgItemSent> listenersIQueueMsgItemSent = new ArrayList<IQueueMsgItemSent>();
-
 	public FragmentActivity mainActivity;
 
 	public HUBInterfaceMenager(HUBGlobals hubContext) {
 		hub = ((HUBGlobals) hubContext.getApplicationContext());
 
-		// create empty fragments lists
-		for (@SuppressWarnings("unused")
-		APP_STATE msg : APP_STATE.values()) {
-			Frags frags = new Frags();
+		// create empty fragments lists, for every interface we have defined in
+		// APP_STATE enum
+		for (APP_STATE msg : APP_STATE.values()) {
+			Frags frags = new Frags(msg);
 			frags.fragsArray.clear();
 			frags.fragsArray.trimToSize();
 			listeners.add(frags);
@@ -76,7 +66,7 @@ public class HUBInterfaceMenager {
 	}
 
 	// msgs not having payload.
-	public void call(APP_STATE msg) {
+	public void callFragments(APP_STATE msg) {
 
 		// main activity is not a fragment :(
 		if ((msg == APP_STATE.MSG_DATA_UPDATE_STATS) && (IDataUpdateStats) mainActivity != null) ((IDataUpdateStats) mainActivity).onDataUpdateStats();
@@ -100,8 +90,14 @@ public class HUBInterfaceMenager {
 				case MSG_DATA_UPDATE_BYTELOG:
 					((IDataUpdateByteLog) fragment).onDataUpdateByteLog();
 					break;
-				case MSG_DRONE_CONNECTED:
+				case MSG_DRONE_CONNECTED: // no sender for this message yet
 					((IDroneConnected) fragment).onDroneConnected();
+					break;
+				case MSG_DRONE_CONNECTION_LOST:
+					((IDroneConnectionLost) fragment).onDroneConnectionLost();
+					break;
+				case MSG_DRONE_CONNECTION_ATTEMPT_FAILED:
+					((IDroneConnectionFailed) fragment).onDroneConnectionFailed();
 					break;
 				case MSG_SERVER_STARTED:
 					((IServerStarted) fragment).onServerStarted();
@@ -130,20 +126,12 @@ public class HUBInterfaceMenager {
 		}
 	}
 
-	// string msgs only here ...
-	public void call(APP_STATE msg, String txt) {
-		for (Fragment fragment : listeners.get(msg.ordinal()).fragsArray) {
-			if (fragment != null) {
-				APP_STATE[] msgs = APP_STATE.values();
-				switch (msgs[msg.ordinal()]) {
-				case MSG_DRONE_CONNECTION_FAILED:
-					((IDroneConnectionFailed) fragment).onDroneConnectionFailed(txt);
-					break;
-				default:
-					break;
-				}
-			}
-		}
-	}
-
+	/*
+	 * // string msgs only here ... public void callFragments(APP_STATE msg,
+	 * String txt) { for (Fragment fragment :
+	 * listeners.get(msg.ordinal()).fragsArray) { if (fragment != null) {
+	 * APP_STATE[] msgs = APP_STATE.values(); switch (msgs[msg.ordinal()]) {
+	 * case MSG_DRONE_CONNECTION_ATTEMPT_FAILED: ((IDroneConnectionFailed)
+	 * fragment).onDroneConnectionFailed(txt); break; default: break; } } } }
+	 */
 }

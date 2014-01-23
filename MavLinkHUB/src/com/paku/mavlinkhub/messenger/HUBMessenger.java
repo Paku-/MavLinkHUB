@@ -15,6 +15,7 @@ import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.widget.Toast;
 
 public class HUBMessenger extends HUBInterfaceMenager {
 
@@ -44,32 +45,47 @@ public class HUBMessenger extends HUBInterfaceMenager {
 				case MSG_SERVER_CLIENT_CONNECTED:
 					String tmpTxt = new String((byte[]) msg.obj);
 					hub.logger.sysLog(TAG, "Client Connected: " + tmpTxt);
-					// no action yet
-					// Received MLmsg
 					break;
 				case MSG_SERVER_CLIENT_DISCONNECTED:
 					hub.logger.sysLog(TAG, "Client Disconnected...");
-					// no action yet
-					// Received MLmsg
 					break;
 				case MSG_QUEUE_MSGITEM_READY:
 					call(APP_STATE.MSG_QUEUE_MSGITEM_READY, (ItemMavLinkMsg) msg.obj);
 					break;
 				case MSG_DATA_UPDATE_SYSLOG:
-					call(APP_STATE.MSG_DATA_UPDATE_SYSLOG);
+					callFragments(APP_STATE.MSG_DATA_UPDATE_SYSLOG);
 					break;
 				case MSG_DATA_UPDATE_BYTELOG:
-					call(APP_STATE.MSG_DATA_UPDATE_BYTELOG);
+					callFragments(APP_STATE.MSG_DATA_UPDATE_BYTELOG);
 					break;
 				case MSG_DATA_UPDATE_STATS:
-					call(APP_STATE.MSG_DATA_UPDATE_STATS);
+					callFragments(APP_STATE.MSG_DATA_UPDATE_STATS);
 					break;
 				case MSG_DRONE_CONNECTED:
-					call(APP_STATE.MSG_DRONE_CONNECTED);
+					hub.logger.sysLog(TAG, "Drone connected.");
+					callFragments(APP_STATE.MSG_DRONE_CONNECTED);
 					break;
-				case MSG_DRONE_CONNECTION_FAILED:
-					String msgTxt = new String((byte[]) msg.obj);
-					call(APP_STATE.MSG_DRONE_CONNECTION_FAILED, hub.getString(R.string.connection_failure) + msgTxt);
+				case MSG_DRONE_CONNECTION_ATTEMPT_FAILED:
+
+					String msgTxt = hub.getString(R.string.connection_failure) + new String((byte[]) msg.obj);
+
+					hub.logger.sysLog(TAG, msgTxt);
+					Toast.makeText(hub, msgTxt, Toast.LENGTH_SHORT).show();
+
+					hub.droneClient.stopClient();
+
+					callFragments(APP_STATE.MSG_DRONE_CONNECTION_ATTEMPT_FAILED);
+
+					break;
+				case MSG_DRONE_CONNECTION_LOST:
+
+					hub.logger.sysLog(TAG, "Drone Connection LOST ...");
+					Toast.makeText(hub, "Drone Connection LOST ...", Toast.LENGTH_SHORT).show();
+
+					hub.droneClient.stopClient();
+
+					callFragments(APP_STATE.MSG_DRONE_CONNECTION_LOST);
+
 					break;
 				default:
 					super.handleMessage(msg);
@@ -170,7 +186,7 @@ public class HUBMessenger extends HUBInterfaceMenager {
 					hub.uiMode = UI_MODE.UI_MODE_DISCONNECTED;
 				}
 
-				call(APP_STATE.MSG_UI_MODE_CHANGED);
+				callFragments(APP_STATE.MSG_UI_MODE_CHANGED);
 
 			}
 		};

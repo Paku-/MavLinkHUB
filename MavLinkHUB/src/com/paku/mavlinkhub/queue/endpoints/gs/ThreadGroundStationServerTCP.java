@@ -47,7 +47,7 @@ public class ThreadGroundStationServerTCP extends Thread {
 				clientIP = socket.getInetAddress().toString() + ":" + socket.getPort();
 				clientIP.replace("/", " ");
 
-				handlerServerReadMsg.obtainMessage(SOCKET_STATE.MSG_SOCKET_TCP_SERVER_CLIENT_CONNECTED.ordinal(), clientIP.length(), -1, clientIP.getBytes()).sendToTarget();
+				handlerServerReadMsg.obtainMessage(SOCKET_STATE.MSG_SOCKET_SERVER_CLIENT_CONNECTED.ordinal(), clientIP.length(), -1, clientIP.getBytes()).sendToTarget();
 
 				Log.d(TAG, "New Connection: TCP Socket Started");
 			}

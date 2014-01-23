@@ -81,6 +81,7 @@ public class ThreadSocketReader extends Thread {
 
 	}
 
+	// This thread runs for both drone clients and server clients !!!
 	public void run() {
 		byte[] buffer = new byte[BUFFSIZE];
 		int len; // bytes received
@@ -93,17 +94,19 @@ public class ThreadSocketReader extends Thread {
 					final ByteBuffer byteMsg = ByteBuffer.wrap(new byte[len]);
 					byteMsg.put(buffer, 0, len);
 					byteMsg.flip();
-					handlerQueueIOBytesReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_DATA_READY.ordinal(), len, -1, byteMsg).sendToTarget();
+					handlerQueueIOBytesReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_BYTE_DATA_READY.ordinal(), len, -1, byteMsg).sendToTarget();
 				}
 				else {
-					Log.d(TAG, "** Empty socket buffer - Connection Error...**");
-					handlerQueueIOBytesReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_TCP_SERVER_CLIENT_DISCONNECTED.ordinal()).sendToTarget();
+					// could happen mostly to the servers thread
+					Log.d(TAG, "** Server lost connection **");
+					handlerQueueIOBytesReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_SERVER_CLIENT_DISCONNECTED.ordinal()).sendToTarget();
 					running = false;
 				}
 			}
 			catch (IOException e) {
-				Log.d(TAG, "Exception [run.read.buffer]:" + e.getMessage());
-				handlerQueueIOBytesReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_TCP_SERVER_CLIENT_DISCONNECTED.ordinal()).sendToTarget();
+				// could happen mostly to the client thread
+				Log.d(TAG, "** Client lost Drone link **" + e.getMessage());
+				handlerQueueIOBytesReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_DRONE_CLIENT_LOST_CONNECTION.ordinal()).sendToTarget();
 				running = false;
 				break;
 			}
@@ -128,9 +131,11 @@ public class ThreadSocketReader extends Thread {
 	}
 
 	public void stopMe() {
-		// stop handler as well
-		handlerQueueIOBytesReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_CLOSED.ordinal()).sendToTarget();
+		// stop threads run() loop
 		running = false;
+		// stop it's handler as well
+		handlerQueueIOBytesReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_CLOSED.ordinal()).sendToTarget();
+
 	}
 
 	public boolean isRunning() {

@@ -3,10 +3,7 @@ package com.paku.mavlinkhub.fragments.dialogs;
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.interfaces.IDialogActions;
-import com.paku.mavlinkhub.queue.endpoints.DroneClient;
-
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;

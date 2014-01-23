@@ -87,27 +87,36 @@ public abstract class QueueIOBytes {
 				final SOCKET_STATE[] socketStates = SOCKET_STATE.values();
 				switch (socketStates[byteMsg.what]) {
 
-				// new client connected
-				case MSG_SOCKET_TCP_SERVER_CLIENT_CONNECTED:
-					appMsgHandler.obtainMessage(APP_STATE.MSG_SERVER_CLIENT_CONNECTED.ordinal(), byteMsg.arg1, byteMsg.arg2, byteMsg.obj).sendToTarget();
-					break;
-
-				// Client lost;
-				case MSG_SOCKET_TCP_SERVER_CLIENT_DISCONNECTED:
-					appMsgHandler.obtainMessage(APP_STATE.MSG_SERVER_CLIENT_DISCONNECTED.ordinal()).sendToTarget();
-					break;
+				// ===== All clients and servers threads send those msgs ======
 
 				// Received data
-				case MSG_SOCKET_DATA_READY:
+				case MSG_SOCKET_BYTE_DATA_READY:
 					addInputByteQueueItem(byteMsg);
 					break;
-
-				// closing so kill itself
+				// closing so kill myself
 				case MSG_SOCKET_CLOSED:
 					removeMessages(0);
 					break;
+
+				// ===== Those are only sent by drone/client threads ======
+
+				case MSG_SOCKET_DRONE_CLIENT_LOST_CONNECTION:
+					appMsgHandler.obtainMessage(APP_STATE.MSG_DRONE_CONNECTION_LOST.ordinal()).sendToTarget();
+					break;
+
+				// ===== Those are only sent by gs/servers threads ======
+
+				// new client connected
+				case MSG_SOCKET_SERVER_CLIENT_CONNECTED:
+					appMsgHandler.obtainMessage(APP_STATE.MSG_SERVER_CLIENT_CONNECTED.ordinal(), byteMsg.arg1, byteMsg.arg2, byteMsg.obj).sendToTarget();
+					break;
+				// Client lost;
+				case MSG_SOCKET_SERVER_CLIENT_DISCONNECTED:
+					appMsgHandler.obtainMessage(APP_STATE.MSG_SERVER_CLIENT_DISCONNECTED.ordinal()).sendToTarget();
+					break;
 				default:
 					super.handleMessage(byteMsg);
+
 				}
 			}
 
