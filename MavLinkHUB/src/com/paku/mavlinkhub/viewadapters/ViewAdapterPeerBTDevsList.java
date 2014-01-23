@@ -1,11 +1,11 @@
-package com.paku.mavlinkhub.fragments.viewadapters;
+package com.paku.mavlinkhub.viewadapters;
 
 import java.util.ArrayList;
 
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
-import com.paku.mavlinkhub.communication.devicelist.ItemPeerDevice;
 import com.paku.mavlinkhub.enums.PEER_DEV_STATE;
+import com.paku.mavlinkhub.viewadapters.devicelist.ItemPeerDevice;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -17,14 +17,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ViewAdapterPeerDevsList extends ArrayAdapter<ItemPeerDevice> {
+public class ViewAdapterPeerBTDevsList extends ArrayAdapter<ItemPeerDevice> {
 
 	private final HUBGlobals hub;
 	private final ArrayList<ItemPeerDevice> itemsArrayList;
 
-	public ViewAdapterPeerDevsList(HUBGlobals hub, ArrayList<ItemPeerDevice> itemsArrayList) {
+	public ViewAdapterPeerBTDevsList(HUBGlobals hub, ArrayList<ItemPeerDevice> itemsArrayList) {
 
-		super(hub, R.layout.listviewitem_mavlinkmsg, itemsArrayList);
+		super(hub, R.layout.listviewitem_bt_devs, itemsArrayList);
 
 		this.hub = hub;
 		this.itemsArrayList = itemsArrayList;

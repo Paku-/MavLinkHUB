@@ -1,4 +1,4 @@
-package com.paku.mavlinkhub.fragments.viewadapters;
+package com.paku.mavlinkhub.viewadapters;
 
 import java.util.ArrayList;
 
@@ -18,19 +18,17 @@ import android.widget.TextView;
 
 public class ViewAdapterMavlinkMsgList extends ArrayAdapter<ItemMavLinkMsg> {
 
-	private final Context context;
 	private ArrayList<ItemMavLinkMsg> itemsArrayList;
-	private HUBGlobals hub;
+	private final HUBGlobals hub;
 
-	// mavlink classes' string names helper class
+	// mavlink classes' names helper class
 	private MavLinkClassExtractor mavClasses;
 
-	public ViewAdapterMavlinkMsgList(Context context, ArrayList<ItemMavLinkMsg> itemsArrayList) {
+	public ViewAdapterMavlinkMsgList(HUBGlobals hub, ArrayList<ItemMavLinkMsg> itemsArrayList) {
 
-		super(context, R.layout.listviewitem_mavlinkmsg, itemsArrayList);
+		super(hub, R.layout.listviewitem_mavlinkmsg, itemsArrayList);
 
-		this.context = context;
-		hub = ((HUBGlobals) context.getApplicationContext());
+		this.hub = hub;
 
 		this.itemsArrayList = itemsArrayList;
 
@@ -42,7 +40,7 @@ public class ViewAdapterMavlinkMsgList extends ArrayAdapter<ItemMavLinkMsg> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater inflater = (LayoutInflater) hub.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View msgItemView = inflater.inflate(R.layout.listviewitem_mavlinkmsg, parent, false);
 
 		TextView msgName = (TextView) msgItemView.findViewById(R.id.listViewMsgItemTxt_Text1);

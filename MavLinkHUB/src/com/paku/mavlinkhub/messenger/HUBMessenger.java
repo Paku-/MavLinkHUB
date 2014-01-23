@@ -67,7 +67,7 @@ public class HUBMessenger extends HUBInterfaceMenager {
 					break;
 				case MSG_DRONE_CONNECTION_ATTEMPT_FAILED:
 
-					String msgTxt = hub.getString(R.string.connection_failure) + new String((byte[]) msg.obj);
+					String msgTxt = hub.getString(R.string.error_connection_failure) + new String((byte[]) msg.obj);
 
 					hub.logger.sysLog(TAG, msgTxt);
 					Toast.makeText(hub, msgTxt, Toast.LENGTH_SHORT).show();
@@ -79,8 +79,8 @@ public class HUBMessenger extends HUBInterfaceMenager {
 					break;
 				case MSG_DRONE_CONNECTION_LOST:
 
-					hub.logger.sysLog(TAG, "Drone Connection LOST ...");
-					Toast.makeText(hub, "Drone Connection LOST ...", Toast.LENGTH_SHORT).show();
+					hub.logger.sysLog(TAG, hub.getString(R.string.error_drone_connection_lost));
+					Toast.makeText(hub, R.string.error_drone_connection_lost, Toast.LENGTH_SHORT).show();
 
 					hub.droneClient.stopClient();
 

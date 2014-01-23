@@ -3,6 +3,7 @@ package com.paku.mavlinkhub;
 import com.paku.mavlinkhub.enums.MSG_SOURCE;
 import com.paku.mavlinkhub.fragments.FragmentsAdapter;
 import com.paku.mavlinkhub.fragments.dialogs.FragmentAlertDialogHubActions;
+import com.paku.mavlinkhub.fragments.dialogs.FragmentDialogBluetoothDevices;
 import com.paku.mavlinkhub.interfaces.IDataUpdateStats;
 
 import android.app.AlertDialog;
@@ -12,6 +13,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
@@ -105,15 +107,26 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
+
 		switch (item.getItemId()) {
 		case R.id.menu_settings:
-
 			final Intent intent = new Intent();
 			intent.setClass(HUBActivityMain.this, HUBActivitySettings.class);
 			startActivityForResult(intent, 0);
-
 			return true;
-		case R.id.menu_empty:
+		case R.id.menu_bluetooth_select_device:
+
+			FragmentTransaction fragManager = getSupportFragmentManager().beginTransaction();
+
+			Fragment prev = getSupportFragmentManager().findFragmentByTag("bt_select_device");
+			if (prev != null) {
+				fragManager.remove(prev);
+			}
+			fragManager.addToBackStack(null);
+
+			DialogFragment btSelectDevDialog = FragmentDialogBluetoothDevices.newInstance();
+			btSelectDevDialog.setCancelable(false);
+			btSelectDevDialog.show(fragManager, "bt_select_device");
 
 			return true;
 		default:

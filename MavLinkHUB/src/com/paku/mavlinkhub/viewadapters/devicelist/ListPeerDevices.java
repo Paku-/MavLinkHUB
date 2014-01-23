@@ -1,4 +1,4 @@
-package com.paku.mavlinkhub.communication.devicelist;
+package com.paku.mavlinkhub.viewadapters.devicelist;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,7 +13,7 @@ public abstract class ListPeerDevices {
 	@SuppressWarnings("unused")
 	private static final String TAG = ListPeerDevices.class.getSimpleName();
 
-	ArrayList<ItemPeerDevice> devList = new ArrayList<ItemPeerDevice>();
+	protected ArrayList<ItemPeerDevice> devList = new ArrayList<ItemPeerDevice>();
 	protected final HUBGlobals hub;
 
 	protected ListPeerDevices(HUBGlobals hubContext) {

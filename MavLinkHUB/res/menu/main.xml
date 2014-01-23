@@ -1,15 +1,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"    >
     <item
+        android:id="@+id/menu_bluetooth_select_device"
+        android:icon="@drawable/ic_action_bluetooth_searching"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"               
+        android:title="@string/menu_title_bluetooth"/>    
+    <item
         android:id="@+id/menu_settings"
         android:icon="@drawable/ic_action_settings"        
         android:orderInCategory="100"
         android:showAsAction="always" 
         android:title="@string/menu_title_settings"/>    
-    <item
-        android:id="@+id/menu_empty"
-        android:icon="@drawable/ic_action_bluetooth_searching"
-        android:orderInCategory="100"
-        android:showAsAction="ifRoom"               
-        android:title="@string/menu_title_bluetooth"/>    
 </menu>

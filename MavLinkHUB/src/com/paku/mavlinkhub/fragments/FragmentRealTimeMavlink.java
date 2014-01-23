@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.enums.APP_STATE;
-import com.paku.mavlinkhub.fragments.viewadapters.ViewAdapterMavlinkMsgList;
 import com.paku.mavlinkhub.interfaces.IDataUpdateByteLog;
 import com.paku.mavlinkhub.interfaces.IQueueMsgItemReady;
 import com.paku.mavlinkhub.queue.items.ItemMavLinkMsg;
+import com.paku.mavlinkhub.viewadapters.ViewAdapterMavlinkMsgList;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -37,7 +37,7 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		listAdapterMavLink = new ViewAdapterMavlinkMsgList(this.getActivity(), new ArrayList<ItemMavLinkMsg>());
+		listAdapterMavLink = new ViewAdapterMavlinkMsgList(hub, new ArrayList<ItemMavLinkMsg>());
 		listViewMavLinkMsg = (ListView) (getView().findViewById(R.id.listView_mavlinkMsgs));
 		listViewMavLinkMsg.setAdapter(listAdapterMavLink);
 	}
@@ -53,6 +53,7 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 		onDataUpdateByteLog();
 		onQueueMsgItemReady(null);
 
+		// byte log display clicks
 		final TextView mTextViewBytesLog = (TextView) (getView().findViewById(R.id.textView_logByte));
 		mTextViewBytesLog.setOnClickListener(new View.OnClickListener() {
 
@@ -63,6 +64,7 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 			}
 		});
 
+		// mavlink msgs display clicks
 		final ListView mListViewMsgItems = (ListView) (getView().findViewById(R.id.listView_mavlinkMsgs));
 		mListViewMsgItems.setOnItemClickListener(new OnItemClickListener() {
 			@Override

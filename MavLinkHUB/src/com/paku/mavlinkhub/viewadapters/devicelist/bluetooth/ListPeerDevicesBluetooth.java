@@ -1,10 +1,12 @@
-package com.paku.mavlinkhub.communication.devicelist;
+package com.paku.mavlinkhub.viewadapters.devicelist.bluetooth;
 
 import java.util.Set;
 
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.enums.DEV_LIST_STATE;
 import com.paku.mavlinkhub.enums.PEER_DEV_STATE;
+import com.paku.mavlinkhub.viewadapters.devicelist.ItemPeerDevice;
+import com.paku.mavlinkhub.viewadapters.devicelist.ListPeerDevices;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;

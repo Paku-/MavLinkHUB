@@ -4,15 +4,15 @@ import java.util.ArrayList;
 
 import com.paku.mavlinkhub.HUBActivityMain;
 import com.paku.mavlinkhub.R;
-import com.paku.mavlinkhub.communication.devicelist.ListPeerDevicesBluetooth;
-import com.paku.mavlinkhub.communication.devicelist.ItemPeerDevice;
 import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.enums.PEER_DEV_STATE;
-import com.paku.mavlinkhub.fragments.viewadapters.ViewAdapterPeerDevsList;
 import com.paku.mavlinkhub.interfaces.IDroneConnected;
 import com.paku.mavlinkhub.interfaces.IDroneConnectionFailed;
 import com.paku.mavlinkhub.interfaces.IDroneConnectionLost;
 import com.paku.mavlinkhub.interfaces.IUiModeChanged;
+import com.paku.mavlinkhub.viewadapters.ViewAdapterPeerBTDevsList;
+import com.paku.mavlinkhub.viewadapters.devicelist.ItemPeerDevice;
+import com.paku.mavlinkhub.viewadapters.devicelist.bluetooth.ListPeerDevicesBluetooth;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
@@ -31,7 +31,7 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 
 	ListPeerDevicesBluetooth btDevList;
 	ListView btDevListView;
-	ViewAdapterPeerDevsList devListAdapter;
+	ViewAdapterPeerBTDevsList devListAdapter;
 
 	View progressBarConnectingBIG;
 
@@ -107,7 +107,7 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 
 		switch (btDevList.refresh()) {
 		case ERROR_NO_ADAPTER:
-			Toast.makeText(getActivity().getApplicationContext(), R.string.no_bluetooth_adapter_found, Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity().getApplicationContext(), R.string.error_no_bluetooth_adapter_found, Toast.LENGTH_LONG).show();
 			return;
 		case ERROR_ADAPTER_OFF:
 			final Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -120,7 +120,7 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 			return;
 
 		case LIST_OK:
-			devListAdapter = new ViewAdapterPeerDevsList(hub, btDevList.getDeviceList());
+			devListAdapter = new ViewAdapterPeerBTDevsList(hub, btDevList.getDeviceList());
 			btDevListView.setAdapter(devListAdapter);
 			btDevListView.setOnItemClickListener(btListClickListener);
 			return;
@@ -153,7 +153,7 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 				}
 				else {
 					Log.d(TAG, "Connect on connected device attempt");
-					Toast.makeText(getActivity(), R.string.disconnect_first, Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), R.string.error_disconnect_first, Toast.LENGTH_SHORT).show();
 				}
 
 				break;

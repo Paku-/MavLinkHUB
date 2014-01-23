@@ -3,7 +3,7 @@
     <string name="app_name">MavLinkHub</string>
 <!-- Menu Section -->    
     <string name="menu_title_settings">Settings</string>
-    <string name="menu_title_bluetooth">Connect</string>
+    <string name="menu_title_bluetooth">Connect using Bluetooth</string>
 <!-- Fragments Titles Section -->    
     <string name="title_realtime_mavlink">RealTime MAVLink</string>
     <string name="title_connectivity">Connection</string>
@@ -34,33 +34,37 @@
     <string name="pref_log_mavlink_folder_title">MavLink log file folder</string>    
     <string name="pref_log_system_folder_title">System log file folder</string>        
     <string name="pref_log_system_title">System log</string>
-    <string name="pref_log_system_summary">Enable System log writes.</string>
+    <string name="pref_log_system_summary">Enable System log writes</string>
     <string name="pref_log_mavlink_byte_title">Drone log </string>
-    <string name="pref_log_mavlink_byte_summary">Enable Drone log writes.</string>
+    <string name="pref_log_mavlink_byte_summary">Enable Drone log writes</string>
 <!-- Pref Section Autoscroll  -->
     <string name="pref_section_auto_scroll_title">Auto Scroll</string>
-    <string name="pref_msg_items_autoscroll_summary">Autoscroll Mavlink messages list.</string>    
+    <string name="pref_msg_items_autoscroll_summary">Autoscroll Mavlink messages list</string>    
     <string name="pref_msg_items_autoscroll_title">MAVLink messages</string>        
-    <string name="pref_byte_log_autoscroll_summary">Autoscroll Drone log.</string>    
+    <string name="pref_byte_log_autoscroll_summary">Autoscroll Drone log</string>    
     <string name="pref_byte_log_autoscroll_title">Drone Log</string>    
-    <string name="pref_sys_log_autoscroll_summary">Autoscroll System log.</string>    
+    <string name="pref_sys_log_autoscroll_summary">Autoscroll System log</string>    
     <string name="pref_sys_log_autoscroll_title">System Log</string>    
 <!-- Pref Section II  -->
     <string name="pref_title_section2">Section Title</string>    
     <string name="pref_title_do_it">Empty title</string>
     <string name="pref_summary_do_it">Empty summary</string>
-<!-- Error Msgs-->    
-    <string name="error_no_bt_adapter_or_paired_devices">No Bluetooth adapter or Paired Devices found.</string>    
+<!-- Error Msgs-->
+    <string name="error_drone_connection_lost">Drone connection LOST !!!</string>    
+    <string name="error_no_bt_adapter_or_paired_devices">No Bluetooth adapter or Paired Devices found</string>    
     <string name="error_no_paired_bt_devices_found_pair_device_first">No paired Bluetooth devices found. Pair device first.</string>
-    <string name="disconnect_first">Disconnect first</string>
+    <string name="error_disconnect_first">Disconnect first</string>
     <string name="txt_no_data">No Data</string>    
-    <string name="no_bluetooth_adapter_found">No Bluetooth Adapter found.</string>
-    <string name="connection_failure">"Connection Failure: "</string>                
+    <string name="error_no_bluetooth_adapter_found">No Bluetooth Adapter found</string>
+    <string name="error_connection_failure">"Connection Failure: "</string>                
 <!-- Close Dialog Msgs-->            
     <string name="close_dlg_title_mavlink_closing">MavLink Connection Active </string>    
-    <string name="close_dlg_msg_current_connection_will_be_lost">Current connection will be lost.</string>    
+    <string name="close_dlg_msg_current_connection_will_be_lost">Current connection will be lost</string>    
     <string name="close_dlg_positive">Close me</string>    
-    <string name="close_dlg_negative">Keep running</string>
-        
-    
+    <string name="close_dlg_negative">Keep running</string>    
+<!-- BT select Device Dialog Msgs-->
+    <string name="dlg_bt_select_device_title">Select Device</string>
+    <string name="txt_device_connected">Device connected</string>
+    <string name="txt_device_disconnected">Device disconnected</string>
+    <string name="txt_device_connecting">Connecting device</string>        
 </resources>

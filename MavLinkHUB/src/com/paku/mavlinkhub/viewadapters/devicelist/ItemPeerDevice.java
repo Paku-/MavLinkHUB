@@ -1,4 +1,4 @@
-package com.paku.mavlinkhub.communication.devicelist;
+package com.paku.mavlinkhub.viewadapters.devicelist;
 
 import com.paku.mavlinkhub.enums.PEER_DEV_STATE;
 
