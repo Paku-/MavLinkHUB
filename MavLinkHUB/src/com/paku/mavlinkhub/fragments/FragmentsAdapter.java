@@ -25,7 +25,7 @@ public class FragmentsAdapter extends FragmentPagerAdapter {
 
 		switch (position) {
 		case 0:
-			fragment = new FragmentConnectivity();
+			fragment = new FragmentConnectionState();
 			break;
 		case 1:
 			fragment = new FragmentRealTimeMavlink();

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.enums.PEER_DEV_STATE;
-import com.paku.mavlinkhub.fragments.FragmentConnectivity;
+import com.paku.mavlinkhub.fragments.FragmentConnectionState;
 import com.paku.mavlinkhub.viewadapters.ViewAdapterPeerBTDevsList;
 import com.paku.mavlinkhub.viewadapters.devicelist.ItemPeerDevice;
 import com.paku.mavlinkhub.viewadapters.devicelist.bluetooth.ListPeerDevicesBluetooth;
@@ -24,7 +24,7 @@ import android.widget.Toast;
 
 public class FragmentDialogBluetoothDevices extends DialogFragment {
 
-	private static final String TAG = FragmentConnectivity.class.getSimpleName();
+	private static final String TAG = FragmentConnectionState.class.getSimpleName();
 
 	HUBGlobals hub;
 
@@ -123,6 +123,13 @@ public class FragmentDialogBluetoothDevices extends DialogFragment {
 		}
 
 	}
+
+	/*
+	 * have to cover this as well
+	 * @Override public void onDroneConnectionFailed() {
+	 * btDevList.setAllDevState(PEER_DEV_STATE.DEV_STATE_DISCONNECTED);
+	 * refreshBtDevListView(); }
+	 */
 
 	private final AdapterView.OnItemClickListener listViewBTClickListener = new AdapterView.OnItemClickListener() {
 		@Override
