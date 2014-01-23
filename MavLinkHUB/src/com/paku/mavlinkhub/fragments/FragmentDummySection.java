@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 public class FragmentDummySection extends HUBFragment {
 
-	public static final String TAG = "FragmentDummySection";
+	public static final String TAG = FragmentDummySection.class.getSimpleName();
 
 	public FragmentDummySection() {
 	}

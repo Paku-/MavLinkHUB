@@ -22,7 +22,7 @@ import android.widget.TextView;
 
 public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateByteLog, IQueueMsgItemReady {
 
-	private static final String TAG = "FragmentRealTimeMavlink";
+	private static final String TAG = FragmentRealTimeMavlink.class.getSimpleName();
 
 	ViewAdapterMavlinkMsgList listAdapterMavLink;
 	ListView listViewMavLinkMsg;

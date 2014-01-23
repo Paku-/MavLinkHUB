@@ -14,7 +14,7 @@ import android.widget.TextView;
 public class FragmentSysLog extends HUBFragment implements IDataUpdateSysLog {
 
 	@SuppressWarnings("unused")
-	private static final String TAG = "FragmentSysLog";
+	private static final String TAG = FragmentSysLog.class.getSimpleName();
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

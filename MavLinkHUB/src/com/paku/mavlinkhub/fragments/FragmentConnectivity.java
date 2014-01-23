@@ -26,17 +26,7 @@ import android.widget.Toast;
 
 public class FragmentConnectivity extends HUBFragment implements IUiModeChanged, IDroneConnectionFailed, IDroneConnected {
 
-	@Override
-	public void onPause() {
-		super.onPause();
-
-		hub.messenger.unregister(this, APP_STATE.MSG_UI_MODE_CHANGED);
-		hub.messenger.unregister(this, APP_STATE.MSG_DRONE_CONNECTION_FAILED);
-		hub.messenger.unregister(this, APP_STATE.MSG_DRONE_CONNECTED);
-
-	}
-
-	private static final String TAG = "FragmentConnectivity";
+	private static final String TAG = FragmentConnectivity.class.getSimpleName();
 
 	ListPeerDevicesBluetooth btDevList;
 	ListView btDevListView;
@@ -67,6 +57,16 @@ public class FragmentConnectivity extends HUBFragment implements IUiModeChanged,
 		hub.messenger.register(this, APP_STATE.MSG_DRONE_CONNECTION_FAILED);
 		hub.messenger.register(this, APP_STATE.MSG_DRONE_CONNECTED);
 		onUiModeChanged();
+
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		hub.messenger.unregister(this, APP_STATE.MSG_UI_MODE_CHANGED);
+		hub.messenger.unregister(this, APP_STATE.MSG_DRONE_CONNECTION_FAILED);
+		hub.messenger.unregister(this, APP_STATE.MSG_DRONE_CONNECTED);
 
 	}
 

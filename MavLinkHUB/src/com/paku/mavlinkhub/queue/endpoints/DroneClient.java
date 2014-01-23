@@ -9,7 +9,7 @@ import android.os.Handler;
 public abstract class DroneClient extends QueueIOBytes {
 
 	@SuppressWarnings("unused")
-	private static final String TAG = "DroneClient";
+	private static final String TAG = DroneClient.class.getSimpleName();
 
 	// application handler used to report connection states
 

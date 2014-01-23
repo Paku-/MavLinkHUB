@@ -1,4 +1,4 @@
-package com.paku.mavlinkhub.queue.hubqueue;
+package com.paku.mavlinkhub.queue.hub;
 
 import java.nio.ByteBuffer;
 
@@ -12,7 +12,7 @@ import com.paku.mavlinkhub.queue.items.ItemMavLinkMsg;
 public class ThreadCollectorParser extends Thread {
 
 	@SuppressWarnings("unused")
-	private static final String TAG = "ThreadCollectorParser";
+	private static final String TAG = ThreadCollectorParser.class.getSimpleName();
 
 	private final Parser parserDrone, parserGS;
 	MAVLinkPacket tmpPacket = null;

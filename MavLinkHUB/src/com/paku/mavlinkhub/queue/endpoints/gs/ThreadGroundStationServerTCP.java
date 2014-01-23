@@ -13,11 +13,11 @@ import android.util.Log;
 
 public class ThreadGroundStationServerTCP extends Thread {
 
-	private static final String TAG = "ThreadGroundStationServerTCP";
+	private static final String TAG = ThreadGroundStationServerTCP.class.getSimpleName();
 
 	Socket socket;
 	ServerSocket serverSocket;
-	ThreadSocketReader socketWorkerThreadTCP;
+	ThreadSocketReader socketServerReaderThreadTCP;
 	Handler handlerServerReadMsg;
 	public boolean running = true;
 
@@ -41,8 +41,8 @@ public class ThreadGroundStationServerTCP extends Thread {
 			try {
 				socket = serverSocket.accept();
 
-				socketWorkerThreadTCP = new ThreadSocketReader(socket, handlerServerReadMsg);
-				socketWorkerThreadTCP.start();
+				socketServerReaderThreadTCP = new ThreadSocketReader(socket, handlerServerReadMsg);
+				socketServerReaderThreadTCP.start();
 
 				clientIP = socket.getInetAddress().toString() + ":" + socket.getPort();
 				clientIP.replace("/", " ");
@@ -63,8 +63,8 @@ public class ThreadGroundStationServerTCP extends Thread {
 	}
 
 	public void stopMe() {
-		if (socketWorkerThreadTCP != null) {
-			socketWorkerThreadTCP.stopMe();
+		if (socketServerReaderThreadTCP != null) {
+			socketServerReaderThreadTCP.stopMe();
 		}
 		running = false; // just in case
 		try {
@@ -78,7 +78,7 @@ public class ThreadGroundStationServerTCP extends Thread {
 	}
 
 	public void writeBytes(byte[] bytes) throws IOException {
-		socketWorkerThreadTCP.writeBytes(bytes);
+		socketServerReaderThreadTCP.writeBytes(bytes);
 
 	}
 

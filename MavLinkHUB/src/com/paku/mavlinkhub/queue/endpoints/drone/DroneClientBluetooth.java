@@ -13,7 +13,7 @@ import android.util.Log;
 
 public class DroneClientBluetooth extends DroneClient {
 
-	private static final String TAG = "DroneClientBluetooth";
+	private static final String TAG = DroneClientBluetooth.class.getSimpleName();
 	private static final int SIZEBUFF = 1024;
 
 	private final BluetoothAdapter mBluetoothAdapter;
@@ -23,7 +23,7 @@ public class DroneClientBluetooth extends DroneClient {
 	private Handler handlerDroneMsgRead;
 
 	private DroneClientBluetoothConnThread droneConnectingBluetoothThread;
-	private ThreadSocketReader socketWorkerThreadBT;
+	private ThreadSocketReader socketClientReaderThreadBT;
 
 	public DroneClientBluetooth(Handler messenger) {
 		super(messenger, SIZEBUFF);
@@ -46,7 +46,7 @@ public class DroneClientBluetooth extends DroneClient {
 
 	}
 
-	public void startTransmission(BluetoothSocket socket) {
+	public void startClientReaderThread(BluetoothSocket socket) {
 
 		mBluetoothSocket = socket;
 
@@ -54,8 +54,8 @@ public class DroneClientBluetooth extends DroneClient {
 		handlerDroneMsgRead = startInputQueueMsgHandler();
 
 		// start receiver thread
-		socketWorkerThreadBT = new ThreadSocketReader(mBluetoothSocket, handlerDroneMsgRead);
-		socketWorkerThreadBT.start();
+		socketClientReaderThreadBT = new ThreadSocketReader(mBluetoothSocket, handlerDroneMsgRead);
+		socketClientReaderThreadBT.start();
 	}
 
 	@Override
@@ -69,17 +69,17 @@ public class DroneClientBluetooth extends DroneClient {
 
 		// stop socket thread
 		if (isConnected()) {
-			socketWorkerThreadBT.stopMe();
+			socketClientReaderThreadBT.stopMe();
 		}
 	}
 
 	@Override
 	public boolean isConnected() {
-		if (socketWorkerThreadBT == null) {
+		if (socketClientReaderThreadBT == null) {
 			return false;
 		}
 		else {
-			return socketWorkerThreadBT.isRunning();
+			return socketClientReaderThreadBT.isRunning();
 		}
 
 	}
@@ -115,7 +115,7 @@ public class DroneClientBluetooth extends DroneClient {
 	public boolean writeBytes(byte[] bytes) throws IOException {
 
 		if (isConnected()) {
-			socketWorkerThreadBT.writeBytes(bytes);
+			socketClientReaderThreadBT.writeBytes(bytes);
 			return true;
 		}
 		return false;

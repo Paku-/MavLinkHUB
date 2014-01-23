@@ -8,7 +8,7 @@ import com.paku.mavlinkhub.queue.items.ItemMavLinkMsg;
 public class QueueMsgItems {
 
 	@SuppressWarnings("unused")
-	private static final String TAG = "QueueMsgItems";
+	private static final String TAG = QueueMsgItems.class.getSimpleName();
 
 	private final ArrayDeque<ItemMavLinkMsg> hubQueue;
 

@@ -18,7 +18,7 @@ import android.os.Message;
 
 public class HUBMessenger extends HUBInterfaceMenager {
 
-	private static final String TAG = "HUBMessenger";
+	private static final String TAG = HUBMessenger.class.getSimpleName();
 
 	public Handler appMsgHandler;
 

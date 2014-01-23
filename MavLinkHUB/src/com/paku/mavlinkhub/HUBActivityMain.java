@@ -26,7 +26,7 @@ import android.widget.TextView;
 //public class HUBActivityMain extends ActionBarActivity implements IDataUpdateStats {
 public class HUBActivityMain extends FragmentActivity implements IDataUpdateStats {
 
-	private static final String TAG = "HUBActivityMain";
+	private static final String TAG = HUBActivityMain.class.getSimpleName();
 
 	public HUBGlobals hub;
 

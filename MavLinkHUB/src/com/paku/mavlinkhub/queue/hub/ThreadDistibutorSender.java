@@ -1,4 +1,4 @@
-package com.paku.mavlinkhub.queue.hubqueue;
+package com.paku.mavlinkhub.queue.hub;
 
 import java.io.IOException;
 import android.util.Log;
@@ -8,7 +8,7 @@ import com.paku.mavlinkhub.queue.items.ItemMavLinkMsg;
 
 public class ThreadDistibutorSender extends Thread {
 
-	private static final String TAG = "ThreadDistibutorSender";
+	private static final String TAG = ThreadDistibutorSender.class.getSimpleName();
 
 	private boolean running = true;
 

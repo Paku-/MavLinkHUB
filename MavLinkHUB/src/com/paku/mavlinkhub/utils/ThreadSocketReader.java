@@ -14,7 +14,7 @@ import android.util.Log;
 
 public class ThreadSocketReader extends Thread {
 
-	private static final String TAG = "ThreadSocketReader";
+	private static final String TAG = ThreadSocketReader.class.getSimpleName();
 
 	private static final int BUFFSIZE = 1024 * 4;
 

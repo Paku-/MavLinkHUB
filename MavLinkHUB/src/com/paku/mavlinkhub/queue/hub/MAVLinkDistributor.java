@@ -1,11 +1,11 @@
-package com.paku.mavlinkhub.queue.hubqueue;
+package com.paku.mavlinkhub.queue.hub;
 
 import com.paku.mavlinkhub.HUBGlobals;
 
 public class MAVLinkDistributor {
 
 	@SuppressWarnings("unused")
-	private static final String TAG = "MAVLinkDistributor";
+	private static final String TAG = MAVLinkDistributor.class.getSimpleName();
 
 	private final HUBGlobals hub;
 

@@ -10,7 +10,7 @@ import android.os.Handler;
 public class GroundStationServerTCP extends GroundStationServer {
 
 	@SuppressWarnings("unused")
-	private static final String TAG = "GroundStationServerTCP";
+	private static final String TAG = GroundStationServerTCP.class.getSimpleName();
 
 	private static final int SIZEBUFF = 1024;
 
@@ -28,8 +28,10 @@ public class GroundStationServerTCP extends GroundStationServer {
 
 		// start received bytes handler
 		handlerServerMsgRead = startInputQueueMsgHandler();
+
 		serverTCP = new ThreadGroundStationServerTCP(handlerServerMsgRead, port);
 		serverTCP.start();
+
 		// send hub wide server_started msg
 		appMsgHandler.obtainMessage(APP_STATE.MSG_SERVER_STARTED.ordinal(), 0, 0, port).sendToTarget();
 	}
@@ -63,8 +65,8 @@ public class GroundStationServerTCP extends GroundStationServer {
 
 	@Override
 	public boolean isClientConnected() {
-		if (serverTCP.socketWorkerThreadTCP != null)
-			return (serverTCP.socketWorkerThreadTCP.isRunning());
+		if (serverTCP.socketServerReaderThreadTCP != null)
+			return (serverTCP.socketServerReaderThreadTCP.isRunning());
 		else
 			return false;
 	}

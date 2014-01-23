@@ -3,6 +3,7 @@ package com.paku.mavlinkhub.fragments.dialogs;
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.interfaces.IDialogActions;
+import com.paku.mavlinkhub.queue.endpoints.DroneClient;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -16,6 +17,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class FragmentAlertDialogInterface extends DialogFragment {
+
+	@SuppressWarnings("unused")
+	private static final String TAG = FragmentAlertDialogInterface.class.getSimpleName();
 
 	int viewMode;
 	String titleTxt;

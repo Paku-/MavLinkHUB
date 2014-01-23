@@ -11,8 +11,11 @@ import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
 class DroneClientBluetoothConnThread extends Thread {
+
 	private static final String UUID_SPP = "00001101-0000-1000-8000-00805F9B34FB";
-	private static final String TAG = "DroneClientBluetoothConnThread";
+
+	private static final String TAG = DroneClientBluetoothConnThread.class.getSimpleName();
+
 	private final BluetoothAdapter mmBluetoothAdapter;
 	private final BluetoothSocket mmSocket;
 	private final BluetoothDevice mmDevice;
@@ -50,8 +53,7 @@ class DroneClientBluetoothConnThread extends Thread {
 			try {
 				mmSocket.close();
 				String msgTxt = connectException.getMessage();
-				parentConnector.appMsgHandler.obtainMessage(APP_STATE.MSG_DRONE_CONNECTION_FAILED.ordinal(),
-						msgTxt.length(), -1, msgTxt.getBytes()).sendToTarget();
+				parentConnector.appMsgHandler.obtainMessage(APP_STATE.MSG_DRONE_CONNECTION_FAILED.ordinal(), msgTxt.length(), -1, msgTxt.getBytes()).sendToTarget();
 			}
 			catch (IOException closeException) {
 				Log.d(TAG, "Exception: [Failed Connection Attempt: close failed as well]" + closeException.getMessage());
@@ -61,6 +63,6 @@ class DroneClientBluetoothConnThread extends Thread {
 
 		Log.d(TAG, "Connected..");
 		// start Receiver on socket
-		parentConnector.startTransmission(mmSocket);
+		parentConnector.startClientReaderThread(mmSocket);
 	}
 }

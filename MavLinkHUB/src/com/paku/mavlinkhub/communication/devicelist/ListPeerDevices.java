@@ -11,7 +11,7 @@ import com.paku.mavlinkhub.enums.PEER_DEV_STATE;
 public abstract class ListPeerDevices {
 
 	@SuppressWarnings("unused")
-	private static final String TAG = "ListPeerDevices";
+	private static final String TAG = ListPeerDevices.class.getSimpleName();
 
 	ArrayList<ItemPeerDevice> devList = new ArrayList<ItemPeerDevice>();
 	protected final HUBGlobals hub;

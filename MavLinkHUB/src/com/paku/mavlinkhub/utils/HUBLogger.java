@@ -1,4 +1,4 @@
-package com.paku.mavlinkhub;
+package com.paku.mavlinkhub.utils;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -10,16 +10,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.enums.MSG_SOURCE;
-import com.paku.mavlinkhub.utils.HUBStats;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
 
 public class HUBLogger {
 
-	private static final String TAG = "HUBLogger";
+	private static final String TAG = HUBLogger.class.getSimpleName();
 
 	private final HUBGlobals hub;
 
@@ -44,10 +44,10 @@ public class HUBLogger {
 
 		hubStats = new HUBStats();
 
-		inMemSysLogBuffer = new StringBuilder(2 * hub.visibleBuffSize);
+		inMemSysLogBuffer = new StringBuilder(2 * hub.visibleByteLogSize);
 		restartSysLog();
 
-		inMemByteLogBuffer = new StringBuilder(2 * hub.visibleBuffSize);
+		inMemByteLogBuffer = new StringBuilder(2 * hub.visibleByteLogSize);
 		restartByteLog();
 
 		sysLog(TAG, "** MavLinkHUB Syslog Init **");
@@ -89,8 +89,8 @@ public class HUBLogger {
 
 				inMemByteLogBuffer.append(new String(buffer.array(), 0, buffer.limit()));
 				// trim to the limit
-				if (inMemByteLogBuffer.length() > hub.visibleBuffSize * 1.5) {
-					inMemByteLogBuffer.replace(0, inMemByteLogBuffer.length() - hub.visibleBuffSize, "[***]\r\n");
+				if (inMemByteLogBuffer.length() > hub.visibleByteLogSize * 1.5) {
+					inMemByteLogBuffer.replace(0, inMemByteLogBuffer.length() - hub.visibleByteLogSize, "[***]\r\n");
 				}
 			}
 			hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_BYTELOG.ordinal()).sendToTarget();

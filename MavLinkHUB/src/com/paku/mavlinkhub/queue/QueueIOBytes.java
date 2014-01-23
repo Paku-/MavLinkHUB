@@ -12,7 +12,7 @@ import android.os.Message;
 public abstract class QueueIOBytes {
 
 	@SuppressWarnings("unused")
-	private static final String TAG = "QueueIOBytes";
+	private static final String TAG = QueueIOBytes.class.getSimpleName();
 
 	private final ArrayDeque<ByteBuffer> inputByteQueue;
 	private final ArrayDeque<ByteBuffer> outputByteQueue;
@@ -76,7 +76,8 @@ public abstract class QueueIOBytes {
 
 	// that's the true ADD ,method for this class
 	// this handler is called by the messages coming from any other class build
-	// over the QueueIOBytes. Any bytes receiving thread sends a msg with the
+	// over the QueueIOBytes (both clients and servers). Any bytes receiving
+	// thread sends a msg with the
 	// buffer here to be stored in the underlying queue.
 	// msg other then ADD are forwarded to the main hub messenger
 	protected Handler startInputQueueMsgHandler() {

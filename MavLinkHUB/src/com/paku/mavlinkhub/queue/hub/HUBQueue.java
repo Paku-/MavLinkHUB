@@ -1,4 +1,4 @@
-package com.paku.mavlinkhub.queue.hubqueue;
+package com.paku.mavlinkhub.queue.hub;
 
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.queue.QueueMsgItems;

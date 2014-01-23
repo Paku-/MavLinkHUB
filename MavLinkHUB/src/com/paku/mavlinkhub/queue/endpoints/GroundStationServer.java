@@ -9,7 +9,7 @@ import android.os.Handler;
 public abstract class GroundStationServer extends QueueIOBytes {
 
 	@SuppressWarnings("unused")
-	private static final String TAG = "GroundStationServer";
+	private static final String TAG = GroundStationServer.class.getSimpleName();
 
 	public abstract void startServer(int port);
 
