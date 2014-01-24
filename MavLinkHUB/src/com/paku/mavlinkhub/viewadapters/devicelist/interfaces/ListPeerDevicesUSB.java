@@ -35,7 +35,7 @@ public class ListPeerDevicesUSB extends ListPeerDevices {
 
 	}
 
-	public DEV_LIST_STATE refresh() {
+	public DEV_LIST_STATE refreshFrame() {
 
 		devList.clear();
 
@@ -54,18 +54,16 @@ public class ListPeerDevicesUSB extends ListPeerDevices {
 
 			if (HUBGlobals.usbHub.isFtDevice(device)) {
 				Log.d(TAG, "FTDI DEVICE:" + device.getVendorId() + ":" + device.getProductId() + "/" + device.getDeviceClass() + ":" + device.getDeviceSubclass());
-			}
-
-			// /check for proper vendor:product pairs first
-			Log.d(TAG, "DEVICE:" + device.getVendorId() + ":" + device.getProductId() + "/" + device.getDeviceClass() + ":" + device.getDeviceSubclass());
-
-			for (int i = 0; i < device.getInterfaceCount(); i++) {
-				ItemPeerDevice tmpItemPeerDevice = new ItemPeerDeviceUSB(DEVICE_INTERFACE.USB, device.getDeviceName(), "address", device.getVendorId(), device.getProductId(), device.getInterface(i)
-						.getId());
+				ItemPeerDevice tmpItemPeerDevice = new ItemPeerDeviceUSB(DEVICE_INTERFACE.USB, device.getDeviceName(), "", device.getVendorId(), device.getProductId(), device.getInterface(0).getId());
 				devList.add(tmpItemPeerDevice);
-				Log.d(TAG, "Interface: " + device.getInterface(i).toString());
-				for (int x = 0; x < device.getInterface(i).getEndpointCount(); x++) {
-					Log.d(TAG, "Endpoint:" + device.getInterface(i).getEndpoint(x).toString());
+
+				Log.d(TAG, "DEVICE:" + device.getVendorId() + ":" + device.getProductId() + "/" + device.getDeviceClass() + ":" + device.getDeviceSubclass());
+
+				for (int i = 0; i < device.getInterfaceCount(); i++) {
+					Log.d(TAG, "Interface: " + device.getInterface(i).toString());
+					for (int x = 0; x < device.getInterface(i).getEndpointCount(); x++) {
+						Log.d(TAG, "Endpoint:" + device.getInterface(i).getEndpoint(x).toString());
+					}
 				}
 			}
 
@@ -93,19 +91,19 @@ public class ListPeerDevicesUSB extends ListPeerDevices {
 
 	}
 
-	public DEV_LIST_STATE refreshFTDI() {
+	public DEV_LIST_STATE refresh() {
 
 		devList.clear();
 
-		for (int i = 0; i < HUBGlobals.usbHub.createDeviceInfoList(hub); i++) {
+		int devCount = HUBGlobals.usbHub.createDeviceInfoList(hub);
 
-			FT_Device ftDevice = HUBGlobals.usbHub.openByIndex(hub, i);
-			if (ftDevice != null) {
-				// if (ftDevice.resetDevice()) {
-				ItemPeerDevice tmpItemPeerDevice = new ItemPeerDeviceUSB(DEVICE_INTERFACE.USB, ftDevice.getDeviceInfo().description, ftDevice.getDeviceInfo().serialNumber, 1, 1, i);
+		if (devCount > 0) {
+			D2xxManager.FtDeviceInfoListNode[] deviceList = new D2xxManager.FtDeviceInfoListNode[devCount];
+			HUBGlobals.usbHub.getDeviceInfoList(devCount, deviceList);
+
+			for (int i = 0; i < devCount; i++) {
+				ItemPeerDevice tmpItemPeerDevice = new ItemPeerDeviceUSB(DEVICE_INTERFACE.USB, deviceList[i].description, deviceList[i].serialNumber, deviceList[i].handle, deviceList[i].id, i);
 				devList.add(tmpItemPeerDevice);
-				// }
-				// ftDevice.close();
 			}
 
 		}
@@ -115,8 +113,9 @@ public class ListPeerDevicesUSB extends ListPeerDevices {
 		if (devList.size() > 0) {
 			return DEV_LIST_STATE.LIST_OK_USB;
 		}
-		else
+		else {
 			return DEV_LIST_STATE.ERROR_NO_USB_DEVICES;
+		}
 
 		// return DEV_LIST_STATE.ERROR_NO_ADAPTER;
 		// return DEV_LIST_STATE.ERROR_ADAPTER_OFF;

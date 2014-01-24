@@ -75,8 +75,6 @@ public class FragmentDialogSelectDevice extends DialogFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		getDialog().setTitle(R.string.dlg_select_peer_device_title);
-
 		View viewDlg = inflater.inflate(R.layout.fragment_dialog_select_peer_device, container, false);
 
 		return viewDlg;
@@ -95,9 +93,11 @@ public class FragmentDialogSelectDevice extends DialogFragment {
 	private void refreshDeviceSelectionList() {
 
 		// call list to be refreshed getting BT status
+		getDialog().setTitle(R.string.txt_no_data);
+
 		switch (listDevices.refresh()) {
 		case ERROR_NO_ADAPTER:
-			Toast.makeText(getActivity().getApplicationContext(), R.string.error_no_bluetooth_adapter_found, Toast.LENGTH_LONG).show();
+			getDialog().setTitle(R.string.error_no_bluetooth_adapter_found);
 			return;
 		case ERROR_ADAPTER_OFF:
 			final Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -106,13 +106,16 @@ public class FragmentDialogSelectDevice extends DialogFragment {
 			this.startActivity(enableBtIntent);
 			return;
 		case ERROR_NO_BONDED_DEV:
-			Toast.makeText(getActivity().getApplicationContext(), R.string.error_no_paired_bt_devices_found_pair_device_first, Toast.LENGTH_LONG).show();
+			getDialog().setTitle(R.string.error_no_paired_bt_devices_found_pair_device_first);
 			return;
 		case ERROR_NO_USB_DEVICES:
-			Toast.makeText(getActivity().getApplicationContext(), "No USB devices found. Connect device.", Toast.LENGTH_LONG).show();
+			getDialog().setTitle(R.string.error_no_usb_devices_found);
 			return;
 		case LIST_OK_BT:
 		case LIST_OK_USB:
+
+			getDialog().setTitle(R.string.dlg_select_peer_device_title);
+
 			devListAdapter = new ViewAdapterPeerDevsList(hub, listDevices.getDeviceList());
 			listViewDevices.setAdapter(devListAdapter);
 
@@ -121,7 +124,7 @@ public class FragmentDialogSelectDevice extends DialogFragment {
 			}
 
 			if (devType == DEVICE_INTERFACE.USB) {
-				listViewDevices.setOnItemClickListener(listViewBTClickListener);
+				// listViewDevices.setOnItemClickListener(listViewBTClickListener);
 			}
 
 			return;

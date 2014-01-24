@@ -20,9 +20,13 @@ public class ItemPeerDeviceUSB extends ItemPeerDevice {
 
 	@Override
 	public String getAddress() {
-		// return Integer.toHexString(vendorId) + ":" +
-		// Integer.toHexString(prodId) + ":" + String.valueOf(usbInterface);
-		return serialNumber;
+		if (serialNumber.length() < 1) {
+			return Integer.toHexString(vendorId) + ":" + Integer.toHexString(prodId) + ":" + String.valueOf(usbInterface);
+		}
+		else {
+			return serialNumber;
+		}
+
 	}
 
 }

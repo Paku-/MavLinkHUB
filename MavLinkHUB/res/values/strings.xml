@@ -53,6 +53,7 @@
     <string name="error_drone_connection_lost">Drone connection LOST !!!</string>    
     <string name="error_no_bt_adapter_or_paired_devices">No Bluetooth adapter or Paired Devices found</string>    
     <string name="error_no_paired_bt_devices_found_pair_device_first">No paired Bluetooth devices found. Pair device first.</string>
+    <string name="error_no_usb_devices_found">No compatible USB devices. Connect device.</string>    
     <string name="error_disconnect_first">Disconnect first</string>
     <string name="txt_no_data">No Data</string>    
     <string name="error_no_bluetooth_adapter_found">No Bluetooth Adapter found</string>
