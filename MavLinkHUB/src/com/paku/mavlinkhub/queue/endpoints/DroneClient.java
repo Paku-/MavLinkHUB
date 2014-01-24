@@ -2,6 +2,7 @@ package com.paku.mavlinkhub.queue.endpoints;
 
 import java.io.IOException;
 
+import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.queue.QueueIOBytes;
 import com.paku.mavlinkhub.viewadapters.devicelist.ItemPeerDevice;
 
@@ -30,8 +31,8 @@ public abstract class DroneClient extends QueueIOBytes {
 
 	public abstract boolean writeBytes(byte[] bytes) throws IOException;
 
-	protected DroneClient(Handler handler, int capacity) {
-		super(handler, capacity);
+	protected DroneClient(HUBGlobals hub, int capacity) {
+		super(hub, capacity);
 
 	}
 

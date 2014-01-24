@@ -156,7 +156,7 @@ public class FragmentDialogSelectDevice extends DialogFragment {
 					hub.logger.sysLog(TAG, "Me  : " + hub.droneClient.getMyName() + " [" + hub.droneClient.getMyAddress() + "]");
 					hub.logger.sysLog(TAG, "Peer: " + selectedDev.getName() + " [" + selectedDev.getAddress() + "]");
 
-					hub.droneClient.startClient(selectedDev);
+					hub.switchClient(selectedDev);
 
 					listDevices.setDevState(position, PEER_DEV_STATE.DEV_STATE_CONNECTED);
 					Toast.makeText(getActivity(), R.string.txt_device_connecting, Toast.LENGTH_SHORT).show();

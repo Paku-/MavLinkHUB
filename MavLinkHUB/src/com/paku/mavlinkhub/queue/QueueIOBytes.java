@@ -2,6 +2,8 @@ package com.paku.mavlinkhub.queue;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayDeque;
+
+import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.enums.SOCKET_STATE;
 
@@ -14,18 +16,18 @@ public abstract class QueueIOBytes {
 	@SuppressWarnings("unused")
 	private static final String TAG = QueueIOBytes.class.getSimpleName();
 
+	public final HUBGlobals hub;
+
 	private final ArrayDeque<ByteBuffer> inputByteQueue;
 	private final ArrayDeque<ByteBuffer> outputByteQueue;
-	// hub wide msg center
-	public Handler appMsgHandler;
 
-	protected QueueIOBytes(Handler msgCenter, int capacity) {
+	protected QueueIOBytes(HUBGlobals hub, int capacity) {
 		// to the device
 		outputByteQueue = new ArrayDeque<ByteBuffer>(capacity);
 		// from the device
 		inputByteQueue = new ArrayDeque<ByteBuffer>(capacity);
 
-		this.appMsgHandler = msgCenter;
+		this.hub = hub;
 
 	}
 
@@ -101,18 +103,18 @@ public abstract class QueueIOBytes {
 				// ===== Those are only sent by drone/client threads ======
 
 				case MSG_SOCKET_DRONE_CLIENT_LOST_CONNECTION:
-					appMsgHandler.obtainMessage(APP_STATE.MSG_DRONE_CONNECTION_LOST.ordinal()).sendToTarget();
+					hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DRONE_CONNECTION_LOST.ordinal()).sendToTarget();
 					break;
 
 				// ===== Those are only sent by gs/servers threads ======
 
 				// new client connected
 				case MSG_SOCKET_SERVER_CLIENT_CONNECTED:
-					appMsgHandler.obtainMessage(APP_STATE.MSG_SERVER_CLIENT_CONNECTED.ordinal(), byteMsg.arg1, byteMsg.arg2, byteMsg.obj).sendToTarget();
+					hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_SERVER_CLIENT_CONNECTED.ordinal(), byteMsg.arg1, byteMsg.arg2, byteMsg.obj).sendToTarget();
 					break;
 				// Client lost;
 				case MSG_SOCKET_SERVER_CLIENT_DISCONNECTED:
-					appMsgHandler.obtainMessage(APP_STATE.MSG_SERVER_CLIENT_DISCONNECTED.ordinal()).sendToTarget();
+					hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_SERVER_CLIENT_DISCONNECTED.ordinal()).sendToTarget();
 					break;
 				default:
 					super.handleMessage(byteMsg);

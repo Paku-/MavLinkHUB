@@ -2,6 +2,7 @@ package com.paku.mavlinkhub.queue.endpoints.drone;
 
 import java.io.IOException;
 
+import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.enums.DEVICE_INTERFACE;
 import com.paku.mavlinkhub.queue.endpoints.DroneClient;
 import com.paku.mavlinkhub.utils.ThreadSocketReader;
@@ -27,8 +28,8 @@ public class DroneClientBluetooth extends DroneClient {
 	private DroneClientBluetoothConnThread droneConnectingBluetoothThread;
 	private ThreadSocketReader socketClientReaderThreadBT;
 
-	public DroneClientBluetooth(Handler messenger) {
-		super(messenger, SIZEBUFF);
+	public DroneClientBluetooth(HUBGlobals hub) {
+		super(hub, SIZEBUFF);
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 	}
 

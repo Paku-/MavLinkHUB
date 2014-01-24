@@ -2,6 +2,7 @@ package com.paku.mavlinkhub.queue.endpoints.gs;
 
 import java.io.IOException;
 
+import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.queue.endpoints.GroundStationServer;
 
@@ -19,8 +20,8 @@ public class GroundStationServerTCP extends GroundStationServer {
 
 	private Handler handlerServerMsgRead;
 
-	public GroundStationServerTCP(Handler handler) {
-		super(handler, SIZEBUFF);
+	public GroundStationServerTCP(HUBGlobals hub) {
+		super(hub, SIZEBUFF);
 	}
 
 	@Override
@@ -33,7 +34,7 @@ public class GroundStationServerTCP extends GroundStationServer {
 		serverTCP.start();
 
 		// send hub wide server_started msg
-		appMsgHandler.obtainMessage(APP_STATE.MSG_SERVER_STARTED.ordinal(), 0, 0, port).sendToTarget();
+		hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_SERVER_STARTED.ordinal(), 0, 0, port).sendToTarget();
 	}
 
 	@Override
@@ -45,7 +46,7 @@ public class GroundStationServerTCP extends GroundStationServer {
 		}
 
 		serverTCP.stopMe();
-		appMsgHandler.obtainMessage(APP_STATE.MSG_SERVER_STOPPED.ordinal()).sendToTarget();
+		hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_SERVER_STOPPED.ordinal()).sendToTarget();
 	}
 
 	@Override

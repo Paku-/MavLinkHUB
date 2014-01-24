@@ -2,6 +2,7 @@ package com.paku.mavlinkhub.queue.endpoints;
 
 import java.io.IOException;
 
+import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.queue.QueueIOBytes;
 
 import android.os.Handler;
@@ -21,8 +22,8 @@ public abstract class GroundStationServer extends QueueIOBytes {
 
 	public abstract boolean writeBytes(byte[] bytes) throws IOException;
 
-	protected GroundStationServer(Handler handler, int capacity) {
-		super(handler, capacity);
+	protected GroundStationServer(HUBGlobals hub, int capacity) {
+		super(hub, capacity);
 	}
 
 }
