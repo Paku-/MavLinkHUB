@@ -17,12 +17,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ViewAdapterPeerBTDevsList extends ArrayAdapter<ItemPeerDevice> {
+public class ViewAdapterPeerDevsList extends ArrayAdapter<ItemPeerDevice> {
 
 	private final HUBGlobals hub;
 	private final ArrayList<ItemPeerDevice> itemsArrayList;
 
-	public ViewAdapterPeerBTDevsList(HUBGlobals hub, ArrayList<ItemPeerDevice> itemsArrayList) {
+	public ViewAdapterPeerDevsList(HUBGlobals hub, ArrayList<ItemPeerDevice> itemsArrayList) {
 
 		super(hub, R.layout.listviewitem_bt_devs, itemsArrayList);
 

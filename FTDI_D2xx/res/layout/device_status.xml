@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<LinearLayout
+    android:id="@+id/device_loopback_details"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/button_misc_test"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Start API Test"
+        android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/ModemStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="35dip"
+            android:text="ModemStatus : "
+            android:textSize="20sp" />
+        
+                <TextView
+            android:id="@+id/LineStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="35dip"
+            android:text="LineStatus : "
+            android:textSize="20sp" />
+                    
+        <TextView
+            android:id="@+id/LatencyTimer"
+            android:layout_width="wrap_content"
+            android:layout_height="35dip"
+            android:text="LatencyTimer : "
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/Description"
+            android:layout_width="wrap_content"
+            android:layout_height="35dip"
+            android:text="Description : "
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/BitMode1"
+            android:layout_width="wrap_content"
+            android:layout_height="35dip"
+            android:text="Set RESET BitMode : "
+            android:textSize="20sp" />
+        
+        <TextView
+            android:id="@+id/BitMode2"
+            android:layout_width="wrap_content"
+            android:layout_height="35dip"
+            android:text="Set ASYNC BITBANG BitMode : "
+            android:textSize="20sp" />
+    
+        <TextView
+            android:id="@+id/BitMode3"
+            android:layout_width="wrap_content"
+            android:layout_height="35dip"
+            android:text="Set MPSSE BitMode : "
+            android:textSize="20sp" />
+        
+        <TextView
+            android:id="@+id/BitMode4"
+            android:layout_width="wrap_content"
+            android:layout_height="35dip"
+            android:text="Set SYNC BITBANG BitMode : "
+            android:textSize="20sp" />
+        
+        <TextView
+            android:id="@+id/BitMode5"
+            android:layout_width="wrap_content"
+            android:layout_height="35dip"
+            android:text="Set MCU HOST BitMode : "
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/BitMode6"
+            android:layout_width="wrap_content"
+            android:layout_height="35dip"
+            android:text="Set FAST SERIAL BitMode : "
+            android:textSize="20sp" />
+        
+        <TextView
+            android:id="@+id/BitMode7"
+            android:layout_width="wrap_content"
+            android:layout_height="35dip"
+            android:text="Set CBUS BITBANG BitMode : "
+            android:textSize="20sp" />
+        
+        <TextView
+            android:id="@+id/BitMode8"
+            android:layout_width="wrap_content"
+            android:layout_height="35dip"
+            android:text="Set SYNC FIFO BitMode : "
+            android:textSize="20sp" />
+
+        
+    <Button
+        android:id="@+id/btn_start_set_char"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="StartTestSetChar"
+        android:text="Test Set Char"
+        android:textSize="20sp" />
+    
+    <Button
+        android:id="@+id/btn_start_test_break"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="StartTestBreak"
+        android:text="Test Set Break"
+        android:textSize="20sp" />
+        
+    <LinearLayout
+        android:id="@+id/lin3"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/ErrorInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+</LinearLayout>
+</ScrollView >

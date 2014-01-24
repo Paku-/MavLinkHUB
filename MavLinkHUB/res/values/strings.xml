@@ -62,8 +62,8 @@
     <string name="close_dlg_msg_current_connection_will_be_lost">Current connection will be lost</string>    
     <string name="close_dlg_positive">Close me</string>    
     <string name="close_dlg_negative">Keep running</string>    
-<!-- BT select Device Dialog Msgs-->
-    <string name="dlg_bt_select_device_title">Select Device</string>
+<!-- Select Device Dialog Msgs-->
+    <string name="dlg_select_peer_device_title">Select Device</string>
     <string name="txt_device_connected">Device connected</string>
     <string name="txt_device_disconnected">Device disconnected</string>
     <string name="txt_device_connecting">Connecting device</string>        

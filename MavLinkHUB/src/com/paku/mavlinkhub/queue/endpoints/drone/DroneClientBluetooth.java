@@ -2,8 +2,10 @@ package com.paku.mavlinkhub.queue.endpoints.drone;
 
 import java.io.IOException;
 
+import com.paku.mavlinkhub.enums.DEVICE_INTERFACE;
 import com.paku.mavlinkhub.queue.endpoints.DroneClient;
 import com.paku.mavlinkhub.utils.ThreadSocketReader;
+import com.paku.mavlinkhub.viewadapters.devicelist.ItemPeerDevice;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -31,17 +33,22 @@ public class DroneClientBluetooth extends DroneClient {
 	}
 
 	@Override
-	public void startClient(String address) {
+	public void startClient(ItemPeerDevice drone) {
 
-		// start connection threat
-		if (mBluetoothAdapter == null) {
-			return;
+		if (drone.getDevInterface() == DEVICE_INTERFACE.Bluetooth) {
+
+			// start connection threat
+			if (mBluetoothAdapter == null) {
+				return;
+			}
+
+			mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(drone.getAddress());
+			// create and start BT specific connection thread
+			droneConnectingBluetoothThread = new DroneClientBluetoothConnThread(this, mBluetoothAdapter, mBluetoothDevice);
+			droneConnectingBluetoothThread.start();
 		}
+		;
 
-		mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(address);
-		// create and start BT specific connection thread
-		droneConnectingBluetoothThread = new DroneClientBluetoothConnThread(this, mBluetoothAdapter, mBluetoothDevice);
-		droneConnectingBluetoothThread.start();
 		return;
 
 	}

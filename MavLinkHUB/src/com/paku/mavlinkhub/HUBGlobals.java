@@ -1,5 +1,6 @@
 package com.paku.mavlinkhub;
 
+import com.ftdi.j2xx.D2xxManager;
 import com.paku.mavlinkhub.enums.UI_MODE;
 import com.paku.mavlinkhub.fragments.FragmentsAdapter;
 import com.paku.mavlinkhub.messenger.HUBMessenger;
@@ -15,6 +16,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 
 public class HUBGlobals extends Application {
 
@@ -42,6 +44,8 @@ public class HUBGlobals extends Application {
 	// sys log stats holder object
 	public HUBLogger logger;
 
+	public static D2xxManager usbHub = null;
+
 	// we are a Fragment Application
 	public FragmentsAdapter mFragmentsPagerAdapter;
 	public ViewPager mViewPager;
@@ -61,6 +65,16 @@ public class HUBGlobals extends Application {
 		messenger = new HUBMessenger(this);
 
 		logger = new HUBLogger(this);
+
+		try {
+			usbHub = D2xxManager.getInstance(this);
+		}
+		catch (D2xxManager.D2xxException ex) {
+			ex.printStackTrace();
+		}
+
+		// setup the additinal VIDPIDPAIR
+		if (!usbHub.setVIDPID(0x0403, 0xada1)) Log.i("ftd2xx-java", "setVIDPID Error");
 
 		// create client - by default BT (not connected)
 		droneClient = new DroneClientBluetooth(messenger.appMsgHandler);

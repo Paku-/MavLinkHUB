@@ -6,7 +6,7 @@
     android:orientation="vertical" >
 
     <ListView
-        android:id="@+id/listView_bt_select_device"
+        android:id="@+id/listView_select_peer_device"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 

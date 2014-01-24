@@ -4,6 +4,7 @@ import com.paku.mavlinkhub.enums.MSG_SOURCE;
 import com.paku.mavlinkhub.fragments.FragmentsAdapter;
 import com.paku.mavlinkhub.fragments.dialogs.FragmentAlertDialogHubActions;
 import com.paku.mavlinkhub.fragments.dialogs.FragmentDialogBluetoothDevices;
+import com.paku.mavlinkhub.fragments.dialogs.FragmentDialogSelectDevice;
 import com.paku.mavlinkhub.interfaces.IDataUpdateStats;
 
 import android.app.AlertDialog;
@@ -124,7 +125,7 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 			}
 			fragManager.addToBackStack(null);
 
-			DialogFragment btSelectDevDialog = FragmentDialogBluetoothDevices.newInstance();
+			DialogFragment btSelectDevDialog = FragmentDialogSelectDevice.newInstance();
 			btSelectDevDialog.setCancelable(false);
 			btSelectDevDialog.show(fragManager, "bt_select_device");
 

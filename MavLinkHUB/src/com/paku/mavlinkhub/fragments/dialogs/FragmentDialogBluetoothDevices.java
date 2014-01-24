@@ -6,9 +6,9 @@ import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.enums.PEER_DEV_STATE;
 import com.paku.mavlinkhub.fragments.FragmentConnectionState;
-import com.paku.mavlinkhub.viewadapters.ViewAdapterPeerBTDevsList;
+import com.paku.mavlinkhub.viewadapters.ViewAdapterPeerDevsList;
 import com.paku.mavlinkhub.viewadapters.devicelist.ItemPeerDevice;
-import com.paku.mavlinkhub.viewadapters.devicelist.bluetooth.ListPeerDevicesBluetooth;
+import com.paku.mavlinkhub.viewadapters.devicelist.interfaces.ListPeerDevicesBluetooth;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
@@ -30,7 +30,7 @@ public class FragmentDialogBluetoothDevices extends DialogFragment {
 
 	ListPeerDevicesBluetooth listBTDevices;
 	ListView listViewBTDevices;
-	ViewAdapterPeerBTDevsList devListAdapter;
+	ViewAdapterPeerDevsList devListAdapter;
 
 	public static FragmentDialogBluetoothDevices newInstance() {
 
@@ -69,9 +69,9 @@ public class FragmentDialogBluetoothDevices extends DialogFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		getDialog().setTitle(R.string.dlg_bt_select_device_title);
+		getDialog().setTitle(R.string.dlg_select_peer_device_title);
 
-		View viewDlg = inflater.inflate(R.layout.fragment_dialog_bluetooth_select_device, container, false);
+		View viewDlg = inflater.inflate(R.layout.fragment_dialog_select_peer_device, container, false);
 
 		return viewDlg;
 	}
@@ -80,7 +80,7 @@ public class FragmentDialogBluetoothDevices extends DialogFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		listViewBTDevices = (ListView) getView().findViewById(R.id.listView_bt_select_device);
+		listViewBTDevices = (ListView) getView().findViewById(R.id.listView_select_peer_device);
 
 		refreshBtDevList();
 
@@ -112,8 +112,8 @@ public class FragmentDialogBluetoothDevices extends DialogFragment {
 
 			// our list has fresh BT devs items and adapter is ready, we can
 			// connect
-		case LIST_OK:
-			devListAdapter = new ViewAdapterPeerBTDevsList(hub, listBTDevices.getDeviceList());
+		case LIST_OK_BT:
+			devListAdapter = new ViewAdapterPeerDevsList(hub, listBTDevices.getDeviceList());
 			listViewBTDevices.setAdapter(devListAdapter);
 			listViewBTDevices.setOnItemClickListener(listViewBTClickListener);
 			return;
@@ -145,7 +145,7 @@ public class FragmentDialogBluetoothDevices extends DialogFragment {
 					hub.logger.sysLog(TAG, "Me  : " + hub.droneClient.getMyName() + " [" + hub.droneClient.getMyAddress() + "]");
 					hub.logger.sysLog(TAG, "Peer: " + selectedDev.getName() + " [" + selectedDev.getAddress() + "]");
 
-					hub.droneClient.startClient(selectedDev.getAddress());
+					hub.droneClient.startClient(selectedDev);
 
 					listBTDevices.setDevState(position, PEER_DEV_STATE.DEV_STATE_CONNECTED);
 					Toast.makeText(getActivity(), R.string.txt_device_connecting, Toast.LENGTH_SHORT).show();

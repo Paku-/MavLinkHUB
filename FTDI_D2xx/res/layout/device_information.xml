@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/device_information_details"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+   <TextView
+        android:id="@+id/ErrorInformation"
+        android:layout_width="fill_parent"
+        android:textSize="20sp"        
+        android:layout_height="40dp"
+        android:layout_margin="3dp"/>    
+    
+	<TextView
+	    android:id="@+id/numDev"
+        android:layout_width="fill_parent"
+        android:textSize="20sp"
+        android:layout_height="40dp"
+        android:layout_margin="3dp"/>
+
+   <TextView
+        android:id="@+id/devName"
+        android:layout_width="fill_parent"
+        android:textSize="20sp"
+        android:layout_height="40dp"
+        android:layout_margin="3dp" />
+   
+   <TextView
+        android:id="@+id/device_information_serialno"
+        android:layout_width="fill_parent"
+        android:textSize="20sp"
+        android:layout_height="40dp"
+        android:layout_margin="3dp" />
+      
+   <TextView
+        android:id="@+id/device_information_description"
+        android:layout_width="fill_parent"
+        android:textSize="20sp"
+        android:layout_height="40dp"
+        android:layout_margin="3dp" />
+   
+   <TextView
+        android:id="@+id/device_informatation_deviceid"
+        android:layout_width="fill_parent"
+        android:textSize="20sp"
+        android:layout_height="40dp" />   
+ 
+   	<TextView
+        android:id="@+id/device_informatation_devicelocation"
+        android:layout_width="fill_parent"
+        android:textSize="20sp"
+        android:layout_height="40dp" /> 
+  
+   	<TextView
+        android:id="@+id/device_informatation_library"
+        android:layout_width="fill_parent"
+        android:textSize="20sp"
+        android:layout_height="40dp" />
+   	
+    <Button
+        android:id="@+id/device_informatation_refresh"
+        android:layout_width="fill_parent"
+        android:textSize="20sp"
+        android:layout_height="40dp" 
+        android:text="Refresh"
+        android:onClick="RefrestDeviceInformation"/> 
+        
+</LinearLayout>

@@ -6,15 +6,19 @@ import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.enums.UI_MODE;
 import com.paku.mavlinkhub.queue.items.ItemMavLinkMsg;
 
+import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.hardware.usb.UsbDevice;
+import android.hardware.usb.UsbManager;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 import android.widget.Toast;
 
 public class HUBMessenger extends HUBInterfaceMenager {
@@ -96,6 +100,7 @@ public class HUBMessenger extends HUBInterfaceMenager {
 		};
 
 		startBroadcastReceiverBluetooth();
+		startBroadcastReceiverUSB();
 
 	}
 
@@ -193,6 +198,35 @@ public class HUBMessenger extends HUBInterfaceMenager {
 
 		// finally register this receiver for intents on BT adapter changes
 		hub.registerReceiver(broadcastReceiverBluetooth, intentFilterBluetooth);
+
+	}
+
+	private void startBroadcastReceiverUSB() {
+
+		final String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
+		final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
+
+			public void onReceive(Context context, Intent intent) {
+				String action = intent.getAction();
+				if (ACTION_USB_PERMISSION.equals(action)) {
+					synchronized (this) {
+						UsbDevice device = (UsbDevice) intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+
+						if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
+							if (device != null) {
+								// call method to set up device communication
+							}
+						}
+						else {
+							Log.d(TAG, "permission denied for device " + device);
+						}
+					}
+				}
+			}
+		};
+
+		IntentFilter filter = new IntentFilter(ACTION_USB_PERMISSION);
+		hub.registerReceiver(mUsbReceiver, filter);
 
 	}
 

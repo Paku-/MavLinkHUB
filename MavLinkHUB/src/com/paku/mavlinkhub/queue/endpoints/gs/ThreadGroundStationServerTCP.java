@@ -24,6 +24,7 @@ public class ThreadGroundStationServerTCP extends Thread {
 	public ThreadGroundStationServerTCP(Handler handler, int port) {
 		try {
 
+			// /could be the port is already used - we need a check ...
 			serverSocket = new ServerSocket(port);
 		}
 		catch (IOException e) {

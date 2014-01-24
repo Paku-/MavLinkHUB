@@ -1,0 +1,88 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/device_configure_details"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+
+	<Button
+		android:id="@+id/set_pidvid"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="Set PID VID"		
+		/>
+<!-- android:onClick="Set_PIDVID_Click" -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/view_pid"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:text="Product ID :" />
+
+        <EditText
+            android:id="@+id/edit_pid"
+            android:digits="@string/hex_digits_letter"  
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.00"
+            android:maxLength="4"
+            android:ems="10" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/view_vid"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:text="Vendor ID :" />
+
+        <EditText
+            android:id="@+id/edit_vid"
+            android:digits="@string/hex_digits_letter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLength="4"
+            android:ems="10" />
+
+    </LinearLayout>
+
+    
+
+	<Button
+		android:id="@+id/get_pidvid"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="Get PID VID"
+		/>
+    
+    
+   <ScrollView
+	    android:id="@+id/ReadField"
+	    android:layout_width="fill_parent"
+		android:layout_height="0dp"
+	    android:layout_weight="10"
+	    android:layout_marginBottom="0dp"	 
+	    >
+        
+	    
+		<TextView		     
+		    android:id="@+id/ReadValues"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"    
+		    android:layout_margin="0dip"		    		    
+		    android:focusableInTouchMode="false"
+		    android:gravity="left|top"
+		    android:maxLines="100"
+		     >	      
+	  </TextView>
+    </ScrollView>
+
+</LinearLayout>

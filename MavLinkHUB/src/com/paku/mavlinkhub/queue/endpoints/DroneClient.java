@@ -3,6 +3,7 @@ package com.paku.mavlinkhub.queue.endpoints;
 import java.io.IOException;
 
 import com.paku.mavlinkhub.queue.QueueIOBytes;
+import com.paku.mavlinkhub.viewadapters.devicelist.ItemPeerDevice;
 
 import android.os.Handler;
 
@@ -13,7 +14,7 @@ public abstract class DroneClient extends QueueIOBytes {
 
 	// application handler used to report connection states
 
-	public abstract void startClient(String address);
+	public abstract void startClient(ItemPeerDevice drone);
 
 	public abstract void stopClient();
 

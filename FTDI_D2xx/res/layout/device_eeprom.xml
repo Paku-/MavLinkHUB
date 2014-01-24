@@ -1,0 +1,272 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:scrollbarAlwaysDrawVerticalTrack="true"
+    android:scrollbarStyle="insideInset"
+    android:scrollbars="vertical" >
+         
+<!-- button area + -->	
+
+	<LinearLayout
+	    xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="fill_parent"
+	    android:layout_height="50dp"
+	    >
+
+	   	<Button
+	        android:id="@+id/eeprom_read_mode"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_margin="3dp"
+	        android:onClick="SetEEPROMReadClick"
+	        android:text="Read EEPROM"
+	        android:textSize="20sp" 
+	        android:layout_weight="1"/>
+	
+	    <Button
+	        android:id="@+id/eeprom_write_mode"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_margin="3dp"
+	        android:layout_weight="1"
+	        android:clickable="false"
+	        android:onClick="SetEEPROMWriteClick"
+	        android:text="Write EEPROM"
+	        android:textSize="20sp"
+	        />
+	
+	    <Button
+	        android:id="@+id/eeprom_erase_mode"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_margin="3dp"
+	        android:layout_weight="1"
+	        android:clickable="false"
+	        android:onClick="SetEEPROMEraseClick"
+	        android:text="Erase EEPROM"
+	        android:textSize="20sp"
+	        />
+
+	</LinearLayout>
+<!-- button area - -->
+
+<!-- property area + -->
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="fill_parent"
+	    android:layout_height="220dp"
+	    android:layout_margin="1dip"
+	    android:tag="Read block"
+
+	    >
+<!-- 	    android:background="#505050" -->	    
+	    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	    	android:orientation="vertical"
+	    	android:layout_width="0dp"
+	    	android:layout_height="fill_parent"
+	    	android:layout_marginTop="1dip"
+	    	android:layout_weight="1"
+	    	>
+	    	
+	       	<TextView android:text="Property"
+				android:id="@+id/PropertyText"
+				android:layout_height="40dp"
+				android:layout_width="fill_parent"
+				android:layout_margin="2dip"
+				android:background="#408040"
+				android:textSize="16sp"
+				android:gravity="center"
+				/>
+
+	       	<TextView android:text="Vendor ID"
+				android:id="@+id/VendorIDText"
+				android:layout_height="40dp"
+				android:layout_width="fill_parent"
+				android:textSize="16sp"
+				android:gravity="center"
+				/>
+	       	<TextView android:text="Product ID"
+				android:id="@+id/ProductIDText"
+				android:layout_height="40dp"
+				android:layout_width="fill_parent"
+				android:textSize="16sp"
+				android:gravity="center"
+				/>
+	       	<TextView android:text="Product Description"
+				android:id="@+id/ProductDescriptionText"
+				android:layout_height="40dp"
+				android:layout_width="fill_parent"
+				android:textSize="16sp"
+				android:gravity="center"
+				/>
+	       	<TextView android:text="Serial Number"
+				android:id="@+id/SerialNumberText"
+				android:layout_height="40dp"
+				android:layout_width="fill_parent"
+				android:textSize="16sp"
+				android:gravity="center"
+				/>	       		       	
+				<!-- 
+	       		       	<TextView android:text="temp1"
+				android:id="@+id/temp1"
+				android:layout_height="40dp"
+				android:layout_width="fill_parent"
+				android:layout_margin="2dip"
+				android:gravity="center"
+				/>
+					       		       	<TextView android:text="temp6"
+				android:id="@+id/temp3"
+				android:layout_height="40dp"
+				android:layout_width="fill_parent"
+				android:layout_margin="2dip"
+				android:gravity="center"
+				/>	 -->
+	    </LinearLayout>
+	    
+	    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	    	android:orientation="vertical"
+	    	android:layout_width="0dp"
+	    	android:layout_height="fill_parent"
+	    	android:layout_marginTop="1dip"
+	    	android:layout_weight="2"
+	    	>
+
+			<TextView android:text="Value"
+				android:id="@+id/ReadBlock"
+				android:layout_height="40dp"
+				android:layout_width="fill_parent"
+				android:layout_margin="2dip"
+				android:background="#408040"
+				android:textSize="16sp"
+				android:gravity="center"
+				/>	     
+				
+			<!--
+				android:numeric="integer"
+			 	android:digits="0123456789"
+			  -->
+
+			 <EditText android:id="@+id/VendorIDValue"
+			 	android:layout_height="40dp"
+			 	android:layout_width="fill_parent"
+			 	android:lines="1"
+			 	android:gravity="center"
+			 	android:focusable="false"
+			 	/>
+			 <EditText android:id="@+id/ProductIDValue"
+			 	android:layout_height="40dp"
+			 	android:layout_width="fill_parent"
+			 	android:lines="1"
+			 	android:gravity="center"
+			 	android:focusable="false"
+			 	/>
+			 <EditText android:id="@+id/ProductDescriptionValue"
+			 	android:layout_height="40dp"
+			 	android:layout_width="fill_parent"
+			 	android:lines="1"
+			 	android:gravity="center"
+			 	/>
+			 <EditText android:id="@+id/SerialNumberValue"
+			 	android:layout_height="40dp"
+			 	android:layout_width="fill_parent"
+			 	android:lines="1"
+			 	android:gravity="center"
+			 	/>			 
+	    </LinearLayout>	    	
+	</LinearLayout>
+<!-- property area - -->
+
+        
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/data1"
+            android:layout_width="105dp"
+            android:layout_height="35dip"
+            android:textSize="20sp"
+            android:text="Data(3A) : " />
+
+    	<EditText
+    	    android:id="@+id/dataVal1"
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content"
+    	    android:ems="5"
+    	    android:inputType="number"
+    	    android:maxLength="5" />    
+    </LinearLayout>
+        
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/data2"
+            android:layout_width="105dp"
+            android:layout_height="35dip"
+            android:textSize="20sp"
+            android:text="Data(3B) : " />
+
+    	<EditText
+    	    android:id="@+id/dataVal2"
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content"
+    	    android:ems="5"
+    	    android:inputType="number"
+    	    android:maxLength="5" />    
+    </LinearLayout>
+        
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/data3"
+            android:layout_width="105dp"
+            android:layout_height="35dip"
+            android:textSize="20sp"
+            android:text="Data(3C) : " />
+
+    	<EditText
+    	    android:id="@+id/dataVal3"
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content"
+    	    android:ems="5"
+    	    android:inputType="number"
+    	    android:maxLength="5" />    
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/data4"
+            android:layout_width="105dp"
+            android:layout_height="35dip"
+            android:textSize="20sp"
+            android:text="Data(3D) : " />
+
+    	<EditText
+    	    android:id="@+id/dataVal4"
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content"
+    	    android:ems="5"
+    	    android:inputType="number"
+    	    android:maxLength="5" />    
+    </LinearLayout>
+    
+    
+<!-- eeprom area + -->	
+	<!-- 
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="fill_parent"
+	    android:layout_height="300dp"
+	    android:background="#2200ff"
+	    >
+	</LinearLayout>
+	-->
+<!-- eeprom area + -->	    	
+</LinearLayout>

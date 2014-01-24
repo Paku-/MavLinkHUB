@@ -4,4 +4,7 @@ Drone link
 				long time = System.currentTimeMillis() * 1000;
 				logBuffer.putLong(time);
 				logWriter.write(logBuffer.array());
-				logWriter.write(receivedPacket.encodePacket());	
+				logWriter.write(receivedPacket.encodePacket());
+				
+				
+				dev_add	

@@ -43,7 +43,9 @@
             android:layout_centerVertical="true"
             android:layout_margin="2dp"
             android:text="@string/txt_no_data"
+            android:textColor="@color/hubMedium"
             android:textSize="15sp" />
+
     </RelativeLayout>
 
     <RelativeLayout
