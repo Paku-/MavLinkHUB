@@ -1,10 +1,13 @@
 package com.paku.mavlinkhub.messenger;
 
+import java.net.InetSocketAddress;
+
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.enums.UI_MODE;
 import com.paku.mavlinkhub.queue.items.ItemMavLinkMsg;
+import com.paku.mavlinkhub.utils.Utils;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -22,7 +25,8 @@ import android.widget.Toast;
 
 public class HUBMessenger extends HUBInterfaceMenager {
 
-	private static final String TAG = HUBMessenger.class.getSimpleName();
+	//private static final String TAG = HUBMessenger.class.getSimpleName();
+	private static final String TAG = "SYSTEM";
 
 	public Handler appMsgHandler;
 
@@ -38,7 +42,7 @@ public class HUBMessenger extends HUBInterfaceMenager {
 
 				switch (appStates[msg.what]) {
 				case MSG_SERVER_STARTED:
-					hub.logger.sysLog(TAG, "Server Started on port: " + msg.obj.toString());
+					hub.logger.sysLog(TAG, "Server Started [" + Utils.getIPAddress(true) + ":" + ((InetSocketAddress) msg.obj).getPort() + "]");
 					// no action yet
 					break;
 				case MSG_SERVER_STOPPED:

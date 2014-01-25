@@ -25,7 +25,7 @@ import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-//public class HUBActivityMain extends ActionBarActivity implements IDataUpdateStats {
+// public class HUBActivityMain extends ActionBarActivity implements IDataUpdateStats {
 public class HUBActivityMain extends FragmentActivity implements IDataUpdateStats {
 
 	private static final String TAG = HUBActivityMain.class.getSimpleName();
@@ -191,7 +191,7 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 		if (hub.droneClient.isConnected()) {
 
 			final AlertDialog.Builder dlg = new AlertDialog.Builder(this);
-			dlg.setTitle(getString(R.string.close_dlg_title_mavlink_closing) + "[" + hub.droneClient.getPeerName() + "]");
+			dlg.setTitle(getString(R.string.close_dlg_title_mavlink_closing) + " [" + hub.droneClient.getPeerName() + "]");
 			dlg.setMessage(R.string.close_dlg_msg_current_connection_will_be_lost);
 			dlg.setCancelable(false);
 			dlg.setPositiveButton(R.string.close_dlg_positive, positiveButtonClickListener);

@@ -18,10 +18,10 @@ public class ItemMavLinkMsgTxt {
 	public MSG_SOURCE direction;
 
 	public ItemMavLinkMsgTxt(ItemMavLinkMsg msgItem, MavLinkClassExtractor mavClasses) {
-		setMe(msgItem, mavClasses);
+		//setMe(msgItem, mavClasses);
 	}
 
-	private void setMe(ItemMavLinkMsg msgItem, MavLinkClassExtractor mavClasses) {
+	public void setMe(ItemMavLinkMsg msgItem, MavLinkClassExtractor mavClasses) {
 
 		// MavLink package sender and sequence number
 		direction = msgItem.direction;

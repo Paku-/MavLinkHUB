@@ -24,6 +24,20 @@ public class ViewAdapterMavlinkMsgList extends ArrayAdapter<ItemMavLinkMsg> {
 	// mavlink classes' names helper class
 	private MavLinkClassExtractor mavClasses;
 
+	//anty gc
+
+	private LayoutInflater inflater;
+	private View msgItemView;
+
+	private TextView msgName;
+	private TextView mainText;
+	private TextView desc1;
+	private TextView desc2;
+	private TextView desc3;
+	private TextView desc4;
+
+	private ItemMavLinkMsgTxt msgTxtItem;
+
 	public ViewAdapterMavlinkMsgList(HUBGlobals hub, ArrayList<ItemMavLinkMsg> itemsArrayList) {
 
 		super(hub, R.layout.listviewitem_mavlinkmsg, itemsArrayList);
@@ -35,22 +49,24 @@ public class ViewAdapterMavlinkMsgList extends ArrayAdapter<ItemMavLinkMsg> {
 		// mavlink msgs fields name reference object
 		this.mavClasses = new MavLinkClassExtractor();
 
+		inflater = (LayoutInflater) hub.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		msgTxtItem = new ItemMavLinkMsgTxt(null, null);
+
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		LayoutInflater inflater = (LayoutInflater) hub.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View msgItemView = inflater.inflate(R.layout.listviewitem_mavlinkmsg, parent, false);
+		msgItemView = inflater.inflate(R.layout.listviewitem_mavlinkmsg, parent, false);
 
-		TextView msgName = (TextView) msgItemView.findViewById(R.id.listViewMsgItemTxt_Text1);
-		TextView mainText = (TextView) msgItemView.findViewById(R.id.listViewMsgItemTxt_Text2);
-		TextView desc1 = (TextView) msgItemView.findViewById(R.id.listViewMsgItemTxt_desc1);
-		TextView desc2 = (TextView) msgItemView.findViewById(R.id.listViewMsgItemTxt_desc2);
-		TextView desc3 = (TextView) msgItemView.findViewById(R.id.listViewMsgItemTxt_desc3);
-		TextView desc4 = (TextView) msgItemView.findViewById(R.id.listViewMsgItemTxt_desc4);
+		msgName = (TextView) msgItemView.findViewById(R.id.listViewMsgItemTxt_Text1);
+		mainText = (TextView) msgItemView.findViewById(R.id.listViewMsgItemTxt_Text2);
+		desc1 = (TextView) msgItemView.findViewById(R.id.listViewMsgItemTxt_desc1);
+		desc2 = (TextView) msgItemView.findViewById(R.id.listViewMsgItemTxt_desc2);
+		desc3 = (TextView) msgItemView.findViewById(R.id.listViewMsgItemTxt_desc3);
+		desc4 = (TextView) msgItemView.findViewById(R.id.listViewMsgItemTxt_desc4);
 
-		ItemMavLinkMsgTxt msgTxtItem = new ItemMavLinkMsgTxt(itemsArrayList.get(position), mavClasses);
+		msgTxtItem.setMe(itemsArrayList.get(position), mavClasses);
 
 		msgName.setText(msgTxtItem.msgName);
 		mainText.setText(msgTxtItem.mainTxt);

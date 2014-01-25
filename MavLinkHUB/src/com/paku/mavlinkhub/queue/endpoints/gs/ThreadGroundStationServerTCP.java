@@ -1,6 +1,7 @@
 package com.paku.mavlinkhub.queue.endpoints.gs;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -22,16 +23,20 @@ public class ThreadGroundStationServerTCP extends Thread {
 	public boolean running = true;
 
 	public ThreadGroundStationServerTCP(Handler handler, int port) {
+		handlerServerReadMsg = handler;
+
 		try {
 
 			// /could be the port is already used - we need a check ...
 			serverSocket = new ServerSocket(port);
+
+			handlerServerReadMsg.obtainMessage(SOCKET_STATE.MSG_SOCKET_SERVER_STARTED.ordinal(), -1, -1, new InetSocketAddress(serverSocket.getInetAddress(), serverSocket.getLocalPort()))
+					.sendToTarget();
+
 		}
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		handlerServerReadMsg = handler;
 
 	}
 
@@ -45,8 +50,8 @@ public class ThreadGroundStationServerTCP extends Thread {
 				socketServerReaderThreadTCP = new ThreadSocketReader(socket, handlerServerReadMsg);
 				socketServerReaderThreadTCP.start();
 
-				clientIP = socket.getInetAddress().toString() + ":" + socket.getPort();
-				clientIP.replace("/", " ");
+				clientIP = (socket.getInetAddress()).getHostAddress() + ":" + socket.getPort();
+				//clientIP.replace("//", " ");
 
 				handlerServerReadMsg.obtainMessage(SOCKET_STATE.MSG_SOCKET_SERVER_CLIENT_CONNECTED.ordinal(), clientIP.length(), -1, clientIP.getBytes()).sendToTarget();
 

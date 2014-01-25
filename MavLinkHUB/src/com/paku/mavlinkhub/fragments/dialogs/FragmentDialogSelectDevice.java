@@ -2,9 +2,7 @@ package com.paku.mavlinkhub.fragments.dialogs;
 
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
-import com.paku.mavlinkhub.enums.DEVICE_INTERFACE;
 import com.paku.mavlinkhub.enums.PEER_DEV_STATE;
-import com.paku.mavlinkhub.fragments.FragmentConnectionState;
 import com.paku.mavlinkhub.viewadapters.ViewAdapterPeerDevsList;
 import com.paku.mavlinkhub.viewadapters.devicelist.ItemPeerDevice;
 import com.paku.mavlinkhub.viewadapters.devicelist.ListPeerDevices;

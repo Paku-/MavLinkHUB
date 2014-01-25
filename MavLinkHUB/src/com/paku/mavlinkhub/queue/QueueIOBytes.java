@@ -116,6 +116,9 @@ public abstract class QueueIOBytes {
 				case MSG_SOCKET_SERVER_CLIENT_DISCONNECTED:
 					hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_SERVER_CLIENT_DISCONNECTED.ordinal()).sendToTarget();
 					break;
+				case MSG_SOCKET_SERVER_STARTED:
+					hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_SERVER_STARTED.ordinal(), byteMsg.arg1, byteMsg.arg2, byteMsg.obj).sendToTarget();
+					break;
 				default:
 					super.handleMessage(byteMsg);
 

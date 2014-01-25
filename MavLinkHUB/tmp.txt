@@ -10,3 +10,17 @@ Drone link
 				dev_add	
 				
 				remove
+				
+				LOST
+				
+				error_drone
+				
+				.read
+				
+				Peer:
+				
+				Connected:
+				
+				on port
+				
+				Active

@@ -86,6 +86,7 @@ public class FragmentDialogBluetoothDevices extends DialogFragment {
 
 	}
 
+	@SuppressWarnings("unused")
 	private void refreshBtDevListView() {
 		ArrayList<ItemPeerDevice> clone = new ArrayList<ItemPeerDevice>();
 		clone.addAll(listBTDevices.getDeviceList());
@@ -152,7 +153,7 @@ public class FragmentDialogBluetoothDevices extends DialogFragment {
 					dismiss();
 				}
 				else {
-					Log.d(TAG, "Connect on connected device attempt");
+					Log.d(TAG, "Device already connected");
 					Toast.makeText(getActivity(), R.string.error_disconnect_first, Toast.LENGTH_SHORT).show();
 				}
 

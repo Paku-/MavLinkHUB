@@ -27,7 +27,7 @@
             android:layout_marginRight="33dp"
             android:layout_toLeftOf="@+id/listViewItemTxt_dev_name"
             android:fitsSystemWindows="false"
-            android:src="@drawable/ic_action_bluetooth_connected" />
+            android:src="@drawable/ic_action_important" />
 
     </RelativeLayout>
 
