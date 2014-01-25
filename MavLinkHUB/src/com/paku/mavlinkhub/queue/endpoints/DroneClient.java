@@ -6,14 +6,14 @@ import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.queue.QueueIOBytes;
 import com.paku.mavlinkhub.viewadapters.devicelist.ItemPeerDevice;
 
-import android.os.Handler;
-
 public abstract class DroneClient extends QueueIOBytes {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = DroneClient.class.getSimpleName();
 
 	// application handler used to report connection states
+
+	private ItemPeerDevice myPeerDevice;
 
 	public abstract void startClient(ItemPeerDevice drone);
 
@@ -33,7 +33,14 @@ public abstract class DroneClient extends QueueIOBytes {
 
 	protected DroneClient(HUBGlobals hub, int capacity) {
 		super(hub, capacity);
+	}
 
+	public ItemPeerDevice getMyPeerDevice() {
+		return myPeerDevice;
+	}
+
+	public void setMyPeerDevice(ItemPeerDevice myPeerDevice) {
+		this.myPeerDevice = myPeerDevice;
 	}
 
 }

@@ -5,8 +5,6 @@ import java.io.IOException;
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.queue.QueueIOBytes;
 
-import android.os.Handler;
-
 public abstract class GroundStationServer extends QueueIOBytes {
 
 	@SuppressWarnings("unused")

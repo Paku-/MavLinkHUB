@@ -24,7 +24,7 @@ public class ViewAdapterPeerDevsList extends ArrayAdapter<ItemPeerDevice> {
 
 	public ViewAdapterPeerDevsList(HUBGlobals hub, ArrayList<ItemPeerDevice> itemsArrayList) {
 
-		super(hub, R.layout.listviewitem_bt_devs, itemsArrayList);
+		super(hub, R.layout.listviewitem_select_device, itemsArrayList);
 
 		this.hub = hub;
 		this.itemsArrayList = itemsArrayList;
@@ -34,7 +34,7 @@ public class ViewAdapterPeerDevsList extends ArrayAdapter<ItemPeerDevice> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 
 		LayoutInflater inflater = (LayoutInflater) hub.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View rowView = inflater.inflate(R.layout.listviewitem_bt_devs, parent, false);
+		View rowView = inflater.inflate(R.layout.listviewitem_select_device, parent, false);
 
 		TextView txtViewDevName = (TextView) rowView.findViewById(R.id.listViewItemTxt_dev_name);
 		TextView txtViewDevAddress = (TextView) rowView.findViewById(R.id.listViewItemTxt_dev_address);

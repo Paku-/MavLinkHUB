@@ -94,7 +94,6 @@ public class DroneClientBluetooth extends DroneClient {
 
 	@Override
 	public String getPeerName() {
-
 		return (isConnected()) ? mBluetoothSocket.getRemoteDevice().getName() : "";
 
 	}

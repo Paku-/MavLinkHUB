@@ -3,13 +3,13 @@ package com.paku.mavlinkhub.utils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.Socket;
 import java.nio.ByteBuffer;
 
+import com.ftdi.j2xx.D2xxManager;
 import com.ftdi.j2xx.FT_Device;
 import com.paku.mavlinkhub.enums.SOCKET_STATE;
 
-import android.bluetooth.BluetoothSocket;
+import android.hardware.usb.UsbDevice;
 import android.os.Handler;
 import android.util.Log;
 
@@ -19,19 +19,18 @@ public class ThreadUSBReader extends Thread {
 
 	private static final int BUFFSIZE = 1024 * 4;
 
-	private final InputStream input;
-	private final OutputStream output;
+	private static final int reqBuffLen = 4;
 
 	private final Handler handlerQueueIOBytesReceiver;
 
 	private boolean running = true;
 
+	FT_Device usbDevice;
+
 	public ThreadUSBReader(FT_Device usbDevice, Handler handlerReceiver) {
 
 		handlerQueueIOBytesReceiver = handlerReceiver;
-
-		input = null;
-		output = null;
+		this.usbDevice = usbDevice;
 
 	}
 
@@ -40,38 +39,38 @@ public class ThreadUSBReader extends Thread {
 		int len; // bytes received
 
 		while (running) {
-			try {
+			// len = usbDevice.read(buffer, buffer.length);
 
-				len = input.read(buffer, 0, buffer.length);
-				if (len > 0) {
-					final ByteBuffer byteMsg = ByteBuffer.wrap(new byte[len]);
-					byteMsg.put(buffer, 0, len);
-					byteMsg.flip();
-					handlerQueueIOBytesReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_BYTE_DATA_READY.ordinal(), len, -1, byteMsg).sendToTarget();
-				}
-				else {
-					// could happen mostly to the servers thread
-					Log.d(TAG, "** Server lost connection **");
-					handlerQueueIOBytesReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_SERVER_CLIENT_DISCONNECTED.ordinal()).sendToTarget();
-					running = false;
-				}
+			len = usbDevice.read(buffer, reqBuffLen);
+
+			// Log.d(TAG, len + "/" + reqBuffLen + ":" + (new
+			// String(buffer)).substring(0, len));
+
+			if (len > 0) {
+				//final ByteBuffer byteMsg = ByteBuffer.wrap(new byte[len]);
+				final ByteBuffer byteMsg = ByteBuffer.allocate(len);
+				byteMsg.put(buffer, 0, len);
+				byteMsg.flip();
+				handlerQueueIOBytesReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_BYTE_DATA_READY.ordinal(), len, -1, byteMsg).sendToTarget();
 			}
-			catch (IOException e) {
-				// could happen mostly to the client thread
-				Log.d(TAG, "** Client lost Drone link **" + e.getMessage());
-				handlerQueueIOBytesReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_DRONE_CLIENT_LOST_CONNECTION.ordinal()).sendToTarget();
-				running = false;
-				break;
-			}
+
+			/*
+			 * else { // could happen mostly to the servers thread Log.d(TAG,
+			 * "** Server lost connection **");
+			 * handlerQueueIOBytesReceiver.obtainMessage
+			 * (SOCKET_STATE.MSG_SOCKET_SERVER_CLIENT_DISCONNECTED
+			 * .ordinal()).sendToTarget(); running = false; }
+			 */
+
 		}
 
-		// if socketTCP.close();
+		usbDevice.stopInTask();
+		usbDevice.close();
 
 	}
 
 	public void writeBytes(byte[] bytes) throws IOException {
-		output.write(bytes);
-		output.flush();
+		usbDevice.write(bytes);
 	}
 
 	public void stopMe() {
@@ -79,7 +78,6 @@ public class ThreadUSBReader extends Thread {
 		running = false;
 		// stop it's handler as well
 		handlerQueueIOBytesReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_CLOSED.ordinal()).sendToTarget();
-
 	}
 
 	public boolean isRunning() {

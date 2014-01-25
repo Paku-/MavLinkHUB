@@ -6,7 +6,6 @@ import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.enums.UI_MODE;
 import com.paku.mavlinkhub.queue.items.ItemMavLinkMsg;
 
-import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;

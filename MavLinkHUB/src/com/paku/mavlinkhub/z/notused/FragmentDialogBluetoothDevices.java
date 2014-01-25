@@ -1,4 +1,4 @@
-package com.paku.mavlinkhub.fragments.dialogs;
+package com.paku.mavlinkhub.z.notused;
 
 import java.util.ArrayList;
 
@@ -69,7 +69,7 @@ public class FragmentDialogBluetoothDevices extends DialogFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		getDialog().setTitle(R.string.dlg_select_peer_device_title);
+		getDialog().setTitle(R.string.dlg_devices_found);
 
 		View viewDlg = inflater.inflate(R.layout.fragment_dialog_select_peer_device, container, false);
 

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 public class FragmentConnectionState extends HUBFragment implements IUiModeChanged, IDroneConnectionFailed, IDroneConnected, IDroneConnectionLost {
 
+	@SuppressWarnings("unused")
 	private static final String TAG = FragmentConnectionState.class.getSimpleName();
 
 	// View progressBarConnectingBIG;

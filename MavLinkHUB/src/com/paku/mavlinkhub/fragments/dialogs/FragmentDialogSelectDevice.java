@@ -1,7 +1,5 @@
 package com.paku.mavlinkhub.fragments.dialogs;
 
-import java.util.ArrayList;
-
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.enums.DEVICE_INTERFACE;
@@ -13,6 +11,7 @@ import com.paku.mavlinkhub.viewadapters.devicelist.ListPeerDevices;
 import com.paku.mavlinkhub.viewadapters.devicelist.interfaces.ListPeerDevicesBluetooth;
 import com.paku.mavlinkhub.viewadapters.devicelist.interfaces.ListPeerDevicesUSB;
 
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,15 +26,13 @@ import android.widget.Toast;
 
 public class FragmentDialogSelectDevice extends DialogFragment {
 
-	private static final String TAG = FragmentConnectionState.class.getSimpleName();
+	private static final String TAG = FragmentDialogSelectDevice.class.getSimpleName();
 
 	HUBGlobals hub;
 
 	ListPeerDevices listDevices;
 	ListView listViewDevices;
 	ViewAdapterPeerDevsList devListAdapter;
-
-	DEVICE_INTERFACE devType = DEVICE_INTERFACE.USB;
 
 	public static FragmentDialogSelectDevice newInstance() {
 
@@ -49,10 +46,18 @@ public class FragmentDialogSelectDevice extends DialogFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		Log.d(TAG, "Created");
+
 		hub = ((HUBGlobals) getActivity().getApplication());
 
 		// / USB or BT ???
-		listDevices = new ListPeerDevicesUSB(hub);
+		if (getTag() == "usb") {
+			listDevices = new ListPeerDevicesUSB(hub);
+		}
+
+		if (getTag() == "bluetooth") {
+			listDevices = new ListPeerDevicesBluetooth(hub);
+		}
 
 		int style = DialogFragment.STYLE_NORMAL;
 		int theme = android.R.style.Theme_Holo_Light_Dialog;
@@ -84,13 +89,9 @@ public class FragmentDialogSelectDevice extends DialogFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		listViewDevices = (ListView) getView().findViewById(R.id.listView_select_peer_device);
-
-		refreshDeviceSelectionList();
-
 	}
 
-	private void refreshDeviceSelectionList() {
+	private boolean updateDevListAndDlgTitle() {
 
 		// call list to be refreshed getting BT status
 		getDialog().setTitle(R.string.txt_no_data);
@@ -98,41 +99,32 @@ public class FragmentDialogSelectDevice extends DialogFragment {
 		switch (listDevices.refresh()) {
 		case ERROR_NO_ADAPTER:
 			getDialog().setTitle(R.string.error_no_bluetooth_adapter_found);
-			return;
+			return false;
 		case ERROR_ADAPTER_OFF:
 			final Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 			// this.startActivityForResult(enableBtIntent,
 			// APP_STATE.REQUEST_ENABLE_BT);
 			this.startActivity(enableBtIntent);
-			return;
+			return false;
 		case ERROR_NO_BONDED_DEV:
 			getDialog().setTitle(R.string.error_no_paired_bt_devices_found_pair_device_first);
-			return;
+			return false;
 		case ERROR_NO_USB_DEVICES:
 			getDialog().setTitle(R.string.error_no_usb_devices_found);
-			return;
+			return false;
 		case LIST_OK_BT:
 		case LIST_OK_USB:
 
-			getDialog().setTitle(R.string.dlg_select_peer_device_title);
+			getDialog().setTitle(R.string.dlg_devices_found);
 
-			devListAdapter = new ViewAdapterPeerDevsList(hub, listDevices.getDeviceList());
-			listViewDevices.setAdapter(devListAdapter);
-
-			if (devType == DEVICE_INTERFACE.Bluetooth) {
-				listViewDevices.setOnItemClickListener(listViewBTClickListener);
-			}
-
-			if (devType == DEVICE_INTERFACE.USB) {
-				// listViewDevices.setOnItemClickListener(listViewBTClickListener);
-			}
-
-			return;
+			return true;
 		default:
 			break;
 
 		}
-		return;
+
+		getDialog().setTitle("Unknown State Error");
+		return false;
 	}
 
 	/*
@@ -142,7 +134,45 @@ public class FragmentDialogSelectDevice extends DialogFragment {
 	 * refreshBtDevListView(); }
 	 */
 
-	private final AdapterView.OnItemClickListener listViewBTClickListener = new AdapterView.OnItemClickListener() {
+	@Override
+	public void onAttach(Activity activity) {
+		// TODO Auto-generated method stub
+		Log.d(TAG, "Attached");
+		super.onAttach(activity);
+	}
+
+	@Override
+	public void onDestroy() {
+		Log.d(TAG, "Destroyed");
+		// TODO Auto-generated method stub
+		super.onDestroy();
+	}
+
+	@Override
+	public void onPause() {
+		Log.d(TAG, "Paused");
+		// TODO Auto-generated method stub
+		super.onPause();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		Log.d(TAG, "Resumed");
+
+		listViewDevices = (ListView) getView().findViewById(R.id.listView_select_peer_device);
+
+		//update devlist and titles, if ok set click listner
+		if (updateDevListAndDlgTitle()) {
+			devListAdapter = new ViewAdapterPeerDevsList(hub, listDevices.getDeviceList());
+			listViewDevices.setAdapter(devListAdapter);
+			listViewDevices.setOnItemClickListener(listViewClickListener);
+		}
+
+	}
+
+	private final AdapterView.OnItemClickListener listViewClickListener = new AdapterView.OnItemClickListener() {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -153,13 +183,17 @@ public class FragmentDialogSelectDevice extends DialogFragment {
 			case DEV_STATE_DISCONNECTED:
 				if (!hub.droneClient.isConnected()) {
 					hub.logger.sysLog(TAG, "Connecting...");
-					hub.logger.sysLog(TAG, "Me  : " + hub.droneClient.getMyName() + " [" + hub.droneClient.getMyAddress() + "]");
-					hub.logger.sysLog(TAG, "Peer: " + selectedDev.getName() + " [" + selectedDev.getAddress() + "]");
+
+					listDevices.setDevState(position, PEER_DEV_STATE.DEV_STATE_CONNECTED);
+					devListAdapter.notifyDataSetChanged();
 
 					hub.switchClient(selectedDev);
 
-					listDevices.setDevState(position, PEER_DEV_STATE.DEV_STATE_CONNECTED);
+					hub.logger.sysLog(TAG, "Me  : " + hub.droneClient.getMyName() + " [" + hub.droneClient.getMyAddress() + "]");
+					hub.logger.sysLog(TAG, "Peer: " + selectedDev.getName() + " [" + selectedDev.getAddress() + "]");
+
 					Toast.makeText(getActivity(), R.string.txt_device_connecting, Toast.LENGTH_SHORT).show();
+
 					dismiss();
 				}
 				else {

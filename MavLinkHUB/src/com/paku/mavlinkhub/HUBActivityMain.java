@@ -2,10 +2,9 @@ package com.paku.mavlinkhub;
 
 import com.paku.mavlinkhub.enums.MSG_SOURCE;
 import com.paku.mavlinkhub.fragments.FragmentsAdapter;
-import com.paku.mavlinkhub.fragments.dialogs.FragmentAlertDialogHubActions;
-import com.paku.mavlinkhub.fragments.dialogs.FragmentDialogBluetoothDevices;
 import com.paku.mavlinkhub.fragments.dialogs.FragmentDialogSelectDevice;
 import com.paku.mavlinkhub.interfaces.IDataUpdateStats;
+import com.paku.mavlinkhub.z.notused.FragmentAlertDialogHubActions;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -115,11 +114,11 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 			intent.setClass(HUBActivityMain.this, HUBActivitySettings.class);
 			startActivityForResult(intent, 0);
 			return true;
-		case R.id.menu_bluetooth_select_device:
+		case R.id.menu_select_device_bluetooth:
 
 			FragmentTransaction fragManager = getSupportFragmentManager().beginTransaction();
 
-			Fragment prev = getSupportFragmentManager().findFragmentByTag("bt_select_device");
+			Fragment prev = getSupportFragmentManager().findFragmentByTag("bluetooth");
 			if (prev != null) {
 				fragManager.remove(prev);
 			}
@@ -127,9 +126,26 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 
 			DialogFragment btSelectDevDialog = FragmentDialogSelectDevice.newInstance();
 			btSelectDevDialog.setCancelable(false);
-			btSelectDevDialog.show(fragManager, "bt_select_device");
+			btSelectDevDialog.show(fragManager, "bluetooth");
 
 			return true;
+
+		case R.id.menu_select_device_usb:
+
+			FragmentTransaction fragManager_usb = getSupportFragmentManager().beginTransaction();
+
+			Fragment prev_usb = getSupportFragmentManager().findFragmentByTag("usb");
+			if (prev_usb != null) {
+				fragManager_usb.remove(prev_usb);
+			}
+			fragManager_usb.addToBackStack(null);
+
+			DialogFragment btSelectDevDialog_usb = FragmentDialogSelectDevice.newInstance();
+			btSelectDevDialog_usb.setCancelable(false);
+			btSelectDevDialog_usb.show(fragManager_usb, "usb");
+
+			return true;
+
 		default:
 			return super.onOptionsItemSelected(item);
 		}

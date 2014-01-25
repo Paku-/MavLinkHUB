@@ -16,6 +16,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:text="@string/txt_no_data"
+            android:textColor="@color/black"
             android:textSize="15sp" />
 
         <TextView
@@ -26,7 +27,9 @@
             android:layout_marginLeft="22dp"
             android:layout_toRightOf="@+id/listViewMsgItemTxt_Text1"
             android:text="@string/txt_no_data"
+            android:textColor="@color/black"
             android:textSize="15sp" />
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -40,6 +43,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:text="@string/txt_no_data"
+            android:textColor="@color/black"
             android:textSize="12sp" />
 
         <TextView
@@ -50,6 +54,7 @@
             android:layout_marginLeft="26dp"
             android:layout_toRightOf="@+id/listViewMsgItemTxt_desc1"
             android:text="@string/txt_no_data"
+            android:textColor="@color/black"
             android:textSize="12sp" />
 
         <TextView
@@ -60,6 +65,7 @@
             android:layout_marginLeft="32dp"
             android:layout_toRightOf="@+id/listViewMsgItemTxt_desc2"
             android:text="@string/txt_no_data"
+            android:textColor="@color/black"
             android:textSize="12sp" />
 
         <TextView
@@ -69,6 +75,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:text="@string/txt_no_data"
+            android:textColor="@color/black"
             android:textSize="12sp" />
 
     </RelativeLayout>

@@ -28,7 +28,7 @@ public class HUBGlobals extends Application {
 
 	// constants
 	// buffer, stream sizes
-	public int visibleByteLogSize = 256 * 8;
+	public int visibleByteLogSize = 256 * 4;
 	public int visibleMsgList = 50;
 	public int serverTCP_port = 5760;
 
@@ -79,8 +79,8 @@ public class HUBGlobals extends Application {
 		// setup the additinal VIDPIDPAIR
 		if (!usbHub.setVIDPID(0x0403, 0xada1)) Log.i("ftd2xx-java", "setVIDPID Error");
 
-		// no client at startup
-		droneClient = null;
+		// Default is the BT client
+		droneClient = new DroneClientBluetooth(this);
 
 		// server started from the beginning
 		gsServer = new GroundStationServerTCP(this);
@@ -95,11 +95,11 @@ public class HUBGlobals extends Application {
 
 	public void switchClient(ItemPeerDevice newDevice) {
 
-		DEVICE_INTERFACE devs[] = DEVICE_INTERFACE.values();
-
 		if (null != droneClient) {
 			droneClient.stopClient();
 		}
+
+		DEVICE_INTERFACE devs[] = DEVICE_INTERFACE.values();
 
 		switch (devs[newDevice.getDevInterface().ordinal()]) {
 		case Bluetooth:
@@ -112,6 +112,7 @@ public class HUBGlobals extends Application {
 			break;
 		}
 
+		droneClient.setMyPeerDevice(newDevice);
 		droneClient.startClient(newDevice);
 
 	}

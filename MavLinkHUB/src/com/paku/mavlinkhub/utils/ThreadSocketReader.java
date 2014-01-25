@@ -91,7 +91,8 @@ public class ThreadSocketReader extends Thread {
 
 				len = input.read(buffer, 0, buffer.length);
 				if (len > 0) {
-					final ByteBuffer byteMsg = ByteBuffer.wrap(new byte[len]);
+					//final ByteBuffer byteMsg = ByteBuffer.wrap(new byte[len]);
+					final ByteBuffer byteMsg = ByteBuffer.allocate(len);
 					byteMsg.put(buffer, 0, len);
 					byteMsg.flip();
 					handlerQueueIOBytesReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_BYTE_DATA_READY.ordinal(), len, -1, byteMsg).sendToTarget();

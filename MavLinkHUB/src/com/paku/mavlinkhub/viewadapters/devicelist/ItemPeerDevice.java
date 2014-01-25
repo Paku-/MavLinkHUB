@@ -11,6 +11,7 @@ public abstract class ItemPeerDevice {
 
 	public ItemPeerDevice(DEVICE_INTERFACE devInterface, String deviceName) {
 		this.name = deviceName;
+		this.devInterface = devInterface;
 		this.state = PEER_DEV_STATE.DEV_STATE_DISCONNECTED;
 	}
 

@@ -1,7 +1,6 @@
 package com.paku.mavlinkhub.viewadapters.devicelist;
 
 import com.paku.mavlinkhub.enums.DEVICE_INTERFACE;
-import com.paku.mavlinkhub.enums.PEER_DEV_STATE;
 
 public class ItemPeerDeviceBT extends ItemPeerDevice {
 

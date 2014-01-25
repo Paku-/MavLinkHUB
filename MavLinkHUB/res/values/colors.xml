@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="black">#ffffff</color>
-    <color name="white">#000000</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
     <color name="system_icons">#333333</color>
     
 	<color name="hubDark">#008893</color>
