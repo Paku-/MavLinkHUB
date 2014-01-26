@@ -33,8 +33,6 @@ public class HUBLogger {
 	public StringBuilder inMemByteLogBuffer;
 	public StringBuilder inMemSysLogBuffer;
 
-	int x = 0;
-
 	// system stats holding object
 	public HUBStats hubStats;
 

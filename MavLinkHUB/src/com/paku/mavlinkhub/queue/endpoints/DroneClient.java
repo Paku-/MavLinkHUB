@@ -3,6 +3,7 @@ package com.paku.mavlinkhub.queue.endpoints;
 import java.io.IOException;
 
 import com.paku.mavlinkhub.HUBGlobals;
+import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.queue.QueueIOBytes;
 import com.paku.mavlinkhub.viewadapters.devicelist.ItemPeerDevice;
 
@@ -41,6 +42,15 @@ public abstract class DroneClient extends QueueIOBytes {
 
 	public final void setMyPeerDevice(ItemPeerDevice myPeerDevice) {
 		this.myPeerDevice = myPeerDevice;
+	}
+
+	//let clients have the app wide messaging method
+	public final void sentAppMsg(APP_STATE msgId, String msgTxt) {
+		hub.messenger.appMsgHandler.obtainMessage(msgId.ordinal(), msgTxt.length(), -1, msgTxt.getBytes()).sendToTarget();
+	}
+
+	public final void sentAppMsg(APP_STATE msgId) {
+		hub.messenger.appMsgHandler.obtainMessage(msgId.ordinal()).sendToTarget();
 	}
 
 }

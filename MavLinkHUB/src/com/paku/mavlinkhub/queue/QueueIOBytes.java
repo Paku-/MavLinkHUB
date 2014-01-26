@@ -16,7 +16,7 @@ public abstract class QueueIOBytes {
 	@SuppressWarnings("unused")
 	private static final String TAG = QueueIOBytes.class.getSimpleName();
 
-	public final HUBGlobals hub;
+	protected final HUBGlobals hub;
 
 	private final ArrayDeque<ByteBuffer> inputByteQueue;
 	private final ArrayDeque<ByteBuffer> outputByteQueue;
@@ -31,6 +31,8 @@ public abstract class QueueIOBytes {
 
 	}
 
+	//public getters
+
 	// get bytes
 	public final ByteBuffer getOutputByteQueueItem() {
 		synchronized (outputByteQueue) {
@@ -43,6 +45,8 @@ public abstract class QueueIOBytes {
 			return inputByteQueue.pollFirst();
 		}
 	}
+
+	//rest only for me and derived classes
 
 	// add bytes
 	protected final void addInputByteQueueItem(Message byteMsg) {
@@ -61,7 +65,7 @@ public abstract class QueueIOBytes {
 		return;
 	}
 
-	public void addOutputByteQueueItem(ByteBuffer buffer) {
+	protected final void addOutputByteQueueItem(ByteBuffer buffer) {
 		synchronized (outputByteQueue) {
 			outputByteQueue.addLast(buffer);
 		}

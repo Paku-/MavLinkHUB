@@ -4,8 +4,6 @@ import com.paku.mavlinkhub.enums.MSG_SOURCE;
 import com.paku.mavlinkhub.fragments.FragmentsAdapter;
 import com.paku.mavlinkhub.fragments.dialogs.FragmentDialogSelectDevice;
 import com.paku.mavlinkhub.interfaces.IDataUpdateStats;
-import com.paku.mavlinkhub.z.notused.FragmentAlertDialogHubActions;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -149,27 +147,6 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 		default:
 			return super.onOptionsItemSelected(item);
 		}
-	}
-
-	// Close hub respecting connection state
-	public void CloseMeFragmentDialog() {
-
-		FragmentTransaction fragManager = getSupportFragmentManager().beginTransaction();
-
-		// this is a piece to check if we are not displayed - do not need it
-		// here in my opinion as both exits form the fragment ends with
-		// dismiss()
-
-		/*
-		 * Fragment prev =
-		 * getSupportFragmentManager().findFragmentByTag("warn"); if (prev !=
-		 * null) { fragManager.remove(prev); } // and back key action
-		 * fragManager.addToBackStack(null);
-		 */
-
-		DialogFragment closeDialog = FragmentAlertDialogHubActions.newInstance(getApplicationContext(), 6, "Sample Title", "Message ...");
-		closeDialog.setCancelable(false);
-		closeDialog.show(fragManager, "closing");
 	}
 
 	// Close hub respecting connection state
