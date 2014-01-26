@@ -32,20 +32,20 @@ public abstract class QueueIOBytes {
 	}
 
 	// get bytes
-	public ByteBuffer getOutputByteQueueItem() {
+	public final ByteBuffer getOutputByteQueueItem() {
 		synchronized (outputByteQueue) {
 			return outputByteQueue.pollFirst();
 		}
 	}
 
-	public ByteBuffer getInputByteQueueItem() {
+	public final ByteBuffer getInputByteQueueItem() {
 		synchronized (inputByteQueue) {
 			return inputByteQueue.pollFirst();
 		}
 	}
 
 	// add bytes
-	public void addInputByteQueueItem(Message byteMsg) {
+	protected final void addInputByteQueueItem(Message byteMsg) {
 
 		synchronized (inputByteQueue) {
 			inputByteQueue.addLast((ByteBuffer) byteMsg.obj);
@@ -54,7 +54,7 @@ public abstract class QueueIOBytes {
 
 	}
 
-	public void addInputByteQueueItem(ByteBuffer buffer) {
+	protected final void addInputByteQueueItem(ByteBuffer buffer) {
 		synchronized (inputByteQueue) {
 			inputByteQueue.addLast(buffer);
 		}
@@ -68,11 +68,11 @@ public abstract class QueueIOBytes {
 	}
 
 	// get queues
-	public ArrayDeque<ByteBuffer> getInputByteQueue() {
+	protected final ArrayDeque<ByteBuffer> getInputByteQueue() {
 		return inputByteQueue;
 	}
 
-	public ArrayDeque<ByteBuffer> getOutputByteQueue() {
+	protected final ArrayDeque<ByteBuffer> getOutputByteQueue() {
 		return outputByteQueue;
 	}
 
@@ -82,7 +82,7 @@ public abstract class QueueIOBytes {
 	// thread sends a msg with the
 	// buffer here to be stored in the underlying queue.
 	// msg other then ADD are forwarded to the main hub messenger
-	protected Handler startInputQueueMsgHandler() {
+	protected final Handler startInputQueueMsgHandler() {
 		return new Handler(Looper.getMainLooper()) {
 			public void handleMessage(Message byteMsg) {
 

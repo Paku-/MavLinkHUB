@@ -35,11 +35,11 @@ public abstract class DroneClient extends QueueIOBytes {
 		super(hub, capacity);
 	}
 
-	public ItemPeerDevice getMyPeerDevice() {
+	public final ItemPeerDevice getMyPeerDevice() {
 		return myPeerDevice;
 	}
 
-	public void setMyPeerDevice(ItemPeerDevice myPeerDevice) {
+	public final void setMyPeerDevice(ItemPeerDevice myPeerDevice) {
 		this.myPeerDevice = myPeerDevice;
 	}
 

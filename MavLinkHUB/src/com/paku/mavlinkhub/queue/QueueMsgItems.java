@@ -12,7 +12,7 @@ public class QueueMsgItems {
 
 	private final ArrayDeque<ItemMavLinkMsg> hubQueue;
 
-	HUBGlobals hub;
+	protected final HUBGlobals hub;
 
 	public QueueMsgItems(HUBGlobals hubContext, int capacity) {
 
@@ -22,14 +22,14 @@ public class QueueMsgItems {
 
 	}
 
-	public ItemMavLinkMsg getHubQueueItem() {
+	public final ItemMavLinkMsg getHubQueueItem() {
 		synchronized (hubQueue) {
 			return hubQueue.poll();
 		}
 
 	}
 
-	public void addHubQueueItem(ItemMavLinkMsg item) {
+	public final void addHubQueueItem(ItemMavLinkMsg item) {
 		synchronized (hubQueue) {
 			hubQueue.addLast(item);
 		}
@@ -38,7 +38,7 @@ public class QueueMsgItems {
 
 	}
 
-	public int getItemCount() {
+	public final int getItemCount() {
 		return hubQueue.size();
 	}
 
