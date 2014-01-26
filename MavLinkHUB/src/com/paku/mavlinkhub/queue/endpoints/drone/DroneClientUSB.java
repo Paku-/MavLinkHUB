@@ -97,12 +97,14 @@ public class DroneClientUSB extends DroneClient {
 
 	@Override
 	public String getMyName() {
-		return D2xxManager.class.getSimpleName();
+		//return D2xxManager.class.getSimpleName();
+		return "FTDI";
 	}
 
 	@Override
 	public String getMyAddress() {
-		return "FTDI Lib v." + String.valueOf(D2xxManager.getLibraryVersion());
+		//return "FTDI Lib v." + String.valueOf(D2xxManager.getLibraryVersion());
+		return " v." + String.valueOf(D2xxManager.getLibraryVersion());
 	}
 
 	@Override
