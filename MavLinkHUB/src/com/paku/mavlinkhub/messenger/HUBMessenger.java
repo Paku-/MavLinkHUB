@@ -45,6 +45,11 @@ public class HUBMessenger extends HUBInterfaceMenager {
 					hub.logger.sysLog(TAG, "Server Started [" + Utils.getIPAddress(true) + ":" + ((InetSocketAddress) msg.obj).getPort() + "]");
 					// no action yet
 					break;
+				case MSG_SERVER_START_FAILED:
+					hub.logger.sysLog(TAG, "Server Start Failed !!! ");
+					Toast.makeText(hub, R.string.error_server_start_failed, Toast.LENGTH_SHORT).show();
+					// no action yet
+					break;
 				case MSG_SERVER_STOPPED:
 					hub.logger.sysLog(TAG, "Server Stopped");
 					// no action yet

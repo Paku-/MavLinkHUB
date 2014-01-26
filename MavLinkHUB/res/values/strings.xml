@@ -69,5 +69,6 @@
     <string name="txt_device_disconnected">Device disconnected</string>
     <string name="txt_device_connecting">Connecting device</string>
     <string name="menu_title_usb">Connect USB client</string>
-    <string name="txt_select_device_to_connect_disconnect">Select device to connect/disconnect</string>        
+    <string name="txt_select_device_to_connect_disconnect">Select device to connect/disconnect</string>
+    <string name="error_server_start_failed">Can not start server !</string>        
 </resources>

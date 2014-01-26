@@ -35,6 +35,7 @@ public class ThreadGroundStationServerTCP extends Thread {
 
 		}
 		catch (IOException e) {
+			handlerServerReadMsg.obtainMessage(SOCKET_STATE.MSG_SOCKET_SERVER_START_FAILED.ordinal()).sendToTarget();
 			e.printStackTrace();
 		}
 
