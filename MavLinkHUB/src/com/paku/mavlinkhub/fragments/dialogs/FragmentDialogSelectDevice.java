@@ -90,6 +90,47 @@ public class FragmentDialogSelectDevice extends DialogFragment {
 
 	}
 
+	@Override
+	public void onAttach(Activity activity) {
+		Log.d(TAG, "Attached");
+		super.onAttach(activity);
+	}
+
+	@Override
+	public void onDestroy() {
+		Log.d(TAG, "Destroyed");
+		super.onDestroy();
+	}
+
+	@Override
+	public void onPause() {
+		Log.d(TAG, "Paused");
+		super.onPause();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		Log.d(TAG, "Resumed");
+
+		setupViewAdapter();
+
+	}
+
+	private void setupViewAdapter() {
+
+		listViewDevices = (ListView) getView().findViewById(R.id.listView_select_peer_device);
+
+		//update devlist and titles, if ok set click listner
+		if (updateDevListAndDlgTitle()) {
+			devListAdapter = new ViewAdapterPeerDevsList(hub, listDevices.getDevicesList());
+			listViewDevices.setAdapter(devListAdapter);
+			listViewDevices.setOnItemClickListener(listViewClickListener);
+		}
+
+	}
+
 	private boolean updateDevListAndDlgTitle() {
 
 		// call list to be refreshed getting BT status
@@ -132,41 +173,6 @@ public class FragmentDialogSelectDevice extends DialogFragment {
 	 * btDevList.setAllDevState(PEER_DEV_STATE.DEV_STATE_DISCONNECTED);
 	 * refreshBtDevListView(); }
 	 */
-
-	@Override
-	public void onAttach(Activity activity) {
-		Log.d(TAG, "Attached");
-		super.onAttach(activity);
-	}
-
-	@Override
-	public void onDestroy() {
-		Log.d(TAG, "Destroyed");
-		super.onDestroy();
-	}
-
-	@Override
-	public void onPause() {
-		Log.d(TAG, "Paused");
-		super.onPause();
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-
-		Log.d(TAG, "Resumed");
-
-		listViewDevices = (ListView) getView().findViewById(R.id.listView_select_peer_device);
-
-		//update devlist and titles, if ok set click listner
-		if (updateDevListAndDlgTitle()) {
-			devListAdapter = new ViewAdapterPeerDevsList(hub, listDevices.getDeviceList());
-			listViewDevices.setAdapter(devListAdapter);
-			listViewDevices.setOnItemClickListener(listViewClickListener);
-		}
-
-	}
 
 	private final AdapterView.OnItemClickListener listViewClickListener = new AdapterView.OnItemClickListener() {
 		@Override

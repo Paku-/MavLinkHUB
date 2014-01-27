@@ -89,7 +89,7 @@ public class FragmentDialogBluetoothDevices extends DialogFragment {
 	@SuppressWarnings("unused")
 	private void refreshBtDevListView() {
 		final ArrayList<ItemPeerDevice> clone = new ArrayList<ItemPeerDevice>();
-		clone.addAll(listBTDevices.getDeviceList());
+		clone.addAll(listBTDevices.getDevicesList());
 		devListAdapter.clear();
 		devListAdapter.addAll(clone);
 	}
@@ -114,7 +114,7 @@ public class FragmentDialogBluetoothDevices extends DialogFragment {
 			// our list has fresh BT devs items and adapter is ready, we can
 			// connect
 		case LIST_OK_BT:
-			devListAdapter = new ViewAdapterPeerDevsList(hub, listBTDevices.getDeviceList());
+			devListAdapter = new ViewAdapterPeerDevsList(hub, listBTDevices.getDevicesList());
 			listViewBTDevices.setAdapter(devListAdapter);
 			listViewBTDevices.setOnItemClickListener(listViewBTClickListener);
 			return;

@@ -19,6 +19,7 @@ import com.paku.mavlinkhub.enums.MSG_SOURCE;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
+@SuppressLint("SimpleDateFormat")
 public class HUBLogger {
 
 	private static final String TAG = HUBLogger.class.getSimpleName();
@@ -57,7 +58,7 @@ public class HUBLogger {
 	public void sysLog(String string) {
 		String tempStr;
 
-		tempStr = timeStamp() + string + "\n";
+		tempStr = timeStamp().concat(string).concat("\n");
 
 		// syslog write
 		try {
@@ -73,10 +74,7 @@ public class HUBLogger {
 	}
 
 	public void sysLog(String tag, String msg) {
-
 		sysLog("[" + tag + "] " + msg);
-		// Log.d(tag, msg);
-
 	}
 
 	public void byteLog(MSG_SOURCE direction, ByteBuffer buffer) {
@@ -84,8 +82,14 @@ public class HUBLogger {
 		// log only Drone data to the bytelog file
 		if (null != buffer && direction == MSG_SOURCE.FROM_DRONE) {
 			synchronized (inMemByteLogBuffer) {
-				// mFileByteLogStream.write(buffer.array(), 0,
-				// buffer.limit());
+
+				try {
+					mFileByteLogStream.write(buffer.array(), 0, buffer.limit());
+				}
+				catch (IOException e) {
+					Log.d(TAG, "[byteLog] " + e.getMessage());
+					e.printStackTrace();
+				}
 
 				inMemByteLogBuffer.append(new String(buffer.array(), 0, buffer.limit()));
 				// trim to the limit
@@ -131,7 +135,7 @@ public class HUBLogger {
 	}
 
 	private String getLoggerFileName(String name) {
-		return System.currentTimeMillis() + "-" + name + ".txt";
+		return name + "_" + fileNameTimeStamp() + ".txt";
 	}
 
 	public void stopByteLog() {
@@ -144,7 +148,7 @@ public class HUBLogger {
 
 	private void stopLog(BufferedOutputStream stream) {
 		try {
-			stream.flush(); // working ??
+			stream.flush(); // is this working ??
 			stream.close();
 		}
 		catch (IOException e) {
@@ -158,7 +162,6 @@ public class HUBLogger {
 		stopSysLog();
 	}
 
-	@SuppressLint("SimpleDateFormat")
 	public String timeStamp() {
 
 		SimpleDateFormat s = new SimpleDateFormat("[HH:mm:ss.SSS]");
@@ -178,6 +181,13 @@ public class HUBLogger {
 
 		// String lsYMD = dtNow.toString(); // YYYYMMDDTHHMMSS
 
+	}
+
+	public String fileNameTimeStamp() {
+
+		SimpleDateFormat s = new SimpleDateFormat("yyyy.MM.dd_HH.mm.ss.SSS");
+		s.setTimeZone(TimeZone.getDefault());
+		return s.format((new Date()));
 	}
 
 	public String getByteLog() {

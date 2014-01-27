@@ -26,7 +26,6 @@ import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.widget.Toast;
 
 public class HUBGlobals extends Application {
 
@@ -139,8 +138,6 @@ public class HUBGlobals extends Application {
 			gsServer.startServer(HUBGlobals.serverUDP_port);
 
 		}
-
-		Toast.makeText(this, "Server mode set to: " + gsServer.serverMode.toString(), Toast.LENGTH_LONG).show();
 
 	}
 

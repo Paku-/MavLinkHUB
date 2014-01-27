@@ -1,6 +1,5 @@
 package com.paku.mavlinkhub.utils;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import com.ftdi.j2xx.FT_Device;

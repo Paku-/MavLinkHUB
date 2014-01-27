@@ -24,7 +24,7 @@ public abstract class ListPeerDevices {
 	// fill the list with your devices
 	public abstract DEV_LIST_STATE refresh();
 
-	public ArrayList<ItemPeerDevice> getDeviceList() {
+	public ArrayList<ItemPeerDevice> getDevicesList() {
 		return devList;
 	}
 

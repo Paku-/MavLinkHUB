@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 // public class HUBActivityMain extends ActionBarActivity implements IDataUpdateStats {
 public class HUBActivityMain extends FragmentActivity implements IDataUpdateStats {
@@ -70,6 +71,7 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 		HUBGlobals.messenger.mainActivity = this;
 
 		progressBarConnected.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
+
 		onDataUpdateStats();
 
 	}
@@ -124,9 +126,9 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 			}
 			fragManager.addToBackStack(null);
 
-			final DialogFragment btSelectDevDialog = FragmentDialogSelectDevice.newInstance();
-			btSelectDevDialog.setCancelable(false);
-			btSelectDevDialog.show(fragManager, "bluetooth");
+			final DialogFragment deviceSelectDialogBT = FragmentDialogSelectDevice.newInstance();
+			deviceSelectDialogBT.setCancelable(false);
+			deviceSelectDialogBT.show(fragManager, "bluetooth");
 
 			return true;
 
@@ -140,15 +142,17 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 			}
 			fragManager_usb.addToBackStack(null);
 
-			final DialogFragment btSelectDevDialog_usb = FragmentDialogSelectDevice.newInstance();
-			btSelectDevDialog_usb.setCancelable(false);
-			btSelectDevDialog_usb.show(fragManager_usb, "usb");
+			final DialogFragment deviceSelectDialogUSB = FragmentDialogSelectDevice.newInstance();
+			deviceSelectDialogUSB.setCancelable(false);
+			deviceSelectDialogUSB.show(fragManager_usb, "usb");
 
 			return true;
 
 		case R.id.menu_switch_server_mode:
 
 			hub.switchServer();
+
+			Toast.makeText(this, "Server mode set to: " + hub.gsServer.serverMode.toString(), Toast.LENGTH_LONG).show();
 
 			return true;
 
