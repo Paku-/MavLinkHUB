@@ -1,3 +1,4 @@
+// $codepro.audit.disable com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.alwaysOverridetoString.alwaysOverrideToString
 package com.paku.mavlinkhub.viewadapters.devicelist;
 
 import com.paku.mavlinkhub.enums.DEVICE_INTERFACE;

@@ -1,3 +1,4 @@
+// $codepro.audit.disable emptyIfStatement
 package com.paku.mavlinkhub.queue.hub;
 
 import java.io.IOException;
@@ -34,7 +35,7 @@ public class ThreadDistibutorSender extends Thread {
 
 				tmpItem = hub.queue.getHubQueueItem();
 
-				if (tmpItem != null) {
+				if (null != tmpItem) {
 
 					switch (tmpItem.direction) {
 					case FROM_DRONE:
@@ -46,11 +47,11 @@ public class ThreadDistibutorSender extends Thread {
 								Log.d(TAG, "gsServer: No Client connected failure");
 							}
 						}
-						else
+						else {
 							// Log.d(TAG,
 							// "gsServer: Packet Silently discarded");
-
-							break;
+						}
+						break;
 					case FROM_GS:
 						if (hub.droneClient.isConnected()) {
 							if (hub.droneClient.writeBytes(tmpItem.getPacketBytes())) {
@@ -60,10 +61,11 @@ public class ThreadDistibutorSender extends Thread {
 								Log.d(TAG, "droneClient: Not connected.");
 							}
 						}
-						else
+						else {
 							// Log.d(TAG,
 							// "droneClient: Packet Silently discarded.");
-							break;
+						}
+						break;
 					default:
 						break;
 

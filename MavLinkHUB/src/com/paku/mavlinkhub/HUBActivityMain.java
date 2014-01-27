@@ -1,3 +1,5 @@
+// $codepro.audit.disable
+// com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.alwaysOverridetoString.alwaysOverrideToString
 package com.paku.mavlinkhub;
 
 import com.paku.mavlinkhub.enums.MSG_SOURCE;
@@ -46,7 +48,7 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 
 		hub = (HUBGlobals) this.getApplication();
 
-		if (savedInstanceState == null) { // init only if we are just created
+		if (null == savedInstanceState) { // init only if we are just created
 			hub.hubInit(this);
 		}
 
@@ -114,15 +116,15 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 			return true;
 		case R.id.menu_select_device_bluetooth:
 
-			FragmentTransaction fragManager = getSupportFragmentManager().beginTransaction();
+			final FragmentTransaction fragManager = getSupportFragmentManager().beginTransaction();
 
-			Fragment prev = getSupportFragmentManager().findFragmentByTag("bluetooth");
-			if (prev != null) {
+			final Fragment prev = getSupportFragmentManager().findFragmentByTag("bluetooth");
+			if (null != prev) {
 				fragManager.remove(prev);
 			}
 			fragManager.addToBackStack(null);
 
-			DialogFragment btSelectDevDialog = FragmentDialogSelectDevice.newInstance();
+			final DialogFragment btSelectDevDialog = FragmentDialogSelectDevice.newInstance();
 			btSelectDevDialog.setCancelable(false);
 			btSelectDevDialog.show(fragManager, "bluetooth");
 
@@ -130,15 +132,15 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 
 		case R.id.menu_select_device_usb:
 
-			FragmentTransaction fragManager_usb = getSupportFragmentManager().beginTransaction();
+			final FragmentTransaction fragManager_usb = getSupportFragmentManager().beginTransaction();
 
-			Fragment prev_usb = getSupportFragmentManager().findFragmentByTag("usb");
-			if (prev_usb != null) {
+			final Fragment prev_usb = getSupportFragmentManager().findFragmentByTag("usb");
+			if (null != prev_usb) {
 				fragManager_usb.remove(prev_usb);
 			}
 			fragManager_usb.addToBackStack(null);
 
-			DialogFragment btSelectDevDialog_usb = FragmentDialogSelectDevice.newInstance();
+			final DialogFragment btSelectDevDialog_usb = FragmentDialogSelectDevice.newInstance();
 			btSelectDevDialog_usb.setCancelable(false);
 			btSelectDevDialog_usb.show(fragManager_usb, "usb");
 
@@ -158,14 +160,14 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 	// Close hub respecting connection state
 	public void CloseMe() {
 
-		OnClickListener positiveButtonClickListener = new AlertDialog.OnClickListener() {
+		final OnClickListener positiveButtonClickListener = new AlertDialog.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
 				closeHUB();
 			}
 		};
 
-		OnClickListener negativeButtonClickListener = new AlertDialog.OnClickListener() {
+		final OnClickListener negativeButtonClickListener = new AlertDialog.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
 			}

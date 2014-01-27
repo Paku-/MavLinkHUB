@@ -1,3 +1,5 @@
+// $codepro.audit.disable
+// com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.alwaysOverridetoString.alwaysOverrideToString
 package com.paku.mavlinkhub.messenger;
 
 import java.util.ArrayList;
@@ -25,7 +27,7 @@ public class HUBInterfaceMenager {
 
 	protected HUBGlobals hub;
 
-	class Frags {
+	static class Frags {
 		APP_STATE msg_name;
 		ArrayList<Fragment> fragsArray;
 
@@ -69,10 +71,10 @@ public class HUBInterfaceMenager {
 	public void callFragments(APP_STATE msg) {
 
 		// main activity is not a fragment :(
-		if ((msg == APP_STATE.MSG_DATA_UPDATE_STATS) && (IDataUpdateStats) mainActivity != null) ((IDataUpdateStats) mainActivity).onDataUpdateStats();
+		if ((msg == APP_STATE.MSG_DATA_UPDATE_STATS) && null != (IDataUpdateStats) mainActivity) ((IDataUpdateStats) mainActivity).onDataUpdateStats();
 
 		for (Fragment fragment : listeners.get(msg.ordinal()).fragsArray) {
-			if (fragment != null) {
+			if (null != fragment) {
 				APP_STATE[] msgs = APP_STATE.values();
 				switch (msgs[msg.ordinal()]) {
 				case MSG_QUEUE_MSGITEM_SENT:
@@ -113,7 +115,7 @@ public class HUBInterfaceMenager {
 	// ItemMavLinkMsg msgs only here ...
 	public void call(APP_STATE msg, ItemMavLinkMsg msgItem) {
 		for (Fragment fragment : listeners.get(msg.ordinal()).fragsArray) {
-			if (fragment != null) {
+			if (null != fragment) {
 				APP_STATE[] msgs = APP_STATE.values();
 				switch (msgs[msg.ordinal()]) {
 				case MSG_QUEUE_MSGITEM_READY:

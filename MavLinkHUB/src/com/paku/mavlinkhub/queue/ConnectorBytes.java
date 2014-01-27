@@ -11,14 +11,14 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
-public abstract class ConnectorBytes {
+public class ConnectorBytes {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = ConnectorBytes.class.getSimpleName();
 
 	protected final HUBGlobals hub;
 
-	protected static Handler connMsgHandler;
+	protected static Handler ConnMsgHandler;
 
 	private final ArrayDeque<ByteBuffer> inputByteQueue;
 	private final ArrayDeque<ByteBuffer> outputByteQueue;
@@ -40,7 +40,7 @@ public abstract class ConnectorBytes {
 		// buffer here to be stored in the underlying queue.
 		// msg other then ADD are forwarded to the main hub messenger		
 
-		connMsgHandler =
+		ConnMsgHandler =
 
 		new Handler(Looper.getMainLooper()) {
 			public void handleMessage(Message byteMsg) {
@@ -146,8 +146,8 @@ public abstract class ConnectorBytes {
 	}
 
 	protected void stopMsgHandler() {
-		if (connMsgHandler != null) {
-			connMsgHandler.removeMessages(0);
+		if (null != ConnMsgHandler) {
+			ConnMsgHandler.removeMessages(0);
 		}
 	}
 

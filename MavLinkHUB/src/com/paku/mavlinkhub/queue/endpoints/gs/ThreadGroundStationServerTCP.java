@@ -1,7 +1,6 @@
 package com.paku.mavlinkhub.queue.endpoints.gs;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -59,18 +58,19 @@ public class ThreadGroundStationServerTCP extends Thread {
 				Log.d(TAG, "New Connection: TCP Socket Started");
 			}
 			catch (SocketException e) {
+				Log.d(TAG, e.getMessage());
 				running = false;
 			}
 			catch (IOException e) {
 				// ?? should never happen if permissions set
-				e.printStackTrace();
+				Log.d(TAG, e.getMessage());
 				running = false;
 			}
 		}
 	}
 
 	public void stopMe() {
-		if (socketServerReaderThreadTCP != null) {
+		if (null != socketServerReaderThreadTCP) {
 			socketServerReaderThreadTCP.stopMe();
 		}
 		running = false; // just in case

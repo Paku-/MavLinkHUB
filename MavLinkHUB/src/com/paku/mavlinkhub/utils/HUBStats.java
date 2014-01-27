@@ -1,3 +1,4 @@
+// $codepro.audit.disable com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.alwaysOverridetoString.alwaysOverrideToString
 package com.paku.mavlinkhub.utils;
 
 import com.MAVLink.Messages.MAVLinkStats;
@@ -41,12 +42,12 @@ public class HUBStats {
 
 		String droneStats = " DR:" + statsClientByteCount + "/0/0";
 
-		if (parserStatsDrone != null) {
+		if (null != parserStatsDrone) {
 			droneStats = " DR:" + statsClientByteCount + "/" + parserStatsDrone.receivedPacketCount + "/" + parserStatsDrone.crcErrorCount;
 		}
 
 		String gsStats = " GS:" + statsServerByteCount + "/0/0";
-		if (parserStatsGS != null) {
+		if (null != parserStatsGS) {
 			gsStats = " GS:" + statsServerByteCount + "/" + parserStatsGS.receivedPacketCount + "/" + parserStatsGS.crcErrorCount;
 		}
 

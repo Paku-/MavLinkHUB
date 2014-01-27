@@ -44,7 +44,7 @@ public class ItemMavLinkMsg implements Serializable {
 	}
 
 	public byte[] getPacketBytes() {
-		MAVLinkPacket pkt = msg.pack();
+		final MAVLinkPacket pkt = msg.pack();
 		pkt.seq = seqNo;
 		pkt.sysid = msg.sysid;
 		return pkt.encodePacket();

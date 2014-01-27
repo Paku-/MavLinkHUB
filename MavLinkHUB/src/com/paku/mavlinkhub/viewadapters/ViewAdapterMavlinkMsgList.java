@@ -1,3 +1,4 @@
+// $codepro.audit.disable com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.alwaysOverridetoString.alwaysOverrideToString
 package com.paku.mavlinkhub.viewadapters;
 
 import java.util.ArrayList;
@@ -18,15 +19,15 @@ import android.widget.TextView;
 
 public class ViewAdapterMavlinkMsgList extends ArrayAdapter<ItemMavLinkMsg> {
 
-	private ArrayList<ItemMavLinkMsg> itemsArrayList;
+	private final ArrayList<ItemMavLinkMsg> itemsArrayList;
 	private final HUBGlobals hub;
 
 	// mavlink classes' names helper class
-	private MavLinkClassExtractor mavClasses;
+	private final MavLinkClassExtractor mavClasses;
 
 	//anty gc
 
-	private LayoutInflater inflater;
+	private final LayoutInflater inflater;
 	private View msgItemView;
 
 	private TextView msgName;
@@ -36,7 +37,7 @@ public class ViewAdapterMavlinkMsgList extends ArrayAdapter<ItemMavLinkMsg> {
 	private TextView desc3;
 	private TextView desc4;
 
-	private ItemMavLinkMsgTxt msgTxtItem;
+	private final ItemMavLinkMsgTxt msgTxtItem;
 
 	public ViewAdapterMavlinkMsgList(HUBGlobals hub, ArrayList<ItemMavLinkMsg> itemsArrayList) {
 
@@ -47,7 +48,7 @@ public class ViewAdapterMavlinkMsgList extends ArrayAdapter<ItemMavLinkMsg> {
 		this.itemsArrayList = itemsArrayList;
 
 		// mavlink msgs fields name reference object
-		this.mavClasses = new MavLinkClassExtractor();
+		mavClasses = new MavLinkClassExtractor();
 
 		inflater = (LayoutInflater) hub.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		msgTxtItem = new ItemMavLinkMsgTxt(null, null);

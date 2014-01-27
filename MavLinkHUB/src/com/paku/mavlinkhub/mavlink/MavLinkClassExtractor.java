@@ -1,3 +1,5 @@
+// $codepro.audit.disable
+// com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.alwaysOverridetoString.alwaysOverrideToString
 package com.paku.mavlinkhub.mavlink;
 
 import java.lang.reflect.Field;
@@ -58,7 +60,7 @@ public class MavLinkClassExtractor {
 
 		// MAV_TYPE class fields extractor
 		setMavType(new ArrayList<MavLinkClassExtractor.ClassItem>());
-		MAV_TYPE tmpType = new MAV_TYPE();
+		final MAV_TYPE tmpType = new MAV_TYPE();
 		for (Field mavField : tmpType.getClass().getFields()) {
 			try {
 				getMavType().add(new ClassItem(mavField.getName().replace("MAV_", ""), tmpType.getClass().getField(mavField.getName()).getInt(tmpType)));
@@ -80,7 +82,7 @@ public class MavLinkClassExtractor {
 		// MAV_AUTOPILOT class fields extractor
 		setMavAutopilot(new ArrayList<MavLinkClassExtractor.ClassItem>());
 
-		MAV_AUTOPILOT tmpAutopilot = new MAV_AUTOPILOT();
+		final MAV_AUTOPILOT tmpAutopilot = new MAV_AUTOPILOT();
 		for (Field mavField : tmpAutopilot.getClass().getFields()) {
 			try {
 				getMavAutopilot().add(new ClassItem(mavField.getName().replace("MAV_", ""), tmpAutopilot.getClass().getField(mavField.getName()).getInt(tmpAutopilot)));
@@ -102,7 +104,7 @@ public class MavLinkClassExtractor {
 		// MAV_STATE class fields extractor
 		setMavState(new ArrayList<MavLinkClassExtractor.ClassItem>());
 
-		MAV_STATE tmpState = new MAV_STATE();
+		final MAV_STATE tmpState = new MAV_STATE();
 		for (Field mavField : tmpState.getClass().getFields()) {
 			try {
 				getMavState().add(new ClassItem(mavField.getName().replace("MAV_", ""), tmpState.getClass().getField(mavField.getName()).getInt(tmpState)));

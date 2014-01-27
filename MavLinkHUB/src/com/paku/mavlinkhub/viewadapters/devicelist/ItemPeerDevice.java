@@ -9,10 +9,10 @@ public abstract class ItemPeerDevice {
 	DEVICE_INTERFACE devInterface;
 	PEER_DEV_STATE state;
 
-	public ItemPeerDevice(DEVICE_INTERFACE devInterface, String deviceName) {
-		this.name = deviceName;
+	protected ItemPeerDevice(DEVICE_INTERFACE devInterface, String deviceName) {
+		name = deviceName;
 		this.devInterface = devInterface;
-		this.state = PEER_DEV_STATE.DEV_STATE_DISCONNECTED;
+		state = PEER_DEV_STATE.DEV_STATE_DISCONNECTED;
 	}
 
 	public String getName() {
@@ -31,6 +31,6 @@ public abstract class ItemPeerDevice {
 		return devInterface;
 	}
 
-	abstract public String getAddress();
+	public abstract String getAddress();
 
 }

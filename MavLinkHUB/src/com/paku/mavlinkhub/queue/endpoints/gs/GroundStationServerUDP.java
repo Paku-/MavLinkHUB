@@ -1,3 +1,5 @@
+// $codepro.audit.disable
+// com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.alwaysOverridetoString.alwaysOverrideToString
 package com.paku.mavlinkhub.queue.endpoints.gs;
 
 import java.io.IOException;
@@ -32,9 +34,9 @@ public class GroundStationServerUDP extends GroundStationServer {
 		// start received bytes handler
 
 		try {
-			serverThread = new ThreadReaderDatagramBased(Utils.getBroadcastAddress(hub), port, connMsgHandler);
+			serverThread = new ThreadReaderDatagramBased(Utils.getBroadcastAddress(hub), port, ConnMsgHandler);
 
-			connMsgHandler.obtainMessage(SOCKET_STATE.MSG_SOCKET_SERVER_STARTED.ordinal(), -1, -1, "UDP:" + Utils.getIPAddress(true) + ":" + port).sendToTarget();
+			ConnMsgHandler.obtainMessage(SOCKET_STATE.MSG_SOCKET_SERVER_STARTED.ordinal(), -1, -1, "UDP:" + Utils.getIPAddress(true) + ":" + port).sendToTarget();
 		}
 		catch (SocketException e) {
 			Log.d(TAG, "Thread creation exception: " + e.getMessage());
@@ -66,16 +68,18 @@ public class GroundStationServerUDP extends GroundStationServer {
 
 	@Override
 	public boolean writeBytes(byte[] bytes) throws IOException {
-		if (serverThread != null) {
+		if (null != serverThread) {
 			if (isClientConnected()) {
 				serverThread.writeBytes(bytes);
 				return true;
 			}
-			else
+			else {
 				return false;
+			}
 		}
-		else
+		else {
 			return false;
+		}
 	}
 
 	@Override

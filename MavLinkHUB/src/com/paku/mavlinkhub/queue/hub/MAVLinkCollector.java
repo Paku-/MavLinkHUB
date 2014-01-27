@@ -1,3 +1,4 @@
+// $codepro.audit.disable com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.alwaysOverridetoString.alwaysOverrideToString
 package com.paku.mavlinkhub.queue.hub;
 
 import com.paku.mavlinkhub.HUBGlobals;
@@ -24,7 +25,7 @@ public class MAVLinkCollector {
 	}
 
 	public void stopMAVLinkParserThread() {
-		if (parserThread != null) parserThread.stopMe();
+		if (null != parserThread) parserThread.stopMe();
 	}
 
 }

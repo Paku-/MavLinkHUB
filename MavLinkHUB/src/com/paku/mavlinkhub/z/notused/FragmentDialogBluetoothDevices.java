@@ -8,7 +8,7 @@ import com.paku.mavlinkhub.enums.PEER_DEV_STATE;
 import com.paku.mavlinkhub.fragments.FragmentConnectionState;
 import com.paku.mavlinkhub.viewadapters.ViewAdapterPeerDevsList;
 import com.paku.mavlinkhub.viewadapters.devicelist.ItemPeerDevice;
-import com.paku.mavlinkhub.viewadapters.devicelist.interfaces.ListPeerDevicesBluetooth;
+import com.paku.mavlinkhub.viewadapters.devicelist.hardware.ListPeerDevicesBluetooth;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
@@ -34,7 +34,7 @@ public class FragmentDialogBluetoothDevices extends DialogFragment {
 
 	public static FragmentDialogBluetoothDevices newInstance() {
 
-		FragmentDialogBluetoothDevices me = new FragmentDialogBluetoothDevices();
+		final FragmentDialogBluetoothDevices me = new FragmentDialogBluetoothDevices();
 
 		return me;
 
@@ -48,8 +48,8 @@ public class FragmentDialogBluetoothDevices extends DialogFragment {
 
 		listBTDevices = new ListPeerDevicesBluetooth(hub);
 
-		int style = DialogFragment.STYLE_NORMAL;
-		int theme = android.R.style.Theme_Holo_Light_Dialog;
+		final int style = DialogFragment.STYLE_NORMAL;
+		final int theme = android.R.style.Theme_Holo_Light_Dialog;
 
 		setStyle(style, theme);
 		setCancelable(true);
@@ -71,7 +71,7 @@ public class FragmentDialogBluetoothDevices extends DialogFragment {
 
 		getDialog().setTitle(R.string.dlg_devices_found);
 
-		View viewDlg = inflater.inflate(R.layout.fragment_dialog_select_peer_device, container, false);
+		final View viewDlg = inflater.inflate(R.layout.fragment_dialog_select_peer_device, container, false);
 
 		return viewDlg;
 	}
@@ -88,7 +88,7 @@ public class FragmentDialogBluetoothDevices extends DialogFragment {
 
 	@SuppressWarnings("unused")
 	private void refreshBtDevListView() {
-		ArrayList<ItemPeerDevice> clone = new ArrayList<ItemPeerDevice>();
+		final ArrayList<ItemPeerDevice> clone = new ArrayList<ItemPeerDevice>();
 		clone.addAll(listBTDevices.getDeviceList());
 		devListAdapter.clear();
 		devListAdapter.addAll(clone);

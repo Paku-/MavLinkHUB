@@ -1,3 +1,5 @@
+// $codepro.audit.disable
+// com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.alwaysOverridetoString.alwaysOverrideToString
 package com.paku.mavlinkhub;
 
 import com.ftdi.j2xx.D2xxManager;
@@ -28,7 +30,6 @@ import android.widget.Toast;
 
 public class HUBGlobals extends Application {
 
-	@SuppressWarnings("unused")
 	private static final String TAG = HUBGlobals.class.getSimpleName();
 
 	// constants
@@ -117,7 +118,7 @@ public class HUBGlobals extends Application {
 
 	public void switchServer() {
 
-		if (gsServer != null) {
+		if (null != gsServer) {
 			gsServer.stopServer();
 
 			if (gsServer.getClass().equals(GroundStationServerTCP.class)) {
@@ -145,7 +146,7 @@ public class HUBGlobals extends Application {
 
 	public void switchClient(ItemPeerDevice newDevice) {
 
-		if (droneClient != null) {
+		if (null != droneClient) {
 			droneClient.stopClient();
 		}
 

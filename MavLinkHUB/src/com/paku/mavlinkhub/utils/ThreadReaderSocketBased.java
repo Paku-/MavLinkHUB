@@ -58,7 +58,7 @@ public class ThreadReaderSocketBased extends Thread {
 
 	// TCP constructor
 	public ThreadReaderSocketBased(Socket socket, Handler handlerReceiver) {
-		this.socketTCP = socket;
+		socketTCP = socket;
 		socketBT = null;
 		handlerQueueIOBytesReceiver = handlerReceiver;
 
@@ -83,7 +83,7 @@ public class ThreadReaderSocketBased extends Thread {
 
 	// This thread runs for both drone clients and server clients !!!
 	public void run() {
-		byte[] buffer = new byte[BUFFSIZE];
+		final byte[] buffer = new byte[BUFFSIZE];
 		int len; // bytes received
 
 		while (running) {
@@ -116,8 +116,8 @@ public class ThreadReaderSocketBased extends Thread {
 		// if we are here it's time to close ...
 		try {
 			// try to close whatever we are :)
-			if (socketBT != null) socketBT.close();
-			if (socketTCP != null) socketTCP.close();
+			if (null != socketBT) socketBT.close();
+			if (null != socketTCP) socketTCP.close();
 		}
 		catch (IOException e) {
 			Log.d(TAG, "Exception [socket(BT/TCP) Close]:" + e.getMessage());

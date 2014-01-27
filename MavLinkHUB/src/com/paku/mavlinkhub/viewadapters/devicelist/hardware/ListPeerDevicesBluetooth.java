@@ -1,4 +1,5 @@
-package com.paku.mavlinkhub.viewadapters.devicelist.interfaces;
+// $codepro.audit.disable com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.alwaysOverridetoString.alwaysOverrideToString
+package com.paku.mavlinkhub.viewadapters.devicelist.hardware;
 
 import java.util.Set;
 
@@ -25,7 +26,7 @@ public class ListPeerDevicesBluetooth extends ListPeerDevices {
 	public DEV_LIST_STATE refresh() {
 
 		// check for nulls ...
-		if (BluetoothAdapter.getDefaultAdapter() == null) {
+		if (null == BluetoothAdapter.getDefaultAdapter()) {
 			return DEV_LIST_STATE.ERROR_NO_ADAPTER;
 		}
 		else if (!BluetoothAdapter.getDefaultAdapter().isEnabled()) {

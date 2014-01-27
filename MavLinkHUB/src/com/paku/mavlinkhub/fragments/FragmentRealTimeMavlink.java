@@ -95,7 +95,7 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 		if (hub.prefs.getBoolean("pref_byte_log_autoscroll", true)) {
 			// scroll down
 			final ScrollView mScrollView = (ScrollView) (getView().findViewById(R.id.scrollView_logByte));
-			if (mScrollView != null) {
+			if (null != mScrollView) {
 				mScrollView.post(new Runnable() {
 					@Override
 					public void run() {
@@ -111,11 +111,12 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 	@Override
 	public void onQueueMsgItemReady(ItemMavLinkMsg msgItem) {
 
-		if (msgItem != null) {
+		if (null != msgItem) {
 			listAdapterMavLink.add(msgItem);
 		}
-		else
+		else {
 			Log.d(TAG, "Null msgItem");
+		}
 
 		// scroll down on pref
 		if (hub.prefs.getBoolean("pref_msg_items_autoscroll", true)) {

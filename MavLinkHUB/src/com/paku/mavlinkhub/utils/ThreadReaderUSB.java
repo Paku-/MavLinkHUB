@@ -42,7 +42,7 @@ public class ThreadReaderUSB extends Thread {
 		
 	*/
 	public void run() {
-		byte[] buffer = new byte[BUFFSIZE];
+		final byte[] buffer = new byte[BUFFSIZE];
 		int len, available; // bytes received
 
 		while (running) {
@@ -85,7 +85,7 @@ public class ThreadReaderUSB extends Thread {
 
 	}
 
-	public void writeBytes(byte[] bytes) throws IOException {
+	public void writeBytes(byte[] bytes) {
 		usbDevice.write(bytes);
 	}
 

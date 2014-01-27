@@ -52,7 +52,7 @@ class DroneClientBluetoothConnThread extends Thread {
 			Log.d(TAG, "Exception: [Failed Connection Attempt]" + connectException.getMessage());
 			try {
 				mmSocket.close();
-				String msgTxt = connectException.getMessage();
+				final String msgTxt = connectException.getMessage();
 				HUBGlobals.sendAppMsg(APP_STATE.MSG_DRONE_CONNECTION_ATTEMPT_FAILED, msgTxt);
 			}
 			catch (IOException closeException) {

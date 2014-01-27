@@ -1,14 +1,12 @@
+// $codepro.audit.disable
+// com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.alwaysOverridetoString.alwaysOverrideToString
 package com.paku.mavlinkhub.messenger;
-
-import java.net.InetSocketAddress;
 
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.enums.UI_MODE;
 import com.paku.mavlinkhub.queue.items.ItemMavLinkMsg;
-import com.paku.mavlinkhub.utils.Utils;
-
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -221,7 +219,7 @@ public class HUBMessenger extends HUBInterfaceMenager {
 						UsbDevice device = (UsbDevice) intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
 
 						if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
-							if (device != null) {
+							if (null != device) {
 								// call method to set up device communication
 							}
 						}

@@ -1,3 +1,5 @@
+// $codepro.audit.disable
+// com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.alwaysOverridetoString.alwaysOverrideToString
 package com.paku.mavlinkhub.queue.endpoints.gs;
 
 import java.io.IOException;
@@ -24,7 +26,7 @@ public class GroundStationServerTCP extends GroundStationServer {
 	@Override
 	public void startServer(int port) {
 
-		serverThread = new ThreadGroundStationServerTCP(connMsgHandler, port);
+		serverThread = new ThreadGroundStationServerTCP(ConnMsgHandler, port);
 		serverThread.start();
 
 	}
@@ -56,11 +58,12 @@ public class GroundStationServerTCP extends GroundStationServer {
 
 	@Override
 	public boolean isClientConnected() {
-		if (serverThread != null) {
-			if (serverThread.socketServerReaderThreadTCP != null)
+		if (null != serverThread) {
+			if (null != serverThread.socketServerReaderThreadTCP)
 				return (serverThread.socketServerReaderThreadTCP.isRunning());
-			else
+			else {
 				return false;
+			}
 		}
 		return false;
 	}

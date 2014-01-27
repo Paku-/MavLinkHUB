@@ -1,3 +1,4 @@
+// $codepro.audit.disable com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.alwaysOverridetoString.alwaysOverrideToString
 package com.paku.mavlinkhub.queue.endpoints.drone;
 
 import java.io.IOException;
@@ -43,7 +44,7 @@ public class DroneClientUSB extends DroneClient {
 
 			usbDevice.purge((byte) (D2xxManager.FT_PURGE_TX | D2xxManager.FT_PURGE_RX));
 
-			readerThreadUSB = new ThreadReaderUSB(usbDevice, connMsgHandler);
+			readerThreadUSB = new ThreadReaderUSB(usbDevice, ConnMsgHandler);
 			readerThreadUSB.start();
 		}
 		else {

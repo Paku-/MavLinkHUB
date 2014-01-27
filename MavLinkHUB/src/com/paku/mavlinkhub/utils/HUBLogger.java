@@ -1,3 +1,5 @@
+// $codepro.audit.disable
+// com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.alwaysOverridetoString.alwaysOverrideToString
 package com.paku.mavlinkhub.utils;
 
 import java.io.BufferedOutputStream;
@@ -80,7 +82,7 @@ public class HUBLogger {
 	public void byteLog(MSG_SOURCE direction, ByteBuffer buffer) {
 
 		// log only Drone data to the bytelog file
-		if (buffer != null && direction == MSG_SOURCE.FROM_DRONE) {
+		if (null != buffer && direction == MSG_SOURCE.FROM_DRONE) {
 			synchronized (inMemByteLogBuffer) {
 				// mFileByteLogStream.write(buffer.array(), 0,
 				// buffer.limit());

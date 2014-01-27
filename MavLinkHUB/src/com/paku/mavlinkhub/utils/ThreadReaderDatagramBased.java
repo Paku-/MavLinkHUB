@@ -49,8 +49,8 @@ public class ThreadReaderDatagramBased extends Thread {
 
 	// This thread runs for both drone clients and server clients !!!
 	public void run() {
-		byte[] buffer = new byte[BUFFSIZE];
-		DatagramPacket packet = new DatagramPacket(buffer, BUFFSIZE);
+		final byte[] buffer = new byte[BUFFSIZE];
+		final DatagramPacket packet = new DatagramPacket(buffer, BUFFSIZE);
 
 		int len; // bytes received
 
@@ -87,7 +87,7 @@ public class ThreadReaderDatagramBased extends Thread {
 	}
 
 	public void writeBytes(byte[] bytes) throws IOException {
-		DatagramPacket packet = new DatagramPacket(bytes, bytes.length, address, port);
+		final DatagramPacket packet = new DatagramPacket(bytes, bytes.length, address, port);
 		socketUDP.setBroadcast(true);
 		socketUDP.send(packet);
 	}

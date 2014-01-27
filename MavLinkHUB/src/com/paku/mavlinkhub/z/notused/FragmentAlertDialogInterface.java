@@ -28,9 +28,9 @@ public class FragmentAlertDialogInterface extends DialogFragment {
 
 	public static FragmentAlertDialogInterface newInstance(int viewMode, String title, String msg) {
 
-		FragmentAlertDialogInterface me = new FragmentAlertDialogInterface();
+		final FragmentAlertDialogInterface me = new FragmentAlertDialogInterface();
 
-		Bundle args = new Bundle();
+		final Bundle args = new Bundle();
 		args.putInt("viewMode", viewMode);
 		args.putString("title", title);
 		args.putString("msg", msg);
@@ -111,12 +111,12 @@ public class FragmentAlertDialogInterface extends DialogFragment {
 
 		getDialog().setTitle(titleTxt);
 
-		View viewDlg = inflater.inflate(R.layout.fragment_alert_dialog, container, false);
-		View viewMsgTxt = viewDlg.findViewById(R.id.textView_alert_message);
+		final View viewDlg = inflater.inflate(R.layout.fragment_alert_dialog, container, false);
+		final View viewMsgTxt = viewDlg.findViewById(R.id.textView_alert_message);
 
 		((TextView) viewMsgTxt).setText(msgTxt);
 
-		Button buttPositive = (Button) viewDlg.findViewById(R.id.button_positive);
+		final Button buttPositive = (Button) viewDlg.findViewById(R.id.button_positive);
 		buttPositive.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				((IDialogActions) parentActivity).onDialogPositiveAction();
@@ -125,7 +125,7 @@ public class FragmentAlertDialogInterface extends DialogFragment {
 
 		});
 
-		Button buttNegative = (Button) viewDlg.findViewById(R.id.button_negative);
+		final Button buttNegative = (Button) viewDlg.findViewById(R.id.button_negative);
 		buttNegative.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				((IDialogActions) parentActivity).onDialogNegativeAction();

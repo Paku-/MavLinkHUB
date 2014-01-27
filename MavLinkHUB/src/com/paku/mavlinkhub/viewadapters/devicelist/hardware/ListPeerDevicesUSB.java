@@ -1,4 +1,6 @@
-package com.paku.mavlinkhub.viewadapters.devicelist.interfaces;
+// $codepro.audit.disable
+// com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.alwaysOverridetoString.alwaysOverrideToString
+package com.paku.mavlinkhub.viewadapters.devicelist.hardware;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -105,8 +107,9 @@ public class ListPeerDevicesUSB extends ListPeerDevices {
 		if (devList.size() > 0) {
 			return DEV_LIST_STATE.LIST_OK_USB;
 		}
-		else
+		else {
 			return DEV_LIST_STATE.ERROR_NO_USB_DEVICES;
+		}
 
 	}
 

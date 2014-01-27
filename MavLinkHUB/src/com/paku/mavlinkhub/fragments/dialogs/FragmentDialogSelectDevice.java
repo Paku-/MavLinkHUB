@@ -1,3 +1,4 @@
+// $codepro.audit.disable unnecessaryOverride
 package com.paku.mavlinkhub.fragments.dialogs;
 
 import com.paku.mavlinkhub.HUBGlobals;
@@ -6,8 +7,8 @@ import com.paku.mavlinkhub.enums.PEER_DEV_STATE;
 import com.paku.mavlinkhub.viewadapters.ViewAdapterPeerDevsList;
 import com.paku.mavlinkhub.viewadapters.devicelist.ItemPeerDevice;
 import com.paku.mavlinkhub.viewadapters.devicelist.ListPeerDevices;
-import com.paku.mavlinkhub.viewadapters.devicelist.interfaces.ListPeerDevicesBluetooth;
-import com.paku.mavlinkhub.viewadapters.devicelist.interfaces.ListPeerDevicesUSB;
+import com.paku.mavlinkhub.viewadapters.devicelist.hardware.ListPeerDevicesBluetooth;
+import com.paku.mavlinkhub.viewadapters.devicelist.hardware.ListPeerDevicesUSB;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -34,7 +35,7 @@ public class FragmentDialogSelectDevice extends DialogFragment {
 
 	public static FragmentDialogSelectDevice newInstance() {
 
-		FragmentDialogSelectDevice me = new FragmentDialogSelectDevice();
+		final FragmentDialogSelectDevice me = new FragmentDialogSelectDevice();
 
 		return me;
 
@@ -49,16 +50,16 @@ public class FragmentDialogSelectDevice extends DialogFragment {
 		hub = ((HUBGlobals) getActivity().getApplication());
 
 		// / USB or BT ???
-		if (getTag() == "usb") {
+		if (getTag().equals("usb")) {
 			listDevices = new ListPeerDevicesUSB(hub);
 		}
 
-		if (getTag() == "bluetooth") {
+		if (getTag().equals("bluetooth")) {
 			listDevices = new ListPeerDevicesBluetooth(hub);
 		}
 
-		int style = DialogFragment.STYLE_NORMAL;
-		int theme = android.R.style.Theme_Holo_Light_Dialog;
+		final int style = DialogFragment.STYLE_NORMAL;
+		final int theme = android.R.style.Theme_Holo_Light_Dialog;
 
 		setStyle(style, theme);
 		setCancelable(true);
@@ -78,7 +79,7 @@ public class FragmentDialogSelectDevice extends DialogFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		View viewDlg = inflater.inflate(R.layout.fragment_dialog_select_peer_device, container, false);
+		final View viewDlg = inflater.inflate(R.layout.fragment_dialog_select_peer_device, container, false);
 
 		return viewDlg;
 	}

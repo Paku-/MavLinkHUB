@@ -1,3 +1,4 @@
+// $codepro.audit.disable
 package com.paku.mavlinkhub.utils;
 
 import android.annotation.SuppressLint;

@@ -1,3 +1,5 @@
+// $codepro.audit.disable
+// com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.alwaysOverridetoString.alwaysOverrideToString
 package com.paku.mavlinkhub.viewadapters;
 
 import java.util.ArrayList;
@@ -33,14 +35,14 @@ public class ViewAdapterPeerDevsList extends ArrayAdapter<ItemPeerDevice> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		LayoutInflater inflater = (LayoutInflater) hub.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View rowView = inflater.inflate(R.layout.listviewitem_select_device, parent, false);
+		final LayoutInflater inflater = (LayoutInflater) hub.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		final View rowView = inflater.inflate(R.layout.listviewitem_select_device, parent, false);
 
-		TextView txtViewDevName = (TextView) rowView.findViewById(R.id.listViewItemTxt_dev_name);
-		TextView txtViewDevAddress = (TextView) rowView.findViewById(R.id.listViewItemTxt_dev_address);
-		ImageView imageConnected = (ImageView) rowView.findViewById(R.id.imageView1);
+		final TextView txtViewDevName = (TextView) rowView.findViewById(R.id.listViewItemTxt_dev_name);
+		final TextView txtViewDevAddress = (TextView) rowView.findViewById(R.id.listViewItemTxt_dev_address);
+		final ImageView imageConnected = (ImageView) rowView.findViewById(R.id.imageView1);
 
-		ItemPeerDevice dev = itemsArrayList.get(position);
+		final ItemPeerDevice dev = itemsArrayList.get(position);
 
 		txtViewDevName.setText(dev.getName());
 		txtViewDevAddress.setText(dev.getAddress());

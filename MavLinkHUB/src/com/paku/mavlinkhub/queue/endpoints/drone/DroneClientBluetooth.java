@@ -1,3 +1,5 @@
+// $codepro.audit.disable
+// com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.alwaysOverridetoString.alwaysOverrideToString
 package com.paku.mavlinkhub.queue.endpoints.drone;
 
 import java.io.IOException;
@@ -36,7 +38,7 @@ public class DroneClientBluetooth extends DroneClient {
 		if (drone.getDevInterface() == DEVICE_INTERFACE.Bluetooth) {
 
 			// start connection threat
-			if (mBluetoothAdapter == null) {
+			if (null == mBluetoothAdapter) {
 				return;
 			}
 
@@ -45,7 +47,6 @@ public class DroneClientBluetooth extends DroneClient {
 			droneConnectingBluetoothThread = new DroneClientBluetoothConnThread(this, mBluetoothAdapter, mBluetoothDevice);
 			droneConnectingBluetoothThread.start();
 		}
-		;
 
 		return;
 
@@ -56,7 +57,7 @@ public class DroneClientBluetooth extends DroneClient {
 		mBluetoothSocket = socket;
 
 		// start receiver thread
-		readerThreadBT = new ThreadReaderSocketBased(mBluetoothSocket, connMsgHandler);
+		readerThreadBT = new ThreadReaderSocketBased(mBluetoothSocket, ConnMsgHandler);
 		readerThreadBT.start();
 	}
 
@@ -74,7 +75,7 @@ public class DroneClientBluetooth extends DroneClient {
 
 	@Override
 	public boolean isConnected() {
-		if (readerThreadBT == null) {
+		if (null == readerThreadBT) {
 			return false;
 		}
 		else {

@@ -1,3 +1,4 @@
+// $codepro.audit.disable com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.alwaysOverridetoString.alwaysOverrideToString
 package com.paku.mavlinkhub.viewadapters.devicelist;
 
 import com.paku.mavlinkhub.enums.DEVICE_INTERFACE;
@@ -7,14 +8,14 @@ public class ItemPeerDeviceUSB extends ItemPeerDevice {
 	private int vendorId;
 	private int prodId;
 	private int usbInterface;
-	private String serialNumber;
+	private final String serialNumber;
 	private int location;
 
 	public ItemPeerDeviceUSB(DEVICE_INTERFACE devInterface, String deviceName, String serialNumber, int vendorId, int prodId, int channel) {
 		super(devInterface, deviceName);
 		this.vendorId = vendorId;
 		this.prodId = prodId;
-		this.usbInterface = channel;
+		usbInterface = channel;
 		this.serialNumber = serialNumber;
 	}
 

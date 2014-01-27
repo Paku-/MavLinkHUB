@@ -65,7 +65,7 @@ public class ThreadCollectorParser extends Thread {
 			break;
 		}
 
-		if (tmpBuffer != null) {
+		if (null != tmpBuffer) {
 
 			tmpPacket = null;
 
@@ -86,7 +86,7 @@ public class ThreadCollectorParser extends Thread {
 					break;
 				}
 
-				if (tmpPacket != null) {
+				if (null != tmpPacket) {
 
 					// 1 is here for msg repetition count; it's 1 as we do not
 					// support
