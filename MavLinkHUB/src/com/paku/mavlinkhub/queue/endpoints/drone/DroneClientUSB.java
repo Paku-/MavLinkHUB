@@ -11,7 +11,6 @@ import com.paku.mavlinkhub.utils.ThreadReaderUSB;
 import com.paku.mavlinkhub.viewadapters.devicelist.ItemPeerDevice;
 import com.paku.mavlinkhub.viewadapters.devicelist.ItemPeerDeviceUSB;
 
-import android.os.Handler;
 import android.util.Log;
 
 public class DroneClientUSB extends DroneClient {
@@ -19,11 +18,9 @@ public class DroneClientUSB extends DroneClient {
 	private static final String TAG = DroneClientUSB.class.getSimpleName();
 	private static final int SIZEBUFF = 1024;
 
-	private Handler handlerDroneMsgRead;
-
 	protected FT_Device usbDevice;
 
-	private ThreadReaderUSB usbClientReaderThread;
+	private ThreadReaderUSB readerThreadUSB;
 
 	public DroneClientUSB(HUBGlobals hub) {
 		super(hub, SIZEBUFF);
@@ -33,8 +30,6 @@ public class DroneClientUSB extends DroneClient {
 	public void startClient(ItemPeerDevice drone) {
 
 		if (drone.getDevInterface() == DEVICE_INTERFACE.USB) {
-
-			handlerDroneMsgRead = startInputQueueMsgHandler();
 
 			usbDevice = HUBGlobals.usbHub.openByLocation(hub, ((ItemPeerDeviceUSB) drone).getLocation());
 
@@ -48,8 +43,8 @@ public class DroneClientUSB extends DroneClient {
 
 			usbDevice.purge((byte) (D2xxManager.FT_PURGE_TX | D2xxManager.FT_PURGE_RX));
 
-			usbClientReaderThread = new ThreadReaderUSB(usbDevice, handlerDroneMsgRead);
-			usbClientReaderThread.start();
+			readerThreadUSB = new ThreadReaderUSB(usbDevice, connMsgHandler);
+			readerThreadUSB.start();
 		}
 		else {
 			Log.d(TAG, "Wrong client start-up parameter type:" + drone.getDevInterface().toString());
@@ -63,24 +58,21 @@ public class DroneClientUSB extends DroneClient {
 	public void stopClient() {
 		Log.d(TAG, "Closing connection..");
 
-		// stop handler
-		if (handlerDroneMsgRead != null) {
-			handlerDroneMsgRead.removeMessages(0);
-		}
+		stopMsgHandler();
 
 		// stop thread
 		if (isConnected()) {
-			usbClientReaderThread.stopMe();
+			readerThreadUSB.stopMe();
 		}
 	}
 
 	@Override
 	public boolean isConnected() {
-		if (null == usbClientReaderThread) {
+		if (null == readerThreadUSB) {
 			return false;
 		}
 		else {
-			return usbClientReaderThread.isRunning();
+			return readerThreadUSB.isRunning();
 		}
 
 	}
@@ -111,7 +103,7 @@ public class DroneClientUSB extends DroneClient {
 	public boolean writeBytes(byte[] bytes) throws IOException {
 
 		if (isConnected()) {
-			usbClientReaderThread.writeBytes(bytes);
+			readerThreadUSB.writeBytes(bytes);
 			return true;
 		}
 		return false;

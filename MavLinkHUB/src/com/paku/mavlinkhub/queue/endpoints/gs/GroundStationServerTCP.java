@@ -6,7 +6,6 @@ import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.enums.SERVER_IP_MODE;
 import com.paku.mavlinkhub.queue.endpoints.GroundStationServer;
-import android.os.Handler;
 
 public class GroundStationServerTCP extends GroundStationServer {
 
@@ -17,19 +16,15 @@ public class GroundStationServerTCP extends GroundStationServer {
 
 	private ThreadGroundStationServerTCP serverThread;
 
-	private Handler handlerServerMsgRead;
-
 	public GroundStationServerTCP(HUBGlobals hub) {
 		super(hub, SIZEBUFF);
+		serverMode = SERVER_IP_MODE.TCP;
 	}
 
 	@Override
 	public void startServer(int port) {
 
-		// start received bytes handler
-		handlerServerMsgRead = startInputQueueMsgHandler();
-
-		serverThread = new ThreadGroundStationServerTCP(handlerServerMsgRead, port);
+		serverThread = new ThreadGroundStationServerTCP(connMsgHandler, port);
 		serverThread.start();
 
 	}
@@ -37,13 +32,11 @@ public class GroundStationServerTCP extends GroundStationServer {
 	@Override
 	public void stopServer() {
 
-		// stop handler
-		if (handlerServerMsgRead != null) {
-			handlerServerMsgRead.removeMessages(0);
-		}
+		stopMsgHandler();
 
 		serverThread.stopMe();
-		sendAppMsg(APP_STATE.MSG_SERVER_STOPPED);
+
+		HUBGlobals.sendAppMsg(APP_STATE.MSG_SERVER_STOPPED);
 	}
 
 	@Override
@@ -63,9 +56,12 @@ public class GroundStationServerTCP extends GroundStationServer {
 
 	@Override
 	public boolean isClientConnected() {
-		if (serverThread.socketServerReaderThreadTCP != null)
-			return (serverThread.socketServerReaderThreadTCP.isRunning());
-		else
-			return false;
+		if (serverThread != null) {
+			if (serverThread.socketServerReaderThreadTCP != null)
+				return (serverThread.socketServerReaderThreadTCP.isRunning());
+			else
+				return false;
+		}
+		return false;
 	}
 }

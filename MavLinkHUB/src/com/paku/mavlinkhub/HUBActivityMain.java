@@ -65,7 +65,7 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
 		// register for call interface;
-		hub.messenger.mainActivity = this;
+		HUBGlobals.messenger.mainActivity = this;
 
 		progressBarConnected.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
 		onDataUpdateStats();
@@ -83,7 +83,7 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 		super.onPause();
 
 		// unregister from call interface;
-		hub.messenger.mainActivity = null;
+		HUBGlobals.messenger.mainActivity = null;
 	}
 
 	@Override
@@ -144,6 +144,12 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 
 			return true;
 
+		case R.id.menu_switch_server_mode:
+
+			hub.switchServer();
+
+			return true;
+
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -199,11 +205,11 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 	}
 
 	private void closeHUB() {
-		hub.logger.sysLog(TAG, "MavLinkHUB closing ...");
+		HUBGlobals.logger.sysLog(TAG, "MavLinkHUB closing ...");
 		hub.droneClient.stopClient();
 		hub.gsServer.stopServer();
 		hub.queue.stopQueue();
-		hub.logger.stopAllLogs();
+		HUBGlobals.logger.stopAllLogs();
 		finish();
 		killApp(true);
 	}
@@ -222,7 +228,7 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 	public void onDataUpdateStats() {
 
 		final TextView mTextViewLogStats = (TextView) findViewById(R.id.textView_system_status_bar);
-		mTextViewLogStats.setText(hub.logger.hubStats.toString_(MSG_SOURCE.FROM_ALL));
+		mTextViewLogStats.setText(HUBGlobals.logger.hubStats.toString_(MSG_SOURCE.FROM_ALL));
 
 	}
 

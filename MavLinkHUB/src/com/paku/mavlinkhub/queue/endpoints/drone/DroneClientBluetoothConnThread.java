@@ -3,6 +3,7 @@ package com.paku.mavlinkhub.queue.endpoints.drone;
 import java.io.IOException;
 import java.util.UUID;
 
+import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.enums.APP_STATE;
 
 import android.bluetooth.BluetoothAdapter;
@@ -32,7 +33,6 @@ class DroneClientBluetoothConnThread extends Thread {
 			tmp = mmDevice.createInsecureRfcommSocketToServiceRecord(UUID.fromString(UUID_SPP));
 		}
 		catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		mmSocket = tmp;
@@ -53,7 +53,7 @@ class DroneClientBluetoothConnThread extends Thread {
 			try {
 				mmSocket.close();
 				String msgTxt = connectException.getMessage();
-				parentConnector.sendAppMsg(APP_STATE.MSG_DRONE_CONNECTION_ATTEMPT_FAILED, msgTxt);
+				HUBGlobals.sendAppMsg(APP_STATE.MSG_DRONE_CONNECTION_ATTEMPT_FAILED, msgTxt);
 			}
 			catch (IOException closeException) {
 				Log.d(TAG, "Exception: [Failed Connection Attempt: close failed as well]" + closeException.getMessage());

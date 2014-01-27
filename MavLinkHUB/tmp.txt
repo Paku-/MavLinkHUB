@@ -12,9 +12,11 @@ Drone link
 				remove
 				
 				LOST
-				
+								gsServer = new GroundStationServerUDP(this);
+				gsServer.startServer(HUBGlobals.serverUDP_port);
+				addUsb
 				error_drone
-				
+				UsbRequestJNI
 				.read
 				
 				Peer:
@@ -24,3 +26,7 @@ Drone link
 				on port
 				
 				Active
+				
+				SYSTEM
+				
+				nstance.

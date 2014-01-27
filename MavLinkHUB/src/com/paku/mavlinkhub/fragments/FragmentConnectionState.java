@@ -1,6 +1,7 @@
 package com.paku.mavlinkhub.fragments;
 
 import com.paku.mavlinkhub.HUBActivityMain;
+import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.interfaces.IDroneConnected;
@@ -33,10 +34,10 @@ public class FragmentConnectionState extends HUBFragment implements IUiModeChang
 	@Override
 	public void onResume() {
 		super.onResume();
-		hub.messenger.register(this, APP_STATE.MSG_UI_MODE_CHANGED);
-		hub.messenger.register(this, APP_STATE.MSG_DRONE_CONNECTION_ATTEMPT_FAILED);
-		hub.messenger.register(this, APP_STATE.MSG_DRONE_CONNECTED);
-		hub.messenger.register(this, APP_STATE.MSG_DRONE_CONNECTION_LOST);
+		HUBGlobals.messenger.register(this, APP_STATE.MSG_UI_MODE_CHANGED);
+		HUBGlobals.messenger.register(this, APP_STATE.MSG_DRONE_CONNECTION_ATTEMPT_FAILED);
+		HUBGlobals.messenger.register(this, APP_STATE.MSG_DRONE_CONNECTED);
+		HUBGlobals.messenger.register(this, APP_STATE.MSG_DRONE_CONNECTION_LOST);
 		onUiModeChanged();
 
 	}
@@ -45,10 +46,10 @@ public class FragmentConnectionState extends HUBFragment implements IUiModeChang
 	public void onPause() {
 		super.onPause();
 
-		hub.messenger.unregister(this, APP_STATE.MSG_UI_MODE_CHANGED);
-		hub.messenger.unregister(this, APP_STATE.MSG_DRONE_CONNECTION_ATTEMPT_FAILED);
-		hub.messenger.unregister(this, APP_STATE.MSG_DRONE_CONNECTED);
-		hub.messenger.unregister(this, APP_STATE.MSG_DRONE_CONNECTION_LOST);
+		HUBGlobals.messenger.unregister(this, APP_STATE.MSG_UI_MODE_CHANGED);
+		HUBGlobals.messenger.unregister(this, APP_STATE.MSG_DRONE_CONNECTION_ATTEMPT_FAILED);
+		HUBGlobals.messenger.unregister(this, APP_STATE.MSG_DRONE_CONNECTED);
+		HUBGlobals.messenger.unregister(this, APP_STATE.MSG_DRONE_CONNECTION_LOST);
 
 	}
 

@@ -36,20 +36,20 @@ public class ThreadCollectorParser extends Thread {
 
 	public void run() {
 
-		hub.logger.sysLog("MavLink Parser", "Start...");
+		HUBGlobals.logger.sysLog("MavLink Parser", "Start...");
 
 		while (running) {
 
 			parse(MSG_SOURCE.FROM_DRONE);
 
 			// save transmission from drone
-			hub.logger.byteLog(MSG_SOURCE.FROM_DRONE, tmpBuffer);
+			HUBGlobals.logger.byteLog(MSG_SOURCE.FROM_DRONE, tmpBuffer);
 
 			parse(MSG_SOURCE.FROM_GS);
 
 		}
 
-		hub.logger.sysLog("MavLink Parser", "...Stop");
+		HUBGlobals.logger.sysLog("MavLink Parser", "...Stop");
 	}
 
 	private void parse(MSG_SOURCE direction) {
@@ -70,7 +70,7 @@ public class ThreadCollectorParser extends Thread {
 			tmpPacket = null;
 
 			// add bytes count to the stats
-			hub.logger.hubStats.addByteStats(direction, tmpBuffer.limit());
+			HUBGlobals.logger.hubStats.addByteStats(direction, tmpBuffer.limit());
 
 			// parse
 			for (int i = 0; i < tmpBuffer.limit(); i++) {
@@ -102,10 +102,10 @@ public class ThreadCollectorParser extends Thread {
 					// store parser stats
 					switch (direction) {
 					case FROM_DRONE:
-						hub.logger.hubStats.setParserStats(direction, parserDrone.stats);
+						HUBGlobals.logger.hubStats.setParserStats(direction, parserDrone.stats);
 						break;
 					case FROM_GS:
-						hub.logger.hubStats.setParserStats(direction, parserGS.stats);
+						HUBGlobals.logger.hubStats.setParserStats(direction, parserGS.stats);
 						break;
 					default:
 						break;
@@ -116,7 +116,7 @@ public class ThreadCollectorParser extends Thread {
 
 			}
 			// update UI stats display - both byte and parsers stats
-			hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_STATS.ordinal()).sendToTarget();
+			HUBGlobals.sendAppMsg(APP_STATE.MSG_DATA_UPDATE_STATS);
 		}
 
 	}

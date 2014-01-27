@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
 
@@ -32,10 +33,15 @@ public class ThreadReaderDatagramBased extends Thread {
 	// UDP constructor
 	public ThreadReaderDatagramBased(InetAddress address, int port, Handler handlerReceiver) throws SocketException {
 
-		//our receiving port is port+1 - while we broadcast (local lan f.e 192.168.1.255) for port = port
-		this.socketUDP = new DatagramSocket(port + 1);
 		this.port = port;
 		this.address = address;
+
+		//our receiving port is port+1 - while we broadcast (local lan f.e 192.168.1.255) for port = port
+
+		socketUDP = new DatagramSocket(null);
+		socketUDP.setReuseAddress(true);
+		socketUDP.setBroadcast(true);
+		socketUDP.bind(new InetSocketAddress(port + 1));
 
 		handlerQueueIOBytesReceiver = handlerReceiver;
 
@@ -76,7 +82,6 @@ public class ThreadReaderDatagramBased extends Thread {
 			}
 		}
 
-		// try to close whatever we are :)
 		socketUDP.close();
 
 	}
@@ -90,6 +95,7 @@ public class ThreadReaderDatagramBased extends Thread {
 	public void stopMe() {
 		// stop threads run() loop
 		running = false;
+
 		// stop it's handler as well
 		handlerQueueIOBytesReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_CLOSED.ordinal()).sendToTarget();
 

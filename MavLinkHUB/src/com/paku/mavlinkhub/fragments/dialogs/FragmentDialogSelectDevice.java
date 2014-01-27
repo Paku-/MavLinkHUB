@@ -134,7 +134,6 @@ public class FragmentDialogSelectDevice extends DialogFragment {
 
 	@Override
 	public void onAttach(Activity activity) {
-		// TODO Auto-generated method stub
 		Log.d(TAG, "Attached");
 		super.onAttach(activity);
 	}
@@ -142,14 +141,12 @@ public class FragmentDialogSelectDevice extends DialogFragment {
 	@Override
 	public void onDestroy() {
 		Log.d(TAG, "Destroyed");
-		// TODO Auto-generated method stub
 		super.onDestroy();
 	}
 
 	@Override
 	public void onPause() {
 		Log.d(TAG, "Paused");
-		// TODO Auto-generated method stub
 		super.onPause();
 	}
 
@@ -180,15 +177,15 @@ public class FragmentDialogSelectDevice extends DialogFragment {
 			case DEV_STATE_UNKNOWN:
 			case DEV_STATE_DISCONNECTED:
 				if (!hub.droneClient.isConnected()) {
-					hub.logger.sysLog(TAG, "Connecting...");
+					HUBGlobals.logger.sysLog(TAG, "Connecting...");
 
 					listDevices.setDevState(position, PEER_DEV_STATE.DEV_STATE_CONNECTED);
 					devListAdapter.notifyDataSetChanged();
 
 					hub.switchClient(selectedDev);
 
-					hub.logger.sysLog(TAG, "Me  : " + hub.droneClient.getMyName() + " [" + hub.droneClient.getMyAddress() + "]");
-					hub.logger.sysLog(TAG, "Peer: " + selectedDev.getName() + " [" + selectedDev.getAddress() + "]");
+					HUBGlobals.logger.sysLog(TAG, "Me  : " + hub.droneClient.getMyName() + " [" + hub.droneClient.getMyAddress() + "]");
+					HUBGlobals.logger.sysLog(TAG, "Peer: " + selectedDev.getName() + " [" + selectedDev.getAddress() + "]");
 
 					Toast.makeText(getActivity(), R.string.txt_device_connecting, Toast.LENGTH_SHORT).show();
 
@@ -203,7 +200,7 @@ public class FragmentDialogSelectDevice extends DialogFragment {
 
 			case DEV_STATE_CONNECTED:
 				if (hub.droneClient.isConnected()) {
-					hub.logger.sysLog(TAG, "Closing Connection ...");
+					HUBGlobals.logger.sysLog(TAG, "Closing Connection ...");
 					hub.droneClient.stopClient();
 					listDevices.setDevState(position, PEER_DEV_STATE.DEV_STATE_DISCONNECTED);
 					Toast.makeText(getActivity(), R.string.txt_device_disconnected, Toast.LENGTH_SHORT).show();

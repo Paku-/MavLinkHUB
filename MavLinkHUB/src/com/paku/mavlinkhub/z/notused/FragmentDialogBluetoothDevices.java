@@ -142,9 +142,9 @@ public class FragmentDialogBluetoothDevices extends DialogFragment {
 			case DEV_STATE_UNKNOWN:
 			case DEV_STATE_DISCONNECTED:
 				if (!hub.droneClient.isConnected()) {
-					hub.logger.sysLog(TAG, "Connecting...");
-					hub.logger.sysLog(TAG, "Me  : " + hub.droneClient.getMyName() + " [" + hub.droneClient.getMyAddress() + "]");
-					hub.logger.sysLog(TAG, "Peer: " + selectedDev.getName() + " [" + selectedDev.getAddress() + "]");
+					HUBGlobals.logger.sysLog(TAG, "Connecting...");
+					HUBGlobals.logger.sysLog(TAG, "Me  : " + hub.droneClient.getMyName() + " [" + hub.droneClient.getMyAddress() + "]");
+					HUBGlobals.logger.sysLog(TAG, "Peer: " + selectedDev.getName() + " [" + selectedDev.getAddress() + "]");
 
 					hub.droneClient.startClient(selectedDev);
 
@@ -161,7 +161,7 @@ public class FragmentDialogBluetoothDevices extends DialogFragment {
 
 			case DEV_STATE_CONNECTED:
 				if (hub.droneClient.isConnected()) {
-					hub.logger.sysLog(TAG, "Closing Connection ...");
+					HUBGlobals.logger.sysLog(TAG, "Closing Connection ...");
 					hub.droneClient.stopClient();
 					listBTDevices.setDevState(position, PEER_DEV_STATE.DEV_STATE_DISCONNECTED);
 					Toast.makeText(getActivity(), R.string.txt_device_disconnected, Toast.LENGTH_SHORT).show();

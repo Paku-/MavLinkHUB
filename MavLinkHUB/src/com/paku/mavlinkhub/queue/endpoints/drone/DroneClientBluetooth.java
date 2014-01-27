@@ -11,7 +11,6 @@ import com.paku.mavlinkhub.viewadapters.devicelist.ItemPeerDevice;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.os.Handler;
 import android.util.Log;
 
 public class DroneClientBluetooth extends DroneClient {
@@ -23,10 +22,8 @@ public class DroneClientBluetooth extends DroneClient {
 	private BluetoothDevice mBluetoothDevice;
 	private BluetoothSocket mBluetoothSocket;
 
-	private Handler handlerDroneMsgRead;
-
 	private DroneClientBluetoothConnThread droneConnectingBluetoothThread;
-	private ThreadReaderSocketBased socketClientReaderThreadBT;
+	private ThreadReaderSocketBased readerThreadBT;
 
 	public DroneClientBluetooth(HUBGlobals hub) {
 		super(hub, SIZEBUFF);
@@ -58,36 +55,30 @@ public class DroneClientBluetooth extends DroneClient {
 
 		mBluetoothSocket = socket;
 
-		// start received bytes handler
-		handlerDroneMsgRead = startInputQueueMsgHandler();
-
 		// start receiver thread
-		socketClientReaderThreadBT = new ThreadReaderSocketBased(mBluetoothSocket, handlerDroneMsgRead);
-		socketClientReaderThreadBT.start();
+		readerThreadBT = new ThreadReaderSocketBased(mBluetoothSocket, connMsgHandler);
+		readerThreadBT.start();
 	}
 
 	@Override
 	public void stopClient() {
 		Log.d(TAG, "Closing connection..");
 
-		// stop handler
-		if (handlerDroneMsgRead != null) {
-			handlerDroneMsgRead.removeMessages(0);
-		}
+		stopMsgHandler();
 
 		// stop socket thread
 		if (isConnected()) {
-			socketClientReaderThreadBT.stopMe();
+			readerThreadBT.stopMe();
 		}
 	}
 
 	@Override
 	public boolean isConnected() {
-		if (socketClientReaderThreadBT == null) {
+		if (readerThreadBT == null) {
 			return false;
 		}
 		else {
-			return socketClientReaderThreadBT.isRunning();
+			return readerThreadBT.isRunning();
 		}
 
 	}
@@ -122,7 +113,7 @@ public class DroneClientBluetooth extends DroneClient {
 	public boolean writeBytes(byte[] bytes) throws IOException {
 
 		if (isConnected()) {
-			socketClientReaderThreadBT.writeBytes(bytes);
+			readerThreadBT.writeBytes(bytes);
 			return true;
 		}
 		return false;

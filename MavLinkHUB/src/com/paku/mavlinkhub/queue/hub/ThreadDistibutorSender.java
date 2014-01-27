@@ -26,7 +26,7 @@ public class ThreadDistibutorSender extends Thread {
 
 		ItemMavLinkMsg tmpItem = null;
 
-		hub.logger.sysLog("MavLink Distributor", "Start...");
+		HUBGlobals.logger.sysLog("MavLink Distributor", "Start...");
 
 		while (running) {
 
@@ -71,9 +71,9 @@ public class ThreadDistibutorSender extends Thread {
 
 					// Store queue items count left after last read but
 					// only if it changed - for UI update -
-					if (hub.logger.hubStats.getQueueItemsCnt() != hub.queue.getItemCount()) {
-						hub.logger.hubStats.setQueueItemsCnt(hub.queue.getItemCount());
-						hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_STATS.ordinal()).sendToTarget();
+					if (HUBGlobals.logger.hubStats.getQueueItemsCnt() != hub.queue.getItemCount()) {
+						HUBGlobals.logger.hubStats.setQueueItemsCnt(hub.queue.getItemCount());
+						HUBGlobals.sendAppMsg(APP_STATE.MSG_DATA_UPDATE_STATS);
 					}
 
 				}
@@ -85,7 +85,7 @@ public class ThreadDistibutorSender extends Thread {
 			}
 
 		}
-		hub.logger.sysLog("MavLink Distributor", "...Stop");
+		HUBGlobals.logger.sysLog("MavLink Distributor", "...Stop");
 	}
 
 	public void stopMe() {

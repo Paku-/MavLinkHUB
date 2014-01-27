@@ -1,6 +1,7 @@
 package com.paku.mavlinkhub;
 
 import com.ftdi.j2xx.D2xxManager;
+import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.enums.DEVICE_INTERFACE;
 import com.paku.mavlinkhub.enums.UI_MODE;
 import com.paku.mavlinkhub.fragments.FragmentsAdapter;
@@ -12,15 +13,18 @@ import com.paku.mavlinkhub.queue.endpoints.drone.DroneClientUSB;
 import com.paku.mavlinkhub.queue.endpoints.gs.GroundStationServerTCP;
 import com.paku.mavlinkhub.queue.endpoints.gs.GroundStationServerUDP;
 import com.paku.mavlinkhub.queue.hub.HUBQueue;
+import com.paku.mavlinkhub.queue.items.ItemMavLinkMsg;
 import com.paku.mavlinkhub.utils.HUBLogger;
 import com.paku.mavlinkhub.viewadapters.devicelist.ItemPeerDevice;
 
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.widget.Toast;
 
 public class HUBGlobals extends Application {
 
@@ -35,7 +39,7 @@ public class HUBGlobals extends Application {
 	public static final int serverUDP_port = 14550;
 
 	// messages handler
-	public HUBMessenger messenger;
+	public static HUBMessenger messenger;
 
 	// main Drone connector
 	public DroneClient droneClient;
@@ -47,7 +51,7 @@ public class HUBGlobals extends Application {
 	public HUBQueue queue;
 
 	// sys log stats holder object
-	public HUBLogger logger;
+	public static HUBLogger logger;
 
 	public static D2xxManager usbHub = null;
 
@@ -69,32 +73,41 @@ public class HUBGlobals extends Application {
 		// start application asynchronous messaging - has to be first !!!
 		messenger = new HUBMessenger(this);
 
+		//start system wide logger
 		logger = new HUBLogger(this);
 
+		/*
+		<usb-device vendor-id="1027" product-id="24577" /> <!-- FT232RL -->
+		<usb-device vendor-id="1027" product-id="24596" /> <!-- FT232H -->
+		<usb-device vendor-id="1027" product-id="24597" /> <!-- FT231X 0x0403 / 0x6015 -->
+		<usb-device vendor-id="1027" product-id="24592" /> <!-- FT2232C/D/HL -->
+		<usb-device vendor-id="1027" product-id="24593" /> <!-- FT4232HL -->
+		<usb-device vendor-id="1027" product-id="24597" /> <!-- FT230X -->
+		<usb-device vendor-id="1412" product-id="45088" /> <!-- REX-USB60F -->
+		<usb-device vendor-id="9025" product-id="16" /><!-- APM 2.5 device -->    
+		<usb-device vendor-id="9900" product-id="16" /><!-- APM 2.5 device -->
+		<usb-device vendor-id="5824" product-id="1155" /><!--  Teensyduino  -->
+		<usb-device vendor-id="4292" product-id="60000" /><!-- CP210x UART Bridge -->
+		<usb-device vendor-id="1118" product-id="688"/>		
+		*/
+
+		//start USB driver
 		try {
 			usbHub = D2xxManager.getInstance(this);
+			// setup the additinal VIDPIDPAIRs
+			if (!usbHub.setVIDPID(0x2341, 0x0010)) Log.d(TAG, "APM 2.5 VIDPID1 setting error");
+			if (!usbHub.setVIDPID(0x26ac, 0x0010)) Log.d(TAG, "APM 2.5 VIDPID2 setting error");
+
 		}
 		catch (D2xxManager.D2xxException ex) {
 			ex.printStackTrace();
 		}
 
-		// setup the additinal VIDPIDPAIR
-		if (!usbHub.setVIDPID(0x0403, 0xada1)) Log.i("ftd2xx-java", "setVIDPID Error");
-
 		// Default is the BT client
 		droneClient = new DroneClientBluetooth(this);
 
-		//TCP server
-		// server started from the beginning
-		gsServer = new GroundStationServerTCP(this);
-		// start listening on configured port.
-		gsServer.startServer(HUBGlobals.serverTCP_port);
-
-		//UDP server
-		// server started from the beginning
-		gsServer = new GroundStationServerUDP(this);
-		// start listening on configured port.
-		gsServer.startServer(HUBGlobals.serverUDP_port);
+		// switch server, if it's null start UDP as default.
+		switchServer();
 
 		// finally start parsers and distributors
 		queue = new HUBQueue(this, 1000);
@@ -102,9 +115,37 @@ public class HUBGlobals extends Application {
 
 	}
 
+	public void switchServer() {
+
+		if (gsServer != null) {
+			gsServer.stopServer();
+
+			if (gsServer.getClass().equals(GroundStationServerTCP.class)) {
+				gsServer = new GroundStationServerUDP(this);
+				gsServer.startServer(HUBGlobals.serverUDP_port);
+				return;
+			}
+
+			if (gsServer.getClass().equals(GroundStationServerUDP.class)) {
+				gsServer = new GroundStationServerTCP(this);
+				gsServer.startServer(HUBGlobals.serverTCP_port);
+				return;
+			}
+		}
+		else {
+
+			gsServer = new GroundStationServerUDP(this);
+			gsServer.startServer(HUBGlobals.serverUDP_port);
+
+		}
+
+		Toast.makeText(this, "Server mode set to: " + gsServer.serverMode.toString(), Toast.LENGTH_LONG).show();
+
+	}
+
 	public void switchClient(ItemPeerDevice newDevice) {
 
-		if (null != droneClient) {
+		if (droneClient != null) {
 			droneClient.stopClient();
 		}
 
@@ -124,6 +165,23 @@ public class HUBGlobals extends Application {
 		droneClient.setMyPeerDevice(newDevice);
 		droneClient.startClient(newDevice);
 
+	}
+
+	//let's have the app wide STATIC messaging method for our children/application classes
+	public static final void sendAppMsg(APP_STATE msgId, String msgTxt) {
+		messenger.appMsgHandler.obtainMessage(msgId.ordinal(), msgTxt.length(), -1, msgTxt.getBytes()).sendToTarget();
+	}
+
+	public static final void sendAppMsg(APP_STATE msgId) {
+		messenger.appMsgHandler.obtainMessage(msgId.ordinal()).sendToTarget();
+	}
+
+	public static final void sendAppMsg(APP_STATE msgId, Message msg) {
+		messenger.appMsgHandler.obtainMessage(msgId.ordinal(), msg.arg1, msg.arg2, msg.obj).sendToTarget();
+	}
+
+	public static void sendAppMsg(APP_STATE msgId, ItemMavLinkMsg item) {
+		messenger.appMsgHandler.obtainMessage(msgId.ordinal(), -1, -1, item).sendToTarget();
 	}
 
 }

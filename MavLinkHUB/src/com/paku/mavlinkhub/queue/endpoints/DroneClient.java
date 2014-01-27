@@ -3,11 +3,10 @@ package com.paku.mavlinkhub.queue.endpoints;
 import java.io.IOException;
 
 import com.paku.mavlinkhub.HUBGlobals;
-import com.paku.mavlinkhub.enums.APP_STATE;
-import com.paku.mavlinkhub.queue.QueueIOBytes;
+import com.paku.mavlinkhub.queue.ConnectorBytes;
 import com.paku.mavlinkhub.viewadapters.devicelist.ItemPeerDevice;
 
-public abstract class DroneClient extends QueueIOBytes {
+public abstract class DroneClient extends ConnectorBytes {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = DroneClient.class.getSimpleName();

@@ -1,5 +1,6 @@
 package com.paku.mavlinkhub.fragments;
 
+import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.interfaces.IDataUpdateSysLog;
@@ -33,21 +34,21 @@ public class FragmentSysLog extends HUBFragment implements IDataUpdateSysLog {
 	@Override
 	public void onResume() {
 		super.onResume();
-		hub.messenger.register(this, APP_STATE.MSG_DATA_UPDATE_SYSLOG);
+		HUBGlobals.messenger.register(this, APP_STATE.MSG_DATA_UPDATE_SYSLOG);
 		onDataUpdateSysLog();
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
-		hub.messenger.unregister(this, APP_STATE.MSG_DATA_UPDATE_SYSLOG);
+		HUBGlobals.messenger.unregister(this, APP_STATE.MSG_DATA_UPDATE_SYSLOG);
 	}
 
 	@Override
 	public void onDataUpdateSysLog() {
 		final TextView mTextViewBytesLog = (TextView) (getView().findViewById(R.id.TextView_logSysLog));
 
-		mTextViewBytesLog.setText(hub.logger.inMemSysLogBuffer);
+		mTextViewBytesLog.setText(HUBGlobals.logger.inMemSysLogBuffer);
 
 		// scroll down
 		final ScrollView mScrollView = (ScrollView) (getView().findViewById(R.id.scrollView_logSys));

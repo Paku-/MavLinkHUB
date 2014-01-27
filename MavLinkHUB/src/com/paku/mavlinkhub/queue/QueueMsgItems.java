@@ -34,7 +34,7 @@ public class QueueMsgItems {
 			hubQueue.addLast(item);
 		}
 
-		hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_QUEUE_MSGITEM_READY.ordinal(), -1, -1, item).sendToTarget();
+		HUBGlobals.sendAppMsg(APP_STATE.MSG_QUEUE_MSGITEM_READY, item);
 
 	}
 

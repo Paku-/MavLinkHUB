@@ -4,6 +4,8 @@
 <!-- Menu Section -->    
     <string name="menu_title_settings">Settings</string>
     <string name="menu_title_bluetooth">Connect using Bluetooth</string>
+    <string name="menu_title_usb">Connect USB client</string>
+	<string name="menu_title_switch_server">Switch server mode (UDP/TCP)</string>        
 <!-- Fragments Titles Section -->    
     <string name="title_realtime_mavlink">RealTime MAVLink</string>
     <string name="title_connectivity">Connection</string>
@@ -68,7 +70,9 @@
     <string name="txt_device_connected">Device connected</string>
     <string name="txt_device_disconnected">Device disconnected</string>
     <string name="txt_device_connecting">Connecting device</string>
-    <string name="menu_title_usb">Connect USB client</string>
     <string name="txt_select_device_to_connect_disconnect">Select device to connect/disconnect</string>
-    <string name="error_server_start_failed">Can not start server !</string>        
+    
+<!-- not assigned strings needs moving up -->    
+    <string name="error_server_start_failed">Can not start server !</string>
+            
 </resources>

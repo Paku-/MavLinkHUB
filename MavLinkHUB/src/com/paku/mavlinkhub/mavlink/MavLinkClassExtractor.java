@@ -61,20 +61,15 @@ public class MavLinkClassExtractor {
 		MAV_TYPE tmpType = new MAV_TYPE();
 		for (Field mavField : tmpType.getClass().getFields()) {
 			try {
-				getMavType().add(
-						new ClassItem(mavField.getName().replace("MAV_", ""), tmpType.getClass()
-								.getField(mavField.getName()).getInt(tmpType)));
+				getMavType().add(new ClassItem(mavField.getName().replace("MAV_", ""), tmpType.getClass().getField(mavField.getName()).getInt(tmpType)));
 			}
 			catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			catch (NoSuchFieldException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -88,20 +83,15 @@ public class MavLinkClassExtractor {
 		MAV_AUTOPILOT tmpAutopilot = new MAV_AUTOPILOT();
 		for (Field mavField : tmpAutopilot.getClass().getFields()) {
 			try {
-				getMavAutopilot().add(
-						new ClassItem(mavField.getName().replace("MAV_", ""), tmpAutopilot.getClass()
-								.getField(mavField.getName()).getInt(tmpAutopilot)));
+				getMavAutopilot().add(new ClassItem(mavField.getName().replace("MAV_", ""), tmpAutopilot.getClass().getField(mavField.getName()).getInt(tmpAutopilot)));
 			}
 			catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			catch (NoSuchFieldException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -115,20 +105,15 @@ public class MavLinkClassExtractor {
 		MAV_STATE tmpState = new MAV_STATE();
 		for (Field mavField : tmpState.getClass().getFields()) {
 			try {
-				getMavState().add(
-						new ClassItem(mavField.getName().replace("MAV_", ""), tmpState.getClass()
-								.getField(mavField.getName()).getInt(tmpState)));
+				getMavState().add(new ClassItem(mavField.getName().replace("MAV_", ""), tmpState.getClass().getField(mavField.getName()).getInt(tmpState)));
 			}
 			catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			catch (NoSuchFieldException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 

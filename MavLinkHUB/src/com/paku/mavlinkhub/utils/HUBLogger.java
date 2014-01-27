@@ -63,7 +63,7 @@ public class HUBLogger {
 				mFileSysLogStream.write(tempStr.getBytes(), 0, tempStr.length());
 				inMemSysLogBuffer.append(tempStr);
 			}
-			hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_SYSLOG.ordinal()).sendToTarget();
+			HUBGlobals.sendAppMsg(APP_STATE.MSG_DATA_UPDATE_SYSLOG);
 		}
 		catch (IOException e1) {
 			Log.d(TAG, "[sysLog] " + e1.getMessage());
@@ -91,7 +91,7 @@ public class HUBLogger {
 					inMemByteLogBuffer.replace(0, inMemByteLogBuffer.length() - HUBGlobals.visibleByteLogSize, "[***]\r\n");
 				}
 			}
-			hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_BYTELOG.ordinal()).sendToTarget();
+			HUBGlobals.sendAppMsg(APP_STATE.MSG_DATA_UPDATE_BYTELOG);
 		}
 	}
 

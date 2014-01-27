@@ -47,8 +47,8 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 	public void onResume() {
 		super.onResume();
 
-		hub.messenger.register(this, APP_STATE.MSG_DATA_UPDATE_BYTELOG);
-		hub.messenger.register(this, APP_STATE.MSG_QUEUE_MSGITEM_READY);
+		HUBGlobals.messenger.register(this, APP_STATE.MSG_DATA_UPDATE_BYTELOG);
+		HUBGlobals.messenger.register(this, APP_STATE.MSG_QUEUE_MSGITEM_READY);
 
 		// GUI update
 		onDataUpdateByteLog();
@@ -81,8 +81,8 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 	@Override
 	public void onPause() {
 		super.onPause();
-		hub.messenger.unregister(this, APP_STATE.MSG_DATA_UPDATE_BYTELOG);
-		hub.messenger.unregister(this, APP_STATE.MSG_QUEUE_MSGITEM_READY);
+		HUBGlobals.messenger.unregister(this, APP_STATE.MSG_DATA_UPDATE_BYTELOG);
+		HUBGlobals.messenger.unregister(this, APP_STATE.MSG_QUEUE_MSGITEM_READY);
 	}
 
 	@Override
@@ -90,7 +90,7 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 
 		final TextView mTextViewBytesLog = (TextView) (getView().findViewById(R.id.textView_logByte));
 
-		mTextViewBytesLog.setText(hub.logger.getByteLog());
+		mTextViewBytesLog.setText(HUBGlobals.logger.getByteLog());
 
 		if (hub.prefs.getBoolean("pref_byte_log_autoscroll", true)) {
 			// scroll down

@@ -8,6 +8,7 @@ import java.net.SocketException;
 
 import com.paku.mavlinkhub.enums.SOCKET_STATE;
 import com.paku.mavlinkhub.utils.ThreadReaderSocketBased;
+import com.paku.mavlinkhub.utils.Utils;
 
 import android.os.Handler;
 import android.util.Log;
@@ -19,23 +20,22 @@ public class ThreadGroundStationServerTCP extends Thread {
 	Socket socket;
 	ServerSocket serverSocket;
 	ThreadReaderSocketBased socketServerReaderThreadTCP;
-	Handler handlerServerReadMsg;
+	Handler connMsgHandler;
 	public boolean running = true;
 
 	public ThreadGroundStationServerTCP(Handler handler, int port) {
-		handlerServerReadMsg = handler;
+		connMsgHandler = handler;
 
 		try {
 
 			// /could be the port is already used - we need a check ...
 			serverSocket = new ServerSocket(port);
 
-			handlerServerReadMsg.obtainMessage(SOCKET_STATE.MSG_SOCKET_SERVER_STARTED.ordinal(), -1, -1, new InetSocketAddress(serverSocket.getInetAddress(), serverSocket.getLocalPort()))
-					.sendToTarget();
+			connMsgHandler.obtainMessage(SOCKET_STATE.MSG_SOCKET_SERVER_STARTED.ordinal(), -1, -1, "TCP:" + Utils.getIPAddress(true) + ":" + serverSocket.getLocalPort()).sendToTarget();
 
 		}
 		catch (IOException e) {
-			handlerServerReadMsg.obtainMessage(SOCKET_STATE.MSG_SOCKET_SERVER_START_FAILED.ordinal()).sendToTarget();
+			connMsgHandler.obtainMessage(SOCKET_STATE.MSG_SOCKET_SERVER_START_FAILED.ordinal()).sendToTarget();
 			e.printStackTrace();
 		}
 
@@ -48,13 +48,13 @@ public class ThreadGroundStationServerTCP extends Thread {
 			try {
 				socket = serverSocket.accept();
 
-				socketServerReaderThreadTCP = new ThreadReaderSocketBased(socket, handlerServerReadMsg);
+				socketServerReaderThreadTCP = new ThreadReaderSocketBased(socket, connMsgHandler);
 				socketServerReaderThreadTCP.start();
 
 				clientIP = (socket.getInetAddress()).getHostAddress() + ":" + socket.getPort();
 				//clientIP.replace("//", " ");
 
-				handlerServerReadMsg.obtainMessage(SOCKET_STATE.MSG_SOCKET_SERVER_CLIENT_CONNECTED.ordinal(), clientIP.length(), -1, clientIP.getBytes()).sendToTarget();
+				connMsgHandler.obtainMessage(SOCKET_STATE.MSG_SOCKET_SERVER_CLIENT_CONNECTED.ordinal(), clientIP.length(), -1, clientIP.getBytes()).sendToTarget();
 
 				Log.d(TAG, "New Connection: TCP Socket Started");
 			}
