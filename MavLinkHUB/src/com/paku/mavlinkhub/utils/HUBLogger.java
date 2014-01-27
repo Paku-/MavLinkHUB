@@ -63,7 +63,9 @@ public class HUBLogger {
 		// syslog write
 		try {
 			synchronized (inMemSysLogBuffer) {
-				mFileSysLogStream.write(tempStr.getBytes(), 0, tempStr.length());
+				if (hub.prefs.getBoolean("pref_log_system", true)) {
+					mFileSysLogStream.write(tempStr.getBytes(), 0, tempStr.length());
+				}
 				inMemSysLogBuffer.append(tempStr);
 			}
 			HUBGlobals.sendAppMsg(APP_STATE.MSG_DATA_UPDATE_SYSLOG);
@@ -82,9 +84,10 @@ public class HUBLogger {
 		// log only Drone data to the bytelog file
 		if (null != buffer && direction == MSG_SOURCE.FROM_DRONE) {
 			synchronized (inMemByteLogBuffer) {
-
 				try {
-					mFileByteLogStream.write(buffer.array(), 0, buffer.limit());
+					if (hub.prefs.getBoolean("pref_log_mavlink_byte", true)) {
+						mFileByteLogStream.write(buffer.array(), 0, buffer.limit());
+					}
 				}
 				catch (IOException e) {
 					Log.d(TAG, "[byteLog] " + e.getMessage());
@@ -101,7 +104,6 @@ public class HUBLogger {
 		}
 	}
 
-	// Log.d(TAG, "[byteLog] " + e1.getMessage());
 	public void restartByteLog() {
 
 		byteLogFile = new File(getLoggerStorageLocation(null), getLoggerFileName("byte"));
@@ -112,7 +114,7 @@ public class HUBLogger {
 			Log.d(TAG, e.getMessage());
 		}
 
-		inMemSysLogBuffer.delete(0, inMemByteLogBuffer.length());
+		inMemByteLogBuffer.delete(0, inMemByteLogBuffer.length());
 
 	}
 
@@ -139,11 +141,23 @@ public class HUBLogger {
 	}
 
 	public void stopByteLog() {
+
 		stopLog(mFileByteLogStream);
+
+		if (!hub.prefs.getBoolean("pref_log_mavlink_byte", true)) {
+			byteLogFile.delete();
+		}
+
 	}
 
 	public void stopSysLog() {
+
 		stopLog(mFileSysLogStream);
+
+		if (!hub.prefs.getBoolean("pref_log_system", true)) {
+			sysLogFile.delete();
+		}
+
 	}
 
 	private void stopLog(BufferedOutputStream stream) {
