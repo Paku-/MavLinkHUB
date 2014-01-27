@@ -12,9 +12,9 @@ import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
 import android.util.Log;
 
-public class ThreadSocketReader extends Thread {
+public class ThreadReaderSocketBased extends Thread {
 
-	private static final String TAG = ThreadSocketReader.class.getSimpleName();
+	private static final String TAG = ThreadReaderSocketBased.class.getSimpleName();
 
 	private static final int BUFFSIZE = 1024 * 4;
 
@@ -29,7 +29,7 @@ public class ThreadSocketReader extends Thread {
 	private boolean running = true;
 
 	// BT constructor
-	public ThreadSocketReader(BluetoothSocket socket, Handler handlerReceiver) {
+	public ThreadReaderSocketBased(BluetoothSocket socket, Handler handlerReceiver) {
 
 		socketBT = socket;
 		socketTCP = null;
@@ -57,7 +57,7 @@ public class ThreadSocketReader extends Thread {
 	}
 
 	// TCP constructor
-	public ThreadSocketReader(Socket socket, Handler handlerReceiver) {
+	public ThreadReaderSocketBased(Socket socket, Handler handlerReceiver) {
 		this.socketTCP = socket;
 		socketBT = null;
 		handlerQueueIOBytesReceiver = handlerReceiver;

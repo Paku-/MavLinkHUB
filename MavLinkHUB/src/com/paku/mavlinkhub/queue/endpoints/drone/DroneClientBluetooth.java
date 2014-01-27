@@ -5,7 +5,7 @@ import java.io.IOException;
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.enums.DEVICE_INTERFACE;
 import com.paku.mavlinkhub.queue.endpoints.DroneClient;
-import com.paku.mavlinkhub.utils.ThreadSocketReader;
+import com.paku.mavlinkhub.utils.ThreadReaderSocketBased;
 import com.paku.mavlinkhub.viewadapters.devicelist.ItemPeerDevice;
 
 import android.bluetooth.BluetoothAdapter;
@@ -26,7 +26,7 @@ public class DroneClientBluetooth extends DroneClient {
 	private Handler handlerDroneMsgRead;
 
 	private DroneClientBluetoothConnThread droneConnectingBluetoothThread;
-	private ThreadSocketReader socketClientReaderThreadBT;
+	private ThreadReaderSocketBased socketClientReaderThreadBT;
 
 	public DroneClientBluetooth(HUBGlobals hub) {
 		super(hub, SIZEBUFF);
@@ -62,7 +62,7 @@ public class DroneClientBluetooth extends DroneClient {
 		handlerDroneMsgRead = startInputQueueMsgHandler();
 
 		// start receiver thread
-		socketClientReaderThreadBT = new ThreadSocketReader(mBluetoothSocket, handlerDroneMsgRead);
+		socketClientReaderThreadBT = new ThreadReaderSocketBased(mBluetoothSocket, handlerDroneMsgRead);
 		socketClientReaderThreadBT.start();
 	}
 

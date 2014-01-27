@@ -7,7 +7,7 @@ import com.ftdi.j2xx.FT_Device;
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.enums.DEVICE_INTERFACE;
 import com.paku.mavlinkhub.queue.endpoints.DroneClient;
-import com.paku.mavlinkhub.utils.ThreadUSBReader;
+import com.paku.mavlinkhub.utils.ThreadReaderUSB;
 import com.paku.mavlinkhub.viewadapters.devicelist.ItemPeerDevice;
 import com.paku.mavlinkhub.viewadapters.devicelist.ItemPeerDeviceUSB;
 
@@ -23,7 +23,7 @@ public class DroneClientUSB extends DroneClient {
 
 	protected FT_Device usbDevice;
 
-	private ThreadUSBReader usbClientReaderThread;
+	private ThreadReaderUSB usbClientReaderThread;
 
 	public DroneClientUSB(HUBGlobals hub) {
 		super(hub, SIZEBUFF);
@@ -48,7 +48,7 @@ public class DroneClientUSB extends DroneClient {
 
 			usbDevice.purge((byte) (D2xxManager.FT_PURGE_TX | D2xxManager.FT_PURGE_RX));
 
-			usbClientReaderThread = new ThreadUSBReader(usbDevice, handlerDroneMsgRead);
+			usbClientReaderThread = new ThreadReaderUSB(usbDevice, handlerDroneMsgRead);
 			usbClientReaderThread.start();
 		}
 		else {

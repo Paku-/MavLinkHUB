@@ -10,6 +10,7 @@ import com.paku.mavlinkhub.queue.endpoints.GroundStationServer;
 import com.paku.mavlinkhub.queue.endpoints.drone.DroneClientBluetooth;
 import com.paku.mavlinkhub.queue.endpoints.drone.DroneClientUSB;
 import com.paku.mavlinkhub.queue.endpoints.gs.GroundStationServerTCP;
+import com.paku.mavlinkhub.queue.endpoints.gs.GroundStationServerUDP;
 import com.paku.mavlinkhub.queue.hub.HUBQueue;
 import com.paku.mavlinkhub.utils.HUBLogger;
 import com.paku.mavlinkhub.viewadapters.devicelist.ItemPeerDevice;
@@ -28,9 +29,10 @@ public class HUBGlobals extends Application {
 
 	// constants
 	// buffer, stream sizes
-	public int visibleByteLogSize = 256 * 4;
-	public int visibleMsgList = 50;
-	public int serverTCP_port = 5760;
+	public static final int visibleByteLogSize = 256 * 4;
+	public static final int visibleMsgList = 50;
+	public static final int serverTCP_port = 5760;
+	public static final int serverUDP_port = 14550;
 
 	// messages handler
 	public HUBMessenger messenger;
@@ -82,10 +84,17 @@ public class HUBGlobals extends Application {
 		// Default is the BT client
 		droneClient = new DroneClientBluetooth(this);
 
+		//TCP server
 		// server started from the beginning
 		gsServer = new GroundStationServerTCP(this);
 		// start listening on configured port.
-		gsServer.startServer(serverTCP_port);
+		gsServer.startServer(HUBGlobals.serverTCP_port);
+
+		//UDP server
+		// server started from the beginning
+		gsServer = new GroundStationServerUDP(this);
+		// start listening on configured port.
+		gsServer.startServer(HUBGlobals.serverUDP_port);
 
 		// finally start parsers and distributors
 		queue = new HUBQueue(this, 1000);

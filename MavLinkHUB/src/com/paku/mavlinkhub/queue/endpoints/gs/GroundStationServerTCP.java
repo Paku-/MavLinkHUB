@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.enums.APP_STATE;
+import com.paku.mavlinkhub.enums.SERVER_IP_MODE;
 import com.paku.mavlinkhub.queue.endpoints.GroundStationServer;
-
 import android.os.Handler;
 
 public class GroundStationServerTCP extends GroundStationServer {
@@ -15,13 +15,12 @@ public class GroundStationServerTCP extends GroundStationServer {
 
 	private static final int SIZEBUFF = 1024;
 
-	// Socket socketTCP;
-	ThreadGroundStationServerTCP serverTCP;
+	private ThreadGroundStationServerTCP serverThread;
 
 	private Handler handlerServerMsgRead;
 
 	public GroundStationServerTCP(HUBGlobals hub) {
-		super(hub, SIZEBUFF);
+		super(SERVER_IP_MODE.TCP, hub, SIZEBUFF);
 	}
 
 	@Override
@@ -30,8 +29,12 @@ public class GroundStationServerTCP extends GroundStationServer {
 		// start received bytes handler
 		handlerServerMsgRead = startInputQueueMsgHandler();
 
-		serverTCP = new ThreadGroundStationServerTCP(handlerServerMsgRead, port);
-		serverTCP.start();
+		//SERVER_IP_MODE modes[] = SERVER_IP_MODE.values();
+
+		//switch (modes[myMode.ordinal()]) {
+		serverThread = new ThreadGroundStationServerTCP(handlerServerMsgRead, port);
+		serverThread.start();
+		//serverThread = new ThreadReaderDatagramBased(Utils.getBroadcastAddress(hub), port, handlerServerMsgRead);
 
 	}
 
@@ -43,19 +46,19 @@ public class GroundStationServerTCP extends GroundStationServer {
 			handlerServerMsgRead.removeMessages(0);
 		}
 
-		serverTCP.stopMe();
+		serverThread.stopMe();
 		hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_SERVER_STOPPED.ordinal()).sendToTarget();
 	}
 
 	@Override
 	public boolean isRunning() {
-		return serverTCP.running;
+		return serverThread.running;
 	}
 
 	@Override
 	public boolean writeBytes(byte[] bytes) throws IOException {
 		if (isClientConnected()) {
-			serverTCP.writeBytes(bytes);
+			serverThread.writeBytes(bytes);
 			return true;
 		}
 		else
@@ -64,8 +67,8 @@ public class GroundStationServerTCP extends GroundStationServer {
 
 	@Override
 	public boolean isClientConnected() {
-		if (serverTCP.socketServerReaderThreadTCP != null)
-			return (serverTCP.socketServerReaderThreadTCP.isRunning());
+		if (serverThread.socketServerReaderThreadTCP != null)
+			return (serverThread.socketServerReaderThreadTCP.isRunning());
 		else
 			return false;
 	}

@@ -2,6 +2,7 @@ package com.paku.mavlinkhub.fragments;
 
 import java.util.ArrayList;
 
+import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.interfaces.IDataUpdateByteLog;
@@ -119,7 +120,7 @@ public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateB
 		// scroll down on pref
 		if (hub.prefs.getBoolean("pref_msg_items_autoscroll", true)) {
 			// trim only if autoscroll enabled
-			while (listAdapterMavLink.getCount() > hub.visibleMsgList) {
+			while (listAdapterMavLink.getCount() > HUBGlobals.visibleMsgList) {
 				listAdapterMavLink.remove(listAdapterMavLink.getItem(0));
 			}
 

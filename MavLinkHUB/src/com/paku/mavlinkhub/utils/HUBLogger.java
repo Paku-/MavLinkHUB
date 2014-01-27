@@ -42,10 +42,10 @@ public class HUBLogger {
 
 		hubStats = new HUBStats();
 
-		inMemSysLogBuffer = new StringBuilder(2 * hub.visibleByteLogSize);
+		inMemSysLogBuffer = new StringBuilder(2 * HUBGlobals.visibleByteLogSize);
 		restartSysLog();
 
-		inMemByteLogBuffer = new StringBuilder(2 * hub.visibleByteLogSize);
+		inMemByteLogBuffer = new StringBuilder(2 * HUBGlobals.visibleByteLogSize);
 		restartByteLog();
 
 		sysLog(TAG, "** MavLinkHUB Syslog Init **");
@@ -87,8 +87,8 @@ public class HUBLogger {
 
 				inMemByteLogBuffer.append(new String(buffer.array(), 0, buffer.limit()));
 				// trim to the limit
-				if (inMemByteLogBuffer.length() > hub.visibleByteLogSize * 1.5) {
-					inMemByteLogBuffer.replace(0, inMemByteLogBuffer.length() - hub.visibleByteLogSize, "[***]\r\n");
+				if (inMemByteLogBuffer.length() > HUBGlobals.visibleByteLogSize * 1.5) {
+					inMemByteLogBuffer.replace(0, inMemByteLogBuffer.length() - HUBGlobals.visibleByteLogSize, "[***]\r\n");
 				}
 			}
 			hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_DATA_UPDATE_BYTELOG.ordinal()).sendToTarget();

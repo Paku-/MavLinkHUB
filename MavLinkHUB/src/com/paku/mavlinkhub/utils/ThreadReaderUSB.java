@@ -8,10 +8,10 @@ import com.paku.mavlinkhub.enums.SOCKET_STATE;
 
 import android.os.Handler;
 
-public class ThreadUSBReader extends Thread {
+public class ThreadReaderUSB extends Thread {
 
 	@SuppressWarnings("unused")
-	private static final String TAG = ThreadUSBReader.class.getSimpleName();
+	private static final String TAG = ThreadReaderUSB.class.getSimpleName();
 
 	private static final int BUFFSIZE = 1024 * 4;
 
@@ -21,7 +21,7 @@ public class ThreadUSBReader extends Thread {
 
 	FT_Device usbDevice;
 
-	public ThreadUSBReader(FT_Device usbDevice, Handler handlerReceiver) {
+	public ThreadReaderUSB(FT_Device usbDevice, Handler handlerReceiver) {
 
 		handlerQueueIOBytesReceiver = handlerReceiver;
 		this.usbDevice = usbDevice;
