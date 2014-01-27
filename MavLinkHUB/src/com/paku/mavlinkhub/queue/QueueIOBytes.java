@@ -80,6 +80,8 @@ public abstract class QueueIOBytes {
 		return outputByteQueue;
 	}
 
+	//below there are methods for derived classes (drones @ gs servers)
+
 	// that's the true ADD ,method for this class
 	// this handler is called by the messages coming from any other class build
 	// over the QueueIOBytes (both clients and servers). Any bytes receiving
@@ -135,4 +137,14 @@ public abstract class QueueIOBytes {
 		};
 
 	}
+
+	//let's have the app wide messaging method for our children
+	public final void sendAppMsg(APP_STATE msgId, String msgTxt) {
+		hub.messenger.appMsgHandler.obtainMessage(msgId.ordinal(), msgTxt.length(), -1, msgTxt.getBytes()).sendToTarget();
+	}
+
+	public final void sendAppMsg(APP_STATE msgId) {
+		hub.messenger.appMsgHandler.obtainMessage(msgId.ordinal()).sendToTarget();
+	}
+
 }

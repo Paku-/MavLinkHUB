@@ -20,7 +20,7 @@ public class GroundStationServerTCP extends GroundStationServer {
 	private Handler handlerServerMsgRead;
 
 	public GroundStationServerTCP(HUBGlobals hub) {
-		super(SERVER_IP_MODE.TCP, hub, SIZEBUFF);
+		super(hub, SIZEBUFF);
 	}
 
 	@Override
@@ -29,12 +29,8 @@ public class GroundStationServerTCP extends GroundStationServer {
 		// start received bytes handler
 		handlerServerMsgRead = startInputQueueMsgHandler();
 
-		//SERVER_IP_MODE modes[] = SERVER_IP_MODE.values();
-
-		//switch (modes[myMode.ordinal()]) {
 		serverThread = new ThreadGroundStationServerTCP(handlerServerMsgRead, port);
 		serverThread.start();
-		//serverThread = new ThreadReaderDatagramBased(Utils.getBroadcastAddress(hub), port, handlerServerMsgRead);
 
 	}
 
@@ -47,7 +43,7 @@ public class GroundStationServerTCP extends GroundStationServer {
 		}
 
 		serverThread.stopMe();
-		hub.messenger.appMsgHandler.obtainMessage(APP_STATE.MSG_SERVER_STOPPED.ordinal()).sendToTarget();
+		sendAppMsg(APP_STATE.MSG_SERVER_STOPPED);
 	}
 
 	@Override

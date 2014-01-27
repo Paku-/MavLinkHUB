@@ -11,8 +11,6 @@ public abstract class GroundStationServer extends QueueIOBytes {
 	@SuppressWarnings("unused")
 	private static final String TAG = GroundStationServer.class.getSimpleName();
 
-	protected final SERVER_IP_MODE myMode;
-
 	public abstract void startServer(int port);
 
 	public abstract void stopServer();
@@ -23,9 +21,8 @@ public abstract class GroundStationServer extends QueueIOBytes {
 
 	public abstract boolean writeBytes(byte[] bytes) throws IOException;
 
-	protected GroundStationServer(SERVER_IP_MODE mode, HUBGlobals hub, int capacity) {
+	protected GroundStationServer(HUBGlobals hub, int capacity) {
 		super(hub, capacity);
-		myMode = mode;
 	}
 
 }

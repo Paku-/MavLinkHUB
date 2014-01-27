@@ -44,13 +44,4 @@ public abstract class DroneClient extends QueueIOBytes {
 		this.myPeerDevice = myPeerDevice;
 	}
 
-	//let clients have the app wide messaging method
-	public final void sentAppMsg(APP_STATE msgId, String msgTxt) {
-		hub.messenger.appMsgHandler.obtainMessage(msgId.ordinal(), msgTxt.length(), -1, msgTxt.getBytes()).sendToTarget();
-	}
-
-	public final void sentAppMsg(APP_STATE msgId) {
-		hub.messenger.appMsgHandler.obtainMessage(msgId.ordinal()).sendToTarget();
-	}
-
 }
