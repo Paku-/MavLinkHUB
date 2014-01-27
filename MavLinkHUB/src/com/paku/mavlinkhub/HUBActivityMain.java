@@ -152,7 +152,7 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 
 			hub.switchServer();
 
-			Toast.makeText(this, "Server mode set to: " + hub.gsServer.serverMode.toString(), Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "Server mode set to: " + hub.gsServer.serverMode.toString(), Toast.LENGTH_SHORT).show();
 
 			return true;
 
