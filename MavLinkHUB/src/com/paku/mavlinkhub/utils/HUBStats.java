@@ -1,6 +1,10 @@
-// $codepro.audit.disable com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.alwaysOverridetoString.alwaysOverrideToString
+// $codepro.audit.disable
+// com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.alwaysOverridetoString.alwaysOverrideToString
 package com.paku.mavlinkhub.utils;
 
+import java.util.ArrayDeque;
+
+import com.MAVLink.Messages.MAVLinkMessage;
 import com.MAVLink.Messages.MAVLinkStats;
 import com.paku.mavlinkhub.enums.MSG_SOURCE;
 
@@ -9,8 +13,16 @@ public class HUBStats {
 	private MAVLinkStats parserStatsDrone;
 	private MAVLinkStats parserStatsGS;
 
-	private int statsClientByteCount = 0;
-	private int statsServerByteCount = 0;
+	private int statsDroneByteCount = 0;
+	private int statsGSByteCount = 0;
+
+	private float lastDroneMsgTime = 0;
+	private float lastGSMsgTime = 0;
+
+	private float avrDroneMsgTime = 0;
+	private float avrGSMsgTime = 0;
+
+	private ArrayDeque<MAVLinkMessage> statsDroneMsgs;
 
 	private int statsQueueItemsCnt = 0;
 
@@ -36,30 +48,30 @@ public class HUBStats {
 		if (direction == MSG_SOURCE.FROM_GS) serverAddBytes(len);
 	}
 
-	public String toString_(MSG_SOURCE direction) {
+	public String toString(MSG_SOURCE direction) {
 
 		final String byteStats = "Q:" + statsQueueItemsCnt;
 
-		String droneStats = " DR:" + statsClientByteCount + "/0/0";
+		String droneStats = " DR:" + statsDroneByteCount + "/0/0";
 
 		if (null != parserStatsDrone) {
-			droneStats = " DR:" + statsClientByteCount + "/" + parserStatsDrone.receivedPacketCount + "/" + parserStatsDrone.crcErrorCount;
+			droneStats = " DR:" + statsDroneByteCount + "/" + parserStatsDrone.receivedPacketCount + "/" + parserStatsDrone.crcErrorCount;
 		}
 
-		String gsStats = " GS:" + statsServerByteCount + "/0/0";
+		String gsStats = " GS:" + statsGSByteCount + "/0/0";
 		if (null != parserStatsGS) {
-			gsStats = " GS:" + statsServerByteCount + "/" + parserStatsGS.receivedPacketCount + "/" + parserStatsGS.crcErrorCount;
+			gsStats = " GS:" + statsGSByteCount + "/" + parserStatsGS.receivedPacketCount + "/" + parserStatsGS.crcErrorCount;
 		}
 
 		return byteStats + droneStats + gsStats;
 	}
 
 	private void clientAddBytes(int len) {
-		statsClientByteCount += len;
+		statsDroneByteCount += len;
 	}
 
 	private void serverAddBytes(int len) {
-		statsServerByteCount += len;
+		statsGSByteCount += len;
 	}
 
 	public void setDroneStats(MAVLinkStats stats) {

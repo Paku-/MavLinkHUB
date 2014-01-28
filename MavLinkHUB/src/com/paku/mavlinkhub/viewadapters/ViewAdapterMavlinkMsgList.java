@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.enums.MSG_SOURCE;
-import com.paku.mavlinkhub.mavlink.MavLinkClassExtractor;
 import com.paku.mavlinkhub.queue.items.ItemMavLinkMsg;
 import com.paku.mavlinkhub.queue.items.ItemMavLinkMsgTxt;
+import com.paku.mavlinkhub.utils.MavLinkClassExtractor;
 
 import android.content.Context;
 import android.view.LayoutInflater;

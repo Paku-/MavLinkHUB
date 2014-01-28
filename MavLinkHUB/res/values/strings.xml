@@ -32,25 +32,30 @@
     <string name="bt_calibrate">Calibrate</string>
     <string name="bt_connectivity">Disconnect</string>    
 <!-- Pref Section Logging  -->
-    <string name="pref_section_logs_title">System logger</string>
-    <string name="pref_log_mavlink_folder_title">MavLink log file folder</string>    
-    <string name="pref_log_system_folder_title">System log file folder</string>        
-    <string name="pref_log_system_title">System log</string>
-    <string name="pref_log_system_summary">Enable System log writes</string>
-    <string name="pref_log_mavlink_byte_title">Drone log </string>
-    <string name="pref_log_mavlink_byte_summary">Enable Drone log writes</string>
+    <string name="pref_section_logs_title">Logs</string>            
+    <string name="pref_log_system_title">Log MavLinkHUB system messages</string>
+    <string name="pref_log_system_summary">Enable system messages file logging</string>
+    <string name="pref_log_mavlink_byte_title">Log Drone data</string>
+    <string name="pref_log_mavlink_byte_summary">Enable Drone transmission (byte level) file logging</string>
+    <string name="pref_log_mavlink_folder_title">Logs folder</string>
+    <string name="pref_log_system_folder_title">System log file folder</string>
 <!-- Pref Section Autoscroll  -->
-    <string name="pref_section_auto_scroll_title">Auto Scroll</string>
-    <string name="pref_msg_items_autoscroll_summary">Autoscroll Mavlink messages list</string>    
-    <string name="pref_msg_items_autoscroll_title">MAVLink messages</string>        
-    <string name="pref_byte_log_autoscroll_summary">Autoscroll Drone log</string>    
-    <string name="pref_byte_log_autoscroll_title">Drone Log</string>    
+    <string name="pref_section_auto_scroll_title">Auto Scroll</string>    
+    
+    <string name="pref_msg_items_autoscroll_title">Autoscroll MavLink messages</string>        
+    <string name="pref_msg_items_autoscroll_summary">Enable Mavlink messages list autoscroll function, disable to move the list with fingers</string>    
+    
+    <string name="pref_byte_log_autoscroll_title">Autscroll Drone data log</string>
+    <string name="pref_byte_log_autoscroll_summary">Enable Drone data autoscroll function, disable to move the list with fingers</string>
+    
+    <string name="pref_sys_log_autoscroll_title">System Log</string>        
     <string name="pref_sys_log_autoscroll_summary">Autoscroll System log</string>    
-    <string name="pref_sys_log_autoscroll_title">System Log</string>    
+
 <!-- Pref Section II  -->
-    <string name="pref_title_section2">Section Title</string>    
-    <string name="pref_title_do_it">Empty title</string>
-    <string name="pref_summary_do_it">Empty summary</string>
+	<string name="prefs_dialog_title_usb_baud">Select USB baud rate</string>
+    <string name="pref_section_network_title">Transmission</string>    
+    <string name="pref_usb_baud_title">USB baud rate</string>
+    <string name="pref_usb_baud_summary">Set the USB serial speed for your Drone USB interface. (Reconnect after changing)</string>
 <!-- Error Msgs-->
     <string name="error_drone_connection_lost">Drone connection LOST !!!</string>    
     <string name="error_no_bt_adapter_or_paired_devices">No Bluetooth adapter or Paired Devices found</string>    

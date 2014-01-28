@@ -1,11 +1,12 @@
-// $codepro.audit.disable com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.alwaysOverridetoString.alwaysOverrideToString
+// $codepro.audit.disable
+// com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.alwaysOverridetoString.alwaysOverrideToString
 package com.paku.mavlinkhub.queue.items;
 
 import com.MAVLink.Messages.ApmModes;
 import com.MAVLink.Messages.ardupilotmega.msg_heartbeat;
 import com.MAVLink.Messages.ardupilotmega.msg_statustext;
 import com.paku.mavlinkhub.enums.MSG_SOURCE;
-import com.paku.mavlinkhub.mavlink.MavLinkClassExtractor;
+import com.paku.mavlinkhub.utils.MavLinkClassExtractor;
 
 public class ItemMavLinkMsgTxt {
 
@@ -33,8 +34,7 @@ public class ItemMavLinkMsgTxt {
 		switch (msgItem.msg.msgid) {
 		case msg_heartbeat.MAVLINK_MSG_ID_HEARTBEAT:
 			final msg_heartbeat msg_heartbeat_ = (msg_heartbeat) msgItem.msg;
-			// setMsgName(msg_heartbeat_.toString().substring(0,msg_heartbeat_.toString().indexOf("-",
-			// 0)-1));
+
 			msgName = msg_heartbeat_.getClass().getSimpleName();
 
 			// operation mode + state
@@ -44,6 +44,11 @@ public class ItemMavLinkMsgTxt {
 
 			// ship's type name + autopilot name
 			desc_3 = (mavClasses.getMavType().get(msg_heartbeat_.type).getName() + ":" + mavClasses.getMavAutopilot().get(msg_heartbeat_.autopilot).getName());
+
+			/**
+			 * System mode bitfield, see MAV_MODE_FLAGS ENUM in mavlink/include/mavlink_types.h
+			 */
+			//public byte base_mode; 
 
 			break;
 
@@ -63,6 +68,9 @@ public class ItemMavLinkMsgTxt {
 			mainTxt = msgItem.msg.toString();
 			break;
 		}
+		;
+
+		mainTxt = mainTxt.replace("MAVLINK_MSG_ID_", " ");
 
 	}
 

@@ -234,7 +234,7 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 	public void onDataUpdateStats() {
 
 		final TextView mTextViewLogStats = (TextView) findViewById(R.id.textView_system_status_bar);
-		mTextViewLogStats.setText(HUBGlobals.logger.hubStats.toString_(MSG_SOURCE.FROM_ALL));
+		mTextViewLogStats.setText(HUBGlobals.logger.hubStats.toString(MSG_SOURCE.FROM_ALL));
 
 	}
 

@@ -1,4 +1,5 @@
-// $codepro.audit.disable com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.alwaysOverridetoString.alwaysOverrideToString
+// $codepro.audit.disable
+// com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.alwaysOverridetoString.alwaysOverrideToString
 package com.paku.mavlinkhub.queue.endpoints.drone;
 
 import java.io.IOException;
@@ -35,7 +36,7 @@ public class DroneClientUSB extends DroneClient {
 			usbDevice = HUBGlobals.usbHub.openByLocation(hub, ((ItemPeerDeviceUSB) drone).getLocation());
 
 			usbDevice.setBitMode((byte) 0, D2xxManager.FT_BITMODE_RESET);
-			usbDevice.setBaudRate(115200);
+			usbDevice.setBaudRate(Integer.valueOf(hub.prefs.getString("pref_usb_baud", "115200")));
 			usbDevice.setDataCharacteristics(D2xxManager.FT_DATA_BITS_8, D2xxManager.FT_STOP_BITS_1, D2xxManager.FT_PARITY_NONE);
 			usbDevice.setFlowControl(D2xxManager.FT_FLOW_NONE, (byte) 0x0b, (byte) 0x0d);
 
