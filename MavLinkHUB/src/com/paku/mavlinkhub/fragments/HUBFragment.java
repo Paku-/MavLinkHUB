@@ -22,18 +22,6 @@ public class HUBFragment extends Fragment {
 		setRetainInstance(true); // keep HUBFragments in the memory
 		setHasOptionsMenu(true);
 
-		// setMenuVisibility(true);
-
-		// final ActionBar
-		// actionBar=((FragmentActivity)getActivity()).getActionBar();
-
-		// actionBar.hide();
-
-		// actionBar.setDisplayShowHomeEnabled(true);
-		// actionBar.setDisplayShowTitleEnabled(true);
-
-		// actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
 	}
 
 	@Override

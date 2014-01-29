@@ -3,9 +3,11 @@
 package com.paku.mavlinkhub;
 
 import com.paku.mavlinkhub.enums.MSG_SOURCE;
-import com.paku.mavlinkhub.fragments.FragmentsAdapter;
+import com.paku.mavlinkhub.fragments.HUBFragmentsAdapter;
 import com.paku.mavlinkhub.fragments.dialogs.FragmentDialogSelectDevice;
 import com.paku.mavlinkhub.interfaces.IDataUpdateStats;
+
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -31,6 +33,10 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 
 	private static final String TAG = HUBActivityMain.class.getSimpleName();
 
+	// we are a Fragment activity
+	public HUBFragmentsAdapter fragmentsAdapter;
+	public ViewPager fragmentsViewPager;
+
 	public HUBGlobals hub;
 
 	private ProgressBar progressBarConnected;
@@ -53,9 +59,9 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 			hub.hubInit(this);
 		}
 
-		hub.mFragmentsPagerAdapter = new FragmentsAdapter(this, getSupportFragmentManager());
-		hub.mViewPager = (ViewPager) findViewById(R.id.pager);
-		hub.mViewPager.setAdapter(hub.mFragmentsPagerAdapter);
+		fragmentsAdapter = new HUBFragmentsAdapter(this, getSupportFragmentManager());
+		fragmentsViewPager = (ViewPager) findViewById(R.id.pager);
+		fragmentsViewPager.setAdapter(fragmentsAdapter);
 
 		progressBarConnected = (ProgressBar) findViewById(R.id.progressBarConnected);
 
@@ -95,13 +101,13 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 
 		// getMenuInflater().inflate(R.menu.main, menu);
 
-		// final ActionBar actionBar = getSupportActionBar();
-		// final ActionBar actionBar = getActionBar();
+		//final ActionBar actionBar = getSupportActionBar();
+		final ActionBar actionBar = getActionBar();
 
 		// actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		// actionBar.setDisplayShowHomeEnabled(true);
-		// actionBar.setDisplayShowTitleEnabled(true);
+		actionBar.setDisplayShowTitleEnabled(false);
 
 		return super.onCreateOptionsMenu(menu);
 	}

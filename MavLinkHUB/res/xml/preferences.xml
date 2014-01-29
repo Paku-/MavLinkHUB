@@ -1,7 +1,16 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    
+    <PreferenceCategory android:title="@string/pref_section_analyser_title" >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="pref_analyser_view"
+            android:summary="@string/pref_enable_analyser_view_summary"
+            android:title="@string/pref_enable_analyser_view_title" />        
+    </PreferenceCategory>    
     
     
-    <PreferenceCategory android:title="@string/pref_section_network_title" >
+    <PreferenceCategory android:title="@string/pref_section_connections_title" >
         <ListPreference
             android:dialogTitle="@string/prefs_dialog_title_usb_baud"
             android:entries="@array/pref_usb_baud_entries"

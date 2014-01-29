@@ -5,9 +5,10 @@
     <string name="menu_title_settings">Settings</string>
     <string name="menu_title_bluetooth">Start Bluetooth</string>
     <string name="menu_title_usb">Start USB</string>
-	<string name="menu_title_switch_server">Switch server (UDP/TCP)</string>        
+	<string name="menu_title_switch_server">Switch server (UDP/TCP)</string>
+	<string name="menu_title_switch_analyser_view">Switch analyser view</string>	        
 <!-- Fragments Titles Section -->    
-    <string name="title_realtime_mavlink">RealTime MAVLink</string>
+    <string name="title_analyser">Analyser</string>
     <string name="title_connectivity">Connection</string>
     <string name="title_syslog">System log</string>
     <string name="title_calibration">Calibration</string>    
@@ -51,9 +52,15 @@
     <string name="pref_sys_log_autoscroll_title">System Log</string>        
     <string name="pref_sys_log_autoscroll_summary">Autoscroll System log</string>    
 
-<!-- Pref Section II  -->
+<!-- Pref Section Analyser  -->
+    <string name="pref_section_analyser_title">Analyser</string>    
+    <string name="pref_enable_analyser_view_title">Enable Analyser view</string>
+    <string name="pref_enable_analyser_view_summary">Switch the Analyser view on/off</string>
+    
+    
+<!-- Pref Section connection  -->
 	<string name="prefs_dialog_title_usb_baud">Select USB baud rate</string>
-    <string name="pref_section_network_title">Transmission</string>    
+    <string name="pref_section_connections_title">Connection</string>    
     <string name="pref_usb_baud_title">USB baud rate</string>
     <string name="pref_usb_baud_summary">Set the USB serial speed for your Drone USB interface. (Reconnect after changing)</string>
 <!-- Error Msgs-->

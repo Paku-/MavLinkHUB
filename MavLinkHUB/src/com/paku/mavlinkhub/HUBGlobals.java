@@ -6,7 +6,7 @@ import com.ftdi.j2xx.D2xxManager;
 import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.enums.DEVICE_INTERFACE;
 import com.paku.mavlinkhub.enums.UI_MODE;
-import com.paku.mavlinkhub.fragments.FragmentsAdapter;
+import com.paku.mavlinkhub.fragments.HUBFragmentsAdapter;
 import com.paku.mavlinkhub.messenger.HUBMessenger;
 import com.paku.mavlinkhub.queue.endpoints.DroneClient;
 import com.paku.mavlinkhub.queue.endpoints.GroundStationServer;
@@ -54,10 +54,6 @@ public class HUBGlobals extends Application {
 	public static HUBLogger logger;
 
 	public static D2xxManager usbHub = null;
-
-	// we are a Fragment Application
-	public FragmentsAdapter mFragmentsPagerAdapter;
-	public ViewPager mViewPager;
 
 	public SharedPreferences prefs;
 
