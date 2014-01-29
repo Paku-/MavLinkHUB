@@ -6,9 +6,9 @@
     <string name="menu_title_bluetooth">Start Bluetooth</string>
     <string name="menu_title_usb">Start USB</string>
 	<string name="menu_title_switch_server">Switch server (UDP/TCP)</string>
-	<string name="menu_title_switch_analyser_view">Switch analyser view</string>	        
+	<string name="menu_title_switch_analyzer_view">Switch analyzer view</string>	        
 <!-- Fragments Titles Section -->    
-    <string name="title_analyser">Analyser</string>
+    <string name="title_analyzer">Analyzer</string>
     <string name="title_connectivity">Connection</string>
     <string name="title_syslog">System log</string>
     <string name="title_calibration">Calibration</string>    
@@ -52,10 +52,10 @@
     <string name="pref_sys_log_autoscroll_title">System Log</string>        
     <string name="pref_sys_log_autoscroll_summary">Autoscroll System log</string>    
 
-<!-- Pref Section Analyser  -->
-    <string name="pref_section_analyser_title">Analyser</string>    
-    <string name="pref_enable_analyser_view_title">Enable Analyser view</string>
-    <string name="pref_enable_analyser_view_summary">Switch the Analyser view on/off</string>
+<!-- Pref Section Analyzer  -->
+    <string name="pref_section_analyzer_title">Analyzer</string>    
+    <string name="pref_enable_analyzer_view_title">Enable Analyzer view</string>
+    <string name="pref_enable_analyzer_view_summary">Switch the Analyzer view on/off</string>
     
     
 <!-- Pref Section connection  -->

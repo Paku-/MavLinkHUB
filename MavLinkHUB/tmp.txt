@@ -6,6 +6,8 @@ Drone link
 				logWriter.write(logBuffer.array());
 				logWriter.write(receivedPacket.encodePacket());
 				
+				lyser
+				
 				115
 				pref
 				

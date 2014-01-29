@@ -1,12 +1,12 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
     
-    <PreferenceCategory android:title="@string/pref_section_analyser_title" >
+    <PreferenceCategory android:title="@string/pref_section_analyzer_title" >
         <CheckBoxPreference
             android:defaultValue="false"
-            android:key="pref_analyser_view"
-            android:summary="@string/pref_enable_analyser_view_summary"
-            android:title="@string/pref_enable_analyser_view_title" />        
+            android:key="pref_analyzer_view"
+            android:summary="@string/pref_enable_analyzer_view_summary"
+            android:title="@string/pref_enable_analyzer_view_title" />        
     </PreferenceCategory>    
     
     

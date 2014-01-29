@@ -28,7 +28,7 @@ public class HUBFragmentsAdapter extends FragmentPagerAdapter {
 		fragments = new ArrayList<ItemFragment>();
 
 		fragments.add(new ItemFragment(new FragmentConnectionState(), parentActivity.getString(R.string.title_connectivity).toUpperCase(Locale.getDefault()), true));
-		fragments.add(new ItemFragment(new FragmentRealTimeMavlink(), parentActivity.getString(R.string.title_analyser).toUpperCase(Locale.getDefault()), true));
+		fragments.add(new ItemFragment(new FragmentRealTimeMavlink(), parentActivity.getString(R.string.title_analyzer).toUpperCase(Locale.getDefault()), true));
 		fragments.add(new ItemFragment(new FragmentSysLog(), parentActivity.getString(R.string.title_syslog).toUpperCase(Locale.getDefault()), true));
 
 	}
