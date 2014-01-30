@@ -85,6 +85,7 @@
     <string name="txt_select_device_to_connect_disconnect">Select device to connect/disconnect</string>
     
 <!-- not assigned strings needs moving up -->    
-    <string name="error_server_start_failed">Can not start server !</string>
+    <string name="error_server_start_failed">Can not start server !</string>    
+    <string name="txt_server_mode_set_to">"Server mode set to: "</string>
             
 </resources>

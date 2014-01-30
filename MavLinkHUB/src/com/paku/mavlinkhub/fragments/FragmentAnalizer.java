@@ -21,16 +21,16 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class FragmentRealTimeMavlink extends HUBFragment implements IDataUpdateByteLog, IQueueMsgItemReady {
+public class FragmentAnalizer extends HUBFragment implements IDataUpdateByteLog, IQueueMsgItemReady {
 
-	private static final String TAG = FragmentRealTimeMavlink.class.getSimpleName();
+	private static final String TAG = FragmentAnalizer.class.getSimpleName();
 
 	ViewAdapterMavlinkMsgList listAdapterMavLink;
 	ListView listViewMavLinkMsg;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		final View rootView = inflater.inflate(R.layout.fragment_realtime_mavlink_msglist, container, false);
+		final View rootView = inflater.inflate(R.layout.fragment_analyzer, container, false);
 		return rootView;
 	}
 

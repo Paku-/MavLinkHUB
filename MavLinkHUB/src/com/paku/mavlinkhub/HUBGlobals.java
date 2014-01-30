@@ -6,7 +6,6 @@ import com.ftdi.j2xx.D2xxManager;
 import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.enums.DEVICE_INTERFACE;
 import com.paku.mavlinkhub.enums.UI_MODE;
-import com.paku.mavlinkhub.fragments.HUBFragmentsAdapter;
 import com.paku.mavlinkhub.messenger.HUBMessenger;
 import com.paku.mavlinkhub.queue.endpoints.DroneClient;
 import com.paku.mavlinkhub.queue.endpoints.GroundStationServer;
@@ -24,7 +23,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 
 public class HUBGlobals extends Application {
@@ -90,7 +88,7 @@ public class HUBGlobals extends Application {
 		//start USB driver
 		try {
 			usbHub = D2xxManager.getInstance(this);
-			// setup the additinal VIDPIDPAIRs
+			// setup the additional VIDPIDPAIRs 
 			if (!usbHub.setVIDPID(0x2341, 0x0010)) Log.d(TAG, "APM 2.5 VIDPID1 setting error");
 			if (!usbHub.setVIDPID(0x26ac, 0x0010)) Log.d(TAG, "APM 2.5 VIDPID2 setting error");
 

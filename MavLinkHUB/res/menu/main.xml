@@ -19,7 +19,7 @@
         android:showAsAction="always"               
         android:title="@string/menu_title_switch_server"/>
     <item
-        android:id="@+id/menu_switch_realtime_view"
+        android:id="@+id/menu_switch_analyzer_view"
         android:icon="@drawable/ic_action_view_as_list"
         android:orderInCategory="100"
         android:showAsAction="always"               

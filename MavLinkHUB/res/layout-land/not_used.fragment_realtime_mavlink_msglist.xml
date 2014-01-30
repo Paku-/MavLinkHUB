@@ -22,7 +22,7 @@
 
         <TextView
             android:id="@+id/textView_logByte"
-            style="@style/LogFont"
+            style="@style/LogStyle"
             android:text="@string/log_byte_log_empty" />
     </ScrollView>
 

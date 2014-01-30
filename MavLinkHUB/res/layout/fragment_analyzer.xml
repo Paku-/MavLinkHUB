@@ -20,10 +20,10 @@
             android:id="@+id/scrollView_logByte"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="4" >
+            android:layout_weight="6" >
 
             <TextView
-                style="@style/LogFont"                
+                style="@style/LogStyle"                
                 android:id="@+id/textView_logByte"                
                 android:text="@string/log_byte_log_empty" />
         </ScrollView>

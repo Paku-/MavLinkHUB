@@ -59,11 +59,14 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 			hub.hubInit(this);
 		}
 
-		fragmentsAdapter = new HUBFragmentsAdapter(this, getSupportFragmentManager());
-		fragmentsViewPager = (ViewPager) findViewById(R.id.pager);
-		fragmentsViewPager.setAdapter(fragmentsAdapter);
-
 		progressBarConnected = (ProgressBar) findViewById(R.id.progressBarConnected);
+
+	}
+
+	public void resetFragmentsAdapter() {
+		fragmentsAdapter = new HUBFragmentsAdapter(this, getSupportFragmentManager());
+		fragmentsViewPager = (ViewPager) findViewById(R.id.viewPager);
+		fragmentsViewPager.setAdapter(fragmentsAdapter);
 
 	}
 
@@ -72,6 +75,10 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 		super.onResume();
 
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
+		//so it's based on the prefs as well
+
+		resetFragmentsAdapter();
 
 		// register for call interface;
 		HUBGlobals.messenger.mainActivity = this;
@@ -158,7 +165,20 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 
 			hub.switchServer();
 
-			Toast.makeText(this, "Server mode set to: " + hub.gsServer.serverMode.toString(), Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, getResources().getString(R.string.txt_server_mode_set_to) + hub.gsServer.serverMode.toString(), Toast.LENGTH_SHORT).show();
+
+			return true;
+
+		case R.id.menu_switch_analyzer_view:
+
+			//			Intent myIntent = getIntent();
+			//			finish();
+			//			startActivity(myIntent);
+
+			//switch prefs for Analyzer
+			hub.prefs.edit().putBoolean("pref_analyzer_view", !hub.prefs.getBoolean("pref_analyzer_view", true)).commit();
+			// then reload pages.			
+			resetFragmentsAdapter();
 
 			return true;
 

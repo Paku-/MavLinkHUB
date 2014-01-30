@@ -1,4 +1,5 @@
-// $codepro.audit.disable com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.alwaysOverridetoString.alwaysOverrideToString
+// $codepro.audit.disable
+// com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.alwaysOverridetoString.alwaysOverrideToString
 package com.paku.mavlinkhub.viewadapters;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class ViewAdapterMavlinkMsgList extends ArrayAdapter<ItemMavLinkMsg> {
 
 	public ViewAdapterMavlinkMsgList(HUBGlobals hub, ArrayList<ItemMavLinkMsg> itemsArrayList) {
 
-		super(hub, R.layout.listviewitem_mavlinkmsg, itemsArrayList);
+		super(hub, R.layout.listviewitem_analyzer_msg_row_2, itemsArrayList);
 
 		this.hub = hub;
 
@@ -58,7 +59,7 @@ public class ViewAdapterMavlinkMsgList extends ArrayAdapter<ItemMavLinkMsg> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		msgItemView = inflater.inflate(R.layout.listviewitem_mavlinkmsg, parent, false);
+		msgItemView = inflater.inflate(R.layout.listviewitem_analyzer_msg_row_2, parent, false);
 
 		msgName = (TextView) msgItemView.findViewById(R.id.listViewMsgItemTxt_Text1);
 		mainText = (TextView) msgItemView.findViewById(R.id.listViewMsgItemTxt_Text2);

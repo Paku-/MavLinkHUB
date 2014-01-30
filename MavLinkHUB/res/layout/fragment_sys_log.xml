@@ -19,7 +19,7 @@
             android:orientation="vertical" >
 
             <TextView
-                style="@style/LogFont"
+                style="@style/LogStyle"
                 android:id="@+id/TextView_logSysLog"
                 android:text="@string/log_sys_log_empty" />
 
