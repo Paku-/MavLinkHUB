@@ -40,7 +40,7 @@ public class HUBMessenger extends HUBInterfaceMenager {
 
 				switch (appStates[msg.what]) {
 				case MSG_SERVER_STARTED:
-					HUBGlobals.logger.sysLog(TAG, "Server Started [" + msg.obj + "]");
+					HUBGlobals.logger.sysLog(TAG, "Server Start.. [" + msg.obj + "]");
 					// no action yet
 					break;
 				case MSG_SERVER_START_FAILED:
@@ -49,15 +49,15 @@ public class HUBMessenger extends HUBInterfaceMenager {
 					// no action yet
 					break;
 				case MSG_SERVER_STOPPED:
-					HUBGlobals.logger.sysLog(TAG, "Server Stopped");
+					HUBGlobals.logger.sysLog(TAG, "Server ..Stop");
 					// no action yet
 					break;
 				case MSG_SERVER_CLIENT_CONNECTED:
 					String tmpTxt2 = new String((byte[]) msg.obj);
-					HUBGlobals.logger.sysLog(TAG, "Client Connected: " + tmpTxt2);
+					HUBGlobals.logger.sysLog(TAG, "GCS Connected: " + tmpTxt2);
 					break;
 				case MSG_SERVER_CLIENT_DISCONNECTED:
-					HUBGlobals.logger.sysLog(TAG, "Client Disconnected...");
+					HUBGlobals.logger.sysLog(TAG, "GCS Disconnected..");
 					break;
 				case MSG_QUEUE_MSGITEM_READY:
 					call(APP_STATE.MSG_QUEUE_MSGITEM_READY, (ItemMavLinkMsg) msg.obj);

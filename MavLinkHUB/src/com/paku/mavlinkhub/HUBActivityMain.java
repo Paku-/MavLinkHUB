@@ -3,6 +3,8 @@
 package com.paku.mavlinkhub;
 
 import com.paku.mavlinkhub.enums.MSG_SOURCE;
+import com.paku.mavlinkhub.enums.SCREEN_SIZE;
+import com.paku.mavlinkhub.utils.Utils;
 import com.paku.mavlinkhub.fragments.HUBFragmentsAdapter;
 import com.paku.mavlinkhub.fragments.dialogs.FragmentDialogSelectDevice;
 import com.paku.mavlinkhub.interfaces.IDataUpdateStats;
@@ -76,9 +78,10 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
-		//so it's based on the prefs as well
-
+		//as it's based on the prefs as well
 		resetFragmentsAdapter();
+
+		invalidateOptionsMenu();
 
 		// register for call interface;
 		HUBGlobals.messenger.mainActivity = this;
@@ -111,10 +114,9 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 		//final ActionBar actionBar = getSupportActionBar();
 		final ActionBar actionBar = getActionBar();
 
-		// actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
-		// actionBar.setDisplayShowHomeEnabled(true);
-		actionBar.setDisplayShowTitleEnabled(false);
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+		actionBar.setDisplayShowHomeEnabled(true);
+		actionBar.setDisplayShowTitleEnabled(Utils.getScreenSize(this).ordinal() > SCREEN_SIZE.NORMALL.ordinal());
 
 		return super.onCreateOptionsMenu(menu);
 	}

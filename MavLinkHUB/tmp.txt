@@ -8,6 +8,14 @@ Drone link
 				
 				lyser
 				
+				Init
+				
+				
+				
+				Start...
+				Started
+				"Client
+				
 				pref
 				msg_row
 				115

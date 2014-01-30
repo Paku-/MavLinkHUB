@@ -15,6 +15,7 @@ import java.util.TimeZone;
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.enums.MSG_SOURCE;
+import com.paku.mavlinkhub.enums.SCREEN_SIZE;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
@@ -51,14 +52,19 @@ public class HUBLogger {
 		inMemByteLogBuffer = new StringBuilder(2 * HUBGlobals.visibleByteLogSize);
 		restartByteLog();
 
-		sysLog(TAG, "** MavLinkHUB Syslog Init **");
+		sysLog(TAG, "** MavLinkHUB Init **");
 
 	}
 
 	public void sysLog(String string) {
-		String tempStr;
+		String tempStr = string;
 
-		tempStr = timeStamp().concat(string).concat("\n");
+		//add timestamps for larger screens
+		if (Utils.getScreenSize(hub).ordinal() > SCREEN_SIZE.NORMALL.ordinal()) {
+			tempStr = timeStamp().concat(tempStr);
+		}
+
+		tempStr = tempStr.concat(System.getProperty("line.separator", "\n"));
 
 		// syslog write
 		try {
@@ -76,7 +82,13 @@ public class HUBLogger {
 	}
 
 	public void sysLog(String tag, String msg) {
-		sysLog("[" + tag + "] " + msg);
+		if (Utils.getScreenSize(hub).ordinal() > SCREEN_SIZE.NORMALL.ordinal()) {
+			sysLog("[" + tag + "] " + msg);
+		}
+		else {
+			sysLog(msg);
+		}
+
 	}
 
 	public void byteLog(MSG_SOURCE direction, ByteBuffer buffer) {

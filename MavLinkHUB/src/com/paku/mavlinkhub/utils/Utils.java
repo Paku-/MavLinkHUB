@@ -3,6 +3,7 @@ package com.paku.mavlinkhub.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiManager;
 
@@ -10,6 +11,8 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import org.apache.http.conn.util.InetAddressUtils;
+
+import com.paku.mavlinkhub.enums.SCREEN_SIZE;
 
 @SuppressLint("DefaultLocale")
 public class Utils {
@@ -159,6 +162,24 @@ public class Utils {
 		for (int k = 0; k < 4; k++)
 			quads[k] = (byte) ((broadcast >> k * 8) & 0xFF);
 		return InetAddress.getByAddress(quads);
+	}
+
+	public static SCREEN_SIZE getScreenSize(Context context) {
+		int screenLayout = context.getResources().getConfiguration().screenLayout;
+		screenLayout &= Configuration.SCREENLAYOUT_SIZE_MASK;
+
+		switch (screenLayout) {
+		case Configuration.SCREENLAYOUT_SIZE_SMALL:
+			return SCREEN_SIZE.SMALL;
+		case Configuration.SCREENLAYOUT_SIZE_NORMAL:
+			return SCREEN_SIZE.NORMALL;
+		case Configuration.SCREENLAYOUT_SIZE_LARGE:
+			return SCREEN_SIZE.LARGE;
+		case 4: // Configuration.SCREENLAYOUT_SIZE_XLARGE is API >= 9
+			return SCREEN_SIZE.XLARGE;
+		default:
+			return SCREEN_SIZE.UNDEF;
+		}
 	}
 
 }

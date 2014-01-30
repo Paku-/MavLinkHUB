@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class ViewAdapterMavlinkMsgList extends ArrayAdapter<ItemMavLinkMsg> {
+public class ViewAdapterAnalyzerList extends ArrayAdapter<ItemMavLinkMsg> {
 
 	private final ArrayList<ItemMavLinkMsg> itemsArrayList;
 	private final HUBGlobals hub;
@@ -40,7 +40,7 @@ public class ViewAdapterMavlinkMsgList extends ArrayAdapter<ItemMavLinkMsg> {
 
 	private final ItemMavLinkMsgTxt msgTxtItem;
 
-	public ViewAdapterMavlinkMsgList(HUBGlobals hub, ArrayList<ItemMavLinkMsg> itemsArrayList) {
+	public ViewAdapterAnalyzerList(HUBGlobals hub, ArrayList<ItemMavLinkMsg> itemsArrayList) {
 
 		super(hub, R.layout.listviewitem_analyzer_msg_row_2, itemsArrayList);
 

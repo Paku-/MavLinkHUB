@@ -57,7 +57,7 @@ public class FragmentConnectionState extends HUBFragment implements IUiModeChang
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		final View connView = inflater.inflate(R.layout.fragment_connection_state, container, false);
+		final View connView = inflater.inflate(R.layout.fragment_connection, container, false);
 
 		return connView;
 	}

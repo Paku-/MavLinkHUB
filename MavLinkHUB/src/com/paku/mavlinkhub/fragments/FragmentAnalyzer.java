@@ -8,7 +8,7 @@ import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.interfaces.IDataUpdateByteLog;
 import com.paku.mavlinkhub.interfaces.IQueueMsgItemReady;
 import com.paku.mavlinkhub.queue.items.ItemMavLinkMsg;
-import com.paku.mavlinkhub.viewadapters.ViewAdapterMavlinkMsgList;
+import com.paku.mavlinkhub.viewadapters.ViewAdapterAnalyzerList;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -21,12 +21,14 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class FragmentAnalizer extends HUBFragment implements IDataUpdateByteLog, IQueueMsgItemReady {
+public class FragmentAnalyzer extends HUBFragment implements IDataUpdateByteLog, IQueueMsgItemReady {
 
-	private static final String TAG = FragmentAnalizer.class.getSimpleName();
+	private static final String TAG = FragmentAnalyzer.class.getSimpleName();
 
-	ViewAdapterMavlinkMsgList listAdapterMavLink;
-	ListView listViewMavLinkMsg;
+	private ViewAdapterAnalyzerList listAdapterAnalyzer;
+	private ListView listViewAnalyzer;
+
+	private TextView textViewNoData;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,9 +40,11 @@ public class FragmentAnalizer extends HUBFragment implements IDataUpdateByteLog,
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		listAdapterMavLink = new ViewAdapterMavlinkMsgList(hub, new ArrayList<ItemMavLinkMsg>());
-		listViewMavLinkMsg = (ListView) (getView().findViewById(R.id.listView_mavlinkMsgs));
-		listViewMavLinkMsg.setAdapter(listAdapterMavLink);
+		textViewNoData = (TextView) (getView().findViewById(R.id.textView_analyzer_no_data));
+
+		listAdapterAnalyzer = new ViewAdapterAnalyzerList(hub, new ArrayList<ItemMavLinkMsg>());
+		listViewAnalyzer = (ListView) (getView().findViewById(R.id.listView_analyzer_msg_list));
+		listViewAnalyzer.setAdapter(listAdapterAnalyzer);
 	}
 
 	@Override
@@ -65,8 +69,8 @@ public class FragmentAnalizer extends HUBFragment implements IDataUpdateByteLog,
 			}
 		});
 
-		// mavlink msgs display clicks
-		final ListView mListViewMsgItems = (ListView) (getView().findViewById(R.id.listView_mavlinkMsgs));
+		// analyzer msgs display clicks
+		final ListView mListViewMsgItems = (ListView) (getView().findViewById(R.id.listView_analyzer_msg_list));
 		mListViewMsgItems.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
@@ -112,7 +116,10 @@ public class FragmentAnalizer extends HUBFragment implements IDataUpdateByteLog,
 	public void onQueueMsgItemReady(ItemMavLinkMsg msgItem) {
 
 		if (null != msgItem) {
-			listAdapterMavLink.add(msgItem);
+			listAdapterAnalyzer.add(msgItem);
+
+			textViewNoData.setVisibility(View.GONE);
+
 		}
 		else {
 			Log.d(TAG, "Null msgItem");
@@ -121,11 +128,11 @@ public class FragmentAnalizer extends HUBFragment implements IDataUpdateByteLog,
 		// scroll down on pref
 		if (hub.prefs.getBoolean("pref_msg_items_autoscroll", true)) {
 			// trim only if autoscroll enabled
-			while (listAdapterMavLink.getCount() > HUBGlobals.visibleMsgList) {
-				listAdapterMavLink.remove(listAdapterMavLink.getItem(0));
+			while (listAdapterAnalyzer.getCount() > HUBGlobals.visibleMsgList) {
+				listAdapterAnalyzer.remove(listAdapterAnalyzer.getItem(0));
 			}
 
-			listViewMavLinkMsg.setSelection(listAdapterMavLink.getCount());
+			listViewAnalyzer.setSelection(listAdapterAnalyzer.getCount());
 		}
 
 	}

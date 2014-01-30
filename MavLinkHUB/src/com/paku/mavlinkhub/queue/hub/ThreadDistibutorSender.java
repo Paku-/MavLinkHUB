@@ -27,7 +27,7 @@ public class ThreadDistibutorSender extends Thread {
 
 		ItemMavLinkMsg tmpItem = null;
 
-		HUBGlobals.logger.sysLog("MavLink Distributor", "Start...");
+		HUBGlobals.logger.sysLog("MavLink Distributor", "Distributor Start..");
 
 		while (running) {
 
@@ -87,7 +87,7 @@ public class ThreadDistibutorSender extends Thread {
 			}
 
 		}
-		HUBGlobals.logger.sysLog("MavLink Distributor", "...Stop");
+		HUBGlobals.logger.sysLog("MavLink Distributor", "Distributor ..Stop");
 	}
 
 	public void stopMe() {

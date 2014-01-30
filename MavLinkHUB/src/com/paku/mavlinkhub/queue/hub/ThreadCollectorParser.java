@@ -36,7 +36,7 @@ public class ThreadCollectorParser extends Thread {
 
 	public void run() {
 
-		HUBGlobals.logger.sysLog("MavLink Parser", "Start...");
+		HUBGlobals.logger.sysLog("MavLink Parser", "Parser Start..");
 
 		while (running) {
 
@@ -49,7 +49,7 @@ public class ThreadCollectorParser extends Thread {
 
 		}
 
-		HUBGlobals.logger.sysLog("MavLink Parser", "...Stop");
+		HUBGlobals.logger.sysLog("MavLink Parser", "Parser ..Stop");
 	}
 
 	private void parse(MSG_SOURCE direction) {

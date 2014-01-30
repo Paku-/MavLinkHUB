@@ -43,8 +43,8 @@
 <!-- Pref Section Autoscroll  -->
     <string name="pref_section_auto_scroll_title">Auto Scroll</string>    
     
-    <string name="pref_msg_items_autoscroll_title">Autoscroll MavLink messages</string>        
-    <string name="pref_msg_items_autoscroll_summary">Enable Mavlink messages list autoscroll function, disable to move the list with fingers</string>    
+    <string name="pref_msg_items_autoscroll_title">Autoscroll Analyzer view</string>        
+    <string name="pref_msg_items_autoscroll_summary">Enable Analyzer list autoscroll function, disable to move the list with fingers</string>    
     
     <string name="pref_byte_log_autoscroll_title">Autscroll Drone data log</string>
     <string name="pref_byte_log_autoscroll_summary">Enable Drone data autoscroll function, disable to move the list with fingers</string>
