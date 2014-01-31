@@ -41,7 +41,7 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 
 	public HUBGlobals hub;
 
-	private ProgressBar progressBarConnected;
+	private ProgressBar progressBarDroneConnected;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +61,7 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 			hub.hubInit(this);
 		}
 
-		progressBarConnected = (ProgressBar) findViewById(R.id.progressBarConnected);
+		progressBarDroneConnected = (ProgressBar) findViewById(R.id.progressBarConnected);
 
 	}
 
@@ -86,7 +86,7 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 		// register for call interface;
 		HUBGlobals.messenger.mainActivity = this;
 
-		progressBarConnected.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
+		progressBarDroneConnected.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
 
 		onDataUpdateStats();
 
@@ -250,10 +250,10 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 
 	public void enableProgressBar(boolean on) {
 		if (on) {
-			progressBarConnected.setVisibility(View.VISIBLE);
+			progressBarDroneConnected.setVisibility(View.VISIBLE);
 		}
 		else {
-			progressBarConnected.setVisibility(View.INVISIBLE);
+			progressBarDroneConnected.setVisibility(View.INVISIBLE);
 		}
 
 	}

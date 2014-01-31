@@ -36,7 +36,7 @@ public class HUBMessenger extends HUBInterfaceMenager {
 
 				APP_STATE[] appStates = APP_STATE.values();
 
-				Log.d(TAG, "** msg : " + appStates[msg.what].name());
+				//				Log.d(TAG, "** msg : " + appStates[msg.what].name());
 
 				// /Log.d(TAG, appStates[msg.what].toString());
 
@@ -206,7 +206,7 @@ public class HUBMessenger extends HUBInterfaceMenager {
 					hub.uiMode = UI_MODE.UI_MODE_DISCONNECTED;
 				}
 
-				// no special UI_MODE msg any more
+				// no special UI_MODE msg anymore
 				//callFragments(APP_STATE.MSG_UI_MODE_CHANGED);
 
 			}

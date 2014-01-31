@@ -73,7 +73,7 @@ public class HUBInterfaceMenager {
 	// msgs not having payload.
 	public void callFragments(APP_STATE msg) {
 
-		Log.d(TAG, "call(): " + msg.toString());
+		//		Log.d(TAG, "call(): " + msg.toString());
 
 		// main activity is not a fragment :(
 		if ((msg == APP_STATE.MSG_DATA_UPDATE_STATS) && null != (IDataUpdateStats) mainActivity) ((IDataUpdateStats) mainActivity).onDataUpdateStats();
@@ -119,7 +119,7 @@ public class HUBInterfaceMenager {
 	// ItemMavLinkMsg msgs only here ...
 	public void callFragments(APP_STATE msg, ItemMavLinkMsg msgItem) {
 
-		Log.d(TAG, "call(mgsItem): " + msg.toString());
+		//		Log.d(TAG, "call(mgsItem): " + msg.toString());
 
 		for (Fragment fragment : listeners.get(msg.ordinal()).fragsArray) {
 			if (null != fragment) {
@@ -139,7 +139,7 @@ public class HUBInterfaceMenager {
 
 	public void callFragments(APP_STATE msg, String txt) {
 
-		Log.d(TAG, "call(txt): " + msg.toString());
+		//		Log.d(TAG, "call(txt): " + msg.toString());
 
 		for (Fragment fragment : listeners.get(msg.ordinal()).fragsArray) {
 			if (fragment != null) {

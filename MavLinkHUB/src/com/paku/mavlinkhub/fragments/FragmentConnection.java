@@ -1,6 +1,7 @@
 // $codepro.audit.disable unnecessaryOverride
 package com.paku.mavlinkhub.fragments;
 
+import com.paku.mavlinkhub.HUBActivityMain;
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.enums.APP_STATE;
@@ -83,6 +84,13 @@ public class FragmentConnection extends HUBFragment implements IUiModeChanged, I
 		txt = (TextView) gcsView.findViewById(R.id.textView_endpoint_type);
 		txt.setText("Ground Station");
 
+		if (hub.droneClient.isConnected()) {
+			setViewDroneConnected();
+		}
+		else {
+			setViewDroneDisonnected();
+		}
+
 	}
 
 	// interfaces
@@ -92,25 +100,12 @@ public class FragmentConnection extends HUBFragment implements IUiModeChanged, I
 
 	@Override
 	public void onDroneConnected() {
-
-		TextView txt = (TextView) droneView.findViewById(R.id.textView_endpoint_state);
-		txt.setText(R.string.txt_connected);
-
-		txt = (TextView) droneView.findViewById(R.id.textView_endpoint_interface);
-		txt.setText(hub.droneClient.getMyPeerDevice().getDevInterface().toString());
-
-		txt = (TextView) droneView.findViewById(R.id.textView_endpoint_address);
-		txt.setText(hub.droneClient.getPeerAddress());
-
-		txt = (TextView) droneView.findViewById(R.id.textView_endpoint_name);
-		txt.setText(hub.droneClient.getPeerName());
-
+		setViewDroneConnected();
 	}
 
 	@Override
 	public void onDroneDisconnected() {
-		TextView txt = (TextView) droneView.findViewById(R.id.textView_endpoint_state);
-		txt.setText(R.string.txt_disconnected);
+		setViewDroneDisonnected();
 	}
 
 	@Override
@@ -138,6 +133,33 @@ public class FragmentConnection extends HUBFragment implements IUiModeChanged, I
 		default:
 			break;
 		}
+
+	}
+
+	private final void setViewDroneConnected() {
+
+		TextView txt = (TextView) droneView.findViewById(R.id.textView_endpoint_state);
+		txt.setText(R.string.txt_connected);
+
+		txt = (TextView) droneView.findViewById(R.id.textView_endpoint_interface);
+		txt.setText(hub.droneClient.getMyPeerDevice().getDevInterface().toString());
+
+		txt = (TextView) droneView.findViewById(R.id.textView_endpoint_address);
+		txt.setText(hub.droneClient.getPeerAddress());
+
+		txt = (TextView) droneView.findViewById(R.id.textView_endpoint_name);
+		txt.setText(hub.droneClient.getPeerName());
+
+		((HUBActivityMain) getActivity()).enableProgressBar(true);
+
+	}
+
+	private final void setViewDroneDisonnected() {
+
+		TextView txt = (TextView) droneView.findViewById(R.id.textView_endpoint_state);
+		txt.setText(R.string.txt_disconnected);
+
+		((HUBActivityMain) getActivity()).enableProgressBar(false);
 
 	}
 
