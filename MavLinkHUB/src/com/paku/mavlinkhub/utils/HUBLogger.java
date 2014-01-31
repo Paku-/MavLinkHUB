@@ -60,7 +60,7 @@ public class HUBLogger {
 		String tempStr = string;
 
 		//add timestamps for larger screens
-		if (Utils.getScreenSize(hub).ordinal() > SCREEN_SIZE.NORMALL.ordinal()) {
+		if (Utils.getScreenSize(hub).compareTo(SCREEN_SIZE.NORMAL) > 0) {
 			tempStr = timeStamp().concat(tempStr);
 		}
 
@@ -82,7 +82,7 @@ public class HUBLogger {
 	}
 
 	public void sysLog(String tag, String msg) {
-		if (Utils.getScreenSize(hub).ordinal() > SCREEN_SIZE.NORMALL.ordinal()) {
+		if (Utils.getScreenSize(hub).compareTo(SCREEN_SIZE.NORMAL) > 0) {
 			sysLog("[" + tag + "] " + msg);
 		}
 		else {

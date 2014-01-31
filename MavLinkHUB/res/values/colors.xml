@@ -6,9 +6,9 @@
     <color name="system_icons">#333333</color>
     
 	<color name="hubDark">#008893</color>
-	<color name="hubDarkMedium">#7BC1C7</color>
+	<color name="hubLightMedium">#7BC1C7</color>
 	<color name="hubMedium">#4AAAb2</color>
-	<color name="hubLightMedium">#16929C</color>
+	<color name="hubDarkMedium">#16929C</color>
 	<color name="hubLight">#A5D5D8</color>    
     
     <color name="opaque_red">#f00</color>

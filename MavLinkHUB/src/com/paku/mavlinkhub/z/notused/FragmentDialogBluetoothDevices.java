@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.R;
 import com.paku.mavlinkhub.enums.PEER_DEV_STATE;
-import com.paku.mavlinkhub.fragments.FragmentConnectionState;
+import com.paku.mavlinkhub.fragments.FragmentConnection;
 import com.paku.mavlinkhub.viewadapters.ViewAdapterPeerDevsList;
 import com.paku.mavlinkhub.viewadapters.devicelist.ItemPeerDevice;
 import com.paku.mavlinkhub.viewadapters.devicelist.hardware.ListPeerDevicesBluetooth;
@@ -24,7 +24,7 @@ import android.widget.Toast;
 
 public class FragmentDialogBluetoothDevices extends DialogFragment {
 
-	private static final String TAG = FragmentConnectionState.class.getSimpleName();
+	private static final String TAG = FragmentConnection.class.getSimpleName();
 
 	HUBGlobals hub;
 

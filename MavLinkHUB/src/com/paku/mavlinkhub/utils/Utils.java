@@ -172,7 +172,7 @@ public class Utils {
 		case Configuration.SCREENLAYOUT_SIZE_SMALL:
 			return SCREEN_SIZE.SMALL;
 		case Configuration.SCREENLAYOUT_SIZE_NORMAL:
-			return SCREEN_SIZE.NORMALL;
+			return SCREEN_SIZE.NORMAL;
 		case Configuration.SCREENLAYOUT_SIZE_LARGE:
 			return SCREEN_SIZE.LARGE;
 		case 4: // Configuration.SCREENLAYOUT_SIZE_XLARGE is API >= 9

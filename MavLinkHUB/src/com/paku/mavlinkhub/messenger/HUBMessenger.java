@@ -36,11 +36,14 @@ public class HUBMessenger extends HUBInterfaceMenager {
 
 				APP_STATE[] appStates = APP_STATE.values();
 
+				Log.d(TAG, "** msg : " + appStates[msg.what].name());
+
 				// /Log.d(TAG, appStates[msg.what].toString());
 
 				switch (appStates[msg.what]) {
 				case MSG_SERVER_STARTED:
 					HUBGlobals.logger.sysLog(TAG, "Server Start.. [" + msg.obj + "]");
+					callFragments(APP_STATE.MSG_SERVER_STARTED, (String) msg.obj);
 					// no action yet
 					break;
 				case MSG_SERVER_START_FAILED:
@@ -50,17 +53,18 @@ public class HUBMessenger extends HUBInterfaceMenager {
 					break;
 				case MSG_SERVER_STOPPED:
 					HUBGlobals.logger.sysLog(TAG, "Server ..Stop");
+					callFragments(APP_STATE.MSG_SERVER_STOPPED);
 					// no action yet
 					break;
-				case MSG_SERVER_CLIENT_CONNECTED:
+				case MSG_SERVER_GCS_CONNECTED:
 					String tmpTxt2 = new String((byte[]) msg.obj);
 					HUBGlobals.logger.sysLog(TAG, "GCS Connected: " + tmpTxt2);
 					break;
-				case MSG_SERVER_CLIENT_DISCONNECTED:
+				case MSG_SERVER_GCS_DISCONNECTED:
 					HUBGlobals.logger.sysLog(TAG, "GCS Disconnected..");
 					break;
 				case MSG_QUEUE_MSGITEM_READY:
-					call(APP_STATE.MSG_QUEUE_MSGITEM_READY, (ItemMavLinkMsg) msg.obj);
+					callFragments(APP_STATE.MSG_QUEUE_MSGITEM_READY, (ItemMavLinkMsg) msg.obj);
 					break;
 				case MSG_DATA_UPDATE_SYSLOG:
 					callFragments(APP_STATE.MSG_DATA_UPDATE_SYSLOG);
@@ -74,6 +78,10 @@ public class HUBMessenger extends HUBInterfaceMenager {
 				case MSG_DRONE_CONNECTED:
 					HUBGlobals.logger.sysLog(TAG, "Drone connected.");
 					callFragments(APP_STATE.MSG_DRONE_CONNECTED);
+					break;
+				case MSG_DRONE_DISCONNECTED:
+					HUBGlobals.logger.sysLog(TAG, "Drone disconnected.");
+					callFragments(APP_STATE.MSG_DRONE_DISCONNECTED);
 					break;
 				case MSG_DRONE_CONNECTION_ATTEMPT_FAILED:
 
@@ -187,17 +195,19 @@ public class HUBMessenger extends HUBInterfaceMenager {
 				if (action.equals(BluetoothDevice.ACTION_ACL_CONNECTED)) {
 					BluetoothDevice connDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 					HUBGlobals.logger.sysLog(TAG, "[BT_DEVICE_CONNECTED] " + connDevice.getName() + " [" + connDevice.getAddress() + "]");
+					HUBGlobals.sendAppMsg(APP_STATE.MSG_DRONE_CONNECTED);
 					hub.uiMode = UI_MODE.UI_MODE_CONNECTED;
 				}
 
 				if (action.equals(BluetoothDevice.ACTION_ACL_DISCONNECTED)) {
 					BluetoothDevice connDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 					HUBGlobals.logger.sysLog(TAG, "[BT_DEVICE_DISCONNECTED] " + connDevice.getName() + " [" + connDevice.getAddress() + "]");
-
+					HUBGlobals.sendAppMsg(APP_STATE.MSG_DRONE_DISCONNECTED);
 					hub.uiMode = UI_MODE.UI_MODE_DISCONNECTED;
 				}
 
-				callFragments(APP_STATE.MSG_UI_MODE_CHANGED);
+				// no special UI_MODE msg any more
+				//callFragments(APP_STATE.MSG_UI_MODE_CHANGED);
 
 			}
 		};

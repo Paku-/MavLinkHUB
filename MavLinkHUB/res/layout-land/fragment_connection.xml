@@ -4,22 +4,20 @@
     android:id="@+id/connection_state"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+
+    android:orientation="horizontal"
+    tools:context=".fragments.FragmentConnectionState" >
 
     <include
-        android:id="@+id/conn_drone"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:tag="drone"
         layout="@layout/connection_endpoint" />
 
     <include
-        android:id="@+id/conn_gcs"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:tag="gcs"        
         layout="@layout/connection_endpoint" />
 
 </LinearLayout>

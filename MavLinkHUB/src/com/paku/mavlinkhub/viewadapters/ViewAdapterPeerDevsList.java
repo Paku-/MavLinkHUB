@@ -40,7 +40,7 @@ public class ViewAdapterPeerDevsList extends ArrayAdapter<ItemPeerDevice> {
 
 		final TextView txtViewDevName = (TextView) rowView.findViewById(R.id.listViewItemTxt_dev_name);
 		final TextView txtViewDevAddress = (TextView) rowView.findViewById(R.id.listViewItemTxt_dev_address);
-		final ImageView imageConnected = (ImageView) rowView.findViewById(R.id.imageView1);
+		final ImageView imageConnected = (ImageView) rowView.findViewById(R.id.imageView_conn_endpoint_kind);
 
 		final ItemPeerDevice dev = itemsArrayList.get(position);
 

@@ -69,11 +69,11 @@ public class ConnectorBytes {
 
 				// new client connected
 				case MSG_SOCKET_SERVER_CLIENT_CONNECTED:
-					HUBGlobals.sendAppMsg(APP_STATE.MSG_SERVER_CLIENT_CONNECTED, byteMsg);
+					HUBGlobals.sendAppMsg(APP_STATE.MSG_SERVER_GCS_CONNECTED, byteMsg);
 					break;
 				// Client lost;
 				case MSG_SOCKET_SERVER_CLIENT_DISCONNECTED:
-					HUBGlobals.sendAppMsg(APP_STATE.MSG_SERVER_CLIENT_DISCONNECTED);
+					HUBGlobals.sendAppMsg(APP_STATE.MSG_SERVER_GCS_DISCONNECTED);
 					break;
 				case MSG_SOCKET_SERVER_STARTED:
 					HUBGlobals.sendAppMsg(APP_STATE.MSG_SERVER_STARTED, byteMsg);

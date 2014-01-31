@@ -7,6 +7,7 @@ import java.io.IOException;
 import com.ftdi.j2xx.D2xxManager;
 import com.ftdi.j2xx.FT_Device;
 import com.paku.mavlinkhub.HUBGlobals;
+import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.enums.DEVICE_INTERFACE;
 import com.paku.mavlinkhub.queue.endpoints.DroneClient;
 import com.paku.mavlinkhub.utils.ThreadReaderUSB;
@@ -47,6 +48,7 @@ public class DroneClientUSB extends DroneClient {
 
 			readerThreadUSB = new ThreadReaderUSB(usbDevice, ConnMsgHandler);
 			readerThreadUSB.start();
+			HUBGlobals.sendAppMsg(APP_STATE.MSG_DRONE_CONNECTED);
 		}
 		else {
 			Log.d(TAG, "Wrong client start-up parameter type:" + drone.getDevInterface().toString());
@@ -66,6 +68,8 @@ public class DroneClientUSB extends DroneClient {
 		if (isConnected()) {
 			readerThreadUSB.stopMe();
 		}
+
+		HUBGlobals.sendAppMsg(APP_STATE.MSG_DRONE_DISCONNECTED);
 	}
 
 	@Override

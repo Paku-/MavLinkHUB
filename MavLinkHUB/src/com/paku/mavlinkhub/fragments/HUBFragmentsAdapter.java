@@ -30,7 +30,7 @@ public class HUBFragmentsAdapter extends FragmentStatePagerAdapter {
 
 		fragments = new ArrayList<ItemFragment>();
 
-		fragments.add(new ItemFragment(new FragmentConnectionState(), parentActivity.getString(R.string.title_connectivity).toUpperCase(Locale.getDefault()), true));
+		fragments.add(new ItemFragment(new FragmentConnection(), parentActivity.getString(R.string.title_connectivity).toUpperCase(Locale.getDefault()), true));
 
 		if (parent.hub.prefs.getBoolean("pref_analyzer_view", true)) {
 			fragments.add(new ItemFragment(new FragmentAnalyzer(), parentActivity.getString(R.string.title_analyzer).toUpperCase(Locale.getDefault()), true));

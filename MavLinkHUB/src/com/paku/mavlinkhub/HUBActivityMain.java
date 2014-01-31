@@ -116,7 +116,7 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 		actionBar.setDisplayShowHomeEnabled(true);
-		actionBar.setDisplayShowTitleEnabled(Utils.getScreenSize(this).ordinal() > SCREEN_SIZE.NORMALL.ordinal());
+		actionBar.setDisplayShowTitleEnabled(Utils.getScreenSize(this).compareTo(SCREEN_SIZE.NORMAL) > 0);
 
 		return super.onCreateOptionsMenu(menu);
 	}

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
+
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.interfaces.IDataUpdateByteLog;
@@ -14,6 +16,7 @@ import com.paku.mavlinkhub.interfaces.IDroneConnectionFailed;
 import com.paku.mavlinkhub.interfaces.IDataUpdateStats;
 import com.paku.mavlinkhub.interfaces.IDataUpdateSysLog;
 import com.paku.mavlinkhub.interfaces.IDroneConnectionLost;
+import com.paku.mavlinkhub.interfaces.IDroneDisconnected;
 import com.paku.mavlinkhub.interfaces.IQueueMsgItemReady;
 import com.paku.mavlinkhub.interfaces.IQueueMsgItemSent;
 import com.paku.mavlinkhub.interfaces.IServerStarted;
@@ -70,6 +73,8 @@ public class HUBInterfaceMenager {
 	// msgs not having payload.
 	public void callFragments(APP_STATE msg) {
 
+		Log.d(TAG, "call(): " + msg.toString());
+
 		// main activity is not a fragment :(
 		if ((msg == APP_STATE.MSG_DATA_UPDATE_STATS) && null != (IDataUpdateStats) mainActivity) ((IDataUpdateStats) mainActivity).onDataUpdateStats();
 
@@ -92,8 +97,11 @@ public class HUBInterfaceMenager {
 				case MSG_DATA_UPDATE_BYTELOG:
 					((IDataUpdateByteLog) fragment).onDataUpdateByteLog();
 					break;
-				case MSG_DRONE_CONNECTED: // no sender for this message yet
+				case MSG_DRONE_CONNECTED:
 					((IDroneConnected) fragment).onDroneConnected();
+					break;
+				case MSG_DRONE_DISCONNECTED:
+					((IDroneDisconnected) fragment).onDroneDisconnected();
 					break;
 				case MSG_DRONE_CONNECTION_LOST:
 					((IDroneConnectionLost) fragment).onDroneConnectionLost();
@@ -101,10 +109,6 @@ public class HUBInterfaceMenager {
 				case MSG_DRONE_CONNECTION_ATTEMPT_FAILED:
 					((IDroneConnectionFailed) fragment).onDroneConnectionFailed();
 					break;
-				case MSG_SERVER_STARTED:
-					((IServerStarted) fragment).onServerStarted();
-					break;
-
 				default:
 					break;
 				}
@@ -113,7 +117,10 @@ public class HUBInterfaceMenager {
 	}
 
 	// ItemMavLinkMsg msgs only here ...
-	public void call(APP_STATE msg, ItemMavLinkMsg msgItem) {
+	public void callFragments(APP_STATE msg, ItemMavLinkMsg msgItem) {
+
+		Log.d(TAG, "call(mgsItem): " + msg.toString());
+
 		for (Fragment fragment : listeners.get(msg.ordinal()).fragsArray) {
 			if (null != fragment) {
 				APP_STATE[] msgs = APP_STATE.values();
@@ -128,12 +135,24 @@ public class HUBInterfaceMenager {
 		}
 	}
 
-	/*
-	 * // string msgs only here ... public void callFragments(APP_STATE msg,
-	 * String txt) { for (Fragment fragment :
-	 * listeners.get(msg.ordinal()).fragsArray) { if (fragment != null) {
-	 * APP_STATE[] msgs = APP_STATE.values(); switch (msgs[msg.ordinal()]) {
-	 * case MSG_DRONE_CONNECTION_ATTEMPT_FAILED: ((IDroneConnectionFailed)
-	 * fragment).onDroneConnectionFailed(txt); break; default: break; } } } }
-	 */
+	// string msgs only here ... 
+
+	public void callFragments(APP_STATE msg, String txt) {
+
+		Log.d(TAG, "call(txt): " + msg.toString());
+
+		for (Fragment fragment : listeners.get(msg.ordinal()).fragsArray) {
+			if (fragment != null) {
+				APP_STATE[] msgs = APP_STATE.values();
+				switch (msgs[msg.ordinal()]) {
+				case MSG_SERVER_STARTED:
+					((IServerStarted) fragment).onServerStarted(txt);
+					break;
+				default:
+					break;
+				}
+			}
+		}
+	}
+
 }
