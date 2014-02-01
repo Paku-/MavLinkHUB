@@ -167,7 +167,7 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 
 			hub.switchServer();
 
-			Toast.makeText(this, getResources().getString(R.string.txt_server_mode_set_to) + hub.gsServer.serverMode.toString(), Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, getResources().getString(R.string.txt_server_mode_set_to) + hub.gcsServer.getServerMode().toString(), Toast.LENGTH_SHORT).show();
 
 			return true;
 
@@ -241,7 +241,7 @@ public class HUBActivityMain extends FragmentActivity implements IDataUpdateStat
 	private void closeHUB() {
 		HUBGlobals.logger.sysLog(TAG, "MavLinkHUB closing ...");
 		hub.droneClient.stopClient();
-		hub.gsServer.stopServer();
+		hub.gcsServer.stopServer();
 		hub.queue.stopQueue();
 		HUBGlobals.logger.stopAllLogs();
 		finish();

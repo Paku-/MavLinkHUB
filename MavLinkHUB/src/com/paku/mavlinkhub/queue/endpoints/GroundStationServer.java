@@ -11,7 +11,11 @@ public abstract class GroundStationServer extends ConnectorBytes {
 	@SuppressWarnings("unused")
 	private static final String TAG = GroundStationServer.class.getSimpleName();
 
-	public SERVER_IP_MODE serverMode;
+	protected SERVER_IP_MODE serverMode;
+
+	protected String address;
+
+	protected int port;
 
 	public abstract void startServer(int port);
 
@@ -25,6 +29,30 @@ public abstract class GroundStationServer extends ConnectorBytes {
 
 	protected GroundStationServer(HUBGlobals hub, int capacity) {
 		super(hub, capacity);
+	}
+
+	public SERVER_IP_MODE getServerMode() {
+		return serverMode;
+	}
+
+	public void setServerMode(SERVER_IP_MODE serverMode) {
+		this.serverMode = serverMode;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public int getPort() {
+		return port;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
 	}
 
 }

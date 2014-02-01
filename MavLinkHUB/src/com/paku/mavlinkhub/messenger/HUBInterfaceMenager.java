@@ -6,8 +6,6 @@ import java.util.ArrayList;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
-
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.enums.APP_STATE;
 import com.paku.mavlinkhub.interfaces.IDataUpdateByteLog;

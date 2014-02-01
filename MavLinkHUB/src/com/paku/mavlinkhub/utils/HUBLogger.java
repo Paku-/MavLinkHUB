@@ -82,12 +82,15 @@ public class HUBLogger {
 	}
 
 	public void sysLog(String tag, String msg) {
+		/*
 		if (Utils.getScreenSize(hub).compareTo(SCREEN_SIZE.NORMAL) > 0) {
 			sysLog("[" + tag + "] " + msg);
 		}
 		else {
 			sysLog(msg);
 		}
+		*/
+		sysLog(msg);
 
 	}
 
@@ -190,7 +193,7 @@ public class HUBLogger {
 
 	public String timeStamp() {
 
-		SimpleDateFormat s = new SimpleDateFormat("[HH:mm:ss.SSS]");
+		SimpleDateFormat s = new SimpleDateFormat("[HH:mm:ss.SSS] ");
 		// s.setTimeZone(TimeZone.getTimeZone("UTC"));
 		s.setTimeZone(TimeZone.getDefault());
 		return s.format((new Date()));

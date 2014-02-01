@@ -10,54 +10,6 @@
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/listViewMsgItemTxt_desc1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:text="@string/txt_no_data"
-            android:textColor="@color/black"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/listViewMsgItemTxt_desc2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="14dp"
-            android:layout_toRightOf="@+id/listViewMsgItemTxt_desc1"
-            android:text="@string/txt_no_data"
-            android:textColor="@color/black"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/listViewMsgItemTxt_desc4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="14dp"
-            android:layout_toRightOf="@+id/listViewMsgItemTxt_desc2"
-            android:text="@string/txt_no_data"
-            android:textColor="@color/black"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/listViewMsgItemTxt_desc3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/listViewMsgItemTxt_desc1"
-            android:text="@string/txt_no_data"
-            android:textColor="@color/black"
-            android:textSize="12sp" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
             android:id="@+id/listViewMsgItemTxt_Text1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -77,6 +29,54 @@
             android:text="@string/txt_no_data"
             android:textColor="@color/black"
             android:textSize="15sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/listViewMsgItemTxt_desc1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/txt_no_data"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/listViewMsgItemTxt_desc4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/txt_no_data"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/listViewMsgItemTxt_desc2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="14dp"
+            android:layout_toRightOf="@+id/listViewMsgItemTxt_desc1"
+            android:text="@string/txt_no_data"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/listViewMsgItemTxt_desc3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="14dp"
+            android:layout_toRightOf="@+id/listViewMsgItemTxt_desc2"
+            android:text="@string/txt_no_data"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
 
     </RelativeLayout>
 

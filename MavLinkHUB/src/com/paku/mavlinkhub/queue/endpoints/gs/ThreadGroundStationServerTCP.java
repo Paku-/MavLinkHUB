@@ -5,7 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 
-import com.paku.mavlinkhub.enums.SOCKET_STATE;
+import com.paku.mavlinkhub.enums.CONNECTOR_STATE;
 import com.paku.mavlinkhub.utils.ThreadReaderSocketBased;
 import com.paku.mavlinkhub.utils.Utils;
 
@@ -22,6 +22,9 @@ public class ThreadGroundStationServerTCP extends Thread {
 	Handler connMsgHandler;
 	public boolean running = true;
 
+	String address;
+	int port;
+
 	public ThreadGroundStationServerTCP(Handler handler, int port) {
 		connMsgHandler = handler;
 
@@ -30,11 +33,14 @@ public class ThreadGroundStationServerTCP extends Thread {
 			// /could be the port is already used - we need a check ...
 			serverSocket = new ServerSocket(port);
 
-			connMsgHandler.obtainMessage(SOCKET_STATE.MSG_SOCKET_SERVER_STARTED.ordinal(), -1, -1, "TCP:" + Utils.getIPAddress(true) + ":" + serverSocket.getLocalPort()).sendToTarget();
+			connMsgHandler.obtainMessage(CONNECTOR_STATE.MSG_CONN_SERVER_STARTED.ordinal(), -1, -1, "TCP:" + Utils.getIPAddress(true) + ":" + serverSocket.getLocalPort()).sendToTarget();
+
+			setAddress(Utils.getIPAddress(true));
+			setPort(port);
 
 		}
 		catch (IOException e) {
-			connMsgHandler.obtainMessage(SOCKET_STATE.MSG_SOCKET_SERVER_START_FAILED.ordinal()).sendToTarget();
+			connMsgHandler.obtainMessage(CONNECTOR_STATE.MSG_CONN_SERVER_START_FAILED.ordinal()).sendToTarget();
 			e.printStackTrace();
 		}
 
@@ -53,7 +59,7 @@ public class ThreadGroundStationServerTCP extends Thread {
 				clientIP = (socket.getInetAddress()).getHostAddress() + ":" + socket.getPort();
 				//clientIP.replace("//", " ");
 
-				connMsgHandler.obtainMessage(SOCKET_STATE.MSG_SOCKET_SERVER_CLIENT_CONNECTED.ordinal(), clientIP.length(), -1, clientIP.getBytes()).sendToTarget();
+				connMsgHandler.obtainMessage(CONNECTOR_STATE.MSG_CONN_SERVER_CLIENT_CONNECTED.ordinal(), clientIP.length(), -1, clientIP.getBytes()).sendToTarget();
 
 				Log.d(TAG, "New Connection: TCP Socket Started");
 			}
@@ -87,6 +93,36 @@ public class ThreadGroundStationServerTCP extends Thread {
 	public void writeBytes(byte[] bytes) throws IOException {
 		socketServerReaderThreadTCP.writeBytes(bytes);
 
+	}
+
+	/**
+	 * @return the address
+	 */
+	public String getAddress() {
+		return address;
+	}
+
+	/**
+	 * @param address
+	 *            the address to set
+	 */
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	/**
+	 * @return the port
+	 */
+	public int getPort() {
+		return port;
+	}
+
+	/**
+	 * @param port
+	 *            the port to set
+	 */
+	public void setPort(int port) {
+		this.port = port;
 	}
 
 }

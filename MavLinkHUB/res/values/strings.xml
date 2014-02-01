@@ -86,7 +86,7 @@
     
 <!-- not assigned strings needs moving up -->    
     <string name="error_server_start_failed">Can not start server !</string>    
-    <string name="txt_server_mode_set_to">"Server mode set to: "</string>    
+    <string name="txt_server_mode_set_to">"Server mode: "</string>    
     <string name="txt_connection_type">Unknown type</string>    
     <string name="txt_connected">Connected</string>    
     <string name="txt_disconnected">Disconnected</string>

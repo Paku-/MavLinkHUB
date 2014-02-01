@@ -39,17 +39,17 @@ public class ThreadDistibutorSender extends Thread {
 
 					switch (tmpItem.direction) {
 					case FROM_DRONE:
-						if (hub.gsServer.isClientConnected()) {
-							if (hub.gsServer.writeBytes(tmpItem.getPacketBytes())) {
-								// Log.d(TAG, "gsServer: Packet sent");
+						if (hub.gcsServer.isClientConnected()) {
+							if (hub.gcsServer.writeBytes(tmpItem.getPacketBytes())) {
+								// Log.d(TAG, "gcsServer: Packet sent");
 							}
 							else {
-								Log.d(TAG, "gsServer: No Client connected failure");
+								Log.d(TAG, "gcsServer: No Client connected failure");
 							}
 						}
 						else {
 							// Log.d(TAG,
-							// "gsServer: Packet Silently discarded");
+							// "gcsServer: Packet Silently discarded");
 						}
 						break;
 					case FROM_GS:
@@ -81,7 +81,7 @@ public class ThreadDistibutorSender extends Thread {
 				}
 			}
 			catch (IOException e) {
-				Log.d(TAG, "gsServer: Socket  write exception:" + e.getMessage());
+				Log.d(TAG, "gcsServer: Socket  write exception:" + e.getMessage());
 				e.printStackTrace();
 
 			}

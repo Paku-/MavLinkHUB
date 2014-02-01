@@ -2,9 +2,6 @@
 // com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.alwaysOverridetoString.alwaysOverrideToString
 package com.paku.mavlinkhub.utils;
 
-import java.util.ArrayDeque;
-
-import com.MAVLink.Messages.MAVLinkMessage;
 import com.MAVLink.Messages.MAVLinkStats;
 import com.paku.mavlinkhub.enums.MSG_SOURCE;
 
@@ -15,15 +12,15 @@ public class HUBStats {
 
 	private int statsDroneByteCount = 0;
 	private int statsGSByteCount = 0;
+	/*
+		private float lastDroneMsgTime = 0;
+		private float lastGSMsgTime = 0;
 
-	private float lastDroneMsgTime = 0;
-	private float lastGSMsgTime = 0;
+		private float avrDroneMsgTime = 0;
+		private float avrGSMsgTime = 0;
 
-	private float avrDroneMsgTime = 0;
-	private float avrGSMsgTime = 0;
-
-	private ArrayDeque<MAVLinkMessage> statsDroneMsgs;
-
+		private ArrayDeque<MAVLinkMessage> statsDroneMsgs;
+	*/
 	private int statsQueueItemsCnt = 0;
 
 	public HUBStats() {

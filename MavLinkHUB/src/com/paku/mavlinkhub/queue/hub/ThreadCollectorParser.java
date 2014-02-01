@@ -59,7 +59,7 @@ public class ThreadCollectorParser extends Thread {
 			tmpBuffer = hub.droneClient.getInputByteQueueItem();
 			break;
 		case FROM_GS:
-			tmpBuffer = hub.gsServer.getInputByteQueueItem();
+			tmpBuffer = hub.gcsServer.getInputByteQueueItem();
 			break;
 		default:
 			break;

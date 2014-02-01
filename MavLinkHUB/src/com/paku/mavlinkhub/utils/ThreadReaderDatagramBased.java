@@ -8,7 +8,7 @@ import java.net.InetSocketAddress;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
 
-import com.paku.mavlinkhub.enums.SOCKET_STATE;
+import com.paku.mavlinkhub.enums.CONNECTOR_STATE;
 
 import android.os.Handler;
 import android.util.Log;
@@ -21,12 +21,11 @@ public class ThreadReaderDatagramBased extends Thread {
 
 	private final DatagramSocket socketUDP;
 
-	//that could be the broadcast as well.
+	//that could be the broadcast as well.	
 	private final InetAddress address;
-
 	private final int port;
 
-	private final Handler handlerQueueIOBytesReceiver;
+	private final Handler connHandler;
 
 	private boolean running = true;
 
@@ -43,7 +42,7 @@ public class ThreadReaderDatagramBased extends Thread {
 		socketUDP.setBroadcast(true);
 		socketUDP.bind(new InetSocketAddress(port + 1));
 
-		handlerQueueIOBytesReceiver = handlerReceiver;
+		connHandler = handlerReceiver;
 
 	}
 
@@ -64,19 +63,19 @@ public class ThreadReaderDatagramBased extends Thread {
 					final ByteBuffer byteMsg = ByteBuffer.allocate(len);
 					byteMsg.put(packet.getData(), 0, len);
 					byteMsg.flip();
-					handlerQueueIOBytesReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_BYTE_DATA_READY.ordinal(), len, -1, byteMsg).sendToTarget();
+					connHandler.obtainMessage(CONNECTOR_STATE.MSG_CONN_BYTE_DATA_READY.ordinal(), len, -1, byteMsg).sendToTarget();
 				}
 				else {
 					// could happen mostly to the servers thread
 					Log.d(TAG, "** UDP got empty packet**");
-					handlerQueueIOBytesReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_SERVER_CLIENT_DISCONNECTED.ordinal()).sendToTarget();
+					connHandler.obtainMessage(CONNECTOR_STATE.MSG_CONN_SERVER_CLIENT_DISCONNECTED.ordinal()).sendToTarget();
 					running = false;
 				}
 			}
 			catch (IOException e) {
 				// could happen mostly to the client thread
 				Log.d(TAG, "** UDP packet receive exception**" + e.getMessage());
-				handlerQueueIOBytesReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_DRONE_CLIENT_LOST_CONNECTION.ordinal()).sendToTarget();
+				connHandler.obtainMessage(CONNECTOR_STATE.MSG_CONN_DRONE_CLIENT_LOST_CONNECTION.ordinal()).sendToTarget();
 				running = false;
 				break;
 			}
@@ -97,7 +96,7 @@ public class ThreadReaderDatagramBased extends Thread {
 		running = false;
 
 		// stop it's handler as well
-		handlerQueueIOBytesReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_CLOSED.ordinal()).sendToTarget();
+		connHandler.obtainMessage(CONNECTOR_STATE.MSG_CONN_CLOSED.ordinal()).sendToTarget();
 
 	}
 

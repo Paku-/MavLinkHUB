@@ -42,7 +42,7 @@ public class ViewAdapterAnalyzerList extends ArrayAdapter<ItemMavLinkMsg> {
 
 	public ViewAdapterAnalyzerList(HUBGlobals hub, ArrayList<ItemMavLinkMsg> itemsArrayList) {
 
-		super(hub, R.layout.listviewitem_analyzer_msg_row_2, itemsArrayList);
+		super(hub, R.layout.listviewitem_analyzer_msg_row, itemsArrayList);
 
 		this.hub = hub;
 
@@ -59,7 +59,7 @@ public class ViewAdapterAnalyzerList extends ArrayAdapter<ItemMavLinkMsg> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		msgItemView = inflater.inflate(R.layout.listviewitem_analyzer_msg_row_2, parent, false);
+		msgItemView = inflater.inflate(R.layout.listviewitem_analyzer_msg_row, parent, false);
 
 		msgName = (TextView) msgItemView.findViewById(R.id.listViewMsgItemTxt_Text1);
 		mainText = (TextView) msgItemView.findViewById(R.id.listViewMsgItemTxt_Text2);

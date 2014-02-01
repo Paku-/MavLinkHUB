@@ -43,7 +43,7 @@ public class HUBGlobals extends Application {
 	public DroneClient droneClient;
 
 	// main GS connector
-	public GroundStationServer gsServer;
+	public GroundStationServer gcsServer;
 
 	// main ItemMavLinkMsg objects queue
 	public HUBQueue queue;
@@ -111,25 +111,25 @@ public class HUBGlobals extends Application {
 
 	public void switchServer() {
 
-		if (null != gsServer) {
-			gsServer.stopServer();
+		if (null != gcsServer) {
+			gcsServer.stopServer();
 
-			if (gsServer.getClass().equals(GroundStationServerTCP.class)) {
-				gsServer = new GroundStationServerUDP(this);
-				gsServer.startServer(HUBGlobals.serverUDP_port);
+			if (gcsServer.getClass().equals(GroundStationServerTCP.class)) {
+				gcsServer = new GroundStationServerUDP(this);
+				gcsServer.startServer(HUBGlobals.serverUDP_port);
 				return;
 			}
 
-			if (gsServer.getClass().equals(GroundStationServerUDP.class)) {
-				gsServer = new GroundStationServerTCP(this);
-				gsServer.startServer(HUBGlobals.serverTCP_port);
+			if (gcsServer.getClass().equals(GroundStationServerUDP.class)) {
+				gcsServer = new GroundStationServerTCP(this);
+				gcsServer.startServer(HUBGlobals.serverTCP_port);
 				return;
 			}
 		}
 		else {
 
-			gsServer = new GroundStationServerUDP(this);
-			gsServer.startServer(HUBGlobals.serverUDP_port);
+			gcsServer = new GroundStationServerUDP(this);
+			gcsServer.startServer(HUBGlobals.serverUDP_port);
 
 		}
 

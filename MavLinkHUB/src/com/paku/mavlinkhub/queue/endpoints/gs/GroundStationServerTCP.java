@@ -29,6 +29,9 @@ public class GroundStationServerTCP extends GroundStationServer {
 		serverThread = new ThreadGroundStationServerTCP(ConnMsgHandler, port);
 		serverThread.start();
 
+		setAddress(serverThread.getAddress());
+		setPort(serverThread.getPort());
+
 	}
 
 	@Override

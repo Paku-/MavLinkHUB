@@ -3,13 +3,23 @@ package com.paku.mavlinkhub.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.Signature;
 import android.content.res.Configuration;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiManager;
 
 import java.io.*;
 import java.net.*;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.util.*;
+
+import javax.security.auth.x500.X500Principal;
+
 import org.apache.http.conn.util.InetAddressUtils;
 
 import com.paku.mavlinkhub.enums.SCREEN_SIZE;
@@ -180,6 +190,33 @@ public class Utils {
 		default:
 			return SCREEN_SIZE.UNDEF;
 		}
+	}
+
+	private static final X500Principal DEBUG_DN = new X500Principal("CN=Android Debug,O=Android,C=US");
+
+	public static boolean isDebuggable(Context ctx) {
+		boolean debuggable = false;
+
+		try {
+			PackageInfo pinfo = ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), PackageManager.GET_SIGNATURES);
+			Signature signatures[] = pinfo.signatures;
+
+			CertificateFactory cf = CertificateFactory.getInstance("X.509");
+
+			for (int i = 0; i < signatures.length; i++) {
+				ByteArrayInputStream stream = new ByteArrayInputStream(signatures[i].toByteArray());
+				X509Certificate cert = (X509Certificate) cf.generateCertificate(stream);
+				debuggable = cert.getSubjectX500Principal().equals(DEBUG_DN);
+				if (debuggable) break;
+			}
+		}
+		catch (NameNotFoundException e) {
+			//debuggable variable will remain false
+		}
+		catch (CertificateException e) {
+			//debuggable variable will remain false
+		}
+		return debuggable;
 	}
 
 }

@@ -6,7 +6,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 
-import com.paku.mavlinkhub.enums.SOCKET_STATE;
+import com.paku.mavlinkhub.enums.CONNECTOR_STATE;
 
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
@@ -24,7 +24,7 @@ public class ThreadReaderSocketBased extends Thread {
 	private final InputStream input;
 	private final OutputStream output;
 
-	private final Handler handlerQueueIOBytesReceiver;
+	private final Handler connHandler;
 
 	private boolean running = true;
 
@@ -33,7 +33,7 @@ public class ThreadReaderSocketBased extends Thread {
 
 		socketBT = socket;
 		socketTCP = null;
-		handlerQueueIOBytesReceiver = handlerReceiver;
+		connHandler = handlerReceiver;
 
 		InputStream tmpIn = null;
 		OutputStream tmpOut = null;
@@ -60,7 +60,7 @@ public class ThreadReaderSocketBased extends Thread {
 	public ThreadReaderSocketBased(Socket socket, Handler handlerReceiver) {
 		socketTCP = socket;
 		socketBT = null;
-		handlerQueueIOBytesReceiver = handlerReceiver;
+		connHandler = handlerReceiver;
 
 		InputStream tmpIn = null;
 		OutputStream tmpOut = null;
@@ -95,19 +95,19 @@ public class ThreadReaderSocketBased extends Thread {
 					final ByteBuffer byteMsg = ByteBuffer.allocate(len);
 					byteMsg.put(buffer, 0, len);
 					byteMsg.flip();
-					handlerQueueIOBytesReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_BYTE_DATA_READY.ordinal(), len, -1, byteMsg).sendToTarget();
+					connHandler.obtainMessage(CONNECTOR_STATE.MSG_CONN_BYTE_DATA_READY.ordinal(), len, -1, byteMsg).sendToTarget();
 				}
 				else {
 					// could happen mostly to the servers thread
 					Log.d(TAG, "** Server lost connection **");
-					handlerQueueIOBytesReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_SERVER_CLIENT_DISCONNECTED.ordinal()).sendToTarget();
+					connHandler.obtainMessage(CONNECTOR_STATE.MSG_CONN_SERVER_CLIENT_DISCONNECTED.ordinal()).sendToTarget();
 					running = false;
 				}
 			}
 			catch (IOException e) {
 				// could happen mostly to the client thread
 				Log.d(TAG, "** Client lost Drone link **" + e.getMessage());
-				handlerQueueIOBytesReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_DRONE_CLIENT_LOST_CONNECTION.ordinal()).sendToTarget();
+				connHandler.obtainMessage(CONNECTOR_STATE.MSG_CONN_DRONE_CLIENT_LOST_CONNECTION.ordinal()).sendToTarget();
 				running = false;
 				break;
 			}
@@ -135,7 +135,7 @@ public class ThreadReaderSocketBased extends Thread {
 		// stop threads run() loop
 		running = false;
 		// stop it's handler as well
-		handlerQueueIOBytesReceiver.obtainMessage(SOCKET_STATE.MSG_SOCKET_CLOSED.ordinal()).sendToTarget();
+		connHandler.obtainMessage(CONNECTOR_STATE.MSG_CONN_CLOSED.ordinal()).sendToTarget();
 
 	}
 

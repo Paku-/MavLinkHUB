@@ -5,7 +5,7 @@ import java.util.ArrayDeque;
 
 import com.paku.mavlinkhub.HUBGlobals;
 import com.paku.mavlinkhub.enums.APP_STATE;
-import com.paku.mavlinkhub.enums.SOCKET_STATE;
+import com.paku.mavlinkhub.enums.CONNECTOR_STATE;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -33,7 +33,7 @@ public class ConnectorBytes {
 
 		//create and runn msg handler for this connector
 
-		// that's the true ADD ,method for this class
+		// that's the true ADD method for this class
 		// this handler is called by the messages coming from any other classes build
 		// over the ConnectorBytes (both clients and servers). Any bytes receiving/reading
 		// thread sends a msg with the
@@ -45,40 +45,40 @@ public class ConnectorBytes {
 		new Handler(Looper.getMainLooper()) {
 			public void handleMessage(Message byteMsg) {
 
-				final SOCKET_STATE[] socketStates = SOCKET_STATE.values();
+				final CONNECTOR_STATE[] socketStates = CONNECTOR_STATE.values();
 				switch (socketStates[byteMsg.what]) {
 
 				// ===== All clients and servers threads send those msgs ======
 
 				// Received data
-				case MSG_SOCKET_BYTE_DATA_READY:
+				case MSG_CONN_BYTE_DATA_READY:
 					addInputByteQueueItem(byteMsg);
 					break;
 				// closing so kill myself
-				case MSG_SOCKET_CLOSED:
+				case MSG_CONN_CLOSED:
 					removeMessages(0);
 					break;
 
 				// ===== Those are only sent by drone/client threads ======
 
-				case MSG_SOCKET_DRONE_CLIENT_LOST_CONNECTION:
+				case MSG_CONN_DRONE_CLIENT_LOST_CONNECTION:
 					HUBGlobals.sendAppMsg(APP_STATE.MSG_DRONE_CONNECTION_LOST);
 					break;
 
 				// ===== Those are only sent by gs/servers threads ======
 
 				// new client connected
-				case MSG_SOCKET_SERVER_CLIENT_CONNECTED:
+				case MSG_CONN_SERVER_CLIENT_CONNECTED:
 					HUBGlobals.sendAppMsg(APP_STATE.MSG_SERVER_GCS_CONNECTED, byteMsg);
 					break;
 				// Client lost;
-				case MSG_SOCKET_SERVER_CLIENT_DISCONNECTED:
+				case MSG_CONN_SERVER_CLIENT_DISCONNECTED:
 					HUBGlobals.sendAppMsg(APP_STATE.MSG_SERVER_GCS_DISCONNECTED);
 					break;
-				case MSG_SOCKET_SERVER_STARTED:
+				case MSG_CONN_SERVER_STARTED:
 					HUBGlobals.sendAppMsg(APP_STATE.MSG_SERVER_STARTED, byteMsg);
 					break;
-				case MSG_SOCKET_SERVER_START_FAILED:
+				case MSG_CONN_SERVER_START_FAILED:
 					HUBGlobals.sendAppMsg(APP_STATE.MSG_SERVER_START_FAILED);
 					break;
 				default:
@@ -141,7 +141,7 @@ public class ConnectorBytes {
 
 	//below there are methods for derived classes (drones @ gs servers)
 
-	protected static final void sendConnectorMsg(SOCKET_STATE msgType) {
+	protected static final void sendConnectorMsg(CONNECTOR_STATE msgType) {
 
 	}
 
