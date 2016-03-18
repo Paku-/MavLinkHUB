@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/device_event_details"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/lin1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="invisible"  >
+
+        <EditText
+            android:id="@+id/send_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Send Message"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/button_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="SendMessage"
+            android:text="Send "
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lin2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="invisible" >
+
+        <TextView
+            android:id="@+id/Receive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Receive : "
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/reveive_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Receive Message "
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/set_event"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="ClickSetEvent"
+        android:text="Enable Set Event"
+        android:textSize="20sp" />
+    
+
+            <TextView
+            android:id="@+id/EventStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="35dip"
+            android:text="EventStatus : "
+            android:textSize="20sp" />
+            
+    <LinearLayout
+        android:id="@+id/lin3"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/ErrorInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+</LinearLayout>

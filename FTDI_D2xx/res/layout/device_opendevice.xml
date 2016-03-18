@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<LinearLayout 
+    android:id="@+id/device_misc"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <Button
+        android:id="@+id/device_misc_start"
+        android:layout_width="fill_parent"
+        android:textSize="18sp"
+        android:layout_height="40dp"
+        android:text="Open Device"
+        android:onClick="StartMisCheck"/>
+
+	<TextView
+	    android:id="@+id/device_misc_open_index"
+        android:layout_width="fill_parent"
+        android:textSize="20sp"
+        android:text="Open By Index:"
+        android:layout_height="40dp"/> 
+            
+	<TextView
+	    android:id="@+id/device_misc_open_sn"
+        android:layout_width="fill_parent"
+        android:textSize="20sp"
+        android:text="Open By Serial Number:"
+        android:layout_height="40dp"/>
+
+   <TextView
+        android:id="@+id/device_misc_open_location"
+        android:layout_width="fill_parent"
+        android:textSize="20sp"
+        android:text="Open By Location:"
+        android:layout_height="40dp" />
+
+   <TextView
+        android:id="@+id/device_misc_open_description"
+        android:layout_width="fill_parent"
+        android:textSize="20sp"
+        android:text="Open By Description:"
+        android:layout_height="40dp" />
+
+    <Button
+        android:id="@+id/opendevice_param"
+        android:layout_width="fill_parent"
+        android:textSize="18sp"
+        android:layout_height="40dp"
+        android:text="Open Device with Setting Parameter"
+        android:onClick="StartMisCheck"/>
+
+    <Button
+        android:id="@+id/get_param"
+        android:layout_width="fill_parent"
+        android:textSize="18sp"
+        android:layout_height="40dp"
+        android:text="Get Parameter"
+        android:onClick="StartMisCheck"/>
+        
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/bufnumText"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:textSize="20sp"
+            android:text="BufferNumber :" />
+
+    	<EditText
+    	    android:id="@+id/bufnumValue"
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content"
+    	    android:maxLength="2"
+    	    android:ems="10"
+    	    android:inputType="number" />
+    
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/bufsizeText"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:textSize="20sp"
+            android:text="BufferSize :" />
+    	<EditText
+	        android:id="@+id/bufsizeValue"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:maxLength="7"
+	        android:ems="10"
+	        android:inputType="number" />
+    
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+    <TextView
+            android:id="@+id/transizeText"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:textSize="20sp"
+            android:text="TransferSize :" />
+    	<EditText
+	        android:id="@+id/transizeValue"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:maxLength="5"
+	        android:ems="10"
+	        android:inputType="number" />
+    
+    </LinearLayout>
+    
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/readtimeText"
+            android:layout_width="150dp"            
+            android:layout_height="40dp"
+            android:textSize="20sp"
+            android:text="ReadTimeout :" />
+    	<EditText
+	        android:id="@+id/readtimeValue"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:ems="10"
+	        android:inputType="number" />
+    
+    </LinearLayout>
+
+	<TextView
+	    android:id="@+id/device_misc_open_index_2"
+        android:layout_width="fill_parent"
+        android:textSize="20sp"
+        android:text="Open By Index:"
+        android:layout_height="40dp"/>        
+
+	<TextView
+	    android:id="@+id/device_misc_open_sn_2"
+        android:layout_width="fill_parent"
+        android:textSize="20sp"
+        android:text="Open By Serial Number:"
+        android:layout_height="40dp"/>
+
+   <TextView
+        android:id="@+id/device_misc_open_location_2"
+        android:layout_width="fill_parent"
+        android:textSize="20sp"
+        android:text="Open By Location:"
+        android:layout_height="40dp" />
+
+   <TextView
+        android:id="@+id/device_misc_open_description_2"
+        android:layout_width="fill_parent"
+        android:textSize="20sp"
+        android:text="Open By Description:"
+        android:layout_height="40dp"/>
+    
+    <TextView
+        android:id="@+id/openusbdevdesc"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="Open By UsbDevice"
+        android:background="#2020d0"
+        android:textColor ="#ffffff"
+        android:layout_margin="10dp"
+        android:textSize="20sp" />
+    
+    <TextView
+        android:id="@+id/device_misc_open_usbdevice_1"
+        android:layout_width="fill_parent"
+        android:textSize="20sp"
+        android:text="Open By UsbDevice:"
+        android:layout_height="40dp" />
+        
+    <TextView
+        android:id="@+id/device_misc_open_usbdevice_2"
+        android:layout_width="fill_parent"
+        android:textSize="20sp"
+        android:text="Open By UsbDevice with Parameter:"
+        android:layout_height="40dp" />
+      
+    <Button
+        android:id="@+id/device_reset"
+        android:layout_width="fill_parent"
+        android:textSize="20sp"
+        android:layout_height="40dp"
+        android:text="Reset"
+		/>    
+
+</LinearLayout>
+</ScrollView >

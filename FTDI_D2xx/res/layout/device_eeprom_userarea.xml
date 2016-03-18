@@ -1,0 +1,109 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:scrollbarAlwaysDrawVerticalTrack="true"
+    android:scrollbarStyle="insideInset"
+    android:scrollbars="vertical" >
+         
+<!-- button area + -->	
+
+	<LinearLayout
+	    xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="fill_parent"
+	    android:layout_height="50dp"
+	    >
+
+	   	<Button
+	        android:id="@+id/eeprom_read_mode"
+	        android:layout_width="0dp"
+	        android:layout_height="40dp"
+	        android:layout_margin="3dp"
+	        android:onClick="SetEEPROMReadClick"
+	        android:text="Read EEPROM"
+	        android:textSize="18sp" 
+	        android:layout_weight="1"/>
+	
+	    <Button
+	        android:id="@+id/eeprom_write_mode"
+	        android:layout_width="0dp"
+	        android:layout_height="40dp"
+	        android:layout_margin="3dp"
+	        android:layout_weight="1"
+	        android:clickable="false"
+	        android:onClick="SetEEPROMWriteClick"
+	        android:text="Write EEPROM"
+	        android:textSize="18sp"
+	        />
+	
+	    <Button
+	        android:id="@+id/eeprom_erase_mode"
+	        android:layout_width="0dp"
+	        android:layout_height="40dp"
+	        android:layout_margin="3dp"
+	        android:layout_weight="1"
+	        android:clickable="false"
+	        android:onClick="SetEEPROMEraseClick"
+	        android:text="Erase EEPROM"
+	        android:textSize="18sp"
+	        />
+
+	</LinearLayout>
+<!-- button area - -->
+
+<!-- eeprom user data area + -->	
+	<!-- 
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="fill_parent"
+	    android:layout_height="300dp"
+	    android:background="#2200ff"
+	    >
+	</LinearLayout>
+	-->
+				 <EditText android:id="@+id/UserDataSizeValue"
+			 	android:layout_height="40dp"
+			 	android:layout_width="fill_parent"
+			 	android:lines="1"
+			 	android:gravity="center"
+			 	/>
+				 
+				 
+	<ScrollView
+	    android:id="@+id/ReadField"
+	    android:layout_width="fill_parent"
+		android:layout_height="0dp"
+	    android:layout_weight="10"
+	    android:layout_marginBottom="0dp"	 
+	    >
+        
+	    
+		<TextView		     
+		    android:id="@+id/ReadValues"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"    
+		    android:layout_margin="0dip"		    		    
+		    android:focusableInTouchMode="false"
+		    android:gravity="left|top"
+		    android:maxLines="20"
+		     >	      
+	  </TextView>
+    </ScrollView>
+    	 <!-- 
+		 	<EditText
+	 	    android:id="@+id/UserDataValue"
+	 	    android:layout_width="fill_parent"
+	 	    android:layout_height="0dip"
+	 	    android:layout_margin="3dp"
+	 	    android:layout_marginLeft="5dp"
+		    android:layout_marginRight="5dp"
+	 	    android:layout_weight="1"
+	 	    android:background="#ffffff"
+	 	    android:textColor ="#000000"
+	 	    android:editable="true"
+	 	    android:gravity="left|center"
+	 	    android:maxLength="127"
+     		/>
+     		 -->
+<!-- eeprom area + -->	    	
+</LinearLayout>

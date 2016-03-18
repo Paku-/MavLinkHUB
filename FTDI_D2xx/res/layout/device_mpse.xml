@@ -1,0 +1,44 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/bit_bang_async_mode"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="SetBitBangModeAsyncClick"
+        android:text="Enable Bit Bang Async Mode"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/bit_bang_intent_service_mode"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/bit_bang_async_mode"
+        android:onClick="SetBitBangModeIntentServiceClick"
+        android:text="Enable Bit Bang Intent Service Mode"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/bit_bang_service_mode"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/bit_bang_intent_service_mode"
+        android:onClick="SetBitBangModeServiceClick"
+        android:text="Enable Bit Bang Service Mode"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/ErrorInformation"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/eeprom_read_mode"
+        android:layout_marginTop="49dp"
+        android:textSize="20sp" />
+
+</RelativeLayout>

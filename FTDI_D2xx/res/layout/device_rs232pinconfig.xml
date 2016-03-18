@@ -1,0 +1,32 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/btn_dtr"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="btn_dtr_click"
+        android:text="Disable DTR"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/btn_rts"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/btn_dtr"
+        android:onClick="btn_rts_Click"
+        android:text="Disable RTS"
+        android:textSize="20sp" />
+    <TextView
+        android:id="@+id/ErrorInformation"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/btn_rts"
+        android:textSize="20sp" />
+
+</RelativeLayout>

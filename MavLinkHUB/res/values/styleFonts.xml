@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="LogStyle" parent="@android:style/TextAppearance">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:typeface">monospace</item>
+    </style>
+    <!--  
+    <style name="StatusBarStyle" parent="@android:style/TextAppearance.Medium">
+         -->
+<style name="StatusBarStyle" parent="@android:style/TextAppearance">        
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">normal</item>
+        <!--
+        <item name="android:typeface">monospace</item>
+        -->        
+    </style>
+    
+<!-- Connection Fragment Styles -->
+    
+    <style name="ConnStyle" parent="@android:style/TextAppearance">        
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">normal</item>
+        <!--
+        <item name="android:typeface">monospace</item>
+        -->        
+    </style>    
+    
+    <style name="ConnStyle.Small">        
+        <item name="android:textColor">#000000</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    
+    <style name="ConnStyle.Medium" >        
+        <item name="android:textColor">#000000</item>
+        <item name="android:textSize">16sp</item>
+    </style>    
+
+    <style name="ConnStyle.Big" >        
+        <item name="android:textColor">#000000</item>
+        <item name="android:textSize">22sp</item>
+    </style>    
+    
+
+<!-- Analyzer Fragment Styles -->
+
+    
+    <style name="AnalyzerStyle" parent="@android:style/TextAppearance">        
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:typeface">normal</item>        
+    </style>
+    
+    <style name="AnalyzerStyle.Small">        
+        <item name="android:textSize">10sp</item>
+    </style>
+    
+    <style name="AnalyzerStyle.Medium">        
+        <item name="android:textSize">12sp</item>
+    </style>
+    
+    <style name="AnalyzerStyle.Big">        
+        <item name="android:textSize">14sp</item>
+    </style>
+    
+    <style name="AnalyzerStyle.Big.Bold">
+        <!-- we donot have space for bolds here -->        
+        <item name="android:textStyle">normal</item>        
+    </style>    
+    
+    
+        
+    
+    
+</resources>

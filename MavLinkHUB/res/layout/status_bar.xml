@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/tools"
+    android:id="@+id/RelativeLayoutProgressBarBig"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <ProgressBar
+        android:id="@+id/progressBarConnected"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
+        android:minHeight="26dp"
+        android:minWidth="26dp" />
+
+    <TextView
+        android:id="@+id/textView_system_status_bar"
+        style="@style/StatusBarStyle"
+        android:layout_centerVertical="true"
+        android:text="@string/textview_status_bar" />
+
+</RelativeLayout>

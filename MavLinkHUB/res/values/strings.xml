@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MavLinkHub</string>
+<!-- Menu Section -->    
+    <string name="menu_title_settings">Settings</string>
+    <string name="menu_title_bluetooth">Start Bluetooth</string>
+    <string name="menu_title_usb">Start USB</string>
+	<string name="menu_title_switch_server">Switch server (UDP/TCP)</string>
+	<string name="menu_title_switch_analyzer_view">Switch analyzer view</string>	        
+<!-- Fragments Titles Section -->    
+    <string name="title_analyzer">Analyzer</string>
+    <string name="title_connectivity">Connection</string>
+    <string name="title_syslog">System log</string>
+    <string name="title_calibration">Calibration</string>    
+<!-- Fragments Msgs: Connectivity-->
+    <string name="connectivity_txt_select_device">Select Device</string>    
+    <string name="connectivity_txt_disconnected">Disconnected</string>
+    <string name="connectivity_txt_select_device">Select Device</string>    
+    <string name="connectivity_txt_disconnected">Disconnected</string>
+<!-- Fragments Msgs: RealtimeMavLink -->
+    <string name="bufferEmpty">Buffer empty</string>
+    <string name="log_sys_log_empty">System log empty</string>    
+    <string name="log_msg_log_empty">MavLink messages log empty</string>    
+    <string name="log_byte_log_empty">Transmission log empty</string>    
+    <string name="log_stats">Logs statistics</string>
+	<string name="textview_status_bar">Status Bar</string>                        
+<!-- Fragments Msgs: Calibration -->
+    <string name="txt_select_sensors_for_calibration">Select sensors</string>
+    <string name="cb_accelerometers">Accelerometers</string>
+    <string name="cb_gyros">Gyros</string>            		
+<!-- Dialogs Msgs: Select BT device-->
+<!-- Buttons Section -->        
+    <string name="bt_calibrate">Calibrate</string>
+    <string name="bt_connectivity">Disconnect</string>    
+<!-- Pref Section Logging  -->
+    <string name="pref_section_logs_title">Logs</string>            
+    <string name="pref_log_system_title">Log MavLinkHUB system messages</string>
+    <string name="pref_log_system_summary">Enable system messages file logging</string>
+    <string name="pref_log_mavlink_byte_title">Log Drone data</string>
+    <string name="pref_log_mavlink_byte_summary">Enable Drone transmission (byte level) file logging</string>
+    <string name="pref_log_mavlink_folder_title">Logs folder</string>
+    <string name="pref_log_system_folder_title">System log file folder</string>
+<!-- Pref Section Autoscroll  -->
+    <string name="pref_section_auto_scroll_title">Auto Scroll</string>    
+    
+    <string name="pref_msg_items_autoscroll_title">Autoscroll Analyzer view</string>        
+    <string name="pref_msg_items_autoscroll_summary">Enable Analyzer list autoscroll function, disable to move the list with fingers</string>    
+    
+    <string name="pref_byte_log_autoscroll_title">Autscroll Drone data log</string>
+    <string name="pref_byte_log_autoscroll_summary">Enable Drone data autoscroll function, disable to move the list with fingers</string>
+    
+    <string name="pref_sys_log_autoscroll_title">System Log</string>        
+    <string name="pref_sys_log_autoscroll_summary">Autoscroll System log</string>    
+
+<!-- Pref Section Analyzer  -->
+    <string name="pref_section_analyzer_title">Analyzer</string>    
+    <string name="pref_enable_analyzer_view_title">Enable Analyzer view</string>
+    <string name="pref_enable_analyzer_view_summary">Switch the Analyzer view on/off</string>
+    
+    
+<!-- Pref Section connection  -->
+	<string name="prefs_dialog_title_usb_baud">Select USB baud rate</string>
+    <string name="pref_section_connections_title">Connection</string>    
+    <string name="pref_usb_baud_title">USB baud rate</string>
+    <string name="pref_usb_baud_summary">Set the USB serial speed for your Drone USB interface. (Reconnect after changing)</string>
+<!-- Error Msgs-->
+    <string name="error_drone_connection_lost">Drone connection LOST !!!</string>    
+    <string name="error_no_bt_adapter_or_paired_devices">No Bluetooth adapter or Paired Devices found</string>    
+    <string name="error_no_paired_bt_devices_found_pair_device_first">No paired Bluetooth devices found. Pair device first.</string>
+    <string name="error_no_usb_devices_found">No compatible USB devices. Connect device.</string>    
+    <string name="error_disconnect_first">Disconnect first</string>
+    <string name="txt_no_data">No Data</string>    
+    <string name="error_no_bluetooth_adapter_found">No Bluetooth Adapter found</string>
+    <string name="error_connection_failure">"Connection Failure: "</string>                
+<!-- Close Dialog Msgs-->            
+    <string name="close_dlg_title_mavlink_closing">MavLink Connection Active </string>    
+    <string name="close_dlg_msg_current_connection_will_be_lost">Current connection will be lost</string>    
+    <string name="close_dlg_positive">Close me</string>    
+    <string name="close_dlg_negative">Keep running</string>    
+<!-- Select Device Dialog Msgs-->
+    <string name="dlg_devices_found">Devices</string>
+    <string name="txt_device_connected">Device connected</string>
+    <string name="txt_device_disconnected">Device disconnected</string>
+    <string name="txt_device_connecting">Connecting device</string>
+    <string name="txt_select_device_to_connect_disconnect">Select device to connect/disconnect</string>
+    
+<!-- not assigned strings needs moving up -->    
+    <string name="error_server_start_failed">Can not start server !</string>    
+    <string name="txt_server_mode_set_to">"Server mode: "</string>    
+    <string name="txt_connection_type">Unknown type</string>    
+    <string name="txt_connected">Connected</string>    
+    <string name="txt_disconnected">Disconnected</string>
+            
+</resources>

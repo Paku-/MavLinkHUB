@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="system_icons">#333333</color>
+    
+	<color name="hubDark">#008893</color>
+	<color name="hubLightMedium">#7BC1C7</color>
+	<color name="hubMedium">#4AAAb2</color>
+	<color name="hubDarkMedium">#16929C</color>
+	<color name="hubLight">#A5D5D8</color>    
+    
+    <color name="opaque_red">#f00</color>
+    <color name="translucent_red">#80ff0000</color>
+    
+</resources>
+    
+    
+

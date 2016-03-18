@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_weight="1"
+            android:background="@color/hubLight" >
+
+            <ImageView
+                android:id="@+id/imageView_conn_endpoint_kind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/textView_endpoint_type"
+                android:src="@drawable/ic_action_usb"
+                android:visibility="gone" />
+            
+            <TextView
+                android:id="@+id/textView_endpoint_type"
+                style="@style/ConnStyle.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:text="@string/txt_connection_type" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/textView_endpoint_name"
+            style="@style/ConnStyle.Big"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Name" />
+
+        <TextView
+            android:id="@+id/textView_endpoint_state"
+            style="@style/ConnStyle.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="State"
+/>
+
+        <TextView
+            android:id="@+id/textView_endpoint_interface"
+            style="@style/ConnStyle.Small"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Interface" />
+
+        <TextView
+            android:id="@+id/textView_endpoint_address"
+            style="@style/ConnStyle.Small"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Address" />
+
+    </LinearLayout>
+

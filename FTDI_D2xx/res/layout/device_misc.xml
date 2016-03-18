@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/device_event_details"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+
+    <Button
+        android:id="@+id/loopbackBtn"
+        android:layout_width="fill_parent"
+        android:layout_height="48dp"
+        android:text="Loopback Test"
+        android:textSize="20sp" />
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/writeText"
+            android:layout_width="150dp"
+            android:layout_height="48dp"
+            android:textSize="20sp"
+            android:text="Write Data: " />
+                
+    	<EditText
+    	    android:id="@+id/wrtieValue"
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content"
+    	    android:ems="32"
+    	    android:inputType="text"
+    	    android:maxLength="32" />    
+    	</LinearLayout>
+    
+        <TextView
+            android:id="@+id/readText"
+        	android:layout_width="fill_parent"
+        	android:textSize="20sp"
+        	android:layout_height="40dp"
+            android:text="Read Data: " />
+
+        
+        <TextView
+            android:id="@+id/dummy"
+        	android:layout_width="fill_parent"
+        	android:layout_height="25dp"
+            android:text="dummy " 
+            android:visibility="invisible"/>
+    
+        
+    <LinearLayout
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/information"
+            android:layout_width="150dp"
+            android:layout_height="48dp"
+            android:textSize="20sp"
+            android:text="Test Info: " />
+        
+	    <TextView
+			android:id="@+id/InfoText"
+			android:layout_width="fill_parent"
+			android:layout_height="48dp"
+			android:textSize="20sp" />
+    </LinearLayout>    
+       	
+    <Button
+        android:id="@+id/set_event"
+        android:layout_width="fill_parent"
+        android:layout_height="48dp"
+        android:onClick="ClickSetEvent"
+        android:text="Enable Set Event"
+        android:textSize="20sp" />
+    
+<!-- 
+	<TextView
+		android:id="@+id/EventStatus"
+		android:layout_width="wrap_content"
+		android:layout_height="40dp"
+		android:text="EventStatus : "
+		android:textSize="20sp" />
+ -->
+
+
+    <Button
+        android:id="@+id/btn_dtr"
+        android:layout_width="fill_parent"
+        android:layout_height="48dp"
+        android:onClick="btn_dtr_click"
+        android:text="Disable DTR"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/btn_rts"
+        android:layout_width="fill_parent"
+        android:layout_height="48dp"
+        android:onClick="btn_rts_Click"
+        android:text="Disable RTS"
+        android:textSize="20sp" />
+    
+    <Button
+        android:id="@+id/bit_bang_async_mode"
+        android:layout_width="fill_parent"
+        android:layout_height="48dp"
+        android:onClick="SetBitBangModeAsyncClick"
+        android:text="Enable ASYNC_BITBANG Mode Test"
+        android:textSize="20sp"
+        android:visibility="invisible" />
+    
+</LinearLayout>

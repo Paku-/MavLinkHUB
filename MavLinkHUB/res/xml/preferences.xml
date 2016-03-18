@@ -1,0 +1,85 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    
+    <PreferenceCategory android:title="@string/pref_section_analyzer_title" >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="pref_analyzer_view"
+            android:summary="@string/pref_enable_analyzer_view_summary"
+            android:title="@string/pref_enable_analyzer_view_title" />        
+    </PreferenceCategory>    
+    
+    
+    <PreferenceCategory android:title="@string/pref_section_connections_title" >
+        <ListPreference
+            android:dialogTitle="@string/prefs_dialog_title_usb_baud"
+            android:entries="@array/pref_usb_baud_entries"
+            android:entryValues="@array/pref_usb_baud_entriesValues"            
+            android:key="pref_usb_baud"
+            android:summary="@string/pref_usb_baud_summary"
+            android:title="@string/pref_usb_baud_title" />
+        <!--
+     backup
+        <ListPreference
+            android:dialogTitle="@string/dialog_title_list_preference"
+            android:entries="@array/pref_usb_baud_entries"
+            android:entryValues="@array/pref_usb_baud_entriesValues"
+            android:key="list_preference"
+            android:summary="@string/summary_list_preference"
+            android:title="@string/title_list_preference" />
+
+
+
+        -->
+    </PreferenceCategory>
+    
+    
+
+    <PreferenceCategory android:title="@string/pref_section_logs_title" >
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_log_mavlink_byte"
+            android:summary="@string/pref_log_mavlink_byte_summary"
+            android:title="@string/pref_log_mavlink_byte_title" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_log_system"
+            android:summary="@string/pref_log_system_summary"
+            android:title="@string/pref_log_system_title" />
+        <EditTextPreference
+            android:selectable="false"
+            android:defaultValue="."
+            android:key="pref_log_mavlink_folder"
+            android:title="@string/pref_log_mavlink_folder_title" />
+    <!--        
+        <EditTextPreference
+        
+            android:key="pref_log_system_folder"
+            android:title="@string/pref_log_system_folder_title" />
+     -->
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="@string/pref_section_auto_scroll_title" >
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_msg_items_autoscroll"
+            android:summary="@string/pref_msg_items_autoscroll_summary"
+            android:title="@string/pref_msg_items_autoscroll_title" />
+        
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_byte_log_autoscroll"
+            android:summary="@string/pref_byte_log_autoscroll_summary"
+            android:title="@string/pref_byte_log_autoscroll_title" />
+    <!--
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_sys_log_autoscroll"
+            android:summary="@string/pref_sys_log_autoscroll_summary"
+            android:title="@string/pref_sys_log_autoscroll_title" />
+    -->
+    
+    </PreferenceCategory>    
+    
+
+</PreferenceScreen>

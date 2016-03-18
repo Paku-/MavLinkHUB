@@ -1,0 +1,10 @@
+<resources>
+<string-array name="pref_usb_baud_entries">
+    <item>"57600"</item>
+    <item>"115200"</item>
+</string-array>
+<string-array name="pref_usb_baud_entriesValues">
+    <item >"57600"</item>
+    <item >"115200"</item>
+</string-array>
+</resources>
